@@ -1,11 +1,64 @@
+# Dependencies
 node_modules/
-db/*.db
-db/*.db-journal
-db/*.db-wal
-logs/
+npm-debug.log*
+
+# Environment variables
 .env
 .env.secrets
 .env.agents
-.browser-profiles/
-.quality-reports/
+.env.local
+.env.*.local
+# .env.example IS tracked (placeholder values only)
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.db-journal
+db/backups/
+
+# Logs
+logs/
 *.log
+
+# OS files
+.DS_Store
+._*
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+.claude/
+*.swp
+*~
+
+# Coverage / quality reports
+coverage/
+.nyc_output/
+.quality-reports/
+.security-reports/
+.analysis-reports/
+
+# Build outputs
+dist/
+build/
+out/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Direnv
+.direnv/
+# .envrc IS tracked for nix-shell setup
+
+# Browser profiles (login sessions)
+.browser-profiles/
+
+# Backup files
+*.backup
+*.bak
