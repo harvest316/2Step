@@ -17,3 +17,4 @@ const root = resolve(__dirname, '../..');
 
 config({ path: resolve(root, '.env'), quiet: true });
 config({ path: resolve(root, '../333Method/.env.secrets'), quiet: true });
+config({ path: resolve(root, '../333Method/.env'), quiet: true });
