@@ -71,7 +71,38 @@ const api = axios.create({
 });
 
 /**
+ * Poll an async Outscraper job until it completes.
+ * Outscraper's search/review endpoints return immediately with {status: "Pending", results_location: URL}.
+ * We must poll results_location until status === "Success".
+ */
+async function pollJob(resultsLocation, jobDescription, maxWaitMs = 120000) {
+  const start = Date.now();
+  const pollInterval = 3000;
+
+  while (Date.now() - start < maxWaitMs) {
+    await new Promise(r => setTimeout(r, pollInterval));
+
+    const { data } = await axios.get(resultsLocation, {
+      headers: { 'X-API-KEY': API_KEY },
+      timeout: 30000,
+    });
+
+    if (data.status === 'Success') {
+      return data.data;
+    }
+    if (data.status === 'Error') {
+      throw new Error(`Outscraper job failed: ${data.error_message || 'unknown error'}`);
+    }
+
+    process.stdout.write('.');
+  }
+
+  throw new Error(`Outscraper job timed out after ${maxWaitMs / 1000}s (${jobDescription})`);
+}
+
+/**
  * Search Google Maps for businesses.
+ * Outscraper /maps/search-v3 is async — submits a job, then polls for results.
  */
 async function searchBusinesses(query, location, limit) {
   const searchQuery = `${query} ${location}`;
@@ -86,10 +117,21 @@ async function searchBusinesses(query, location, limit) {
     },
   });
 
-  // Outscraper returns nested arrays: [[result1, result2, ...]]
-  const results = Array.isArray(data) && Array.isArray(data[0]) ? data[0] : data;
-  console.log(`Raw results: ${results.length}`);
-  return results;
+  let raw;
+  if (data.status === 'Pending' && data.results_location) {
+    // Async job — poll until complete
+    process.stdout.write('  Waiting for Outscraper results');
+    const jobData = await pollJob(data.results_location, searchQuery);
+    console.log(''); // newline after dots
+    // jobData is typically [[result1, result2, ...]]
+    raw = Array.isArray(jobData) && Array.isArray(jobData[0]) ? jobData[0] : jobData;
+  } else {
+    // Synchronous response (unlikely but handle it)
+    raw = Array.isArray(data) && Array.isArray(data[0]) ? data[0] : data;
+  }
+
+  console.log(`Raw results: ${Array.isArray(raw) ? raw.length : 'unknown'}`);
+  return Array.isArray(raw) ? raw : [];
 }
 
 /**
@@ -107,8 +149,17 @@ async function fetchBestReview(placeId, businessName) {
       },
     });
 
-    const place = Array.isArray(data) && Array.isArray(data[0]) ? data[0][0] : data[0];
-    const reviews = place?.reviews_data || [];
+    let placeData;
+    if (data.status === 'Pending' && data.results_location) {
+      process.stdout.write('    Fetching reviews');
+      const jobData = await pollJob(data.results_location, businessName, 60000);
+      console.log('');
+      placeData = Array.isArray(jobData) && Array.isArray(jobData[0]) ? jobData[0][0] : (Array.isArray(jobData) ? jobData[0] : jobData);
+    } else {
+      placeData = Array.isArray(data) && Array.isArray(data[0]) ? data[0][0] : data[0];
+    }
+
+    const reviews = placeData?.reviews_data || [];
 
     // Pick the best 5-star review: longest text, most specific
     const fiveStars = reviews.filter(r => r.review_rating === 5 && r.review_text?.length > 30);
