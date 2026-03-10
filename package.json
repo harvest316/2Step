@@ -1,0 +1,34 @@
+{
+  "name": "2step",
+  "version": "0.1.0",
+  "description": "Video review outreach — find businesses with great reviews, create AI video demos, send as cold outreach",
+  "type": "module",
+  "scripts": {
+    "init-db": "node scripts/init-db.js",
+    "prospect": "node src/prospect/outscraper.js",
+    "prospect:import": "node src/prospect/import-csv.js",
+    "video:prompts": "node src/video/prompt-generator.js",
+    "outreach:dm": "node src/outreach/dm-generator.js",
+    "outreach:email": "node src/outreach/email.js",
+    "sheets:push": "node src/sheets/sync.js push",
+    "sheets:pull": "node src/sheets/sync.js pull",
+    "test": "NODE_ENV=test LOGS_DIR=/tmp/test-logs DATABASE_PATH=/tmp/test-2step.db node --test 'tests/**/*.test.js'",
+    "lint": "eslint src/ scripts/",
+    "lint:fix": "eslint src/ scripts/ --fix"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "dependencies": {
+    "333method": "file:../333Method",
+    "axios": "^1.13.4",
+    "better-sqlite3": "^12.6.2",
+    "dotenv": "^17.2.3",
+    "googleapis": "^171.4.0",
+    "resend": "^6.8.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "prettier": "^3.8.1"
+  }
+}
