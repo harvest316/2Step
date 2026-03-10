@@ -11,20 +11,34 @@ Research conducted 2026-03-10 for tool selection, cost estimation, and validatio
 
 ## Video Creation Tools — Comparison
 
-| Platform | Monthly Cost | Videos/Month (30s) | Cost/Video | API? | Stock Footage | AI Voiceover | Vertical 9:16 |
-|----------|-------------|-------------------:|-----------|------|---------------|--------------|---------------|
-| **Fliki Standard** | $21/mo (annual) | ~360 | $0.06 | Zapier/Make only | Included | 1,000+ voices | Yes |
-| **Shotstack** | ~$50/mo (Starter) | ~250 | $0.20 | Full REST API | Via Pexels (free) | Separate (ElevenLabs) | Yes |
-| **Creatomate** | $54/mo (Pro) | ~550 | $0.10 | Full REST API | Included | Via text-to-speech | Yes |
-| **InVideo AI Max** | $50/mo | ~50-100 (manual) | $0.50-1.00 | No API* | Included (AI-selected) | Included (AI) | Yes |
-| **Holo** | $19-39/mo | Opaque credits | ~$0.50+ | No API* | Limited | Included | Yes |
-| **Synthesia** | $89/mo | ~30 (10 min) | $2.97/min | Yes | Limited | AI Avatar | Yes |
+| Platform | Monthly Cost | Videos/Month (30s) | Cost/Video | API? | Stock Footage | AI Voiceover | Vertical 9:16 | Self-contained? |
+|----------|-------------|-------------------:|-----------|------|---------------|--------------|---------------|-----------------|
+| **Fliki Standard** | $21/mo (annual) | ~360 | $0.06 | Zapier/Make only | Included | 2,000+ voices included | Yes | ✅ Yes |
+| **Shotstack** | ~$50/mo (Starter) | ~250 | $0.20 | Full REST API | Not included | Native TTS included | Yes | ✅ Yes (native TTS/images built-in; ElevenLabs/Stability optional upgrades billed via Shotstack) |
+| **Creatomate** | $54/mo (Pro) + extras | ~550 renders | **$0.46** | Full REST API | Via Pexels (free) | ❌ Requires ElevenLabs key | Yes | ❌ No — requires separate ElevenLabs ($11/mo min + ~$0.15/video) + Stability AI (~$0.21/video) |
+| **InVideo AI Max** | $50/mo | ~50-100 (manual) | $0.50-1.00 | No API* | Included (AI-selected) | Included (AI) | Yes | ✅ Yes |
+| **Holo** | $19-39/mo | Opaque credits | ~$0.50+ | No API* | Limited | Included | Yes | ✅ Yes |
+| **Synthesia** | $89/mo | ~30 (10 min) | $2.97/min | Yes | Limited | AI Avatar | Yes | ✅ Yes |
+
+### Creatomate True Cost Breakdown (updated 2026-03-10)
+
+Creatomate requires you to bring your own API keys (configured in their portal):
+
+| Component | Provider | Cost/video |
+|-----------|----------|-----------|
+| Render | Creatomate Pro | ~$0.10 |
+| Voiceover (~500 chars) | ElevenLabs Creator ($11/mo min) | ~$0.15 |
+| Images (6 × Stability AI Core) | Stability AI PAYG | ~$0.18 |
+| **Total** | | **~$0.43–$0.46** |
+
+Plus fixed overhead: ElevenLabs Creator plan $11/mo (required just to get API access).
 
 ### Key Insights
 
 - **InVideo/Holo** produce the highest-quality "AI-generated" videos but have no API
-- **Creatomate/Fliki** are lower quality (slideshow-style) but fully API-automatable today
-- **Shotstack dropped** — Creatomate wins on every dimension: half the price ($0.10 vs $0.20/video), includes stock footage, better template system
+- **Fliki** is the new automation winner — $0.06/video, fully self-contained, 2,000+ voices, stock footage included, no external keys
+- **Creatomate** dropped — advertised at $0.10/video but true cost is ~$0.46/video once ElevenLabs + Stability AI are factored in
+- **Shotstack** self-contained (native TTS + image generation included) but no stock footage library — you supply media or use its Create API
 
 ### Automation Path for InVideo/Holo
 
@@ -36,13 +50,14 @@ Neither has a public API, but both are standard web apps (type prompt → genera
 
 ### Recommendation
 
-**Creatomate** for API automation (Phase 2). Keep InVideo + Holo subscriptions for manual split test batches.
+**Fliki** for API automation (Phase 2) — cheapest at $0.06/video, fully self-contained, no external key dependencies.
+Keep InVideo + Holo subscriptions for manual split test batches.
 
 ### Split Test Plan
 
 - **Arm A: InVideo AI** (manual, highest quality)
 - **Arm B: Holo** (manual, AI-style)
-- **Arm C: Creatomate API** (automated, slideshow-style) — Phase 2
+- **Arm C: Fliki API** (automated, slideshow-style) — Phase 2 (replaces Creatomate)
 
 If Arm C response rate is within 50% of A/B, automation wins on volume. If A/B dramatically outperforms, automate InVideo via Playwright later.
 
@@ -51,9 +66,9 @@ If Arm C response rate is within 50% of A/B, automation wins on volume. If A/B d
 - **Outscraper:** Free tier (25 free requests), then pay-as-you-go ($3/1K results)
 - **InVideo AI Max:** $50/mo (full month for validation)
 - **Holo:** $19-39/mo (full month for validation)
-- **Creatomate Pro:** $54/mo (API automation, Phase 2)
+- **Fliki Standard:** $21/mo (API automation, Phase 2 — replaces Creatomate)
 
-Validation month subscription cost: InVideo ($50) + Holo ($39) + Creatomate ($54) = **$143 total**.
+Validation month subscription cost: InVideo ($50) + Holo ($39) + Fliki ($21) = **$110 total** (down from $143).
 
 ---
 
@@ -103,14 +118,16 @@ Based on $1,500/week revenue target at $97/video:
 | Line Item | Conservative | Optimistic |
 |-----------|-------------|-----------|
 | Prospects (Outscraper) | $6.90/mo | $2.61/mo |
-| Videos (Creatomate Pro) | $230/mo | $87/mo |
+| Videos (Fliki Standard) | $21/mo (flat) | $21/mo (flat) |
 | Emails (Resend) | ~$5/mo | ~$2/mo |
 | Video hosting (R2) | ~$1/mo | ~$1/mo |
-| **Total operating cost** | **~$243/mo** | **~$93/mo** |
+| **Total operating cost** | **~$34/mo** | **~$27/mo** |
 | **Monthly revenue** | **$6,000/mo** | **$6,000/mo** |
-| **Margin** | **96%** | **98%** |
+| **Margin** | **99.4%** | **99.6%** |
 
-The range for Creatomate ($87-$230/mo) corresponds to the optimistic (8%) vs conservative (3%) conversion rate — more outreaches needed at lower conversion = more videos.
+Fliki's flat $21/mo covers ~360 videos/month — well within the conservative volume estimate (~2,300/mo at scale would require a higher Fliki tier or switching to per-render pricing). At validation scale (<100 videos/mo), $21/mo is more than sufficient.
+
+_Note: Previous table used Creatomate at $0.10/video ($87-$230/mo) — that figure excluded ElevenLabs and Stability AI costs. True Creatomate cost would have been ~$0.46/video ($200-$530/mo)._
 
 ---
 
