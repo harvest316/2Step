@@ -44,7 +44,28 @@ SQLite at `db/2step.db`. Schema in `db/schema.sql`.
 ## Environment
 
 - `.env` — Project config (see `.env.example`)
-- Shared secrets loaded from `../333Method/.env.secrets` via `src/utils/load-env.js`
+- `src/utils/load-env.js` loads in order: `.env` → `../333Method/.env.secrets` → `../333Method/.env`
+- `GOOGLE_SHEETS_CLIENT_EMAIL` / `GOOGLE_SHEETS_PRIVATE_KEY` live in `../333Method/.env` (not secrets)
+- Phase 2: move all shared secrets to `../mmo-platform/.env.secrets`
+
+## API Notes
+
+**Outscraper** (`src/prospect/outscraper.js`): Both `/maps/search-v3` and `/maps/reviews-v3` are async.
+They return `{status:"Pending", results_location:URL}` immediately. `pollJob()` polls every 3s until Success.
+
+**Creatomate** (`src/video/creatomate.js`): Template `f328161b-15d5-4e23-881c-6eb595536bce`
+("AI-Generated Story", 9:16). Modifications: `Image-N.source` (Stability AI) + `Voiceover-N.source` (ElevenLabs).
+6 scenes: Hook → 3× review chunks → Attribution → CTA.
+
+**Google Sheets** (`src/sheets/sync.js`): JWT auth must use object form `{ email, key, scopes }` —
+positional arg form silently ignores the key. Sheet ID: `1iuWVqG_bCA1R1VWN8i0Bb2qwXY8bQuav695f2PrLV-g`.
+Service account: `id-33-330@method-487121.iam.gserviceaccount.com` (already added as Editor).
+
+## Current State (2026-03-10)
+
+- 15 prospects in DB (pest control, Sydney) — all status='found'
+- Google Sheet populated with all 15 via `npm run sheets:push`
+- Next: generate video prompts → create videos → outreach
 
 ## Quality
 
