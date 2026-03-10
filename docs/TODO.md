@@ -28,6 +28,7 @@
 - [ ] Update 333Method imports to @mmo/* packages
 - [ ] Update 2Step imports to @mmo/* packages
 - [ ] Creatomate API integration (src/video/creatomate.js)
+- [ ] Pexels image search integration (PEXELS_API_KEY saved in .env) — fetch relevant background images per scene topic as backup if video tool needs supplied images
 - [ ] Follow-up scheduler (Day 2/5/8 cadence)
 - [ ] Outscraper review enrichment (Claude Max batch picks best review)
 - [ ] Unified AFK overseer (mmo-platform/services/overseer/)
