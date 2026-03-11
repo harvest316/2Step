@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS prospects (
 CREATE TABLE IF NOT EXISTS videos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     prospect_id INTEGER NOT NULL REFERENCES prospects(id),
-    video_tool TEXT NOT NULL CHECK(video_tool IN ('invideo','holo','creatomate','fliki')),
+    video_tool TEXT NOT NULL CHECK(video_tool IN ('invideo','holo','creatomate','fliki','shotstack')),
     video_url TEXT,
     prompt_text TEXT,
     status TEXT DEFAULT 'prompted' CHECK(status IN ('prompted','rendering','completed','failed','delivered')),

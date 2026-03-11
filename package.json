@@ -8,6 +8,7 @@
     "prospect": "node src/prospect/outscraper.js",
     "prospect:import": "node src/prospect/import-csv.js",
     "video:prompts": "node src/video/prompt-generator.js",
+    "video:shotstack": "node src/video/shotstack.js",
     "outreach:dm": "node src/outreach/dm-generator.js",
     "outreach:email": "node src/outreach/email.js",
     "sheets:push": "node src/sheets/sync.js push",
