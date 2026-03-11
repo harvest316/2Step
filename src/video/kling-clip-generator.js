@@ -13,7 +13,7 @@
  *   node src/video/kling-clip-generator.js --remove-all-kling      # print removal instructions
  *
  * Kling API docs: https://klingai.com/api/docs
- * Model: kling-v1-6  (best quality, 9:16 portrait, 5s default)
+ * Model: kling-v3-omni pro  (~$0.56/clip for 5s, 9:16 portrait)
  */
 
 import '../utils/load-env.js';
@@ -40,7 +40,7 @@ function klingJwt() {
 // Duration in seconds — 5s clips keep render costs low
 const CLIP_DURATION    = 5;
 const CLIP_ASPECT      = '9:16';
-const KLING_MODEL      = 'kling-v1-6';
+const KLING_MODEL      = 'kling-v3-omni';
 
 const { values: args } = parseArgs({
   options: {
@@ -68,7 +68,7 @@ async function submitKlingGeneration(prompt) {
       prompt,
       duration:      String(CLIP_DURATION),
       aspect_ratio:  CLIP_ASPECT,
-      mode:          'std',   // std = standard quality; pro costs 2x
+      mode:          'pro',   // pro = max quality; std saves ~50% if cost matters
       cfg_scale:     0.5,
     }),
   });
