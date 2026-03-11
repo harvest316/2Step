@@ -17,11 +17,25 @@
  */
 
 import '../utils/load-env.js';
+import { createHmac } from 'crypto';
 import { parseArgs } from 'util';
 import { clipsBySource } from './shotstack-lib.js';
 
-const KLING_API_KEY    = process.env.KLING_API_KEY;
+const KLING_ACCESS_KEY = process.env.KLING_ACCESS_KEY;
+const KLING_SECRET_KEY = process.env.KLING_SECRET_KEY;
 const KLING_API_BASE   = 'https://api.klingai.com/v1';
+
+/**
+ * Generate a short-lived HS256 JWT for Kling API auth.
+ * Kling requires: { iss: accessKey, exp: now+1800, nbf: now-5 }
+ */
+function klingJwt() {
+  const now = Math.floor(Date.now() / 1000);
+  const header  = Buffer.from(JSON.stringify({ alg: 'HS256', typ: 'JWT' })).toString('base64url');
+  const payload = Buffer.from(JSON.stringify({ iss: KLING_ACCESS_KEY, exp: now + 1800, nbf: now - 5 })).toString('base64url');
+  const sig = createHmac('sha256', KLING_SECRET_KEY).update(`${header}.${payload}`).digest('base64url');
+  return `${header}.${payload}.${sig}`;
+}
 
 // Duration in seconds — 5s clips keep render costs low
 const CLIP_DURATION    = 5;
@@ -46,7 +60,7 @@ async function submitKlingGeneration(prompt) {
   const res = await fetch(`${KLING_API_BASE}/videos/text2video`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${KLING_API_KEY}`,
+      'Authorization': `Bearer ${klingJwt()}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -78,7 +92,7 @@ async function pollKlingTask(taskId, maxWaitMs = 300000) {
   while (Date.now() - start < maxWaitMs) {
     await sleep(5000);
     const res = await fetch(`${KLING_API_BASE}/videos/text2video/${taskId}`, {
-      headers: { 'Authorization': `Bearer ${KLING_API_KEY}` },
+      headers: { 'Authorization': `Bearer ${klingJwt()}` },
     });
 
     if (!res.ok) throw new Error(`Kling poll failed ${res.status}`);
@@ -163,8 +177,8 @@ async function main() {
     process.exit(1);
   }
 
-  if (!KLING_API_KEY) {
-    console.error('ERROR: KLING_API_KEY must be set in .env');
+  if (!KLING_ACCESS_KEY || !KLING_SECRET_KEY) {
+    console.error('ERROR: KLING_ACCESS_KEY and KLING_SECRET_KEY must be set in .env');
     process.exit(1);
   }
 
