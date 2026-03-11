@@ -5,7 +5,7 @@
  *
  * Uses the "AI-Generated Story" template (9:16 vertical, 6 scenes).
  * Each scene gets:
- *   - Image description → Stability AI generates the image
+ *   - Image URL → fetched from Pexels by topic query
  *   - Voiceover text → ElevenLabs generates narration
  *   - Subtitles auto-generated from voiceover
  *
@@ -29,6 +29,7 @@ const root = resolve(__dirname, '../..');
 const DB_PATH = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 const API_KEY = process.env.CREATOMATE_API_KEY;
 const TEMPLATE_ID = process.env.CREATOMATE_TEMPLATE_ID;
+const PEXELS_KEY = process.env.PEXELS_API_KEY;
 const API_URL = 'https://api.creatomate.com/v1/renders';
 
 const { values: args } = parseArgs({
@@ -81,6 +82,23 @@ function getProspects() {
   `).all(parseInt(args.limit, 10));
 }
 
+// ─── Pexels ──────────────────────────────────────────────────────────────────
+
+const pexelsCache = new Map();
+
+async function pexelsImage(query) {
+  if (pexelsCache.has(query)) return pexelsCache.get(query);
+
+  const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=1&orientation=portrait`;
+  const res = await fetch(url, { headers: { Authorization: PEXELS_KEY } });
+  const data = await res.json();
+
+  const photo = data.photos?.[0];
+  const src = photo?.src?.large || photo?.src?.original || null;
+  pexelsCache.set(query, src);
+  return src;
+}
+
 // ─── Scene Builder ───────────────────────────────────────────────────────────
 
 /**
@@ -92,8 +110,8 @@ function getProspects() {
  *   5. Attribution — "⭐⭐⭐⭐⭐ — [Reviewer Name]"
  *   6. CTA — "[Business] | [City] | Book Now"
  */
-function buildScenes(prospect) {
-  const name = prospect.business_name;
+async function buildScenes(prospect) {
+  const name = prospect.business_name.split('|')[0].trim();
   const city = prospect.city || 'their area';
   const niche = prospect.niche || 'local services';
   const reviewer = prospect.best_review_author || 'A Customer';
@@ -113,29 +131,39 @@ function buildScenes(prospect) {
     chunks.push(`${name} delivers outstanding ${niche} in ${city}.`);
   }
 
+  // Fetch Pexels images in parallel
+  const [img1, img2, img3, img4, img5, img6] = await Promise.all([
+    pexelsImage(`${niche} business professional`),
+    pexelsImage(`${niche} service customer`),
+    pexelsImage(`${niche} work professional`),
+    pexelsImage(`happy customer satisfied service`),
+    pexelsImage('five star rating gold stars'),
+    pexelsImage(`${niche} ${city}`),
+  ]);
+
   return {
     // Scene 1: Hook
-    'Image-1.source': `A professional ${niche} business storefront in ${city}, clean and modern, welcoming atmosphere`,
+    'Image-1.source': img1,
     'Voiceover-1.source': `Here's what customers are saying about ${name} in ${city}.`,
 
     // Scene 2: Review part 1
-    'Image-2.source': `A happy customer receiving excellent ${niche} service, professional and friendly`,
+    'Image-2.source': img2,
     'Voiceover-2.source': chunks[0],
 
     // Scene 3: Review part 2
-    'Image-3.source': `High quality ${niche} work being done professionally, attention to detail`,
+    'Image-3.source': img3,
     'Voiceover-3.source': chunks[1],
 
     // Scene 4: Review part 3
-    'Image-4.source': `Satisfied customer smiling after receiving ${niche} service, thumbs up`,
+    'Image-4.source': img4,
     'Voiceover-4.source': chunks[2],
 
     // Scene 5: Star rating + attribution
-    'Image-5.source': `Five gold stars on a dark background, premium quality award, celebration`,
+    'Image-5.source': img5,
     'Voiceover-5.source': `That was a five star review from ${reviewer}.`,
 
     // Scene 6: CTA
-    'Image-6.source': `Modern ${niche} business logo on a clean gradient background, professional branding`,
+    'Image-6.source': img6,
     'Voiceover-6.source': `${name}. Proudly serving ${city}. Book now.`,
   };
 }
@@ -143,7 +171,7 @@ function buildScenes(prospect) {
 // ─── Render ──────────────────────────────────────────────────────────────────
 
 async function submitRender(prospect) {
-  const modifications = buildScenes(prospect);
+  const modifications = await buildScenes(prospect);
 
   const payload = {
     template_id: TEMPLATE_ID,

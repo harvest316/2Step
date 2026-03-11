@@ -72,7 +72,7 @@ function buildPrompt(prospect) {
 function generateVideoScript(prompt) {
   // Use claude -p (Claude Max subscription, zero API cost)
   const escaped = prompt.replace(/'/g, "'\\''");
-  const result = execSync(`echo '${escaped}' | claude -p`, {
+  const result = execSync(`echo '${escaped}' | env -u CLAUDECODE claude -p`, {
     encoding: 'utf8',
     timeout: 120000,
     maxBuffer: 1024 * 1024,
