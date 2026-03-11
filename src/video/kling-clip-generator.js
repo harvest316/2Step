@@ -13,7 +13,7 @@
  *   node src/video/kling-clip-generator.js --remove-all-kling      # print removal instructions
  *
  * Kling API docs: https://klingai.com/api/docs
- * Model: kling-v3-omni pro  (~$0.56/clip for 5s, 9:16 portrait)
+ * Model: kling-v3 pro  (~$0.56/clip for 5s, 9:16 portrait)
  */
 
 import '../utils/load-env.js';
@@ -40,7 +40,7 @@ function klingJwt() {
 // Duration in seconds — 5s clips keep render costs low
 const CLIP_DURATION    = 5;
 const CLIP_ASPECT      = '9:16';
-const KLING_MODEL      = 'kling-v3-omni';
+const KLING_MODEL      = 'kling-v3';
 
 const { values: args } = parseArgs({
   options: {
