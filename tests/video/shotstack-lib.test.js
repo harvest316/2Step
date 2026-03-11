@@ -1,6 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  buildScenes,
   buildVoiceoverScript,
   buildSceneTexts,
   buildRenderPayload,
@@ -9,6 +10,9 @@ import {
   businessName,
   extractSentence,
   cumulativeStarts,
+  sceneDuration,
+  timingsToSceneDurations,
+  stripSsml,
   CLIP_POOLS,
   PEXELS_FALLBACK_QUERIES,
 } from '../../src/video/shotstack-lib.js';
@@ -77,10 +81,10 @@ describe('extractSentence', () => {
     assert.equal(result, 'I had a fantastic experience with the pest control service today.');
   });
 
-  it('truncates at 90 chars with ellipsis when no sentence boundary', () => {
+  it('truncates at 75 chars with ellipsis when no sentence boundary', () => {
     const long = 'A'.repeat(120);
     const result = extractSentence(long);
-    assert.equal(result.length, 93); // 90 + '...'
+    assert.equal(result.length, 78); // 75 + '...'
     assert.ok(result.endsWith('...'));
   });
 
@@ -128,68 +132,136 @@ describe('cumulativeStarts', () => {
   });
 });
 
+// ─── sceneDuration ────────────────────────────────────────────────────────────
+
+describe('sceneDuration', () => {
+  it('returns at least 2s for very short text', () => {
+    assert.ok(sceneDuration('Hi.') >= 2);
+  });
+
+  it('returns more seconds for longer text', () => {
+    const short = sceneDuration('Hi.');
+    const long = sceneDuration('This is a much longer sentence with many more words that will take longer to read aloud.');
+    assert.ok(long > short);
+  });
+
+  it('returns a number', () => {
+    assert.equal(typeof sceneDuration('Hello world.'), 'number');
+  });
+});
+
+// ─── buildScenes ──────────────────────────────────────────────────────────────
+
+describe('buildScenes', () => {
+  it('returns exactly 5 scenes', () => {
+    assert.equal(buildScenes(FULL_PROSPECT).length, 5);
+  });
+
+  it('each scene has text, voiceover, and duration', () => {
+    for (const s of buildScenes(FULL_PROSPECT)) {
+      assert.ok(typeof s.text === 'string' && s.text.length > 0);
+      assert.ok(typeof s.voiceover === 'string' && s.voiceover.length > 0);
+      assert.ok(typeof s.duration === 'number' && s.duration > 0);
+    }
+  });
+
+  it('scene 1 text is the hook with business name', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[0].text.includes('BugFree Pest Control'));
+    assert.ok(scenes[0].text.toLowerCase().includes('customers'));
+  });
+
+  it('scene 1 voiceover contains name', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[0].voiceover.includes('BugFree Pest Control'));
+  });
+
+  it('scenes 2 and 3 text contain quoted review text', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[1].text.startsWith('"'));
+    assert.ok(scenes[2].text.startsWith('"'));
+  });
+
+  it('scenes 2 and 3 voiceover matches the quoted text (without quotes)', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[1].voiceover.includes('fantastic experience'));
+  });
+
+  it('scene 4 text contains 5 stars and reviewer name', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[3].text.includes('⭐'));
+    assert.ok(scenes[3].text.includes('Cathy Zhuang'));
+  });
+
+  it('scene 4 voiceover contains reviewer name', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[3].voiceover.includes('Cathy Zhuang'));
+  });
+
+  it('scene 5 text is the CTA with city and Book Now', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[4].text.includes('Auburn'));
+    assert.ok(scenes[4].text.includes('Book Now'));
+  });
+
+  it('scene 5 voiceover is the CTA with city', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    assert.ok(scenes[4].voiceover.includes('Auburn'));
+    assert.ok(scenes[4].voiceover.toLowerCase().includes('book'));
+  });
+
+  it('durations are derived from voiceover length (not hardcoded)', () => {
+    const short = buildScenes({ ...FULL_PROSPECT, best_review_text: 'Great.' });
+    const long  = buildScenes({ ...FULL_PROSPECT, best_review_text: 'This was an absolutely incredible pest control service. The technician was thorough and professional and I could not be happier with the result.' });
+    // Scene 2 (quote 1) should be shorter for the short review
+    assert.ok(short[1].duration <= long[1].duration);
+  });
+
+  it('uses only the first part of a piped business name', () => {
+    const scenes = buildScenes(PIPED_NAME_PROSPECT);
+    assert.ok(scenes[0].text.includes('Iconic Pest Solutions'));
+    assert.ok(!scenes[0].text.includes('|'));
+  });
+
+  it('defaults city to Sydney in CTA text and reviewer to "a customer" for minimal prospect', () => {
+    const scenes = buildScenes(MINIMAL_PROSPECT);
+    assert.ok(scenes[4].text.includes('Sydney'));
+    assert.ok(scenes[3].voiceover.includes('a customer'));
+  });
+
+  it('falls back to scene 2 quote when scene 3 quote is empty', () => {
+    const scenes = buildScenes({ ...FULL_PROSPECT, best_review_text: 'Short review.' });
+    assert.ok(scenes[1].text.length > 0);
+    assert.ok(scenes[2].text.length > 0);
+  });
+});
+
 // ─── buildVoiceoverScript ─────────────────────────────────────────────────────
 
 describe('buildVoiceoverScript', () => {
-  it('contains the business name', () => {
-    const script = buildVoiceoverScript(FULL_PROSPECT);
+  it('joins scene voiceovers into a single string', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    const script = buildVoiceoverScript(scenes);
+    assert.ok(typeof script === 'string' && script.length > 0);
+  });
+
+  it('contains name, city, reviewer, and review text', () => {
+    const scenes = buildScenes(FULL_PROSPECT);
+    const script = buildVoiceoverScript(scenes);
     assert.ok(script.includes('BugFree Pest Control'));
-  });
-
-  it('contains the city', () => {
-    const script = buildVoiceoverScript(FULL_PROSPECT);
     assert.ok(script.includes('Auburn'));
-  });
-
-  it('contains the reviewer name', () => {
-    const script = buildVoiceoverScript(FULL_PROSPECT);
     assert.ok(script.includes('Cathy Zhuang'));
-  });
-
-  it('includes review text verbatim', () => {
-    const script = buildVoiceoverScript(FULL_PROSPECT);
     assert.ok(script.includes('fantastic experience'));
   });
 
   it('uses only the first part of a piped business name', () => {
-    const script = buildVoiceoverScript(PIPED_NAME_PROSPECT);
+    const script = buildVoiceoverScript(buildScenes(PIPED_NAME_PROSPECT));
     assert.ok(script.includes('Iconic Pest Solutions'));
     assert.ok(!script.includes('Termite & General Exterminators'));
   });
 
-  it('defaults city to Sydney when missing', () => {
-    const script = buildVoiceoverScript(MINIMAL_PROSPECT);
-    assert.ok(script.includes('Sydney'));
-  });
-
-  it('defaults reviewer to "a customer" when missing', () => {
-    const script = buildVoiceoverScript(MINIMAL_PROSPECT);
-    assert.ok(script.includes('a customer'));
-  });
-
-  it('trims long reviews to ≤320 chars at a sentence boundary', () => {
-    const script = buildVoiceoverScript(LONG_REVIEW_PROSPECT);
-    // The review quote portion ends with '...' or '.' — check total script is reasonable
-    assert.ok(script.length < 600); // hook + trimmed quote + attribution + CTA
-  });
-
-  it('trims at sentence boundary, not mid-word', () => {
-    const prospect = {
-      ...FULL_PROSPECT,
-      best_review_text: 'First sentence is here. ' + 'B'.repeat(300) + '.',
-    };
-    const script = buildVoiceoverScript(prospect);
-    // Should cut at "First sentence is here." since remaining is too long
-    assert.ok(script.includes('First sentence is here.'));
-  });
-
-  it('appends ellipsis when no sentence boundary found before 320 chars', () => {
-    const script = buildVoiceoverScript(LONG_REVIEW_PROSPECT);
-    assert.ok(script.includes('...'));
-  });
-
   it('returns a non-empty string for minimal prospect', () => {
-    const script = buildVoiceoverScript(MINIMAL_PROSPECT);
+    const script = buildVoiceoverScript(buildScenes(MINIMAL_PROSPECT));
     assert.ok(typeof script === 'string' && script.length > 0);
   });
 });
@@ -197,61 +269,14 @@ describe('buildVoiceoverScript', () => {
 // ─── buildSceneTexts ─────────────────────────────────────────────────────────
 
 describe('buildSceneTexts', () => {
-  it('returns exactly 5 scenes', () => {
-    const scenes = buildSceneTexts(FULL_PROSPECT);
-    assert.equal(scenes.length, 5);
-  });
-
-  it('each scene has text and duration', () => {
-    const scenes = buildSceneTexts(FULL_PROSPECT);
-    for (const s of scenes) {
-      assert.ok(typeof s.text === 'string' && s.text.length > 0);
-      assert.ok(typeof s.duration === 'number' && s.duration > 0);
+  it('returns exactly 5 { text, duration } objects', () => {
+    const sceneTexts = buildSceneTexts(buildScenes(FULL_PROSPECT));
+    assert.equal(sceneTexts.length, 5);
+    for (const s of sceneTexts) {
+      assert.ok(typeof s.text === 'string');
+      assert.ok(typeof s.duration === 'number');
+      assert.equal(Object.keys(s).sort().join(','), 'duration,text');
     }
-  });
-
-  it('scene 1 is the hook with business name', () => {
-    const scenes = buildSceneTexts(FULL_PROSPECT);
-    assert.ok(scenes[0].text.includes('BugFree Pest Control'));
-    assert.ok(scenes[0].text.toLowerCase().includes('customers'));
-  });
-
-  it('scenes 2 and 3 contain quoted review text', () => {
-    const scenes = buildSceneTexts(FULL_PROSPECT);
-    assert.ok(scenes[1].text.startsWith('"'));
-    assert.ok(scenes[2].text.startsWith('"'));
-  });
-
-  it('scene 4 contains 5 stars and reviewer name', () => {
-    const scenes = buildSceneTexts(FULL_PROSPECT);
-    assert.ok(scenes[3].text.includes('⭐'));
-    assert.ok(scenes[3].text.includes('Cathy Zhuang'));
-  });
-
-  it('scene 5 is the CTA with city and Book Now', () => {
-    const scenes = buildSceneTexts(FULL_PROSPECT);
-    assert.ok(scenes[4].text.includes('Auburn'));
-    assert.ok(scenes[4].text.includes('Book Now'));
-  });
-
-  it('scene durations sum to 41s', () => {
-    const scenes = buildSceneTexts(FULL_PROSPECT);
-    const total = scenes.reduce((s, sc) => s + sc.duration, 0);
-    assert.equal(total, 41);
-  });
-
-  it('uses only the first part of a piped business name', () => {
-    const scenes = buildSceneTexts(PIPED_NAME_PROSPECT);
-    assert.ok(scenes[0].text.includes('Iconic Pest Solutions'));
-    assert.ok(!scenes[0].text.includes('|'));
-  });
-
-  it('falls back to scene 2 quote when scene 3 quote is empty', () => {
-    const prospect = { ...FULL_PROSPECT, best_review_text: 'Short review.' };
-    const scenes = buildSceneTexts(prospect);
-    // Both scenes 2 and 3 should have content
-    assert.ok(scenes[1].text.length > 0);
-    assert.ok(scenes[2].text.length > 0);
   });
 });
 
@@ -265,7 +290,7 @@ const MOCK_CLIPS = [
   'https://example.com/clip5.mp4',
 ];
 const MOCK_AUDIO = 'https://example.com/audio.mp3';
-const MOCK_SCENES = buildSceneTexts(FULL_PROSPECT);
+const MOCK_SCENES = buildSceneTexts(buildScenes(FULL_PROSPECT));
 
 describe('buildRenderPayload', () => {
   it('returns correct output dimensions (1080x1920)', () => {
@@ -279,14 +304,36 @@ describe('buildRenderPayload', () => {
     assert.equal(payload.output.format, 'mp4');
   });
 
-  it('has 3 tracks without logo', () => {
+  it('has 3 tracks without logo or music', () => {
     const payload = buildRenderPayload(MOCK_CLIPS, MOCK_AUDIO, MOCK_SCENES);
     assert.equal(payload.timeline.tracks.length, 3);
   });
 
-  it('has 4 tracks with logo', () => {
+  it('has 4 tracks with logo only', () => {
     const payload = buildRenderPayload(MOCK_CLIPS, MOCK_AUDIO, MOCK_SCENES, 'https://example.com/logo.png');
     assert.equal(payload.timeline.tracks.length, 4);
+  });
+
+  it('has 4 tracks with music only', () => {
+    const payload = buildRenderPayload(MOCK_CLIPS, MOCK_AUDIO, MOCK_SCENES, null, 'https://example.com/music.mp3');
+    assert.equal(payload.timeline.tracks.length, 4);
+  });
+
+  it('has 5 tracks with logo and music', () => {
+    const payload = buildRenderPayload(MOCK_CLIPS, MOCK_AUDIO, MOCK_SCENES, 'https://example.com/logo.png', 'https://example.com/music.mp3');
+    assert.equal(payload.timeline.tracks.length, 5);
+  });
+
+  it('music track has low volume (0.12) and spans full duration', () => {
+    const musicUrl = 'https://example.com/music.mp3';
+    const payload = buildRenderPayload(MOCK_CLIPS, MOCK_AUDIO, MOCK_SCENES, null, musicUrl);
+    const musicTrack = payload.timeline.tracks.find(t =>
+      t.clips.some(c => c.asset.src === musicUrl)
+    );
+    assert.ok(musicTrack, 'music track should exist');
+    assert.equal(musicTrack.clips[0].asset.volume, 0.12);
+    const totalDuration = MOCK_SCENES.reduce((s, sc) => s + sc.duration, 0);
+    assert.equal(musicTrack.clips[0].length, totalDuration);
   });
 
   it('video clips have volume 0 (muted)', () => {
@@ -384,11 +431,15 @@ describe('buildRenderPayload', () => {
     assert.equal(firstTrackClip.asset.src, 'https://example.com/logo.png');
   });
 
-  it('logo clip is positioned on the CTA scene', () => {
+  it('logo track has 2 clips — hook and CTA scenes', () => {
     const payload = buildRenderPayload(MOCK_CLIPS, MOCK_AUDIO, MOCK_SCENES, 'https://example.com/logo.png');
     const logoTrack = payload.timeline.tracks[0];
+    assert.equal(logoTrack.clips.length, 2);
+    // First clip is on the hook scene (starts at 0 + 0.5)
+    assert.equal(logoTrack.clips[0].start, 0.5);
+    // Second clip is on the CTA scene
     const expectedCtaStart = MOCK_SCENES.slice(0, -1).reduce((s, sc) => s + sc.duration, 0);
-    assert.equal(logoTrack.clips[0].start, expectedCtaStart + 0.5);
+    assert.equal(logoTrack.clips[1].start, expectedCtaStart + 0.5);
   });
 
   it('text background uses valid hex color (not alpha hex)', () => {
@@ -402,55 +453,184 @@ describe('buildRenderPayload', () => {
       assert.match(color, /^#[0-9a-fA-F]{6}$/);
     }
   });
+
+  it('text positioned at bottom when clip focus is top', () => {
+    const topFocusClips = MOCK_CLIPS.map(url => ({ url, focus: 'top' }));
+    const payload = buildRenderPayload(topFocusClips, MOCK_AUDIO, MOCK_SCENES);
+    const textTrack = payload.timeline.tracks.find(t =>
+      t.clips.some(c => c.asset.type === 'text')
+    );
+    assert.ok(textTrack.clips.every(c => c.position === 'bottom'));
+  });
+
+  it('text positioned at top when clip focus is bottom', () => {
+    const bottomFocusClips = MOCK_CLIPS.map(url => ({ url, focus: 'bottom' }));
+    const payload = buildRenderPayload(bottomFocusClips, MOCK_AUDIO, MOCK_SCENES);
+    const textTrack = payload.timeline.tracks.find(t =>
+      t.clips.some(c => c.asset.type === 'text')
+    );
+    assert.ok(textTrack.clips.every(c => c.position === 'top'));
+  });
+
+  it('accepts plain string clips (backward compat) and defaults focus to center', () => {
+    const payload = buildRenderPayload(MOCK_CLIPS, MOCK_AUDIO, MOCK_SCENES);
+    const textTrack = payload.timeline.tracks.find(t =>
+      t.clips.some(c => c.asset.type === 'text')
+    );
+    assert.ok(textTrack.clips.every(c => c.position === 'center'));
+  });
+});
+
+// ─── stripSsml ────────────────────────────────────────────────────────────────
+
+describe('stripSsml', () => {
+  it('removes a phoneme tag, leaving spoken text', () => {
+    assert.equal(
+      stripSsml('<phoneme alphabet="ipa" ph="wəˈruŋɡə">Wahroonga</phoneme>'),
+      'Wahroonga'
+    );
+  });
+
+  it('passes plain text through unchanged', () => {
+    assert.equal(stripSsml('Hello world.'), 'Hello world.');
+  });
+
+  it('removes multiple tags in a sentence', () => {
+    assert.equal(
+      stripSsml('Here\'s <phoneme alphabet="ipa" ph="wəˈruŋɡə">Wahroonga</phoneme> and <phoneme alphabet="ipa" ph="ˈpærəmætə">Parramatta</phoneme>.'),
+      'Here\'s Wahroonga and Parramatta.'
+    );
+  });
+
+  it('handles empty string', () => {
+    assert.equal(stripSsml(''), '');
+  });
+});
+
+// ─── timingsToSceneDurations ──────────────────────────────────────────────────
+
+describe('timingsToSceneDurations', () => {
+  // Build a minimal synthetic alignment for a two-scene voiceover
+  // voiceoverScript: "Hello world.  Goodbye."
+  // scene 1 voiceover: "Hello world."
+  // scene 2 voiceover: "Goodbye."
+  const script = 'Hello world.  Goodbye.';
+  const chars = script.replace(/\s/g, '').split(''); // only non-ws: Helloworld.Goodbye.
+  // Assign start times: each char 100ms, each char lasts 100ms
+  // Use seconds-based fields (matching actual ElevenLabs API response format)
+  const startTimes = chars.map((_, i) => i * 0.1);    // 100ms per char in seconds
+  const endTimes   = chars.map((_, i) => i * 0.1 + 0.1);
+  const alignment = {
+    characters: chars,
+    character_start_times_seconds: startTimes,
+    character_end_times_seconds: endTimes,
+  };
+  const scenes = [
+    { voiceover: 'Hello world.' },
+    { voiceover: 'Goodbye.' },
+  ];
+
+  it('returns an array with one duration per scene', () => {
+    const durs = timingsToSceneDurations(scenes, script, alignment);
+    assert.equal(durs.length, 2);
+  });
+
+  it('durations are numbers', () => {
+    const durs = timingsToSceneDurations(scenes, script, alignment);
+    assert.ok(durs.every(d => typeof d === 'number'));
+  });
+
+  it('minimum duration is 2s', () => {
+    const shortScenes = [{ voiceover: 'Hi.' }];
+    const shortScript = 'Hi.';
+    const shortChars = ['H', 'i', '.'];
+    const shortAlignment = {
+      characters: shortChars,
+      character_start_times_seconds: [0, 0.1, 0.2],
+      character_end_times_seconds: [0.1, 0.2, 0.3],
+    };
+    const durs = timingsToSceneDurations(shortScenes, shortScript, shortAlignment);
+    assert.ok(durs[0] >= 2);
+  });
+
+  it('longer voiceover text gets longer duration', () => {
+    // 'Hello world.' has more chars than 'Goodbye.' → scene 1 end time is later
+    const durs = timingsToSceneDurations(scenes, script, alignment);
+    // Both should be >= 2s minimum; scene 1 should be >= scene 2
+    assert.ok(durs[0] >= durs[1]);
+  });
+
+  it('falls back to 4s when alignment has no characters for a scene', () => {
+    // A scene with an empty voiceover has 0 non-whitespace chars → no alignment entries → fallback
+    const emptyScene = [{ voiceover: '   ' }];
+    const durs = timingsToSceneDurations(emptyScene, '   ', alignment);
+    assert.equal(durs[0], 4);
+  });
 });
 
 // ─── pickClipsFromPool ────────────────────────────────────────────────────────
 
 describe('pickClipsFromPool', () => {
-  it('returns null when pool slots are empty', () => {
-    assert.equal(pickClipsFromPool('pest control', 0), null);
-  });
-
   it('returns null for unknown niche when default pool is also empty', () => {
     assert.equal(pickClipsFromPool('plumbing', 0), null);
   });
 
-  it('returns 5 URLs when all slots are populated', () => {
-    // Temporarily populate the pool for this test
-    const pool = CLIP_POOLS['pest control'];
-    const original = {};
-    for (const slot of ['hook', 'technician', 'treatment', 'resolution', 'cta']) {
-      original[slot] = pool[slot];
-      pool[slot] = [{ url: `https://example.com/${slot}.mp4`, source: 'kling' }];
-    }
+  it('returns 5 {url, focus} objects for cockroaches (pool is populated)', () => {
+    const clips = pickClipsFromPool('cockroaches', 0);
+    assert.ok(Array.isArray(clips));
+    assert.equal(clips.length, 5);
+    assert.ok(clips.every(c => typeof c.url === 'string' && c.url.startsWith('https://')));
+    assert.ok(clips.every(c => ['top', 'center', 'bottom'].includes(c.focus)));
+  });
 
+  it('maps pest control alias to cockroaches pool', () => {
     const clips = pickClipsFromPool('pest control', 0);
     assert.ok(Array.isArray(clips));
     assert.equal(clips.length, 5);
-    // Returns plain URL strings, not objects
-    assert.ok(clips.every(c => typeof c === 'string'));
+  });
+
+  it('returns 5 URLs when all slots are populated (shared + specific)', () => {
+    // Populate pest-specific slots (hook, treatment) and shared slots
+    const specific = CLIP_POOLS['cockroaches'];
+    const shared   = CLIP_POOLS['shared'];
+    const origSpec = { hook: specific.hook, treatment: specific.treatment };
+    const origShared = { technician: shared.technician, resolution: shared.resolution, cta: shared.cta };
+
+    specific.hook      = [{ url: 'https://example.com/hook.mp4', source: 'kling' }];
+    specific.treatment = [{ url: 'https://example.com/treatment.mp4', source: 'kling' }];
+    shared.technician  = [{ url: 'https://example.com/technician.mp4', source: 'kling' }];
+    shared.resolution  = [{ url: 'https://example.com/resolution.mp4', source: 'kling' }];
+    shared.cta         = [{ url: 'https://example.com/cta.mp4', source: 'kling' }];
+
+    const clips = pickClipsFromPool('cockroaches', 0);
+    assert.ok(Array.isArray(clips));
+    assert.equal(clips.length, 5);
+    // Returns {url, focus} objects
+    assert.ok(clips.every(c => typeof c.url === 'string'));
 
     // Restore
-    for (const slot of Object.keys(original)) pool[slot] = original[slot];
+    Object.assign(specific, origSpec);
+    Object.assign(shared, origShared);
   });
 
   it('rotates clips based on seed', () => {
-    const pool = CLIP_POOLS['pest control'];
-    const original = {};
-    for (const slot of ['hook', 'technician', 'treatment', 'resolution', 'cta']) {
-      original[slot] = pool[slot];
-      pool[slot] = [
-        { url: `https://example.com/${slot}-a.mp4`, source: 'kling' },
-        { url: `https://example.com/${slot}-b.mp4`, source: 'kling' },
-      ];
-    }
+    const specific = CLIP_POOLS['cockroaches'];
+    const shared   = CLIP_POOLS['shared'];
+    const origSpec = { hook: specific.hook, treatment: specific.treatment };
+    const origShared = { technician: shared.technician, resolution: shared.resolution, cta: shared.cta };
 
-    const clipsAt0 = pickClipsFromPool('pest control', 0);
-    const clipsAt1 = pickClipsFromPool('pest control', 1);
-    // With seed rotation, at least some clips should differ
-    assert.ok(clipsAt0.some((c, i) => c !== clipsAt1[i]));
+    specific.hook      = [{ url: 'https://example.com/hook-a.mp4', source: 'kling' }, { url: 'https://example.com/hook-b.mp4', source: 'kling' }];
+    specific.treatment = [{ url: 'https://example.com/treatment-a.mp4', source: 'kling' }, { url: 'https://example.com/treatment-b.mp4', source: 'kling' }];
+    shared.technician  = [{ url: 'https://example.com/tech-a.mp4', source: 'kling' }, { url: 'https://example.com/tech-b.mp4', source: 'kling' }];
+    shared.resolution  = [{ url: 'https://example.com/res-a.mp4', source: 'kling' }, { url: 'https://example.com/res-b.mp4', source: 'kling' }];
+    shared.cta         = [{ url: 'https://example.com/cta-a.mp4', source: 'kling' }, { url: 'https://example.com/cta-b.mp4', source: 'kling' }];
 
-    for (const slot of Object.keys(original)) pool[slot] = original[slot];
+    const clipsAt0 = pickClipsFromPool('cockroaches', 0);
+    const clipsAt1 = pickClipsFromPool('cockroaches', 1);
+    assert.ok(clipsAt0.some((c, i) => c.url !== clipsAt1[i].url));
+
+    Object.assign(specific, origSpec);
+    Object.assign(shared, origShared);
   });
 
   it('falls back to default pool for unknown niche', () => {
@@ -472,70 +652,53 @@ describe('pickClipsFromPool', () => {
 // ─── clipsBySource ────────────────────────────────────────────────────────────
 
 describe('clipsBySource', () => {
-  const SLOTS = ['hook', 'technician', 'treatment', 'resolution', 'cta'];
-
   it('returns empty array when no clips match source', () => {
-    assert.deepEqual(clipsBySource('kling'), []);
+    assert.deepEqual(clipsBySource('sora'), []);
   });
 
-  it('finds clips by source', () => {
-    const pool = CLIP_POOLS['pest control'];
-    const original = {};
-    for (const slot of SLOTS) {
-      original[slot] = pool[slot];
-      pool[slot] = [{ url: `https://cdn.example.com/${slot}.mp4`, source: 'kling' }];
-    }
-
+  it('returns kling clips (pool is populated)', () => {
     const results = clipsBySource('kling');
-    assert.equal(results.length, SLOTS.length);
-    assert.ok(results.every(r => r.niche === 'pest control'));
+    assert.ok(results.length > 0);
+    assert.ok(results.every(r => typeof r.niche === 'string'));
     assert.ok(results.every(r => typeof r.slot === 'string'));
     assert.ok(results.every(r => r.url.startsWith('https://')));
+  });
 
-    for (const slot of SLOTS) pool[slot] = original[slot];
+  it('finds clips in shared pool', () => {
+    const results = clipsBySource('kling');
+    assert.ok(results.some(r => r.niche === 'shared' && r.slot === 'technician'));
   });
 
   it('filters by source — does not return clips from other sources', () => {
     const pool = CLIP_POOLS.default;
     const original = {};
-    for (const slot of SLOTS) {
+    for (const slot of ['hook', 'treatment']) {
       original[slot] = pool[slot];
-      pool[slot] = [
-        { url: `https://kling.example.com/${slot}.mp4`, source: 'kling' },
-        { url: `https://pexels.example.com/${slot}.mp4`, source: 'pexels' },
-      ];
+      pool[slot] = [{ url: `https://pexels.example.com/${slot}.mp4`, source: 'pexels' }];
     }
-
-    const klingClips = clipsBySource('kling');
-    assert.ok(klingClips.every(c => c.url.includes('kling.example.com')));
 
     const pexelsClips = clipsBySource('pexels');
     assert.ok(pexelsClips.every(c => c.url.includes('pexels.example.com')));
 
-    for (const slot of SLOTS) pool[slot] = original[slot];
+    for (const slot of Object.keys(original)) pool[slot] = original[slot];
   });
 
-  it('searches across all niches', () => {
-    const pestPool = CLIP_POOLS['pest control'];
+  it('searches across multiple niches', () => {
+    const cockroachPool = CLIP_POOLS['cockroaches'];
     const defaultPool = CLIP_POOLS.default;
-    const origPest = {}, origDefault = {};
+    const origCock = { hook: cockroachPool.hook };
+    const origDefault = { hook: defaultPool.hook };
 
-    for (const slot of SLOTS) {
-      origPest[slot] = pestPool[slot];
-      origDefault[slot] = defaultPool[slot];
-      pestPool[slot]    = [{ url: `https://example.com/pest-${slot}.mp4`, source: 'sora' }];
-      defaultPool[slot] = [{ url: `https://example.com/default-${slot}.mp4`, source: 'sora' }];
-    }
+    cockroachPool.hook = [{ url: 'https://example.com/cock-hook.mp4', source: 'sora' }];
+    defaultPool.hook   = [{ url: 'https://example.com/default-hook.mp4', source: 'sora' }];
 
     const results = clipsBySource('sora');
     const niches = [...new Set(results.map(r => r.niche))];
-    assert.ok(niches.includes('pest control'));
+    assert.ok(niches.includes('cockroaches'));
     assert.ok(niches.includes('default'));
 
-    for (const slot of SLOTS) {
-      pestPool[slot]    = origPest[slot];
-      defaultPool[slot] = origDefault[slot];
-    }
+    cockroachPool.hook = origCock.hook;
+    defaultPool.hook   = origDefault.hook;
   });
 });
 

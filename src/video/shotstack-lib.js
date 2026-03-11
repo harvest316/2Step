@@ -3,101 +3,249 @@
  * Imported by both shotstack.js (CLI) and tests.
  */
 
-// ─── Voiceover script builder ─────────────────────────────────────────────────
+// ─── Scene + voiceover builder ────────────────────────────────────────────────
 
 /**
- * Build a ~40s voiceover script from a prospect's review.
+ * Build 5 aligned scene/voiceover pairs from a prospect's review.
  *
- * Structure:
- *   "Here's what customers are saying about {name} in {city}."  ← hook
- *   {review quote, trimmed to ≤320 chars at sentence boundary}  ← body
- *   "Five stars from {reviewer}."                               ← attribution
- *   "{name} — trusted by locals across {city}. Book today."    ← CTA
- *
- * @param {{ business_name: string, city?: string, best_review_author?: string, best_review_text?: string }} prospect
- * @returns {string}
- */
-export function buildVoiceoverScript(prospect) {
-  const name = businessName(prospect.business_name);
-  const city = prospect.city || 'Sydney';
-  const reviewer = prospect.best_review_author || 'a customer';
-  const review = prospect.best_review_text || '';
-
-  let quote = review.replace(/\s+/g, ' ').trim();
-  if (quote.length > 320) {
-    const cut = quote.substring(0, 320);
-    const lastStop = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('!'), cut.lastIndexOf('?'));
-    quote = lastStop > 150 ? cut.substring(0, lastStop + 1) : cut + '...';
-  }
-
-  return [
-    `Here's what customers are saying about ${name} in ${city}.`,
-    quote,
-    `Five stars from ${reviewer}.`,
-    `${name} — trusted by locals across ${city}. Book your service today.`,
-  ].join('  ');
-}
-
-// ─── Scene text builder ───────────────────────────────────────────────────────
-
-/**
- * Build 5 scene text overlays from a prospect's review.
+ * Each scene has matching on-screen text and a voiceover segment so they stay
+ * in sync. Duration is derived from the voiceover word count at ~180 wpm
+ * (ElevenLabs Charlie pace) with a minimum per scene for visual comfort.
  *
  * Scenes:
- *   1. Hook    — "What customers say about {name}"
- *   2. Quote 1 — first sentence of review (≤100 chars)
- *   3. Quote 2 — second sentence (≤100 chars), falls back to quote 1
- *   4. Stars   — "⭐⭐⭐⭐⭐ — {reviewer}"
- *   5. CTA     — "{name}\n{city} | Book Now"
+ *   1. Hook    — spoken: "Here's what [name] customers are saying in [city]."
+ *                shown:  "What customers say about\n{name}"
+ *   2. Quote 1 — spoken + shown: first short sentence of review (≤80 chars)
+ *   3. Quote 2 — spoken + shown: second short sentence (≤80 chars), falls back to q1
+ *   4. Stars   — spoken: "Five stars — [reviewer]."
+ *                shown:  "⭐⭐⭐⭐⭐\n— {reviewer}"
+ *   5. CTA     — spoken: "{name} — trusted by locals. Book today."
+ *                shown:  "{name}\n{city} | Book Now"
  *
  * @param {{ business_name: string, city?: string, best_review_author?: string, best_review_text?: string }} prospect
- * @returns {Array<{ text: string, duration: number }>}
+ * @returns {Array<{ text: string, voiceover: string, duration: number }>}
  */
-export function buildSceneTexts(prospect) {
+export function buildScenes(prospect) {
   const name = businessName(prospect.business_name);
   const city = prospect.city || 'Sydney';
   const reviewer = prospect.best_review_author || 'a customer';
   const review = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
 
-  const q1 = extractSentence(review, 0);
-  const q2 = extractSentence(review, q1.length) || q1;
+  const quotes = extractTwoQuotes(review);
 
-  return [
-    { text: `What customers say about\n${name}`, duration: 5 },
-    { text: `"${q1}"`, duration: 12 },
-    { text: `"${q2}"`, duration: 10 },
-    { text: `⭐⭐⭐⭐⭐\n— ${reviewer}`, duration: 7 },
-    { text: `${name}\n${city} | Book Now`, duration: 7 },
+  // If the business name already contains the city, don't repeat it in the CTA sentence.
+  const nameHasCity = name.toLowerCase().includes(city.toLowerCase());
+  const ctaVoiceover = nameHasCity
+    ? `"${name}" — trusted by locals. Book your service today.`
+    : `"${name}" — trusted by locals across ${city}. Book your service today.`;
+
+  const pairs = [
+    {
+      // Quotes around name in voiceover help ElevenLabs pronounce it as a proper noun.
+      // No quotes in on-screen text.
+      text:      `What customers say about\n${name}`,
+      voiceover: `Here's what "${name}" customers are saying.`,
+      minDur:    3,
+    },
+    {
+      text:      `"${quotes[0]}"`,
+      voiceover: quotes[0],
+      minDur:    3,
+    },
+    {
+      text:      `"${quotes[1]}"`,
+      voiceover: quotes[1],
+      minDur:    3,
+    },
+    {
+      text:      `⭐⭐⭐⭐⭐\n— ${reviewer}`,
+      voiceover: `Five stars — from ${reviewer}.`,
+      minDur:    3,
+    },
+    {
+      text:      `${name}\n${city} | Book Now`,
+      voiceover: ctaVoiceover,
+      minDur:    4,
+    },
   ];
+
+  // Derive each scene's duration from its voiceover word count, then
+  // scale all durations so they sum to the full voiceover length.
+  // This keeps clips in sync even when individual estimates drift.
+  const raw = pairs.map(({ text, voiceover, minDur }) => ({
+    text,
+    voiceover,
+    dur: Math.max(minDur, sceneDuration(voiceover)),
+  }));
+
+  const fullScript = raw.map(s => s.voiceover).join('  ');
+  const totalEstimated = raw.reduce((s, r) => s + r.dur, 0);
+  // Add 3s tail so audio never gets cut off at the end of the last clip.
+  const fullDuration = sceneDuration(fullScript) + 3;
+  const scale = fullDuration / totalEstimated;
+
+  return raw.map(({ text, voiceover, dur }) => ({
+    text,
+    voiceover,
+    duration: Math.max(3, Math.round(dur * scale)),
+  }));
+}
+
+/**
+ * Estimate spoken duration in seconds for a string.
+ * ElevenLabs Charlie speaks at ~180 wpm; +1s padding for lead-in/tail.
+ * @param {string} text
+ * @returns {number}
+ */
+export function sceneDuration(text) {
+  const words = text.trim().split(/\s+/).length;
+  return Math.ceil(words / 180 * 60) + 1;
+}
+
+/**
+ * Build voiceover script from scenes — just join the voiceover segments.
+ * @param {Array<{ voiceover: string }>} scenes
+ * @returns {string}
+ */
+export function buildVoiceoverScript(scenes) {
+  return scenes.map(s => s.voiceover).join('  ');
+}
+
+/**
+ * Build scene texts array (legacy shape) from scenes for buildRenderPayload.
+ * @param {Array<{ text: string, duration: number }>} scenes
+ * @returns {Array<{ text: string, duration: number }>}
+ */
+export function buildSceneTexts(scenes) {
+  return scenes.map(({ text, duration }) => ({ text, duration }));
 }
 
 // ─── Render payload builder ───────────────────────────────────────────────────
 
 /**
+ * Strip SSML/XML tags from a string, leaving only the spoken text content.
+ * Used to normalise voiceover strings before character-position matching
+ * against ElevenLabs alignment data (which covers only spoken characters).
+ * @param {string} s
+ * @returns {string}
+ */
+export function stripSsml(s) {
+  return s.replace(/<[^>]+>/g, '');
+}
+
+/**
+ * Derive exact scene durations from ElevenLabs character-level alignment data.
+ *
+ * ElevenLabs `/with-timestamps` returns an alignment object with seconds-based fields:
+ *   { characters: string[], character_start_times_seconds: number[], character_end_times_seconds: number[] }
+ *
+ * Strategy: the voiceover script is built by joining scene voiceovers with "  " (double space).
+ * We split the stripped script on that separator to get per-scene character counts, then
+ * walk through the alignment array in order — assigning the first N1 non-whitespace
+ * characters to scene 1, the next N2 to scene 2, etc.  This is robust to Opus writing
+ * slightly different voiceover text than the text field (indexOf would fail in that case).
+ *
+ * Each scene's duration = end time of its last character − start time of its first + 0.5s tail.
+ *
+ * @param {Array<{ voiceover: string }>} scenes
+ * @param {string} voiceoverScript   The exact string sent to ElevenLabs (may contain SSML)
+ * @param {{ characters: string[], character_start_times_seconds: number[], character_end_times_seconds: number[] }} alignment
+ * @returns {number[]}  Duration in seconds for each scene (minimum 2s)
+ */
+export function timingsToSceneDurations(scenes, voiceoverScript, alignment) {
+  const startTimes = alignment.character_start_times_seconds
+    ?? alignment.character_start_times_millis?.map(ms => ms / 1000);
+  const endTimes   = alignment.character_end_times_seconds
+    ?? alignment.character_durations_millis?.map((dur, i) =>
+        (alignment.character_start_times_millis[i] + dur) / 1000
+    );
+
+  const alignChars = alignment.characters;
+
+  // Count non-whitespace characters in each scene's spoken voiceover (SSML stripped).
+  // These counts tell us how many alignment entries belong to each scene.
+  const sceneCounts = scenes.map(s => {
+    const spoken = stripSsml(s.voiceover);
+    return spoken.replace(/\s/g, '').length;
+  });
+
+  // Walk the alignment array, assigning entries to scenes by character count.
+  const sceneDurs = [];
+  let ai = 0; // current position in alignment arrays
+
+  for (let si = 0; si < scenes.length; si++) {
+    let remaining = sceneCounts[si];
+    let firstIdx = -1;
+    let lastIdx  = -1;
+
+    while (ai < alignChars.length && remaining > 0) {
+      if (alignChars[ai].trim() !== '') {
+        if (firstIdx === -1) firstIdx = ai;
+        lastIdx = ai;
+        remaining--;
+      }
+      ai++;
+    }
+    // Skip inter-scene whitespace in alignment (ElevenLabs may include spaces)
+    while (ai < alignChars.length && alignChars[ai].trim() === '') ai++;
+
+    if (firstIdx === -1) {
+      sceneDurs.push(4); // no characters found — fallback
+    } else {
+      const durSecs = (endTimes[lastIdx] - startTimes[firstIdx]) + 0.5;
+      sceneDurs.push(Math.max(2, Math.round(durSecs * 10) / 10));
+    }
+  }
+
+  return sceneDurs;
+}
+
+/**
+ * Map a clip focus point to the opposite Shotstack position for text/logo placement.
+ * Text and logo are placed away from the visual subject so they don't overlap it.
+ *
+ * focus 'top'    → overlays at bottom
+ * focus 'bottom' → overlays at top
+ * focus 'center' → overlays at center (default, acceptable overlap risk)
+ */
+function overlayPosition(focus) {
+  if (focus === 'top')    return 'bottom';
+  if (focus === 'bottom') return 'top';
+  return 'center';
+}
+
+/**
  * Build a Shotstack Edit API render payload.
  *
  * Track layout (top = rendered on top):
- *   Track 0: text overlays (one per scene, centre-positioned)
+ *   Track 0: text overlays (one per scene, positioned opposite clip focus)
  *   Track 1: video clips  (one per scene, cover-fit, muted)
- *   Track 2: audio        (full-length voiceover)
+ *   Track 2: voiceover audio (full-length)
+ *   Track 3: background music (low volume, full-length, optional)
  *
- * @param {string[]} clips          Array of 5 public MP4 URLs
+ * @param {Array<{url: string, focus?: string}|string>} clips  Array of 5 clip objects or plain URLs
  * @param {string}   audioUrl       Public MP3 URL (ElevenLabs output)
  * @param {Array<{ text: string, duration: number }>} scenes  From buildSceneTexts()
- * @param {string|null} [logoUrl]   Optional image URL for CTA scene overlay
+ * @param {string|null} [logoUrl]   Optional image URL for hook + CTA scene overlay
+ * @param {string|null} [musicUrl]  Optional background music URL (royalty-free)
  * @returns {object}                Shotstack /render POST body
  */
-export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null) {
+export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musicUrl = null) {
   const totalDuration = scenes.reduce((sum, s) => sum + s.duration, 0);
   const starts = cumulativeStarts(scenes);
+
+  // Normalise clips: accept both plain strings and {url, focus} objects
+  const clipData = clips.map(c =>
+    typeof c === 'string' ? { url: c, focus: 'center' } : { focus: 'center', ...c }
+  );
 
   const FALLBACK_CLIP = 'https://shotstack-assets.s3-ap-southeast-2.amazonaws.com/footage/skater.hd.mp4';
 
   const videoTrack = {
-    clips: clips.map((src, i) => ({
+    clips: clipData.map(({ url }, i) => ({
       asset: {
         type: 'video',
-        src: src || FALLBACK_CLIP,
+        src: url || FALLBACK_CLIP,
         volume: 0,
         trim: 0,
       },
@@ -126,11 +274,11 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null) {
       },
       start: starts[i] + 0.5,
       length: scene.duration - 0.5,
-      position: 'center',
+      position: overlayPosition(clipData[i]?.focus),
     })),
   };
 
-  const audioTrack = {
+  const voiceoverTrack = {
     clips: [{
       asset: { type: 'audio', src: audioUrl, volume: 1 },
       start: 0,
@@ -138,21 +286,42 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null) {
     }],
   };
 
-  const tracks = [textTrack, videoTrack, audioTrack];
+  const tracks = [textTrack, videoTrack, voiceoverTrack];
 
-  // Optional logo overlay on final (CTA) scene
-  if (logoUrl) {
-    const ctaStart = starts[scenes.length - 1];
-    const ctaDuration = scenes[scenes.length - 1].duration;
-    const logoTrack = {
+  // Optional background music — low volume so voiceover stays clear
+  if (musicUrl) {
+    const musicTrack = {
       clips: [{
-        asset: { type: 'image', src: logoUrl },
-        start: ctaStart + 0.5,
-        length: ctaDuration - 0.5,
-        position: 'bottomCenter',
-        offset: { y: -0.12 },
-        scale: 0.25,
+        asset: { type: 'audio', src: musicUrl, volume: 0.12 },
+        start: 0,
+        length: totalDuration,
       }],
+    };
+    tracks.push(musicTrack);
+  }
+
+  // Optional logo overlay on first (hook) and last (CTA) scenes.
+  // Logo is placed at the same position as the text overlay (opposite the focus point)
+  // so it doesn't compete with the visual subject.
+  if (logoUrl) {
+    const logoClip = (start, length, focus) => {
+      const pos = overlayPosition(focus);
+      // y-offset nudges logo away from centre towards the edge; invert for top position
+      const yOffset = pos === 'top' ? 0.1 : -0.1;
+      return {
+        asset: { type: 'image', src: logoUrl },
+        start: start + 0.5,
+        length: length - 0.5,
+        position: pos,
+        offset: { y: yOffset },
+        scale: 0.12,
+      };
+    };
+    const logoTrack = {
+      clips: [
+        logoClip(starts[0], scenes[0].duration, clipData[0]?.focus),
+        logoClip(starts[scenes.length - 1], scenes[scenes.length - 1].duration, clipData[scenes.length - 1]?.focus),
+      ],
     };
     tracks.unshift(logoTrack); // renders on top
   }
@@ -177,20 +346,109 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null) {
  * Curated clip pools per niche — manually screened, no logos/branding.
  * Keys match prospect.niche values. 'default' is the fallback.
  *
- * Each entry is { url: string, source: string } where source identifies the
- * clip provider (e.g. 'kling', 'pexels', 'istock', 'sora', 'mixkit').
- * Tracking source allows bulk removal if a provider's licence changes.
+ * Each entry is { url: string, source: string, focus?: string } where:
+ *   source  — clip provider ('kling', 'pexels', etc.) for licence auditing
+ *   focus   — where the visual subject is: 'top'|'center'|'bottom' (default 'center')
+ *             Used to position text overlays and logo on the opposite side.
+ *             Future use: also informs crop anchor for landscape/1:1 exports.
  *
  * Scene slots: [hook, technician, treatment, resolution, cta]
+ *
+ * Shared slots (technician, resolution, cta) are pest-agnostic — the tech
+ * wears a plain uniform and the resolution/cta shots show no specific pest.
+ * Pest-specific niches only need hook + treatment clips.
  */
+const R2 = 'https://pub-9e277996d5a74eee9508a861cccead66.r2.dev';
+
 export const CLIP_POOLS = {
-  'pest control': {
-    hook:        [],  // Scene 1 — stressed homeowner or pest close-up
-    technician:  [],  // Scene 2 — tech arriving at residential property
-    treatment:   [],  // Scene 3 — spraying / inspection
-    resolution:  [],  // Scene 4 — happy family / clean home
-    cta:         [],  // Scene 5 — handshake / job done / neutral
+  // Shared slots reused across all pest-control niches
+  shared: {
+    technician: [
+      { url: `${R2}/shared-technician-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-technician-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-technician-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-technician-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-technician-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+    resolution: [
+      { url: `${R2}/shared-resolution-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-resolution-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-resolution-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-resolution-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-resolution-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+    cta: [
+      { url: `${R2}/shared-cta-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-cta-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-cta-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-cta-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-cta-e.mp4`, source: 'kling', focus: 'center' },
+    ],
   },
+
+  cockroaches: {
+    hook: [
+      { url: `${R2}/cockroaches-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-hook-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/cockroaches-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-treatment-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  termites: {
+    hook: [
+      { url: `${R2}/termites-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-hook-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/termites-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/termites-treatment-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  spiders: {
+    hook: [
+      { url: `${R2}/spiders-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/spiders-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/spiders-hook-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/spiders-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/spiders-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/spiders-treatment-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  rodents: {
+    hook: [
+      { url: `${R2}/rodents-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/rodents-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/rodents-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/rodents-hook-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/rodents-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/rodents-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/rodents-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/rodents-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/rodents-treatment-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  // Generic fallback (used by unknown niches)
   default: {
     hook:        [],
     technician:  [],
@@ -207,18 +465,43 @@ export const CLIP_POOLS = {
  *
  * @param {string} niche
  * @param {number} seed   Used to rotate clip selection (e.g. prospect.id)
- * @returns {string[]|null}  Array of 5 URLs, or null if pool is empty
+ * @returns {Array<{url: string, focus: string}>|null}  Array of 5 clip objects, or null if pool is empty
  */
+// Map legacy/broad niche names to specific pool keys
+const NICHE_ALIASES = {
+  'pest control': 'cockroaches',
+};
+
 export function pickClipsFromPool(niche, seed = 0) {
-  const pool = CLIP_POOLS[niche] || CLIP_POOLS.default;
+  // Resolve each slot: pest-specific pool for hook/treatment, shared for the rest.
+  // Falls back to default pool if niche has no dedicated entry.
+  const resolvedNiche = NICHE_ALIASES[niche] || niche;
+  const specificPool = CLIP_POOLS[resolvedNiche];
+  const defaultPool  = CLIP_POOLS.default;
+  const sharedPool   = CLIP_POOLS.shared;
+
+  function resolveSlot(slot) {
+    // Pest-specific slots: hook, treatment
+    if (slot === 'hook' || slot === 'treatment') {
+      if (specificPool?.[slot]?.length) return specificPool[slot];
+      return defaultPool[slot] ?? [];
+    }
+    // Shared slots: technician, resolution, cta
+    if (sharedPool?.[slot]?.length) return sharedPool[slot];
+    // Fall back to niche pool then default (handles 'default' niche which has all slots)
+    if (specificPool?.[slot]?.length) return specificPool[slot];
+    return defaultPool[slot] ?? [];
+  }
+
   const slots = ['hook', 'technician', 'treatment', 'resolution', 'cta'];
 
   // Return null if any slot is empty — caller falls back to Pexels search
-  if (slots.some(s => !pool[s]?.length)) return null;
+  if (slots.some(s => !resolveSlot(s).length)) return null;
 
   return slots.map((slot, i) => {
-    const arr = pool[slot];
-    return arr[(seed + i) % arr.length].url;
+    const arr = resolveSlot(slot);
+    const entry = arr[(seed + i) % arr.length];
+    return { url: entry.url, focus: entry.focus ?? 'center' };
   });
 }
 
@@ -272,13 +555,52 @@ export function businessName(raw) {
 }
 
 /**
+ * Extract up to two short complete-sentence quotes from a review.
+ * Finds all sentences ≤80 chars; returns the first two (or repeats the first).
+ * Falls back to a single 75-char truncation if no short sentences found.
+ *
+ * @param {string} review
+ * @returns {[string, string]}
+ */
+export function extractTwoQuotes(review) {
+  // Split on sentence-ending punctuation, keep the punctuation
+  const sentences = (review.match(/[^.!?]+[.!?]+/g) || []).map(s => s.trim());
+
+  // Prefer short sentences (≤80 chars) for both slots
+  const short = sentences.filter(s => s.length >= 20 && s.length <= 80);
+  if (short.length >= 2) return [short[0], short[1]];
+
+  // Fall back: allow up to 120 chars for the second slot to avoid repeating
+  const medium = sentences.filter(s => s.length >= 20 && s.length <= 120);
+  if (short.length === 1 && medium.length >= 2) return [short[0], medium[1]];
+  if (medium.length >= 2) return [medium[0], medium[1]];
+  if (medium.length === 1) {
+    // One usable sentence — truncate it for q1, use full for q2
+    const full = medium[0];
+    const brief = full.length > 75
+      ? full.substring(0, full.lastIndexOf(' ', 75)) + '...'
+      : full;
+    return [brief, full];
+  }
+
+  // No complete sentences — truncate the review at word boundary
+  const brief = review.length > 75
+    ? review.substring(0, review.lastIndexOf(' ', 75)) + '...'
+    : review;
+  const longer = review.length > 120
+    ? review.substring(0, review.lastIndexOf(' ', 120)) + '...'
+    : review;
+  return [brief, longer];
+}
+
+/**
  * Extract a sentence from text starting at `offset`.
- * Returns the first sentence of 20–100 chars, or up to 90 chars with ellipsis.
+ * Returns the first sentence of 20–80 chars, or up to 75 chars with ellipsis.
  */
 export function extractSentence(text, offset = 0) {
   const slice = text.substring(offset).trim();
-  const match = slice.match(/^[^.!?]{20,100}[.!?]/);
-  return match ? match[0] : slice.substring(0, 90) + (slice.length > 90 ? '...' : '');
+  const match = slice.match(/^[^.!?]{20,80}[.!?]/);
+  return match ? match[0] : slice.substring(0, 75) + (slice.length > 75 ? '...' : '');
 }
 
 /** Build cumulative start-time array from scenes. */
