@@ -46,6 +46,9 @@ dist/
 build/
 out/
 
+# Downloaded video clips (large binaries, not tracked in git)
+clips/
+
 # Temporary files
 tmp/
 temp/
