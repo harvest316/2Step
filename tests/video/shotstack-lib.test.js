@@ -5,6 +5,7 @@ import {
   buildSceneTexts,
   buildRenderPayload,
   pickClipsFromPool,
+  clipsBySource,
   businessName,
   extractSentence,
   cumulativeStarts,
@@ -420,12 +421,14 @@ describe('pickClipsFromPool', () => {
     const original = {};
     for (const slot of ['hook', 'technician', 'treatment', 'resolution', 'cta']) {
       original[slot] = pool[slot];
-      pool[slot] = [`https://example.com/${slot}.mp4`];
+      pool[slot] = [{ url: `https://example.com/${slot}.mp4`, source: 'kling' }];
     }
 
     const clips = pickClipsFromPool('pest control', 0);
     assert.ok(Array.isArray(clips));
     assert.equal(clips.length, 5);
+    // Returns plain URL strings, not objects
+    assert.ok(clips.every(c => typeof c === 'string'));
 
     // Restore
     for (const slot of Object.keys(original)) pool[slot] = original[slot];
@@ -436,7 +439,10 @@ describe('pickClipsFromPool', () => {
     const original = {};
     for (const slot of ['hook', 'technician', 'treatment', 'resolution', 'cta']) {
       original[slot] = pool[slot];
-      pool[slot] = [`https://example.com/${slot}-a.mp4`, `https://example.com/${slot}-b.mp4`];
+      pool[slot] = [
+        { url: `https://example.com/${slot}-a.mp4`, source: 'kling' },
+        { url: `https://example.com/${slot}-b.mp4`, source: 'kling' },
+      ];
     }
 
     const clipsAt0 = pickClipsFromPool('pest control', 0);
@@ -452,7 +458,7 @@ describe('pickClipsFromPool', () => {
     const original = {};
     for (const slot of ['hook', 'technician', 'treatment', 'resolution', 'cta']) {
       original[slot] = pool[slot];
-      pool[slot] = [`https://example.com/default-${slot}.mp4`];
+      pool[slot] = [{ url: `https://example.com/default-${slot}.mp4`, source: 'pexels' }];
     }
 
     const clips = pickClipsFromPool('unknown niche', 0);
@@ -460,6 +466,76 @@ describe('pickClipsFromPool', () => {
     assert.equal(clips.length, 5);
 
     for (const slot of Object.keys(original)) pool[slot] = original[slot];
+  });
+});
+
+// ─── clipsBySource ────────────────────────────────────────────────────────────
+
+describe('clipsBySource', () => {
+  const SLOTS = ['hook', 'technician', 'treatment', 'resolution', 'cta'];
+
+  it('returns empty array when no clips match source', () => {
+    assert.deepEqual(clipsBySource('kling'), []);
+  });
+
+  it('finds clips by source', () => {
+    const pool = CLIP_POOLS['pest control'];
+    const original = {};
+    for (const slot of SLOTS) {
+      original[slot] = pool[slot];
+      pool[slot] = [{ url: `https://cdn.example.com/${slot}.mp4`, source: 'kling' }];
+    }
+
+    const results = clipsBySource('kling');
+    assert.equal(results.length, SLOTS.length);
+    assert.ok(results.every(r => r.niche === 'pest control'));
+    assert.ok(results.every(r => typeof r.slot === 'string'));
+    assert.ok(results.every(r => r.url.startsWith('https://')));
+
+    for (const slot of SLOTS) pool[slot] = original[slot];
+  });
+
+  it('filters by source — does not return clips from other sources', () => {
+    const pool = CLIP_POOLS.default;
+    const original = {};
+    for (const slot of SLOTS) {
+      original[slot] = pool[slot];
+      pool[slot] = [
+        { url: `https://kling.example.com/${slot}.mp4`, source: 'kling' },
+        { url: `https://pexels.example.com/${slot}.mp4`, source: 'pexels' },
+      ];
+    }
+
+    const klingClips = clipsBySource('kling');
+    assert.ok(klingClips.every(c => c.url.includes('kling.example.com')));
+
+    const pexelsClips = clipsBySource('pexels');
+    assert.ok(pexelsClips.every(c => c.url.includes('pexels.example.com')));
+
+    for (const slot of SLOTS) pool[slot] = original[slot];
+  });
+
+  it('searches across all niches', () => {
+    const pestPool = CLIP_POOLS['pest control'];
+    const defaultPool = CLIP_POOLS.default;
+    const origPest = {}, origDefault = {};
+
+    for (const slot of SLOTS) {
+      origPest[slot] = pestPool[slot];
+      origDefault[slot] = defaultPool[slot];
+      pestPool[slot]    = [{ url: `https://example.com/pest-${slot}.mp4`, source: 'sora' }];
+      defaultPool[slot] = [{ url: `https://example.com/default-${slot}.mp4`, source: 'sora' }];
+    }
+
+    const results = clipsBySource('sora');
+    const niches = [...new Set(results.map(r => r.niche))];
+    assert.ok(niches.includes('pest control'));
+    assert.ok(niches.includes('default'));
+
+    for (const slot of SLOTS) {
+      pestPool[slot]    = origPest[slot];
+      defaultPool[slot] = origDefault[slot];
+    }
   });
 });
 

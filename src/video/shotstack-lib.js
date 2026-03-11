@@ -177,10 +177,11 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null) {
  * Curated clip pools per niche — manually screened, no logos/branding.
  * Keys match prospect.niche values. 'default' is the fallback.
  *
- * Each array entry is a direct Pexels MP4 URL (portrait 720×1280 or 1080×1920).
- * Populated once clips are screened and approved by the user.
+ * Each entry is { url: string, source: string } where source identifies the
+ * clip provider (e.g. 'kling', 'pexels', 'istock', 'sora', 'mixkit').
+ * Tracking source allows bulk removal if a provider's licence changes.
  *
- * Scene slots: [hook, technician, treatment, resolution, cta_bg]
+ * Scene slots: [hook, technician, treatment, resolution, cta]
  */
 export const CLIP_POOLS = {
   'pest control': {
@@ -217,8 +218,27 @@ export function pickClipsFromPool(niche, seed = 0) {
 
   return slots.map((slot, i) => {
     const arr = pool[slot];
-    return arr[(seed + i) % arr.length];
+    return arr[(seed + i) % arr.length].url;
   });
+}
+
+/**
+ * Return all clips from CLIP_POOLS filtered by source provider.
+ * Useful for auditing or bulk-removing clips from a specific vendor.
+ *
+ * @param {string} source  e.g. 'kling', 'pexels', 'istock'
+ * @returns {{ niche: string, slot: string, url: string }[]}
+ */
+export function clipsBySource(source) {
+  const results = [];
+  for (const [niche, slots] of Object.entries(CLIP_POOLS)) {
+    for (const [slot, clips] of Object.entries(slots)) {
+      for (const clip of clips) {
+        if (clip.source === source) results.push({ niche, slot, url: clip.url });
+      }
+    }
+  }
+  return results;
 }
 
 // ─── Pexels fallback queries ──────────────────────────────────────────────────
