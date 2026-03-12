@@ -257,8 +257,8 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musi
         volume: 0,
         trim: 0,
       },
-      start: starts[i],
-      length: scenes[i].duration,
+      start: round2(starts[i]),
+      length: round2(scenes[i].duration),
       fit: 'cover',
       transition: { in: 'fade', out: 'fade' },
     })),
@@ -282,8 +282,8 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musi
           alignment: { horizontal: 'center', vertical: 'center' },
           background: { color: '#000000', opacity: 0.5, borderRadius: 8, padding: 16 },
         },
-        start: starts[i] + 0.5,
-        length: scene.duration - 0.5,
+        start: round2(starts[i] + 0.5),
+        length: round2(scene.duration - 0.5),
         position: tPos,
       };
     }),
@@ -772,6 +772,9 @@ export function extractSentence(text, offset = 0) {
   const match = slice.match(/^[^.!?]{20,80}[.!?]/);
   return match ? match[0] : slice.substring(0, 75) + (slice.length > 75 ? '...' : '');
 }
+
+/** Round to 2 decimal places to avoid floating-point noise in Shotstack payloads. */
+function round2(n) { return Math.round(n * 100) / 100; }
 
 /** Build cumulative start-time array from scenes. */
 export function cumulativeStarts(scenes) {

@@ -24,7 +24,7 @@ import axios from 'axios';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-import { execSync } from 'child_process';
+// execSync no longer needed — Opus called via API directly
 // Pure functions live in shotstack-lib.js (also imported by tests)
 import {
   buildScenes,
@@ -43,6 +43,14 @@ const root = resolve(__dirname, '../..');
 const DB_PATH = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 
 // ─── Config ──────────────────────────────────────────────────────────────────
+
+const ANTHROPIC_KEY  = process.env.ANTHROPIC_API_KEY || process.env.OPENROUTER_API_KEY;
+const ANTHROPIC_BASE = process.env.ANTHROPIC_API_KEY
+  ? 'https://api.anthropic.com/v1'
+  : 'https://openrouter.ai/api/v1';
+const ANTHROPIC_MODEL = process.env.ANTHROPIC_API_KEY
+  ? 'claude-opus-4-6'
+  : 'anthropic/claude-opus-4';
 
 const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY;
 const SHOTSTACK_ENV = process.env.SHOTSTACK_ENV || 'stage';
@@ -311,14 +319,32 @@ Example output format:
 ]`;
 
   try {
-    const escaped = prompt.replace(/'/g, "'\\''");
-    const json = execSync(`echo '${escaped}' | env -u CLAUDECODE claude --model claude-opus-4-6 -p`, {
-      encoding: 'utf8',
-      timeout: 60000,
-    }).trim();
+    if (!ANTHROPIC_KEY) throw new Error('No ANTHROPIC_API_KEY or OPENROUTER_API_KEY');
+
+    const isOpenRouter = !process.env.ANTHROPIC_API_KEY;
+    const headers = isOpenRouter
+      ? { 'Authorization': `Bearer ${ANTHROPIC_KEY}`, 'Content-Type': 'application/json' }
+      : { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' };
+
+    const res = await fetch(`${ANTHROPIC_BASE}/messages`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: ANTHROPIC_MODEL,
+        max_tokens: 1024,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`API ${res.status}: ${text.substring(0, 200)}`);
+    }
+    const data = await res.json();
+    const raw = data.choices?.[0]?.message?.content ?? data.content?.[0]?.text ?? '';
+    if (!raw) throw new Error('Empty response from API');
 
     // Strip any markdown code fences if present
-    const cleaned = json.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
+    const cleaned = raw.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '').trim();
     const parsed = JSON.parse(cleaned);
 
     if (!Array.isArray(parsed) || parsed.length !== 5) throw new Error('Expected 5-element array');
