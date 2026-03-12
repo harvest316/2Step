@@ -572,7 +572,27 @@ describe('timingsToSceneDurations', () => {
 
 describe('pickClipsFromPool', () => {
   it('returns null for unknown niche when default pool is also empty', () => {
-    assert.equal(pickClipsFromPool('plumbing', 0), null);
+    assert.equal(pickClipsFromPool('unknown-niche-xyz', 0), null);
+  });
+
+  it('returns 5 clips for plumbing (full 5-slot pool)', () => {
+    const clips = pickClipsFromPool('plumbing', 0);
+    assert.ok(Array.isArray(clips));
+    assert.equal(clips.length, 5);
+    assert.ok(clips.every(c => typeof c.url === 'string' && c.url.includes('plumbing')));
+  });
+
+  it('returns 5 clips for house-cleaning (full 5-slot pool)', () => {
+    const clips = pickClipsFromPool('house-cleaning', 0);
+    assert.ok(Array.isArray(clips));
+    assert.equal(clips.length, 5);
+    assert.ok(clips.every(c => typeof c.url === 'string' && c.url.includes('house-cleaning')));
+  });
+
+  it('resolves house cleaning alias', () => {
+    const clips = pickClipsFromPool('house cleaning', 0);
+    assert.ok(Array.isArray(clips));
+    assert.equal(clips.length, 5);
   });
 
   it('returns 5 {url, focus} objects for cockroaches (pool is populated)', () => {
