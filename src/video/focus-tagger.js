@@ -104,6 +104,11 @@ function buildHtml(clips, overrides) {
   .legend { display: flex; gap: 12px; margin-bottom: 12px; font-size: 12px; align-items: center; }
   .legend-item { display: flex; align-items: center; gap: 5px; }
   .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .pagination { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .pagination button { background: #1a1a1a; border: 1px solid #333; color: #eee; padding: 5px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  .pagination button:hover:not(:disabled) { background: #2a2a2a; }
+  .pagination button:disabled { opacity: 0.3; cursor: default; }
+  .pagination .page-info { font-size: 13px; color: #aaa; }
 </style>
 </head>
 <body>
@@ -123,12 +128,20 @@ function buildHtml(clips, overrides) {
   <div><strong id="stat-remaining">0</strong> <span>remaining</span></div>
 </div>
 
+<div class="pagination">
+  <button id="btn-prev" onclick="goPage(page-1)">&#8592; Prev</button>
+  <span class="page-info" id="page-info"></span>
+  <button id="btn-next" onclick="goPage(page+1)">Next &#8594;</button>
+</div>
+
 <div class="grid" id="grid"></div>
 <div id="toast"></div>
 
 <script>
 const clips = ${JSON.stringify(clipData)};
 const overrides = ${JSON.stringify(overrides)};
+const PAGE_SIZE = 20;
+let page = 0;
 
 function toast(msg) {
   const el = document.getElementById('toast');
@@ -197,9 +210,30 @@ function buildCard(clip) {
   return card;
 }
 
-const grid = document.getElementById('grid');
-for (const clip of clips) grid.appendChild(buildCard(clip));
-updateStats();
+function renderPage(p) {
+  const totalPages = Math.ceil(clips.length / PAGE_SIZE);
+  page = Math.max(0, Math.min(p, totalPages - 1));
+  const start = page * PAGE_SIZE;
+  const pageClips = clips.slice(start, start + PAGE_SIZE);
+
+  // Pause all playing videos before clearing
+  document.querySelectorAll('video').forEach(v => v.pause());
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  for (const clip of pageClips) grid.appendChild(buildCard(clip));
+
+  document.getElementById('page-info').textContent =
+    \`Page \${page + 1} of \${totalPages} (clips \${start + 1}–\${Math.min(start + PAGE_SIZE, clips.length)})\`;
+  document.getElementById('btn-prev').disabled = page === 0;
+  document.getElementById('btn-next').disabled = page >= totalPages - 1;
+  window.scrollTo(0, 0);
+  updateStats();
+}
+
+function goPage(p) { renderPage(p); }
+
+renderPage(0);
 </script>
 </body>
 </html>`;
