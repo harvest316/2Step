@@ -24,6 +24,7 @@ import axios from 'axios';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
+import { existsSync, readFileSync } from 'fs';
 // execSync no longer needed — Opus called via API directly
 // Pure functions live in shotstack-lib.js (also imported by tests)
 import {
@@ -62,6 +63,20 @@ const PEXELS_KEY = process.env.PEXELS_API_KEY;
 const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'IKne3meq5aSn9XLyUdCD';
 
 const SHOTSTACK_BASE = `https://api.shotstack.io/edit/${SHOTSTACK_ENV}`;
+
+// ─── ElevenLabs pronunciation dictionary ──────────────────────────────────────
+// Created by: node src/video/pronunciation-dict.js create
+// If not found, falls back to the inline applyPhonetics() text substitution.
+const DICT_CACHE_PATH = resolve(root, '.pronunciation-dict.json');
+const pronunciationDictLocators = (() => {
+  if (!existsSync(DICT_CACHE_PATH)) return [];
+  try {
+    const { id, version_id } = JSON.parse(readFileSync(DICT_CACHE_PATH, 'utf8'));
+    if (!id) return [];
+    console.log(`  Pronunciation dictionary: ${id}`);
+    return [{ pronunciation_dictionary_id: id, version_id }];
+  } catch { return []; }
+})();
 const SHOTSTACK_INGEST = `https://api.shotstack.io/ingest/${SHOTSTACK_ENV}`;
 
 const { values: args } = parseArgs({
@@ -139,6 +154,12 @@ async function generateVoiceover(script) {
         style: 0.2,
         use_speaker_boost: true,
       },
+      // Server-side alias substitution for Australian suburb names.
+      // Populated by: node src/video/pronunciation-dict.js create
+      // Falls back gracefully to inline applyPhonetics() if dict not created yet.
+      ...(pronunciationDictLocators.length
+        ? { pronunciation_dictionary_locators: pronunciationDictLocators }
+        : {}),
     },
     {
       headers: {
