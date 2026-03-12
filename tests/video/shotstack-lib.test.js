@@ -477,7 +477,8 @@ describe('buildRenderPayload', () => {
     const textTrack = payload.timeline.tracks.find(t =>
       t.clips.some(c => c.asset.type === 'text')
     );
-    assert.ok(textTrack.clips.every(c => c.position === 'center'));
+    // focus 'center' → text goes to 'top' (away from subject, which tends to be lower in portrait)
+    assert.ok(textTrack.clips.every(c => c.position === 'top'));
   });
 });
 

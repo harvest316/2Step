@@ -201,17 +201,25 @@ export function timingsToSceneDurations(scenes, voiceoverScript, alignment) {
 }
 
 /**
- * Map a clip focus point to the opposite Shotstack position for text/logo placement.
- * Text and logo are placed away from the visual subject so they don't overlap it.
+ * Map a clip focus point to the text overlay position (away from the subject).
  *
- * focus 'top'    → overlays at bottom
- * focus 'bottom' → overlays at top
- * focus 'center' → overlays at center (default, acceptable overlap risk)
+ * focus 'top'    → text at bottom
+ * focus 'bottom' → text at top
+ * focus 'center' → text at bottom (safer than center — most Kling clips have
+ *                  the subject in the upper portion of portrait frame)
  */
-function overlayPosition(focus) {
-  if (focus === 'top')    return 'bottom';
-  if (focus === 'bottom') return 'top';
-  return 'center';
+function textPosition(focus) {
+  if (focus === 'top') return 'bottom';
+  return 'top'; // bottom or center focus → text at top
+}
+
+/**
+ * Logo goes opposite the text so they don't compete.
+ * text 'top'    → logo at bottom
+ * text 'bottom' → logo at top
+ */
+function logoPosition(tPos) {
+  return tPos === 'top' ? 'bottom' : 'top';
 }
 
 /**
@@ -257,25 +265,28 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musi
   };
 
   const textTrack = {
-    clips: scenes.map((scene, i) => ({
-      asset: {
-        type: 'text',
-        text: scene.text,
-        width: 900,
-        height: 400,
-        font: {
-          family: 'Montserrat ExtraBold',
-          size: i === scenes.length - 1 ? 52 : 48,
-          color: '#FFFFFF',
-          lineHeight: 1.3,
+    clips: scenes.map((scene, i) => {
+      const tPos = textPosition(clipData[i]?.focus);
+      return {
+        asset: {
+          type: 'text',
+          text: scene.text,
+          width: 900,
+          height: 400,
+          font: {
+            family: 'Montserrat ExtraBold',
+            size: i === scenes.length - 1 ? 52 : 48,
+            color: '#FFFFFF',
+            lineHeight: 1.3,
+          },
+          alignment: { horizontal: 'center', vertical: 'center' },
+          background: { color: '#000000', opacity: 0.5, borderRadius: 8, padding: 16 },
         },
-        alignment: { horizontal: 'center', vertical: 'center' },
-        background: { color: '#000000', opacity: 0.5, borderRadius: 8, padding: 16 },
-      },
-      start: starts[i] + 0.5,
-      length: scene.duration - 0.5,
-      position: overlayPosition(clipData[i]?.focus),
-    })),
+        start: starts[i] + 0.5,
+        length: scene.duration - 0.5,
+        position: tPos,
+      };
+    }),
   };
 
   const voiceoverTrack = {
@@ -305,9 +316,11 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musi
   // so it doesn't compete with the visual subject.
   if (logoUrl) {
     const logoClip = (start, length, focus) => {
-      const pos = overlayPosition(focus);
-      // y-offset nudges logo away from centre towards the edge; invert for top position
-      const yOffset = pos === 'top' ? 0.1 : -0.1;
+      // Logo goes opposite the text so they don't overlap each other.
+      const tPos = textPosition(focus);
+      const pos  = logoPosition(tPos);
+      // y-offset nudges logo toward the edge so it clears the frame border
+      const yOffset = pos === 'top' ? 0.08 : -0.08;
       return {
         asset: { type: 'image', src: logoUrl },
         start: start + 0.5,
