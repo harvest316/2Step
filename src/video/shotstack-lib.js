@@ -3,6 +3,82 @@
  * Imported by both shotstack.js (CLI) and tests.
  */
 
+// ─── Suburb phonetics ─────────────────────────────────────────────────────────
+//
+// ElevenLabs mispronounces many Australian suburb names. This map provides
+// phonetic respellings to use in the TTS voiceover string.
+// Key = canonical suburb name (case-insensitive match), value = phonetic form.
+//
+// Sources: local knowledge + Wiktionary where available.
+// Add new entries as mispronunciations are discovered.
+
+export const SUBURB_PHONETICS = {
+  'Wahroonga':    'Wah-ROON-ga',
+  'Artarmon':     'AR-tar-mon',
+  'Turramurra':   'Turra-MURR-a',
+  'Pymble':       'PIM-bul',
+  'Killara':      'ki-LAR-a',
+  'Epping':       'EP-ing',
+  'Pennant Hills': 'PEN-ant Hills',
+  'Beecroft':     'BEE-croft',
+  'Cherrybrook':  'CHERRY-brook',
+  'Ryde':         'Ryde',
+  'Chatswood':    'CHATS-wood',
+  'Parramatta':   'Para-MATTA',
+  'Woolloomooloo': 'Wool-oo-moo-LOO',
+  'Woollahara':   'Wool-a-RA',
+  'Woollahra':    'Wool-a-RA',
+  'Kirribilli':   'Kirri-BILLY',
+  'Manly':        'MAN-lee',
+  'Mosman':       'MOZ-man',
+  'Neutral Bay':  'NEW-tral Bay',
+  'Cremorne':     'cre-MORN',
+  'Cammeray':     'KAM-er-ay',
+  'Naremburn':    'NARE-burn',
+  'Willoughby':   'WILL-oh-bee',
+  'Castlecrag':   'CASTLE-krag',
+  'Seaforth':     'SEA-forth',
+  'Balgowlah':    'Bal-GOW-la',
+  'Manly Vale':   'MAN-lee Vale',
+  'Brookvale':    'BROOK-vale',
+  'Dee Why':      'Dee Why',
+  'Narrabeen':    'NARRA-been',
+  'Mona Vale':    'MOH-na Vale',
+  'Avalon Beach': 'AVA-lon Beach',
+  'Terrey Hills': 'TERRY Hills',
+  'Dural':        'DYOO-ral',
+  'Galston':      'GAWL-ston',
+  'Glenhaven':    'Glen-HAY-ven',
+  'Kenthurst':    'KENT-hurst',
+  'Annangrove':   'ANNA-grove',
+  'Glenorie':     'Glen-OR-ee',
+};
+
+/**
+ * Replace suburb name occurrences in a voiceover string with phonetic form.
+ * Case-insensitive match; only applies to words in SUBURB_PHONETICS.
+ *
+ * Call this on each scene's voiceover string to guarantee consistent
+ * pronunciation regardless of what Opus generates.
+ *
+ * @param {string} voiceover
+ * @param {string} suburb  — canonical suburb name from DB
+ * @returns {string}
+ */
+export function applyPhonetics(voiceover, suburb) {
+  if (!suburb) return voiceover;
+  // Find the phonetic form — try exact match then case-insensitive
+  const key = Object.keys(SUBURB_PHONETICS).find(
+    k => k.toLowerCase() === suburb.toLowerCase()
+  );
+  if (!key) return voiceover; // unknown suburb — leave as-is
+
+  const phonetic = SUBURB_PHONETICS[key];
+  // Replace all occurrences (case-insensitive) of the suburb name
+  const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return voiceover.replace(new RegExp(escaped, 'gi'), phonetic);
+}
+
 // ─── Scene + voiceover builder ────────────────────────────────────────────────
 
 /**
@@ -319,8 +395,10 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musi
       // Logo goes opposite the text so they don't overlap each other.
       const tPos = textPosition(focus);
       const pos  = logoPosition(tPos);
-      // y-offset nudges logo toward the edge so it clears the frame border
-      const yOffset = pos === 'top' ? 0.08 : -0.08;
+      // y-offset nudges logo away from the very edge so it stays fully visible.
+      // Positive = down (for top logos), negative = up (for bottom logos).
+      // -0.05 keeps bottom logos within the safe zone — -0.08 was clipping them.
+      const yOffset = pos === 'top' ? 0.05 : -0.05;
       return {
         asset: { type: 'image', src: logoUrl },
         start: start + 0.5,

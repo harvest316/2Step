@@ -34,6 +34,7 @@ import {
   pickClipsFromPool,
   sceneDuration,
   timingsToSceneDurations,
+  applyPhonetics,
   PEXELS_FALLBACK_QUERIES,
 } from './shotstack-lib.js';
 
@@ -282,10 +283,16 @@ async function buildScenesWithOpus(prospect) {
   const reviewer = prospect.best_review_author || 'a customer';
   const review = prospect.best_review_text || '';
 
+  // Look up known phonetic form so Opus uses it in every scene, not just scene 1.
+  const cityPhonetic = applyPhonetics(city, city);
+  const phoneticHint = cityPhonetic !== city
+    ? `\nPhonetic form for "${city}" in voiceover: "${cityPhonetic}" — use this every time the suburb is mentioned`
+    : '';
+
   const prompt = `You are writing copy for a 20-second social media video ad for a local business.
 
 Business: ${name}
-City: ${city}
+City: ${city}${phoneticHint}
 Reviewer: ${reviewer}
 Review: "${review}"
 
@@ -306,7 +313,7 @@ Rules:
 - If the business name already contains the city name, do not repeat the city in the same sentence
 - Keep voiceover natural and conversational — avoid corporate language
 - Scene 2 and 3 MUST use different quotes from the review
-- For unusual place names that TTS will mispronounce, use a phonetic respelling in the voiceover field only (e.g. write "Wah-ROON-ga" instead of "Wahroonga"). The text field always uses the correct spelling.
+- For unusual place names that TTS will mispronounce, use a phonetic respelling in the voiceover field only. The text field always uses the correct spelling. Apply the phonetic form consistently in EVERY scene where the suburb name appears — not just scene 1. Example: write "Wah-ROON-ga" instead of "Wahroonga", "AR-tar-mon" instead of "Artarmon".
 - Return ONLY valid JSON, no markdown, no explanation
 
 Example output format:
@@ -359,10 +366,13 @@ Example output format:
     const fullDuration = sceneDuration(fullScript) + 3;
     const scale = fullDuration / totalEstimated;
 
+    const suburb = prospect.suburb || prospect.city || '';
     console.log('  Using Opus-generated scenes.');
     return parsed.map((s, i) => ({
       text: s.text,
-      voiceover: s.voiceover,
+      // Post-process: enforce consistent phonetic suburb pronunciation regardless
+      // of whether Opus applied it to every scene (it sometimes misses scene 5).
+      voiceover: applyPhonetics(s.voiceover, suburb),
       duration: Math.max(3, Math.round(rawDurs[i] * scale)),
     }));
   } catch (err) {
