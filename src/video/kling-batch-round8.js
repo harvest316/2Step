@@ -70,16 +70,25 @@ function klingJwt() {
 }
 
 async function submit(prompt) {
-  const res = await fetch(`${KLING_API_BASE}/videos/text2video`, {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${klingJwt()}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ model_name: 'kling-v3', prompt, duration: '5', aspect_ratio: '9:16', mode: 'pro', cfg_scale: 0.7 }),
-  });
-  if (!res.ok) throw new Error(`submit failed ${res.status}: ${(await res.text()).substring(0, 200)}`);
-  const data = await res.json();
-  const taskId = data?.data?.task_id;
-  if (!taskId) throw new Error(`missing task_id: ${JSON.stringify(data)}`);
-  return taskId;
+  // Retry on 429 (parallel task limit) — wait for a slot to free up
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(`${KLING_API_BASE}/videos/text2video`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${klingJwt()}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model_name: 'kling-v3', prompt, duration: '5', aspect_ratio: '9:16', mode: 'pro', cfg_scale: 0.7 }),
+    });
+    if (res.status === 429) {
+      const waitSec = 30 * (attempt + 1);
+      process.stdout.write(` [429, retry in ${waitSec}s]`);
+      await sleep(waitSec * 1000);
+      continue;
+    }
+    if (!res.ok) throw new Error(`submit failed ${res.status}: ${(await res.text()).substring(0, 200)}`);
+    const data = await res.json();
+    const taskId = data?.data?.task_id;
+    if (!taskId) throw new Error(`missing task_id: ${JSON.stringify(data)}`);
+    return taskId;
+  }
 }
 
 async function pollOne(taskId) {
