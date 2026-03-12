@@ -528,6 +528,7 @@ export const CLIP_POOLS = {
       { url: `${R2}/cockroaches-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/cockroaches-treatment-c.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/cockroaches-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/cockroaches-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -552,17 +553,22 @@ export const CLIP_POOLS = {
     hook: [
       { url: `${R2}/spiders-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/spiders-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/spiders-hook-c.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/spiders-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/spiders-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
+      { url: `${R2}/spiders-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/spiders-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/spiders-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/spiders-treatment-d.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/spiders-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
   rodents: {
     hook: [
+      { url: `${R2}/rodents-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/rodents-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/rodents-hook-c.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/rodents-hook-d.mp4`, source: 'kling', focus: 'center' },
@@ -583,16 +589,22 @@ export const CLIP_POOLS = {
       { url: `${R2}/plumbing-technician-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-technician-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-technician-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/plumbing-technician-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/plumbing-technician-e.mp4`, source: 'kling', focus: 'center' },
     ],
     resolution: [
       { url: `${R2}/plumbing-resolution-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-resolution-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-resolution-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/plumbing-resolution-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/plumbing-resolution-e.mp4`, source: 'kling', focus: 'center' },
     ],
     cta: [
       { url: `${R2}/plumbing-cta-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-cta-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-cta-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/plumbing-cta-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/plumbing-cta-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -601,10 +613,16 @@ export const CLIP_POOLS = {
     hook: [
       { url: `${R2}/blocked-drain-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/blocked-drain-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/blocked-drain-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/blocked-drain-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -612,11 +630,16 @@ export const CLIP_POOLS = {
     hook: [
       { url: `${R2}/burst-pipe-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/burst-pipe-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/burst-pipe-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/burst-pipe-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/burst-pipe-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -625,11 +648,15 @@ export const CLIP_POOLS = {
       { url: `${R2}/leaking-tap-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/leaking-tap-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/leaking-tap-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/leaking-tap-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/leaking-tap-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/leaking-tap-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -638,11 +665,15 @@ export const CLIP_POOLS = {
       { url: `${R2}/hot-water-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/hot-water-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/hot-water-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/hot-water-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/hot-water-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/hot-water-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -652,16 +683,22 @@ export const CLIP_POOLS = {
       { url: `${R2}/house-cleaning-technician-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-technician-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-technician-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/house-cleaning-technician-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/house-cleaning-technician-e.mp4`, source: 'kling', focus: 'center' },
     ],
     resolution: [
       { url: `${R2}/house-cleaning-resolution-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-resolution-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-resolution-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/house-cleaning-resolution-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/house-cleaning-resolution-e.mp4`, source: 'kling', focus: 'center' },
     ],
     cta: [
       { url: `${R2}/house-cleaning-cta-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-cta-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-cta-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/house-cleaning-cta-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/house-cleaning-cta-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -671,10 +708,15 @@ export const CLIP_POOLS = {
       { url: `${R2}/greasy-rangehood-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/greasy-rangehood-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/greasy-rangehood-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/greasy-rangehood-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/greasy-rangehood-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -683,11 +725,15 @@ export const CLIP_POOLS = {
       { url: `${R2}/dirty-bathroom-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/dirty-bathroom-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/dirty-bathroom-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/dirty-bathroom-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/dirty-bathroom-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/dirty-bathroom-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/dirty-bathroom-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/dirty-bathroom-treatment-c.mp4`, source: 'kling', focus: 'top' },
+      { url: `${R2}/dirty-bathroom-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/dirty-bathroom-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -696,11 +742,15 @@ export const CLIP_POOLS = {
       { url: `${R2}/end-of-lease-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/end-of-lease-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/end-of-lease-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/end-of-lease-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/end-of-lease-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/end-of-lease-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -709,11 +759,15 @@ export const CLIP_POOLS = {
       { url: `${R2}/deep-clean-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/deep-clean-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/deep-clean-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-hook-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-hook-e.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/deep-clean-treatment-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/deep-clean-treatment-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/deep-clean-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-treatment-d.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-treatment-e.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
