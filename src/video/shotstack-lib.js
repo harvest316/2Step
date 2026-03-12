@@ -307,16 +307,15 @@ export function timingsToSceneDurations(scenes, voiceoverScript, alignment) {
 }
 
 /**
- * Map a clip focus point to the text overlay position (away from the subject).
+ * Return the text overlay position for a clip.
  *
- * focus 'top'    → text at bottom
- * focus 'bottom' → text at top
- * focus 'center' → text at bottom (safer than center — most Kling clips have
- *                  the subject in the upper portion of portrait frame)
+ * focus-overrides.json now stores WHERE SUBTITLES APPEAR (not subject location).
+ * Values: 'top' | 'bottom' | 'center' — used directly as the Shotstack position.
+ * Default: 'bottom' (safe for most portrait clips where subject fills upper frame).
  */
 function textPosition(focus) {
-  if (focus === 'top') return 'bottom';
-  return 'top'; // bottom or center focus → text at top
+  if (focus === 'top' || focus === 'bottom' || focus === 'center') return focus;
+  return 'bottom'; // fallback
 }
 
 /**
@@ -616,21 +615,35 @@ export const CLIP_POOLS = {
     ],
     treatment: [
       { url: `${R2}/burst-pipe-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-treatment-c.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
   'leaking-tap': {
     hook: [
       { url: `${R2}/leaking-tap-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-hook-c.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/leaking-tap-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/leaking-tap-treatment-c.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
   'hot-water': {
-    hook: [],  // pending next credit top-up
-    treatment: [],
+    hook: [
+      { url: `${R2}/hot-water-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-hook-c.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/hot-water-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/hot-water-treatment-c.mp4`, source: 'kling', focus: 'center' },
+    ],
   },
 
   // ── House cleaning shared (technician, resolution, cta) ───────────────────
@@ -656,6 +669,8 @@ export const CLIP_POOLS = {
   'greasy-rangehood': {
     hook: [
       { url: `${R2}/greasy-rangehood-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-hook-c.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/greasy-rangehood-treatment-a.mp4`, source: 'kling', focus: 'center' },
@@ -666,27 +681,39 @@ export const CLIP_POOLS = {
   'dirty-bathroom': {
     hook: [
       { url: `${R2}/dirty-bathroom-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/dirty-bathroom-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/dirty-bathroom-hook-c.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/dirty-bathroom-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/dirty-bathroom-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/dirty-bathroom-treatment-c.mp4`, source: 'kling', focus: 'top' },
     ],
   },
 
   'end-of-lease': {
     hook: [
       { url: `${R2}/end-of-lease-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-hook-c.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/end-of-lease-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/end-of-lease-treatment-c.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
   'deep-clean': {
     hook: [
       { url: `${R2}/deep-clean-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-hook-c.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/deep-clean-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/deep-clean-treatment-c.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
