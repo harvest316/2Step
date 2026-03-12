@@ -69,7 +69,7 @@ async function submitKlingGeneration(prompt) {
       duration:      String(CLIP_DURATION),
       aspect_ratio:  CLIP_ASPECT,
       mode:          'pro',   // pro = max quality; std saves ~50% if cost matters
-      cfg_scale:     0.5,
+      cfg_scale:     0.7,
     }),
   });
 

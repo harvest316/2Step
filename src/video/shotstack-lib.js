@@ -369,6 +369,9 @@ export const CLIP_POOLS = {
       { url: `${R2}/shared-technician-c.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/shared-technician-d.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/shared-technician-e.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-technician-f.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-technician-g.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-technician-h.mp4`, source: 'kling', focus: 'center' },
     ],
     resolution: [
       { url: `${R2}/shared-resolution-a.mp4`, source: 'kling', focus: 'center' },
@@ -376,6 +379,9 @@ export const CLIP_POOLS = {
       { url: `${R2}/shared-resolution-c.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/shared-resolution-d.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/shared-resolution-e.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-resolution-f.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-resolution-g.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-resolution-h.mp4`, source: 'kling', focus: 'center' },
     ],
     cta: [
       { url: `${R2}/shared-cta-a.mp4`, source: 'kling', focus: 'center' },
@@ -383,6 +389,9 @@ export const CLIP_POOLS = {
       { url: `${R2}/shared-cta-c.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/shared-cta-d.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/shared-cta-e.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-cta-f.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-cta-g.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/shared-cta-h.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
