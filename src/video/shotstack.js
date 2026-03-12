@@ -282,6 +282,7 @@ async function buildScenesWithOpus(prospect) {
   const city = prospect.city || 'Sydney';
   const reviewer = prospect.best_review_author || 'a customer';
   const review = prospect.best_review_text || '';
+  const phone = prospect.phone || null;
 
   // Look up known phonetic form so Opus uses it in every scene, not just scene 1.
   const cityPhonetic = applyPhonetics(city, city);
@@ -289,10 +290,21 @@ async function buildScenesWithOpus(prospect) {
     ? `\nPhonetic form for "${city}" in voiceover: "${cityPhonetic}" — use this every time the suburb is mentioned`
     : '';
 
+  const phoneHint = phone
+    ? `\nPhone: ${phone} — include this in scene 5 text and voiceover`
+    : '';
+
+  const ctaTextExample = phone
+    ? `"Name\\nCall ${phone}"`
+    : `"Name\\nCity | Book Now"`;
+  const ctaVoiceExample = phone
+    ? `"\\"Name\\" — call us on ${phone}."`
+    : `"\\"Name\\" — trusted by locals in City. Book your service today."`;
+
   const prompt = `You are writing copy for a 20-second social media video ad for a local business.
 
 Business: ${name}
-City: ${city}${phoneticHint}
+City: ${city}${phoneticHint}${phoneHint}
 Reviewer: ${reviewer}
 Review: "${review}"
 
@@ -305,7 +317,7 @@ Scene structure:
 2. Quote part 1: a short punchy excerpt from the review (≤15 words, complete sentence or phrase)
 3. Quote part 2: a different short excerpt from the review (≤15 words, must differ from scene 2)
 4. Attribution: five stars, reviewer name
-5. CTA: call to action, business name, city, book now
+5. CTA: call to action, business name, phone number (if provided)
 
 Rules:
 - The voiceover for each scene must say the same thing as the on-screen text — a viewer reading the text should hear the same words spoken. Do NOT paraphrase or substitute synonyms.
@@ -322,7 +334,7 @@ Example output format:
   {"voiceover": "Absolutely fantastic from start to finish.", "text": "\\"Absolutely fantastic\\nfrom start to finish.\\""},
   {"voiceover": "He went above and beyond every time.", "text": "\\"He went above\\nand beyond every time.\\""},
   {"voiceover": "Five stars — from Jane Smith.", "text": "⭐⭐⭐⭐⭐\\n— Jane Smith"},
-  {"voiceover": "\\"Name\\" — trusted by locals in City. Book your service today.", "text": "Name\\nCity | Book Now"}
+  {"voiceover": ${ctaVoiceExample}, "text": ${ctaTextExample}}
 ]`;
 
   try {

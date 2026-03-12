@@ -3,6 +3,29 @@
  * Imported by both shotstack.js (CLI) and tests.
  */
 
+import { readFileSync, existsSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const FOCUS_OVERRIDES_PATH = resolve(__dirname, '../../clips/focus-overrides.json');
+
+/**
+ * Per-clip focus overrides loaded from clips/focus-overrides.json.
+ * Keys are filenames (e.g. "blocked-drain-hook-a.mp4"), values are focus strings.
+ * Edit that file after watching clips — no code change needed.
+ */
+const FOCUS_OVERRIDES = (() => {
+  if (!existsSync(FOCUS_OVERRIDES_PATH)) return {};
+  try {
+    const raw = JSON.parse(readFileSync(FOCUS_OVERRIDES_PATH, 'utf8'));
+    // Strip comment keys
+    return Object.fromEntries(
+      Object.entries(raw).filter(([k]) => !k.startsWith('_'))
+    );
+  } catch { return {}; }
+})();
+
 // ─── Suburb phonetics ─────────────────────────────────────────────────────────
 //
 // ElevenLabs mispronounces many Australian suburb names. This map provides
@@ -52,6 +75,10 @@ export const SUBURB_PHONETICS = {
   'Kenthurst':    'KENT-hurst',
   'Annangrove':   'ANNA-grove',
   'Glenorie':     'Glen-OR-ee',
+  'Point Piper':  'Point PIE-per',
+  'Potts Point':  'Potts Point',
+  'Haymarket':    'HAY-market',
+  'The Rocks':    'The Rocks',
 };
 
 /**
@@ -106,14 +133,17 @@ export function buildScenes(prospect) {
   const city = prospect.city || 'Sydney';
   const reviewer = prospect.best_review_author || 'a customer';
   const review = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
+  const phone = prospect.phone || null;
 
   const quotes = extractTwoQuotes(review);
 
-  // If the business name already contains the city, don't repeat it in the CTA sentence.
+  const ctaText = phone ? `${name}\nCall ${phone}` : `${name}\n${city} | Book Now`;
   const nameHasCity = name.toLowerCase().includes(city.toLowerCase());
-  const ctaVoiceover = nameHasCity
-    ? `"${name}" — trusted by locals. Book your service today.`
-    : `"${name}" — trusted by locals across ${city}. Book your service today.`;
+  const ctaVoiceover = phone
+    ? `"${name}" — call us now on ${phone}.`
+    : nameHasCity
+      ? `"${name}" — trusted by locals. Book your service today.`
+      : `"${name}" — trusted by locals across ${city}. Book your service today.`;
 
   const pairs = [
     {
@@ -139,7 +169,7 @@ export function buildScenes(prospect) {
       minDur:    3,
     },
     {
-      text:      `${name}\n${city} | Book Now`,
+      text:      ctaText,
       voiceover: ctaVoiceover,
       minDur:    4,
     },
@@ -735,7 +765,10 @@ export function pickClipsFromPool(niche, seed = 0) {
   return slots.map((slot, i) => {
     const arr   = resolveSlot(slot);
     const entry = arr[(seed + i) % arr.length];
-    return { url: entry.url, focus: entry.focus ?? 'center' };
+    // Apply runtime focus override if the user has annotated this clip
+    const filename = entry.url.split('/').pop();
+    const focus = FOCUS_OVERRIDES[filename] ?? entry.focus ?? 'center';
+    return { url: entry.url, focus };
   });
 }
 

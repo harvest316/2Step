@@ -65,3 +65,4 @@ temp/
 # Backup files
 *.backup
 *.bak
+!clips/focus-overrides.json

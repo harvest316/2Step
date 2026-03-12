@@ -1,0 +1,9 @@
+{
+  "_comment": "Maps clip filename (without path) to focus area. Focus values: 'top' | 'center' | 'bottom'.",
+  "_usage": "Edit this file after watching clips. pickClipsFromPool() loads it at runtime to override CLIP_POOLS defaults.",
+  "_values": {
+    "top": "subject is in the upper portion of the frame — put text at bottom",
+    "center": "subject is in the middle — text goes at top (default)",
+    "bottom": "subject is in the lower portion — text goes at top"
+  }
+}
