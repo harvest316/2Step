@@ -369,7 +369,7 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musi
     clips: [{
       asset: { type: 'audio', src: audioUrl, volume: 1 },
       start: 0,
-      length: totalDuration,
+      length: round2(totalDuration),
     }],
   };
 
@@ -381,7 +381,7 @@ export function buildRenderPayload(clips, audioUrl, scenes, logoUrl = null, musi
       clips: [{
         asset: { type: 'audio', src: musicUrl, volume: 0.12 },
         start: 0,
-        length: totalDuration,
+        length: round2(totalDuration),
       }],
     };
     tracks.push(musicTrack);
