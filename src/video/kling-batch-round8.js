@@ -92,22 +92,18 @@ async function pollOne(taskId) {
   return { status: task?.task_status, url: task?.task_result?.videos?.[0]?.url };
 }
 
-async function pollBatch(tasks, maxWaitMs = 900000) {
+async function pollUntilDone(taskId, name, maxWaitMs = 360000) {
   const start = Date.now();
-  const remaining = new Set(tasks.map((_, i) => i));
-  const results = new Array(tasks.length).fill(null);
-  process.stdout.write('  Polling');
-  while (remaining.size > 0 && Date.now() - start < maxWaitMs) {
+  process.stdout.write('  polling');
+  while (Date.now() - start < maxWaitMs) {
     await sleep(8000);
     process.stdout.write('.');
-    for (const i of [...remaining]) {
-      const { status, url } = await pollOne(tasks[i].taskId);
-      if (status === 'succeed') { process.stdout.write(` ✓${tasks[i].name}`); results[i] = url; remaining.delete(i); }
-      else if (status === 'failed') { process.stdout.write(` ✗${tasks[i].name}`); remaining.delete(i); }
-    }
+    const { status, url } = await pollOne(taskId);
+    if (status === 'succeed') { console.log(` ✓`); return url; }
+    if (status === 'failed')  { console.log(` ✗`); return null; }
   }
-  console.log('');
-  return results;
+  console.log(' timeout');
+  return null;
 }
 
 async function download(url, destPath) {
@@ -499,36 +495,31 @@ async function main() {
 
   if (!toGenerate.length) { console.log('All clips already exist.'); return; }
 
-  // Submit in batches of 10 to avoid overloading the API
-  const BATCH_SIZE = 10;
+  // Submit one at a time (Kling limits parallel tasks to 3 on resource pack).
+  // Poll each to completion before submitting the next.
   let completed = 0;
 
-  for (let b = 0; b < toGenerate.length; b += BATCH_SIZE) {
-    const batch = toGenerate.slice(b, b + BATCH_SIZE);
-    const batchNum = Math.floor(b / BATCH_SIZE) + 1;
-    const totalBatches = Math.ceil(toGenerate.length / BATCH_SIZE);
-    console.log(`\nBatch ${batchNum}/${totalBatches} — submitting ${batch.length} clips...`);
-
-    const tasks = [];
-    for (const clip of batch) {
-      process.stdout.write(`  [${clip.name}] submitting...`);
-      const taskId = await submit(clip.prompt);
+  for (const [i, clip] of toGenerate.entries()) {
+    console.log(`\n[${i + 1}/${toGenerate.length}] ${clip.name}`);
+    process.stdout.write(`  submitting...`);
+    let taskId;
+    try {
+      taskId = await submit(clip.prompt);
       console.log(` → ${taskId}`);
-      tasks.push({ ...clip, taskId });
-      await sleep(500);
+    } catch (err) {
+      console.log(` ✗ ${err.message}`);
+      continue;
     }
 
-    const urls = await pollBatch(tasks);
-    for (const [i, clip] of tasks.entries()) {
-      const url = urls[i];
-      if (!url) { console.log(`  ✗ ${clip.name} — failed or timed out`); continue; }
-      const destDir = path.join(CLIPS_ROOT, clip.dir);
-      mkdirSync(destDir, { recursive: true });
-      const destPath = path.join(destDir, clip.file);
-      process.stdout.write(`  Downloading ${clip.file}...`);
-      console.log(` ${await download(url, destPath)} ✓`);
-      completed++;
-    }
+    const url = await pollUntilDone(taskId, clip.name);
+    if (!url) { console.log(`  ✗ ${clip.name} — failed or timed out`); continue; }
+
+    const destDir = path.join(CLIPS_ROOT, clip.dir);
+    mkdirSync(destDir, { recursive: true });
+    const destPath = path.join(destDir, clip.file);
+    process.stdout.write(`  downloading ${clip.file}...`);
+    console.log(` ${await download(url, destPath)} ✓`);
+    completed++;
   }
 
   console.log(`\n=== Round 8 complete — ${completed}/${toGenerate.length} clips ===`);
