@@ -332,6 +332,9 @@ async function main() {
       skipped++;
       continue;
     }
+    // Ensure nullable fields are null (not undefined) for better-sqlite3 named params
+    prospect.best_review_text  = prospect.best_review_text  ?? null;
+    prospect.best_review_author = prospect.best_review_author ?? null;
     insertProspect(db, prospect);
     inserted++;
   }

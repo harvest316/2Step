@@ -448,22 +448,12 @@ export const CLIP_POOLS = {
     ],
   },
 
-  // ── Plumbing ──────────────────────────────────────────────────────────────
-  plumbing: {
-    hook: [
-      { url: `${R2}/plumbing-hook-a.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/plumbing-hook-b.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/plumbing-hook-c.mp4`, source: 'kling', focus: 'center' },
-    ],
+  // ── Plumbing shared (technician, resolution, cta) ─────────────────────────
+  'plumbing-shared': {
     technician: [
       { url: `${R2}/plumbing-technician-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-technician-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/plumbing-technician-c.mp4`, source: 'kling', focus: 'center' },
-    ],
-    treatment: [
-      { url: `${R2}/plumbing-treatment-a.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/plumbing-treatment-b.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/plumbing-treatment-c.mp4`, source: 'kling', focus: 'center' },
     ],
     resolution: [
       { url: `${R2}/plumbing-resolution-a.mp4`, source: 'kling', focus: 'center' },
@@ -477,22 +467,48 @@ export const CLIP_POOLS = {
     ],
   },
 
-  // ── House cleaning ────────────────────────────────────────────────────────
-  'house-cleaning': {
+  // ── Plumbing problems ──────────────────────────────────────────────────────
+  'blocked-drain': {
     hook: [
-      { url: `${R2}/house-cleaning-hook-a.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/house-cleaning-hook-b.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/house-cleaning-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-hook-b.mp4`, source: 'kling', focus: 'center' },
     ],
+    treatment: [
+      { url: `${R2}/blocked-drain-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/blocked-drain-treatment-b.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'burst-pipe': {
+    hook: [
+      { url: `${R2}/burst-pipe-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/burst-pipe-hook-b.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/burst-pipe-treatment-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'leaking-tap': {
+    hook: [
+      { url: `${R2}/leaking-tap-hook-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/leaking-tap-treatment-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'hot-water': {
+    hook: [],  // pending next credit top-up
+    treatment: [],
+  },
+
+  // ── House cleaning shared (technician, resolution, cta) ───────────────────
+  'house-cleaning-shared': {
     technician: [
       { url: `${R2}/house-cleaning-technician-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-technician-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-technician-c.mp4`, source: 'kling', focus: 'center' },
-    ],
-    treatment: [
-      { url: `${R2}/house-cleaning-treatment-a.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/house-cleaning-treatment-b.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/house-cleaning-treatment-c.mp4`, source: 'kling', focus: 'center' },
     ],
     resolution: [
       { url: `${R2}/house-cleaning-resolution-a.mp4`, source: 'kling', focus: 'center' },
@@ -503,6 +519,44 @@ export const CLIP_POOLS = {
       { url: `${R2}/house-cleaning-cta-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-cta-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/house-cleaning-cta-c.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  // ── House cleaning problems ───────────────────────────────────────────────
+  'greasy-rangehood': {
+    hook: [
+      { url: `${R2}/greasy-rangehood-hook-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/greasy-rangehood-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/greasy-rangehood-treatment-b.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'dirty-bathroom': {
+    hook: [
+      { url: `${R2}/dirty-bathroom-hook-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/dirty-bathroom-treatment-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'end-of-lease': {
+    hook: [
+      { url: `${R2}/end-of-lease-hook-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/end-of-lease-treatment-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'deep-clean': {
+    hook: [
+      { url: `${R2}/deep-clean-hook-a.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/deep-clean-treatment-a.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -525,42 +579,61 @@ export const CLIP_POOLS = {
  * @param {number} seed   Used to rotate clip selection (e.g. prospect.id)
  * @returns {Array<{url: string, focus: string}>|null}  Array of 5 clip objects, or null if pool is empty
  */
-// Map legacy/broad niche names to specific pool keys.
-// Pest control sub-niches (cockroaches, rodents, etc.) use the shared pool
-// for technician/resolution/cta. Other verticals (plumbing, house-cleaning)
-// have their own full 5-slot pools.
+// Maps broad niche names → default problem slug used when no problem is specified.
 const NICHE_ALIASES = {
   'pest control':   'cockroaches',
-  'house cleaning': 'house-cleaning',
-  'cleaning':       'house-cleaning',
-  'plumber':        'plumbing',
+  'house cleaning': 'greasy-rangehood',
+  'cleaning':       'greasy-rangehood',
+  'plumber':        'blocked-drain',
 };
 
-// Niches that rely on the pest-control shared pool for technician/resolution/cta
-const PEST_CONTROL_NICHES = new Set(['cockroaches', 'rodents', 'spiders', 'termites']);
+// Maps problem slug → shared pool key for technician/resolution/cta
+const PROBLEM_SHARED_POOL = {
+  'cockroaches':     'shared',
+  'rodents':         'shared',
+  'spiders':         'shared',
+  'termites':        'shared',
+  'blocked-drain':   'plumbing-shared',
+  'burst-pipe':      'plumbing-shared',
+  'leaking-tap':     'plumbing-shared',
+  'hot-water':       'plumbing-shared',
+  'greasy-rangehood':'house-cleaning-shared',
+  'dirty-bathroom':  'house-cleaning-shared',
+  'end-of-lease':    'house-cleaning-shared',
+  'deep-clean':      'house-cleaning-shared',
+};
 
+/**
+ * Pick 5 clips (hook, technician, treatment, resolution, cta) for a given problem.
+ *
+ * @param {string} niche    Prospect niche (e.g. 'plumber', 'pest control', 'blocked-drain')
+ * @param {number} seed     Rotates clip selection per prospect
+ * @returns {Array<{url,focus}>|null}  5 clips, or null if any slot is empty
+ */
 export function pickClipsFromPool(niche, seed = 0) {
-  const resolvedNiche = NICHE_ALIASES[niche] || niche;
-  const specificPool  = CLIP_POOLS[resolvedNiche];
-  const defaultPool   = CLIP_POOLS.default;
-  const sharedPool    = CLIP_POOLS.shared;
-  const isPestControl = PEST_CONTROL_NICHES.has(resolvedNiche);
+  const problem     = NICHE_ALIASES[niche] || niche;
+  const problemPool = CLIP_POOLS[problem];
+  const sharedKey   = PROBLEM_SHARED_POOL[problem];
+  const sharedPool  = sharedKey ? CLIP_POOLS[sharedKey] : null;
+  const defaultPool = CLIP_POOLS.default;
 
   function resolveSlot(slot) {
-    // Always check the niche-specific pool first
-    if (specificPool?.[slot]?.length) return specificPool[slot];
-    // For pest-control sub-niches, fall back to shared pool for technician/resolution/cta
-    if (isPestControl && sharedPool?.[slot]?.length) return sharedPool[slot];
+    if (slot === 'hook' || slot === 'treatment') {
+      if (problemPool?.[slot]?.length) return problemPool[slot];
+      return defaultPool[slot] ?? [];
+    }
+    // technician / resolution / cta — use vertical shared pool
+    if (sharedPool?.[slot]?.length) return sharedPool[slot];
+    // pest-control fallback to global shared
+    if (CLIP_POOLS.shared?.[slot]?.length) return CLIP_POOLS.shared[slot];
     return defaultPool[slot] ?? [];
   }
 
   const slots = ['hook', 'technician', 'treatment', 'resolution', 'cta'];
-
-  // Return null if any slot is empty — caller falls back to Pexels search
   if (slots.some(s => !resolveSlot(s).length)) return null;
 
   return slots.map((slot, i) => {
-    const arr = resolveSlot(slot);
+    const arr   = resolveSlot(slot);
     const entry = arr[(seed + i) % arr.length];
     return { url: entry.url, focus: entry.focus ?? 'center' };
   });

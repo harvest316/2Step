@@ -575,21 +575,27 @@ describe('pickClipsFromPool', () => {
     assert.equal(pickClipsFromPool('unknown-niche-xyz', 0), null);
   });
 
-  it('returns 5 clips for plumbing (full 5-slot pool)', () => {
-    const clips = pickClipsFromPool('plumbing', 0);
+  it('returns 5 clips for blocked-drain (plumbing problem pool)', () => {
+    const clips = pickClipsFromPool('blocked-drain', 0);
     assert.ok(Array.isArray(clips));
     assert.equal(clips.length, 5);
-    assert.ok(clips.every(c => typeof c.url === 'string' && c.url.includes('plumbing')));
+    assert.ok(clips.every(c => typeof c.url === 'string' && c.url.startsWith('https://')));
   });
 
-  it('returns 5 clips for house-cleaning (full 5-slot pool)', () => {
-    const clips = pickClipsFromPool('house-cleaning', 0);
+  it('resolves plumber alias to blocked-drain (default plumbing problem)', () => {
+    const clips = pickClipsFromPool('plumber', 0);
     assert.ok(Array.isArray(clips));
     assert.equal(clips.length, 5);
-    assert.ok(clips.every(c => typeof c.url === 'string' && c.url.includes('house-cleaning')));
   });
 
-  it('resolves house cleaning alias', () => {
+  it('returns 5 clips for greasy-rangehood (cleaning problem pool)', () => {
+    const clips = pickClipsFromPool('greasy-rangehood', 0);
+    assert.ok(Array.isArray(clips));
+    assert.equal(clips.length, 5);
+    assert.ok(clips.every(c => typeof c.url === 'string' && c.url.startsWith('https://')));
+  });
+
+  it('resolves house cleaning alias to greasy-rangehood (default cleaning problem)', () => {
     const clips = pickClipsFromPool('house cleaning', 0);
     assert.ok(Array.isArray(clips));
     assert.equal(clips.length, 5);
