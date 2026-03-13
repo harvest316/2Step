@@ -1,0 +1,29 @@
+AI VIDEO PROMPT
+
+Create a fast-paced Youtube Shorts video. I want you to include the customer's review. 
+
+Format: Short-form testimonial video (30-45 sec)
+
+Customer's Review:
+"Jeff at Peak Pest was amazing! I would highly recommend and will use Peak Pest Solutions again. Willing to go to whatever lengths necessary to do a thorough job. Very reasonable rate. Friendly and easy to work with! We had a swarm of yellow jackets that had mde two nests inside our insulation under our master bedroom. Jeff was able to climb ladder to access the nest/queen and eradicate the hives. We will sleep soundly tonight. No more buzzing sounds coming up from in the floor. Thanks Peak Pest Solutions!"
+(Review by Kristin)
+
+Business Name:
+City:
+Phone: 
+
+Hook: "Dealing with pest control headaches in Wyoming?"
+
+Voiceover: "Jeff at Peak Pest was amazing! I would highly recommend and will use Peak Pest Solutions again. Willing to go to whatever lengths necessary to do a thorough job. Very reasonable rate. Friendly and easy to work with! We had a swarm of yellow jackets that had mde two nests inside our insulation under our master bedroom. Jeff was able to climb ladder to access the nest/queen and eradicate the hives. We will sleep soundly tonight. No more buzzing sounds coming up from in the floor. Thanks Peak Pest Solutions!"
+(Review by Kristin)
+
+Offer: "Schedule your FREE inspection"
+
+Visual Directions:
+- Clip 1: Show the common problem (relating to Pest Control)
+- Clip 2: Pest Control team providing the solution in Wyoming
+- Clip 3: Happy customer / finished result
+- Overlay text: "Pest Control Experts" (or brand logo)
+
+Call-to-Action: Call (123) 444-5555 or reply "YES" to schedule your free inspection.
+
