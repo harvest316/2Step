@@ -15,7 +15,7 @@
  */
 
 import { createServer } from 'http';
-import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, createReadStream } from 'fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync, createReadStream, unlinkSync } from 'fs';
 import { resolve, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -99,6 +99,9 @@ function buildHtml(clips, overrides) {
   .badge-center { background: #555; color: #eee; }
   .badge-bottom { background: #ff7a4a; color: #000; }
   .badge-none   { background: #333; color: #777; }
+  .btn-delete { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.6); border: 1px solid #555; color: #888; width: 22px; height: 22px; border-radius: 50%; font-size: 13px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s, color 0.15s, border-color 0.15s; }
+  .btn-delete:hover { color: #ff4444; border-color: #ff4444; }
+  .video-wrap:hover .btn-delete { opacity: 1; }
   #toast { position: fixed; bottom: 20px; right: 20px; background: #222; border: 1px solid #444; color: #eee; padding: 8px 14px; border-radius: 8px; font-size: 13px; opacity: 0; transition: opacity 0.2s; pointer-events: none; }
   #toast.show { opacity: 1; }
   .legend { display: flex; gap: 12px; margin-bottom: 12px; font-size: 12px; align-items: center; }
@@ -191,6 +194,7 @@ function buildCard(clip) {
       <div class="zone zone-center" data-focus="center">Subtitles Center</div>
       <div class="zone zone-bottom" data-focus="bottom">Subtitles Bottom</div>
       <div class="focus-badge \${focus ? 'badge-'+focus : 'badge-none'}">\${focus || '—'}</div>
+      <button class="btn-delete" title="Delete local file">✕</button>
     </div>
   \`;
 
@@ -205,6 +209,22 @@ function buildCard(clip) {
       e.stopPropagation();
       setFocus(clip.filename, zone.dataset.focus);
     });
+  });
+
+  // Delete local file
+  card.querySelector('.btn-delete').addEventListener('click', async e => {
+    e.stopPropagation();
+    if (!confirm(\`Delete \${clip.filename} from local disk?\`)) return;
+    video.pause();
+    await fetch('/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ relPath: clip.relPath }),
+    });
+    card.style.transition = 'opacity 0.2s';
+    card.style.opacity = '0';
+    setTimeout(() => card.remove(), 200);
+    toast(\`Deleted \${clip.filename}\`);
   });
 
   return card;
@@ -253,6 +273,26 @@ const server = createServer((req, res) => {
         const overrides = loadOverrides();
         overrides[filename] = focus;
         saveOverrides(overrides);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ ok: true }));
+      } catch (e) {
+        res.writeHead(400);
+        res.end(e.message);
+      }
+    });
+    return;
+  }
+
+  // Delete local file
+  if (req.method === 'POST' && req.url === '/delete') {
+    let body = '';
+    req.on('data', d => body += d);
+    req.on('end', () => {
+      try {
+        const { relPath } = JSON.parse(body);
+        const fullPath = resolve(CLIPS_ROOT, relPath);
+        if (!fullPath.startsWith(CLIPS_ROOT)) throw new Error('path traversal');
+        if (existsSync(fullPath)) unlinkSync(fullPath);
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ ok: true }));
       } catch (e) {
