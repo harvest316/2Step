@@ -132,6 +132,68 @@ Separate SQLite DB per project (`db/2step.db`, `db/sites.db`). Different data mo
 
 Unlimited private repos on Free plan. Separate repos for `mmo-platform`, `2Step`, keep `333Method` as-is. Each independently version-controlled.
 
+## Clip Pipeline
+
+AI-generated video clips are the core creative asset. The pipeline:
+
+```
+Kling AI → local clips/ → R2 (primary hosting) → B2 (backup)
+```
+
+### Storage
+
+| Store | Purpose | Access |
+|-------|---------|--------|
+| `clips/` (local) | Working copy for tagging; deleted after focus-tagger session | Local only |
+| Cloudflare R2 (`2step-clips`) | Primary public hosting — URLs embedded in Shotstack renders | Public CDN |
+| Backblaze B2 (`2StepClipBackups`) | Offsite backup of all R2 clips | Private, us-east-005 |
+
+### Clip Folder Structure (local)
+
+```
+clips/
+  pest-control/
+    cockroaches/   shared/      termites/
+    rodents/       spiders/
+  plumbing/
+    blocked-drain/ burst-pipe/  hot-water/
+    leaking-tap/   shared/
+  house-cleaning/
+    deep-clean/    dirty-bathroom/  end-of-lease/
+    greasy-rangehood/  shared/
+  focus-overrides.json   ← subtitle position per clip (top/bottom/center)
+```
+
+R2 stores clips flat (filename only, no subdirs) for clean public URLs.
+
+### Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `src/video/kling-batch-round*.js` | Generate clips via Kling AI text-to-video |
+| `src/video/focus-tagger.js` | Browser UI to tag subtitle position per clip |
+| `src/video/r2-upload.js` | Upload local clips/ to R2 |
+| `src/video/r2-download.js` | Download all CLIP_POOLS clips from R2 (for tagging) |
+| `src/video/b2-backup.js` | Sync all CLIP_POOLS clips from R2 → B2 |
+| `src/video/shotstack.js` | Render final video for a prospect via Shotstack |
+
+### CLIP_POOLS
+
+`shotstack-lib.js` exports `CLIP_POOLS` — curated pool of 174 clips across all verticals.
+Each pool slot holds 5 clips (a–e), rotated per prospect via seed = prospect ID.
+
+```
+shared              → pest-control technician/resolution/cta (8 each)
+plumbing-shared     → plumbing technician/resolution/cta (5 each)
+house-cleaning-shared → house-cleaning technician/resolution/cta (5 each)
+cockroaches/rodents/spiders/termites → hook + treatment (5 each)
+blocked-drain/burst-pipe/leaking-tap/hot-water → hook + treatment (5 each)
+greasy-rangehood/dirty-bathroom/end-of-lease/deep-clean → hook + treatment (5 each)
+```
+
+Focus overrides in `clips/focus-overrides.json` set subtitle position (top/bottom/center)
+per clip. Tagged via `focus-tagger.js`, committed to git, loaded at render time.
+
 ## Key Architectural Decisions
 
 | Decision | Choice | Rationale |
@@ -142,3 +204,5 @@ Unlimited private repos on Free plan. Separate repos for `mmo-platform`, `2Step`
 | AFK monitoring | One overseer for all projects | Single session watches everything via project registry |
 | Secrets | Centralized in mmo-platform (Phase 2) | Foresight for distributed agents |
 | VCS | Separate repos per project | Independent version control, clean git history |
+| Clip hosting | R2 (primary) + B2 (backup) | R2 for fast CDN delivery; B2 for offsite backup at low cost |
+| Clip rotation | Seed = prospect ID | Different clip combo per prospect, deterministic |
