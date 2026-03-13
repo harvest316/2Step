@@ -129,6 +129,11 @@ function buildHtml(clips, overrides) {
   <div><strong id="stat-tagged">0</strong> <span>tagged</span></div>
   <div><strong id="stat-total">${clips.length}</strong> <span>total</span></div>
   <div><strong id="stat-remaining">0</strong> <span>remaining</span></div>
+  <div style="margin-left:auto">
+    <label style="cursor:pointer;user-select:none">
+      <input type="checkbox" id="chk-untagged" onchange="toggleFilter()"> Untagged only
+    </label>
+  </div>
 </div>
 
 <div class="pagination">
@@ -145,6 +150,16 @@ const clips = ${JSON.stringify(clipData)};
 const overrides = ${JSON.stringify(overrides)};
 const PAGE_SIZE = 20;
 let page = 0;
+let filterUntagged = false;
+
+function visibleClips() {
+  return filterUntagged ? clips.filter(c => !overrides[c.filename]) : clips;
+}
+
+function toggleFilter() {
+  filterUntagged = document.getElementById('chk-untagged').checked;
+  renderPage(0);
+}
 
 function toast(msg) {
   const el = document.getElementById('toast');
@@ -162,13 +177,20 @@ function updateStats() {
 
 async function setFocus(filename, focus) {
   overrides[filename] = focus;
-  // Update UI
   const card = document.querySelector(\`[data-file="\${filename}"]\`);
   if (card) {
-    card.className = \`card tagged-\${focus}\`;
-    const badge = card.querySelector('.focus-badge');
-    badge.textContent = focus;
-    badge.className = \`focus-badge badge-\${focus}\`;
+    if (filterUntagged) {
+      // In untagged-only mode: fade card out after tagging
+      card.querySelector('video')?.pause();
+      card.style.transition = 'opacity 0.2s';
+      card.style.opacity = '0';
+      setTimeout(() => card.remove(), 200);
+    } else {
+      card.className = \`card tagged-\${focus}\`;
+      const badge = card.querySelector('.focus-badge');
+      badge.textContent = focus;
+      badge.className = \`focus-badge badge-\${focus}\`;
+    }
   }
   updateStats();
   toast(\`\${filename} → \${focus}\`);
@@ -231,10 +253,11 @@ function buildCard(clip) {
 }
 
 function renderPage(p) {
-  const totalPages = Math.ceil(clips.length / PAGE_SIZE);
+  const view = visibleClips();
+  const totalPages = Math.max(1, Math.ceil(view.length / PAGE_SIZE));
   page = Math.max(0, Math.min(p, totalPages - 1));
   const start = page * PAGE_SIZE;
-  const pageClips = clips.slice(start, start + PAGE_SIZE);
+  const pageClips = view.slice(start, start + PAGE_SIZE);
 
   // Pause all playing videos before clearing
   document.querySelectorAll('video').forEach(v => v.pause());
@@ -243,8 +266,9 @@ function renderPage(p) {
   grid.innerHTML = '';
   for (const clip of pageClips) grid.appendChild(buildCard(clip));
 
-  document.getElementById('page-info').textContent =
-    \`Page \${page + 1} of \${totalPages} (clips \${start + 1}–\${Math.min(start + PAGE_SIZE, clips.length)})\`;
+  document.getElementById('page-info').textContent = view.length === 0
+    ? 'All clips tagged!'
+    : \`Page \${page + 1} of \${totalPages} (clips \${start + 1}–\${Math.min(start + PAGE_SIZE, view.length)} of \${view.length})\`;
   document.getElementById('btn-prev').disabled = page === 0;
   document.getElementById('btn-next').disabled = page >= totalPages - 1;
   window.scrollTo(0, 0);
