@@ -22,11 +22,13 @@ import '../utils/load-env.js';
 import Database from 'better-sqlite3';
 import axios from 'axios';
 import sharp from 'sharp';
+import * as musicMetadata from 'music-metadata';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
 import { randomUUID } from 'crypto';
 import { buildScenes, pickClipsFromPool } from './shotstack-lib.js';
+import { pickMusicTrack } from './music-tracks.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -132,6 +134,58 @@ async function uploadToR2(buffer, key, contentType = 'audio/mpeg') {
   return `${R2_PUBLIC_URL}/${key}`;
 }
 
+// ─── Poster image (snapshot + play button) ───────────────────────────────────
+
+/**
+ * Download Creatomate snapshot JPEG, resize to 400×711, composite a play button
+ * (dark circle + white triangle polygon) over it, upload to R2, return public URL.
+ *
+ * The play button is baked into the image so email clients receive one <img> tag
+ * with no CSS overlay — Outlook-safe.
+ */
+async function buildPosterImage(snapshotUrl, prospectId) {
+  const res = await fetch(snapshotUrl);
+  if (!res.ok) throw new Error(`Snapshot download failed ${res.status}: ${snapshotUrl}`);
+  const origBuf = Buffer.from(await res.arrayBuffer());
+
+  // Resize to 400px wide, preserving 9:16 aspect ratio (→ ~711px tall)
+  const posterBuf = await sharp(origBuf)
+    .resize(400, null, { fit: 'inside', withoutEnlargement: false })
+    .jpeg({ quality: 85 })
+    .toBuffer();
+
+  const { width: W, height: H } = await sharp(posterBuf).metadata();
+
+  // Play button: 72px circle centred on image
+  const r = 36;          // circle radius
+  const cx = Math.round(W / 2);
+  const cy = Math.round(H / 2);
+
+  // Triangle polygon: right-pointing, optical centre slightly right of circle centre
+  // Points form an equilateral-ish triangle inscribed in the circle
+  const tx = cx + 4;     // shift right for optical balance
+  const ty = cy;
+  const th = 22;         // half-height of triangle
+  const tw = 26;         // width of triangle
+  const p1 = `${tx - Math.round(tw * 0.4)},${ty - th}`;   // top-left
+  const p2 = `${tx - Math.round(tw * 0.4)},${ty + th}`;   // bottom-left
+  const p3 = `${tx + Math.round(tw * 0.6)},${ty}`;        // right point
+
+  const svgOverlay = Buffer.from(
+    `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(0,0,0,0.62)" />
+      <polygon points="${p1} ${p2} ${p3}" fill="white" />
+    </svg>`
+  );
+
+  const finalBuf = await sharp(posterBuf)
+    .composite([{ input: svgOverlay, top: 0, left: 0 }])
+    .jpeg({ quality: 85 })
+    .toBuffer();
+
+  return uploadToR2(finalBuf, `poster-p${prospectId}.jpg`, 'image/jpeg');
+}
+
 // ─── Logo processing ─────────────────────────────────────────────────────────
 
 /**
@@ -223,7 +277,7 @@ function formatPhoneTTS(phone) {
  * Build Creatomate source as flat tracks (no compositions).
  * All elements at top level with explicit time + duration.
  */
-function buildSource(clips, audioUrls, scenes, logoUrl, phoneText) {
+function buildSource(clips, audioUrls, scenes, logoUrl, phoneText, musicUrl) {
   const elements = [];
 
   // Compute cumulative start times from scene durations
@@ -237,7 +291,10 @@ function buildSource(clips, audioUrls, scenes, logoUrl, phoneText) {
   // Assign a UUID to each audio element so transcript_source can reference it
   const audioIds = scenes.map(() => randomUUID());
 
+  const totalDuration = starts[starts.length - 1] + scenes[scenes.length - 1].duration;
+
   // ── Track 1: video clips ──
+  // loop: "pingpong" plays forward then backward — no visible jump when audio > clip length
   for (let i = 0; i < clips.length; i++) {
     elements.push({
       name: `Clip-${i + 1}`,
@@ -248,6 +305,22 @@ function buildSource(clips, audioUrls, scenes, logoUrl, phoneText) {
       source: clips[i].url,
       volume: 0,
       fit: 'cover',
+      loop: true,
+    });
+  }
+
+  // ── Track 5 (lowest): background music, full video duration, ducked under voiceover ──
+  if (musicUrl) {
+    elements.push({
+      name: 'Music',
+      type: 'audio',
+      track: 5,
+      time: 0,
+      duration: totalDuration,
+      source: musicUrl,
+      volume: '15%',   // quiet background under voiceover
+      loop: true,
+      audio_fade_out: 1.5,
     });
   }
 
@@ -318,8 +391,9 @@ function buildSource(clips, audioUrls, scenes, logoUrl, phoneText) {
 
   return {
     output_format: 'mp4',
-    width: 720,
-    height: 1280,
+    snapshot_time: 2,  // t=2s is within scene 1 — logo visible
+    width: 1080,
+    height: 1920,
     elements,
   };
 }
@@ -329,7 +403,7 @@ function buildSource(clips, audioUrls, scenes, logoUrl, phoneText) {
 async function submitRender(prospect) {
   const pid = prospect.id;
 
-  const clips = pickClipsFromPool(prospect.niche, pid);
+  const clips = pickClipsFromPool(prospect.niche, pid, prospect.best_review_text || '');
   if (!clips) throw new Error(`No clips available for niche "${prospect.niche}"`);
 
   // Format phone to national AU before buildScenes so CTA text shows "Call 0412 931 208"
@@ -344,12 +418,23 @@ async function submitRender(prospect) {
     ? scenes.map(s => ({ ...s, voiceover: s.voiceover.replace(nationalPhone, ttsPhone) }))
     : scenes;
 
-  process.stdout.write('  Generating audio (5 scenes)...');
+  process.stdout.write(`  Generating audio (${scenesForAudio.length} scenes)...`);
   const audios = [];
   for (const scene of scenesForAudio) {
     audios.push(await generateAudio(scene.voiceover));
   }
   process.stdout.write(' done\n');
+
+  // Measure actual audio durations and use them (+ 0.4s tail) so nothing gets chopped
+  const TAIL_BUFFER = 0.4; // seconds of silence after voiceover ends
+  const audioDurations = await Promise.all(audios.map(async (buf) => {
+    const meta = await musicMetadata.parseBuffer(buf, { mimeType: 'audio/mpeg' });
+    const raw = meta.format.duration ?? 0;
+    return Math.ceil((raw + TAIL_BUFFER) * 10) / 10; // round up to nearest 0.1s
+  }));
+
+  // Merge measured durations back into scenes (override shotstack defaults)
+  const scenesWithDuration = scenes.map((s, i) => ({ ...s, duration: audioDurations[i] }));
 
   process.stdout.write('  Uploading audio to R2...');
   const audioUrls = await Promise.all(
@@ -367,7 +452,10 @@ async function submitRender(prospect) {
     process.stdout.write(' done\n');
   }
 
-  const source = buildSource(clips, audioUrls, scenes, logoUrl, phoneText);
+  const music = pickMusicTrack(pid);
+  console.log(`  Music: ${music.name}`);
+
+  const source = buildSource(clips, audioUrls, scenesWithDuration, logoUrl, phoneText, music.url);
 
   if (args['dry-run']) {
     console.log(`  Clips: ${clips.map(c => c.url.split('/').pop()).join(', ')}`);
@@ -378,7 +466,7 @@ async function submitRender(prospect) {
     return { id: 'dry-run', status: 'dry-run' };
   }
 
-  const { data } = await api.post('/renders', { source });
+  const { data } = await api.post('/renders', { source, render_scale: 1 });
   const render = Array.isArray(data) ? data[0] : data;
   return render;
 }
@@ -410,7 +498,7 @@ async function main() {
 
   console.log(`Rendering ${prospects.length} videos via Creatomate${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
 
-  const updateVideo = db.prepare(`UPDATE videos SET status = ?, video_url = ? WHERE id = ?`);
+  const updateVideo = db.prepare(`UPDATE videos SET status = ?, video_url = ?, thumbnail_url = ? WHERE id = ?`);
   let success = 0, failed = 0;
 
   for (const prospect of prospects) {
@@ -421,17 +509,23 @@ async function main() {
       if (args['dry-run']) { success++; continue; }
 
       console.log(`  Render submitted (${render.id}), waiting for completion`);
-      updateVideo.run('rendering', null, prospect.video_id);
+      updateVideo.run('rendering', null, null, prospect.video_id);
 
       const completed = await pollRender(render.id);
       console.log(`\n  ✓ Video ready: ${completed.url}`);
-      updateVideo.run('completed', completed.url, prospect.video_id);
+
+      process.stdout.write('  Building poster image...');
+      const posterUrl = await buildPosterImage(completed.snapshot_url, prospect.id);
+      process.stdout.write(' done\n');
+      console.log(`  Poster: ${posterUrl}`);
+
+      updateVideo.run('completed', completed.url, posterUrl, prospect.video_id);
       db.prepare('UPDATE prospects SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         .run('video_created', prospect.id);
       success++;
     } catch (err) {
       console.error(`\n  ✗ Failed: ${err.message}`);
-      updateVideo.run('failed', null, prospect.video_id);
+      updateVideo.run('failed', null, null, prospect.video_id);
       failed++;
     }
   }

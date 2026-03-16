@@ -1,0 +1,954 @@
+Return-Path: <bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net>
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	 by slotpi03m49 (Cyrus 3.13.1-342-ga586d3c39-fm-20260310.001-ga586d3c3) with LMTPA;
+	 Mon, 16 Mar 2026 00:16:16 -0400
+X-Cyrus-Session-Id: slotpi03m49-1773634576-2725397-2-366989417687031447
+X-Sieve: CMU Sieve 3.0
+X-Spam-known-sender: yes ("Address michelle@fundayout.com.au in From header is in
+ addressbook"); in-addressbook;
+ E5F29DFA-262F-11EC-B1E2-9B041D1E7FD0 ("Imported 20211005")
+X-Spam-sender-reputation: 500 (none)
+X-Spam-score: 0.0
+X-Spam-hits: BAYES_99 3.5, BAYES_999 1.2, HEADER_FROM_DIFFERENT_DOMAINS 0.25,
+  HTML_IMAGE_RATIO_08 0.001, HTML_MESSAGE 0.001, MAILING_LIST_MULTI -1,
+  ME_SC_NH -0.001, ME_SENDERREP_NEUTRAL 0.001, MIME_QP_LONG_LINE 0.001,
+  RCVD_IN_DNSWL_NONE -0.0001, SPF_HELO_PASS -0.001, SPF_PASS -0.001,
+  URIBL_GREY 0.424, LANGUAGES en, BAYES_USED user, SA_VERSION 4.0.1
+X-Spam-source: IP='198.2.181.126', Host='mail126.suw17.mcsv.net', Country='US',
+  FromHeader='au', MailFrom='net'
+X-Spam-charsets: subject='utf-8', plain='utf-8', html='utf-8'
+X-Resolved-to: paulh@corpseo.com.au
+X-Delivered-to: paulh@corpseo.com.au
+X-Original-Delivered-to: mailchimp@harvest316.com
+X-Mail-from: bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net
+Received: from phl-mx-02 ([10.202.2.201])
+  by phl-compute-02.internal (LMTPProxy); Mon, 16 Mar 2026 00:16:16 -0400
+Received: from phl-mx-02.messagingengine.com (localhost [127.0.0.1])
+	by mailmx.phl.internal (Postfix) with ESMTP id 9A0CB30A00C1
+	for <paulh@corpseo.com.au>; Mon, 16 Mar 2026 00:16:15 -0400 (EDT)
+Received: from mailmx.phl.internal (localhost [127.0.0.1])
+    by phl-mx-02.messagingengine.com (Authentication Milter) with ESMTP
+    id 634C9052331.41AF130A00B5;
+    Mon, 16 Mar 2026 00:16:15 -0400
+ARC-Seal: i=2; a=rsa-sha256; cv=pass; d=messagingengine.com; s=fm1; t=
+    1773634575; b=q797FoIhWHtuEFXgcEa32Bx7cWLJWBhl3JpwwCM7KgC9TY2T4d
+    DdXOISVvWia8DUnbPSCFIjTRws+OfGqzx7b2xQuWlS9wOKNf7VoVG1lk8oYoGDrC
+    ZWCg+Q2S99+zqYbtkK5+CmqEJq+DGtbq8JZ+G+S01sL1IHDXrxZxMYc+/w8gZrZI
+    1nDb6MRGxsv4q2FutfhdtLlTVcW7NgmS2756k0JzIaEP8QJnNXo2w8LZli9OoYi3
+    COP2my1CGcHuBd11ifJy0JahQs05vGORJKCRgpYYaxHxnsh366/hC4Yr68VyhZ2W
+    STS9T9pdSlvHZ3dW74wy4IMmd19sXyWdmhXA==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=
+    messagingengine.com; h=from:reply-to:to:date:message-id:list-id
+    :list-unsubscribe:subject:content-type:mime-version; s=fm1; t=
+    1773634575; bh=/W0gxC9Ooz0AEP50pIjuzzZdWi0Jfgp5nnXgycnbW4Q=; b=U
+    ZdPvdUkoox8GTpblNSxc0XToSBtWSmWN5QiORGlfzTYvJlU3fPytwauVkGSWuy7u
+    IodKT1TefMzPSqAhVFjB0noc5uahPpZ5h+gIiftvQixPgNDvQSltNmfTVgW/nimW
+    2sKE+WUlrvvpN4D4F1VZ/g+uiwQE8ZF4X30JWsTHwLboR0WGkkCsylkaqGiTubU4
+    NflZjfKeAiaq1hcVW4b95Vp3I7LfSrZbNpXgeLFSv8kii+RiNAbH6tMIeWM2qhVh
+    0V5He9XiUO/P5TuWRs0x/r8/uEhMybpMCxK3QcZEUzahgC+xfrChRg4wU1O7XVWg
+    OyLHT18qMZo3TMzmmLOjw==
+ARC-Authentication-Results: i=2; phl-mx-02.messagingengine.com;
+    x-csa=none;
+    x-me-sender=none;
+    x-ptr=pass smtp.helo=fforwardl-a1-smtp.messagingengine.com
+    policy.ptr=fforwardl-a1-smtp.messagingengine.com;
+    bimi=skipped (DMARC Policy is not at enforcement);
+    arc=pass (as.1.messagingengine.com=pass, ams.1.messagingengine.com=pass)
+    smtp.remote-ip=103.168.172.192;
+    x-arc-dkim=pass (1024-bit rsa key sha256) header.d=fundayout.com.au
+    header.i=michelle@fundayout.com.au header.b=SpDpuyvt
+    header.a=rsa-sha256 header.s=k1 x-arc-instance=1
+    x-arc-domain=messagingengine.com
+    (Trusted from aar.1.messagingengine.com);
+    x-arc-dmarc=pass policy.published-domain-policy=none
+    policy.published-subdomain-policy=none policy.applied-disposition=none
+    policy.evaluated-disposition=none
+    (p=none,sp=none,has-list-id=yes,d=none,d.eval=none)
+    policy.policy-from=p header.from=fundayout.com.au x-arc-instance=1
+    x-arc-domain=messagingengine.com
+    (Trusted from aar.1.messagingengine.com);
+    x-arc-iprev=pass smtp.remote-ip=198.2.181.126 (mail126.suw17.mcsv.net)
+    x-arc-instance=1 x-arc-domain=messagingengine.com
+    (Trusted from aar.1.messagingengine.com);
+    x-arc-spf=pass
+    smtp.mailfrom=
+    bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net
+    smtp.helo=mail126.suw17.mcsv.net x-arc-instance=1
+    x-arc-domain=messagingengine.com
+    (Trusted from aar.1.messagingengine.com);
+    x-arc-x-ptr=pass smtp.helo=mail126.suw17.mcsv.net
+    policy.ptr=mail126.suw17.mcsv.net x-arc-instance=1
+    x-arc-domain=messagingengine.com
+    (Trusted from aar.1.messagingengine.com);
+    dkim=pass (1024-bit rsa key sha256) header.d=fundayout.com.au
+    header.i=michelle@fundayout.com.au header.b=SpDpuyvt
+    header.a=rsa-sha256 header.s=k1;
+    dmarc=pass policy.published-domain-policy=none
+    policy.published-subdomain-policy=none policy.applied-disposition=none
+    policy.evaluated-disposition=none
+    (p=none,sp=none,has-list-id=yes,d=none,d.eval=none)
+    policy.policy-from=p header.from=fundayout.com.au;
+    iprev=pass smtp.remote-ip=103.168.172.192
+    (fforwardl-a1-smtp.messagingengine.com);
+    spf=fail
+    smtp.mailfrom=
+    bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net
+    smtp.helo=fforwardl-a1-smtp.messagingengine.com
+X-ME-Authentication-Results: phl-mx-02.messagingengine.com;
+    x-tls=pass smtp.version=TLSv1.3 smtp.cipher=TLS_AES_256_GCM_SHA384
+      smtp.bits=256/256;
+    x-vs=commercial:mce score=17 state=11
+Authentication-Results: phl-mx-02.messagingengine.com;
+    x-csa=none;
+    x-me-sender=none;
+    x-ptr=pass smtp.helo=fforwardl-a1-smtp.messagingengine.com
+      policy.ptr=fforwardl-a1-smtp.messagingengine.com
+Authentication-Results: phl-mx-02.messagingengine.com;
+    bimi=skipped (DMARC Policy is not at enforcement)
+Authentication-Results: phl-mx-02.messagingengine.com;
+    arc=pass (as.1.messagingengine.com=pass, ams.1.messagingengine.com=pass)
+      smtp.remote-ip=103.168.172.192;
+    x-arc-dkim=pass (1024-bit rsa key sha256) header.d=fundayout.com.au
+      header.i=michelle@fundayout.com.au header.b=SpDpuyvt
+      header.a=rsa-sha256 header.s=k1 x-arc-instance=1
+      x-arc-domain=messagingengine.com
+      (Trusted from aar.1.messagingengine.com);
+    x-arc-dmarc=pass policy.published-domain-policy=none
+      policy.published-subdomain-policy=none policy.applied-disposition=none
+      policy.evaluated-disposition=none
+      (p=none,sp=none,has-list-id=yes,d=none,d.eval=none)
+      policy.policy-from=p header.from=fundayout.com.au x-arc-instance=1
+      x-arc-domain=messagingengine.com
+      (Trusted from aar.1.messagingengine.com);
+    x-arc-iprev=pass smtp.remote-ip=198.2.181.126 (mail126.suw17.mcsv.net)
+      x-arc-instance=1 x-arc-domain=messagingengine.com
+      (Trusted from aar.1.messagingengine.com);
+    x-arc-spf=pass
+      smtp.mailfrom=
+      bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net
+      smtp.helo=mail126.suw17.mcsv.net x-arc-instance=1
+      x-arc-domain=messagingengine.com
+      (Trusted from aar.1.messagingengine.com);
+    x-arc-x-ptr=pass smtp.helo=mail126.suw17.mcsv.net
+      policy.ptr=mail126.suw17.mcsv.net x-arc-instance=1
+      x-arc-domain=messagingengine.com
+      (Trusted from aar.1.messagingengine.com)
+Authentication-Results: phl-mx-02.messagingengine.com;
+    dkim=pass (1024-bit rsa key sha256) header.d=fundayout.com.au
+      header.i=michelle@fundayout.com.au header.b=SpDpuyvt
+      header.a=rsa-sha256 header.s=k1;
+    dmarc=pass policy.published-domain-policy=none
+      policy.published-subdomain-policy=none policy.applied-disposition=none
+      policy.evaluated-disposition=none
+      (p=none,sp=none,has-list-id=yes,d=none,d.eval=none)
+      policy.policy-from=p header.from=fundayout.com.au;
+    iprev=pass smtp.remote-ip=103.168.172.192
+      (fforwardl-a1-smtp.messagingengine.com);
+    spf=fail
+      smtp.mailfrom=
+      bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net
+      smtp.helo=fforwardl-a1-smtp.messagingengine.com
+X-ME-VSCause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleejfeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucdnofetkffnkffpifculddujedmnecujfgurhephfhrvf
+    ffkffojehpjffutgggsegrtddtrehttdejnecuhfhrohhmpefhuhhnucffrgihucfquhht
+    uceomhhitghhvghllhgvsehfuhhnuggrhihouhhtrdgtohhmrdgruheqnecuggftrfgrth
+    htvghrnhepheekieelhfelleelteethfdutdehgeekkeetveefleeutdektddvvdegkeef
+    ueejnecuffhomhgrihhnpegtrghmphgrihhgnhdqrghrtghhihhvvgdrtghomhdplhhish
+    htqdhmrghnrghgvgdrtghomhdpmhgrihhltghhihhmphdrtghomhdpvggvphhurhhlrdgt
+    ohhmnecukfhppedutdefrdduieekrddujedvrdduledvpdduleekrddvrddukedurdduvd
+    einecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddtfedrudei
+    kedrudejvddrudelvddphhgvlhhopehffhhorhifrghrughlqdgruddqshhmthhprdhmvg
+    hsshgrghhinhhgvghnghhinhgvrdgtohhmpdhmrghilhhfrhhomhepoegsohhunhgtvgdq
+    mhgtrdhushdujegpledtkedvvdejudefrddugedukeefiedugedqpggpthgvshhtpggvmh
+    grihhlpggpsehmrghilhduvdeirdhsuhifudejrdhmtghsvhdrnhgvtheqpdhnsggprhgt
+    phhtthhopedupdhrtghpthhtohepoehprghulhhhsegtohhrphhsvghordgtohhmrdgruh
+    eq
+X-ME-VSScore: 17
+X-ME-VSCategory: commercial:mce
+X-ME-CSA: none
+X-ME-Received: <xmx:D4S3abiB49uAEJ63kEXC6YjHOE1UNx6jbgXPQVWUZhDrrnnkXDi5wA>
+X-ME-Received: <xmx:D4S3ad5KTyxyepHe8UB7WuBUXLIsym2r7cSjN_RT4z7NsvPtuWhUjg>
+Received-SPF: fail
+    (mail126.suw17.mcsv.net: Sender is not authorized by default to use 'bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net' in 'mfrom' identity (mechanism '-all' matched))
+    receiver=phl-mx-02.messagingengine.com;
+    identity=mailfrom;
+    envelope-from="bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net";
+    helo=fforwardl-a1-smtp.messagingengine.com;
+    client-ip=103.168.172.192
+Received: from fforwardl-a1-smtp.messagingengine.com (fforwardl-a1-smtp.messagingengine.com [103.168.172.192])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by phl-mx-02.messagingengine.com (Postfix) with ESMTPS id 41AF130A00B5
+	for <paulh@corpseo.com.au>; Mon, 16 Mar 2026 00:16:15 -0400 (EDT)
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfforwardl.phl.internal (Postfix) with ESMTP id 353EA1E40216
+	for <paulh#corpseo.com.au@extroute.messagingengine.com>; Mon, 16 Mar 2026 00:16:14 -0400 (EDT)
+Received: from phl-mx-08 ([10.202.2.207])
+  by phl-compute-05.internal (MEProxy); Mon, 16 Mar 2026 00:16:14 -0400
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleejfeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucdnofetkffnkffpifculddujedmnecujfgurhephfhrvf
+    ffkffojehpjffutgggsegrtddtrehttdejnecuhfhrohhmpefhuhhnucffrgihucfquhht
+    uceomhhitghhvghllhgvsehfuhhnuggrhihouhhtrdgtohhmrdgruheqnecuggftrfgrth
+    htvghrnhepheekieelhfelleelteethfdutdehgeekkeetveefleeutdektddvvdegkeef
+    ueejnecuffhomhgrihhnpegtrghmphgrihhgnhdqrghrtghhihhvvgdrtghomhdplhhish
+    htqdhmrghnrghgvgdrtghomhdpmhgrihhltghhihhmphdrtghomhdpvggvphhurhhlrdgt
+    ohhmnecukfhppeduleekrddvrddukedurdduvdeinecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomhepsghouhhntggvqdhmtgdruhhsudejpgeltdek
+    vddvjedufedrudegudekfeeiudegqdgppghtvghsthgpvghmrghilhgppgesmhgrihhlud
+    dviedrshhufidujedrmhgtshhvrdhnvghtpdhnsggprhgtphhtthhopedupdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehprghulhhhgdgtohhrphhsvghordgtohhmrdgruh
+    esvgigthhrohhuthgvrdhmvghsshgrghhinhhgvghnghhinhgvrdgtohhm
+X-ME-Proxy: <xmx:DoS3aY-u5rbcs9dKsn6EmEynD-aIbvJgG36vPjHI7yVqnvkyEtdfjw>
+    <xmx:DoS3aXrhgLXPcKNtPupvfWxaV2sHbhycW97zNLGUwmzS30wZk77V_Q>
+    <xmx:DoS3aToIDjcZNcjfvv_BXu-5m7RnHtadfKeqqu1cqDJrVyAwuNoxdg>
+    <xmx:DoS3adGg_Y2C1r9stzecS4kATvzeVufK44lf0FqS4iJUA9Hyrc59hqwL3n2aywfcOxzYzj0WdZBYXom4dQ8igk57Xw>
+    <xmx:DoS3aWuQ4i19ff_o8LWA_ZKrtXHgDvT_M7z2x0GxWr7Fjfdkxu7_lA1p>
+Received: from phl-mx-08.messagingengine.com (localhost [127.0.0.1])
+	by mailmx.phl.internal (Postfix) with ESMTP id F0CEF15000C8
+	for <mailchimp@harvest316.com>; Mon, 16 Mar 2026 00:16:13 -0400 (EDT)
+Received: from mailmx.phl.internal (localhost [127.0.0.1])
+    by phl-mx-08.messagingengine.com (Authentication Milter) with ESMTP
+    id 63388F65FAA.7850115000AF;
+    Mon, 16 Mar 2026 00:16:13 -0400
+ARC-Seal: i=1; a=rsa-sha256; cv=none; d=messagingengine.com; s=fm1; t=
+    1773634573; b=MYmlI0Z1bOipfgBanx4iJDPTLhMHybXDuCFK3BBAN0wYyvuaOZ
+    1iYiwZcbez8eofLTtyPC8x0sA9RyEsQ5Yech9u42LEMjgDnKl1008n4Ix1bFk9iO
+    S8AiAtyURULJmIvLt1tl3IqghJZFXsgQVjG9U2bDJqSZv5+RarxXUdrY+g747uq2
+    FfnCJLOQjsqEDmpKFc24SpwCblj7NLakWa4tD4L6eTm/ZVBCx4fElUkC27QNiKvp
+    wBGqJEKjXGKvMQzxTiCtqJd0XXYrVZC2yGiTB6vnnBa7TppP+0ij1Z4UEkotof6U
+    yXd3CSpQaf0jFB3GB8lpK5eHu9k5tOKxNlew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=
+    messagingengine.com; h=from:reply-to:to:date:message-id:list-id
+    :list-unsubscribe:subject:content-type:mime-version; s=fm1; t=
+    1773634573; bh=/W0gxC9Ooz0AEP50pIjuzzZdWi0Jfgp5nnXgycnbW4Q=; b=A
+    TO3z/ZFcsvM6cv/q1lX7IO5NMz/cEBs35JZlO56CVwien8JiCqy/ijvu2wM8mxWO
+    wp6EjWXg+XvYB7cGBBEAdzRDCXVESCUeruV5oYXuvV78sFOMbkY7q0Tg/nI1fsup
+    4NG/0drqCvT7rPWvQXsPX+Ms5P+pu/08BvKwY/iot2FffCUA7jP9p3zLdmMGqZGd
+    /VlPEk3UmdVDxVpbKB/4eTUGR5DFbNXpL03Ffxj7KmdYV4T/AwBTe5vC8bL4PgS4
+    AmUgs6/4pOwpAxlokCJoSXZFGye31ExluqOnD+NwF0eUEyt4Bjb4Foax6jb7ETvz
+    2mpHySLqqnpNA27speLdA==
+ARC-Authentication-Results: i=1; phl-mx-08.messagingengine.com;
+    x-csa=none;
+    x-me-sender=none;
+    x-ptr=pass smtp.helo=mail126.suw17.mcsv.net
+    policy.ptr=mail126.suw17.mcsv.net;
+    bimi=skipped (DMARC Policy is not at enforcement);
+    arc=none (no signatures found);
+    dkim=pass (1024-bit rsa key sha256) header.d=fundayout.com.au
+    header.i=michelle@fundayout.com.au header.b=SpDpuyvt
+    header.a=rsa-sha256 header.s=k1;
+    dmarc=pass policy.published-domain-policy=none
+    policy.published-subdomain-policy=none policy.applied-disposition=none
+    policy.evaluated-disposition=none
+    (p=none,sp=none,has-list-id=yes,d=none,d.eval=none)
+    policy.policy-from=p header.from=fundayout.com.au;
+    iprev=pass smtp.remote-ip=198.2.181.126 (mail126.suw17.mcsv.net);
+    spf=pass
+    smtp.mailfrom=
+    bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net
+    smtp.helo=mail126.suw17.mcsv.net
+X-ME-Received: <xmx:DYS3aam68aGvyAxQgzLwuJQNXDWObOMrQVhtLhu3IASOFxG6HZcQWA>
+Received-SPF: pass
+    (mail126.suw17.mcsv.net: 198.2.181.126 is authorized to use 'bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net' in 'mfrom' identity (mechanism 'ip4:198.2.181.126' matched))
+    receiver=phl-mx-08.messagingengine.com;
+    identity=mailfrom;
+    envelope-from="bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net";
+    helo=mail126.suw17.mcsv.net;
+    client-ip=198.2.181.126
+Received: from mail126.suw17.mcsv.net (mail126.suw17.mcsv.net [198.2.181.126])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by phl-mx-08.messagingengine.com (Postfix) with ESMTPS id 7850115000AF
+	for <mailchimp@harvest316.com>; Mon, 16 Mar 2026 00:16:13 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fundayout.com.au;
+	s=k1; t=1773634572; x=1773904572; i=michelle@fundayout.com.au;
+	bh=/W0gxC9Ooz0AEP50pIjuzzZdWi0Jfgp5nnXgycnbW4Q=;
+	h=From:Reply-To:To:Date:Message-ID:X-MC-User:Feedback-ID:List-ID:
+	 List-Unsubscribe:List-Unsubscribe-Post:Subject:Content-Type:
+	 MIME-Version:CC:Date:Subject:From;
+	b=SpDpuyvtGm3aISoKTwdS66JHzzIBQpqTuz4Nocn5ky2acvF73dWwyMOGDzOiMpf0g
+	 U204FY8VCZ8Z2reNAKPa7Zvkg48HVBwdA63lWdWuKYygXRYB5k7MnomRqPZQ6er/LK
+	 tst1D5SDjuAAQ5qhdNAjDJhVHMMZj/2moQrhs3XQ=
+Received: from localhost (localhost [127.0.0.1])
+	by mail126.suw17.mcsv.net (Mailchimp) with ESMTP id 4fZ1x818Vjz6CQ9Bf
+	for <mailchimp@harvest316.com>; Mon, 16 Mar 2026 04:16:12 +0000 (UTC)
+From: Fun Day Out <michelle@fundayout.com.au>
+Reply-To:  <us17-b3793dfe5b-53c9b855ae@inbound.mailchimp.com>
+To: <mailchimp@harvest316.com>
+Date: Mon, 16 Mar 2026 04:16:12 +0000
+Message-ID: <095ce247fd8d4be73c80acb0d.__test_email__.20260316041607.4b7a3b0980.abbb9c52@mail126.suw17.mcsv.net>
+X-Mailer: Mailchimp Mailer - **CID4b7a3b0980=5F=5Ftest=5Femail=5F=5F**
+X-Campaign: mailchimp095ce247fd8d4be73c80acb0d.4b7a3b0980
+X-campaignid: mailchimp095ce247fd8d4be73c80acb0d.4b7a3b0980
+X-Report-Abuse: Please report abuse for this campaign here: https://mailchimp.com/contact/abuse/?u=095ce247fd8d4be73c80acb0d&id=4b7a3b0980&e==5F=5Ftest=5Femail=5F=5F
+X-MC-User: 095ce247fd8d4be73c80acb0d
+Feedback-ID: 90822713:90822713.14183614:us17:mc
+List-ID: 095ce247fd8d4be73c80acb0dmc list <095ce247fd8d4be73c80acb0d.203356.list-id.mcsv.net>
+Precedence: bulk
+X-Accounttype: ff
+List-Unsubscribe: <https://fundayout.us17.list-manage.com/unsubscribe?u=095ce247fd8d4be73c80acb0d&id=142f1fa23a&t=h&e=__test_email__&c=4b7a3b0980>, <mailto:unsubscribe-mc.us17_095ce247fd8d4be73c80acb0d.4b7a3b0980-=5F=5Ftest=5Femail=5F=5F@unsubscribe.mailchimpapp.net?subject=unsubscribe>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+x-istest: yes
+Subject: =?utf-8?Q?=5BTest=5D=20My=20Funky=20Subject=20Line?=
+Content-Type: multipart/alternative; boundary="_----------=_MCPart_536118352"
+MIME-Version: 1.0
+X-Received-X-ME-Authentication-Results: (Received X-ME-Authentication-Results header removed by phl-mx-02.messagingengine.com)
+    phl-mx-08.messagingengine.com;
+    x-tls=pass smtp.version=TLSv1.3 smtp.cipher=TLS_AES_256_GCM_SHA384
+      smtp.bits=256/256;
+    x-vs=commercial:mce score=17 state=11
+X-Received-Authentication-Results: (Received Authentication-Results header removed by phl-mx-02.messagingengine.com)
+    phl-mx-08.messagingengine.com;
+    x-csa=none;
+    x-me-sender=none;
+    x-ptr=pass smtp.helo=mail126.suw17.mcsv.net
+      policy.ptr=mail126.suw17.mcsv.net
+X-Received-Authentication-Results: (Received Authentication-Results header removed by phl-mx-02.messagingengine.com)
+    phl-mx-08.messagingengine.com;
+    bimi=skipped (DMARC Policy is not at enforcement)
+X-Received-Authentication-Results: (Received Authentication-Results header removed by phl-mx-02.messagingengine.com)
+    phl-mx-08.messagingengine.com;
+    arc=none (no signatures found)
+X-Received-Authentication-Results: (Received Authentication-Results header removed by phl-mx-02.messagingengine.com)
+    phl-mx-08.messagingengine.com;
+    dkim=pass (1024-bit rsa key sha256) header.d=fundayout.com.au
+      header.i=michelle@fundayout.com.au header.b=SpDpuyvt
+      header.a=rsa-sha256 header.s=k1;
+    dmarc=pass policy.published-domain-policy=none
+      policy.published-subdomain-policy=none policy.applied-disposition=none
+      policy.evaluated-disposition=none
+      (p=none,sp=none,has-list-id=yes,d=none,d.eval=none)
+      policy.policy-from=p header.from=fundayout.com.au;
+    iprev=pass smtp.remote-ip=198.2.181.126 (mail126.suw17.mcsv.net);
+    spf=pass
+      smtp.mailfrom=
+      bounce-mc.us17_90822713.14183614-__test_email__@mail126.suw17.mcsv.net
+      smtp.helo=mail126.suw17.mcsv.net
+X-Received-X-ME-VSCause: (Received X-ME-VSCause header removed by phl-mx-02.messagingengine.com)
+    gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvleejfeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucdnofetkffnkffpifculddujedmnecujfgurhephfhrvf
+    ffkffojehpjffutgggsegrtddtrehttdejnecuhfhrohhmpefhuhhnucffrgihucfquhht
+    uceomhhitghhvghllhgvsehfuhhnuggrhihouhhtrdgtohhmrdgruheqnecuggftrfgrth
+    htvghrnhepheekieelhfelleelteethfdutdehgeekkeetveefleeutdektddvvdegkeef
+    ueejnecuffhomhgrihhnpegtrghmphgrihhgnhdqrghrtghhihhvvgdrtghomhdplhhish
+    htqdhmrghnrghgvgdrtghomhdpmhgrihhltghhihhmphdrtghomhdpvggvphhurhhlrdgt
+    ohhmnecukfhppeduleekrddvrddukedurdduvdeinecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehinhgvthepudelkedrvddrudekuddruddviedphhgvlhhopehmrghi
+    lhduvdeirdhsuhifudejrdhmtghsvhdrnhgvthdpmhgrihhlfhhrohhmpeeosghouhhntg
+    gvqdhmtgdruhhsudejpgeltdekvddvjedufedrudegudekfeeiudegqdgppghtvghsthgp
+    vghmrghilhgppgesmhgrihhluddviedrshhufidujedrmhgtshhvrdhnvghtqedpnhgspg
+    hrtghpthhtohepuddprhgtphhtthhopeeomhgrihhltghhihhmpheshhgrrhhvvghsthef
+    udeirdgtohhmqe
+X-Received-X-ME-VSScore: (Received X-ME-VSScore header removed by phl-mx-02.messagingengine.com)
+    17
+X-Received-X-ME-VSCategory: (Received X-ME-VSCategory header removed by phl-mx-02.messagingengine.com)
+    commercial:mce
+X-Received-x-me-csa: (Received x-me-csa header removed by phl-mx-02.messagingengine.com)
+    none
+
+This is a multi-part message in MIME format
+
+--_----------=_MCPart_536118352
+Content-Type: text/plain; charset="utf-8"; format="fixed"
+Content-Transfer-Encoding: quoted-printable
+
+View this email in your browser (https://us17.campaign-archive.com/?e=3D__test_email__&u=3D095ce247fd8d4be73c80acb0d&id=3D4b7a3b0980)
+Logo
+
+My funky body text
+Add button text ()
+
+Logo
+
+Copyright (C) 2026 Fun Day Out. All rights reserved.
+You are receiving this email because you opted in at our website.
+Our mailing address is:
+Fun Day Out
+PO BOX 3021
+REGENTS PARK=2C NSW 2143
+Australia
+unsubscribe (https://fundayout.us17.list-manage.com/unsubscribe?u=3D095ce2=
+47fd8d4be73c80acb0d&id=3D142f1fa23a&t=3Db&e=3D__test_email__&c=3D4b7a3b0980)
+http://eepurl.com/jBMR0M
+--_----------=_MCPart_536118352
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html><html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn=
+:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:of=
+fice"><head>
+<!--[if gte mso 15]>
+<xml>
+<o:OfficeDocumentSettings>
+<o:AllowPNG/>
+<o:PixelsPerInch>96</o:PixelsPerInch>
+</o:OfficeDocumentSettings>
+</xml>
+<![endif]-->
+<meta charset=3D"UTF-8" />
+<meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge" />
+<meta name=3D"viewport" content=3D"width=3Ddevice-width=2C initial-scale=
+=3D1" />
+<title>My Funky Subject Line</title>
+<link rel=3D"preconnect" href=3D"https://fonts.googleapis.com" />
+<link rel=3D"preconnect" href=3D"https://fonts.gstatic.com" crossorigin=3D=
+"" />
+<style>img{-ms-interpolation-mode:bicubic;}
+table=2C td{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+=2EmceStandardButton=2C .mceStandardButton td=2C .mceStandardButton td a{mso=
+-hide:all!important;}
+p=2C a=2C li=2C td=2C blockquote{mso-line-height-rule:exactly;}
+p=2C a=2C li=2C td=2C body=2C table=2C blockquote{-ms-text-size-adjust:100=
+%;-webkit-text-size-adjust:100%;}
+=2EmcnPreviewText{display:none!important;}
+=2EbodyCell{margin:0 auto;padding:0;width:100%;}
+=2EExternalClass=2C .ExternalClass p=2C .ExternalClass td=2C .ExternalClass=
+ div=2C .ExternalClass span=2C .ExternalClass font{line-height:100%;}
+=2EReadMsgBody=2C .ExternalClass{width:100%;}
+a[x-apple-data-detectors]{color:inherit!important;text-decoration:none!im=
+portant;font-size:inherit!important;font-family:inherit!important;font-wei=
+ght:inherit!important;line-height:inherit!important;}
+body{height:100%;margin:0;padding:0;width:100%;background:#ffffff;}
+p{margin:0;padding:0;}
+table{border-collapse:collapse;}
+td=2C p=2C a{word-break:break-word;}
+h1=2C h2=2C h3=2C h4=2C h5=2C h6{display:block;margin:0;padding:0;}
+img=2C a img{border:0;height:auto;outline:none;text-decoration:none;}
+a[href^=3D"tel"]=2C a[href^=3D"sms"]{color:inherit;cursor:default;text-d=
+ecoration:none;}
+=2EmceColumn .mceButtonLink=2C
+            .mceColumn-1 .mceButtonLink=2C
+            .mceColumn-2 .mceButtonLink=2C
+            .mceColumn-3 .mceButtonLink=2C
+            .mceColumn-4 .mceButtonLink{min-width:30px;}
+div[contenteditable=3D"true"]{outline:0;}
+=2EmceImageBorder{display:inline-block;}
+=2EmceImageBorder img{border:0!important;}
+body=2C #bodyTable{background-color:rgb(244=2C 244=2C 244);}
+=2EmceText=2C .mcnTextContent=2C .mceLabel{font-family:"Helvetica Neue"=2C H=
+elvetica=2C Arial=2C Verdana=2C sans-serif;}
+=2EmceText=2C .mcnTextContent=2C .mceLabel{color:rgb(0=2C 0=2C 0);}
+=2EmceText p=2C .mceText label=2C .mceText input{margin-bottom:0;}
+=2EmceSpacing-12 .mceInput + .mceErrorMessage{margin-top:-6px;}
+=2EmceSpacing-24 .mceInput + .mceErrorMessage{margin-top:-12px;}
+=2EmceInput{background-color:transparent;border:2px solid rgb(208=2C 208=2C=
+ 208);width:60%;color:rgb(77=2C 77=2C 77);display:block;}
+=2EmceInput[type=3D"radio"]=2C .mceInput[type=3D"checkbox"]{float:left;mar=
+gin-right:12px;display:inline;width:auto!important;}
+=2EmceLabel > .mceInput{margin-bottom:0;margin-top:2px;}
+=2EmceLabel{display:block;}
+=2EmceText p=2C .mcnTextContent p{color:rgb(0=2C 0=2C 0);font-family:"Helvet=
+ica Neue"=2C Helvetica=2C Arial=2C Verdana=2C sans-serif;font-size:16px;fo=
+nt-weight:normal;line-height:1.5;mso-line-height-alt:150%;text-align:cente=
+r;letter-spacing:0;direction:ltr;margin:0;}
+=2EmceText a=2C .mcnTextContent a{color:rgb(0=2C 0=2C 0);font-style:normal;f=
+ont-weight:normal;text-decoration:underline;direction:ltr;}
+#d13 p=2C #d13 h1=2C #d13 h2=2C #d13 h3=2C #d13 h4=2C #d13 ul{text-align:c=
+enter;}
+@media only screen and (max-width: 480px) {
+body=2C table=2C td=2C p=2C a=2C li=2C blockquote{-webkit-text-size-adjust=
+:none!important;}
+body{width:100%!important;min-width:100%!important;}
+body.mobile-native{-webkit-user-select:none;user-select:none;transition:tr=
+ansform 0.2s ease-in;transform-origin:top center;}
+colgroup{display:none;}
+=2EmceLogo img=2C .mceImage img=2C .mceSocialFollowIcon img{height:auto!impo=
+rtant;}
+=2EmceWidthContainer{max-width:660px!important;}
+=2EmceColumn=2C .mceColumn-2{display:block!important;width:100%!important;}
+=2EmceColumn-forceSpan{display:table-cell!important;width:auto!important;}
+=2EmceColumn-forceSpan .mceButton a{min-width:0!important;}
+=2EmceReverseStack{display:table;width:100%;}
+=2EmceColumn-1{display:table-footer-group;width:100%!important;}
+=2EmceColumn-3{display:table-header-group;width:100%!important;}
+=2EmceColumn-4{display:table-caption;width:100%!important;}
+=2EmceKeepColumns .mceButtonLink{min-width:0;}
+=2EmceBlockContainer=2C .mceSpacing-24{padding-right:16px!important;padding-=
+left:16px!important;}
+=2EmceBlockContainerE2E{padding-right:0;padding-left:0;}
+=2EmceImage=2C .mceLogo{width:100%!important;height:auto!important;}
+=2EmceText img{max-width:100%!important;}
+=2EmceFooterSection .mceText=2C .mceFooterSection .mceText p{font-size:16px!=
+important;line-height:140%!important;}
+=2EmceText p{margin:0;font-size:16px!important;line-height:1.5!important;mso=
+-line-height-alt:150%;}
+=2EbodyCell{padding-left:16px!important;padding-right:16px!important;}
+=2EmceButtonContainer{width:fit-content!important;max-width:fit-content!impo=
+rtant;}
+=2EmceButtonLink{padding:18px 28px!important;font-size:16px!important;}
+=2EmceDividerContainer{width:100%!important;}
+#b1 .mceTextBlockContainer{padding:48px 24px 12px!important;}
+#gutterContainerId-1=2C #gutterContainerId-5=2C #gutterContainerId-13{padd=
+ing:0!important;}
+#b2=2C #b12{padding:12px 48px!important;}
+#b2 table=2C #b6 table=2C #b12 table{margin-left:auto!important;margin-rig=
+ht:auto!important;float:none!important;}
+#b5 .mceTextBlockContainer=2C #b7{padding:12px 24px!important;}
+#b6{padding:12px 0!important;}
+#b7 table{float:none!important;margin:0 auto!important;}
+#b7 .mceButtonLink{padding-top:16px!important;padding-bottom:16px!importan=
+t;font-size:16px!important;}
+#b8 .mceDividerBlock{border-top-width:2px!important;}
+#b8{padding:20px 24px!important;}
+#b13 .mceTextBlockContainer{padding:12px 16px!important;}
+}
+@media only screen and (max-width: 640px) {
+=2EmceClusterLayout td{padding:4px!important;}
+}</style></head>
+<body>
+<!--
+-->
+<!--[if !gte mso 9]><!----><span class=3D"mcnPreviewText" style=3D"displa=
+y:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opa=
+city:0; overflow:hidden; visibility:hidden; mso-hide:all;">My Funky Previe=
+w Text</span><!--<![endif]-->
+<!--
+-->
+<div style=3D"display: none; max-height: 0px; overflow: hidden;">=CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=
+=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F=
+ =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=
+=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=
+=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C=
+ =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=
+=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0=
+ =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=
+=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=
+=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=
+  =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87 =
+ =CD=8F =E2=80=8C =C2=A0 =E2=80=87  =CD=8F =E2=80=8C =C2=A0 =E2=80=87=C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD=
+ =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=
+=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD =C2=AD</div><!--MCE_T=
+RACKING_PIXEL-->
+<center>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" height=3D"100%" wi=
+dth=3D"100%" id=3D"bodyTable" role=3D"presentation" style=3D"background-co=
+lor: rgb(244=2C 244=2C 244);">
+<tbody><tr>
+<td class=3D"bodyCell" align=3D"center" valign=3D"top">
+<table id=3D"root" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" role=3D"presentation"><tbody data-block-id=3D"4" class=3D"mceWra=
+pper"><tr><td style=3D"background-color:transparent" valign=3D"top" align=
+=3D"center" class=3D"mceSection4"><!--[if (gte mso 9)|(IE)]><table align=
+=3D"center" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"660"=
+ style=3D"width:660px;"><tr><td><![endif]--><table border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"max-width:660px" role=
+=3D"presentation"><tbody><tr><td style=3D"background-color:#ffffff" valign=
+=3D"top" class=3D"mceWrapperInner"><table align=3D"center" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentation" dat=
+a-block-id=3D"3"><tbody><tr class=3D"mceRow"><td style=3D"background-posit=
+ion:center;background-repeat:no-repeat;background-size:cover" valign=3D"to=
+p"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"=
+ role=3D"presentation"><tbody><tr><td style=3D"padding-top:0;padding-botto=
+m:0" valign=3D"top" class=3D"mceColumn" id=3D"mceColumnId--4" data-block-i=
+d=3D"-4" colspan=3D"12" width=3D"100%"><table border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" width=3D"100%" role=3D"presentation"><tbody><tr><td s=
+tyle=3D"padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" val=
+ign=3D"top" class=3D"mceGutterContainer" id=3D"gutterContainerId-1"><table=
+ border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"=
+border-collapse:separate" role=3D"presentation"><tbody><tr><td style=3D"pa=
+dding-top:0;padding-bottom:0;padding-right:0;padding-left:0;border:0;borde=
+r-radius:0" valign=3D"top" id=3D"b1"><table width=3D"100%" style=3D"border=
+:0;background-color:transparent;border-radius:0;border-collapse:separate">=
+<tbody><tr><td style=3D"padding-left:24px;padding-right:24px;padding-top:4=
+8px;padding-bottom:12px" class=3D"mceTextBlockContainer"><div data-block-i=
+d=3D"1" class=3D"mceText" id=3D"d1" style=3D"width:100%"><p class=3D"last-=
+child"><a href=3D"https://us17.campaign-archive.com/?e=3D__test_email__&u=3D095c=
+e247fd8d4be73c80acb0d&id=3D4b7a3b0980">View this email in your browser</a>=
+</p></div></td></tr></tbody></table></td></tr></tbody></table></td></tr><t=
+r><td style=3D"background-color:transparent;padding-top:12px;padding-botto=
+m:12px;padding-right:48px;padding-left:48px;border:0;border-radius:0" vali=
+gn=3D"top" class=3D"mceImageBlockContainer" align=3D"center" id=3D"b2"><di=
+v><!--[if !mso]><!--></div><table align=3D"center" border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse:separat=
+e;margin:0;vertical-align:top;max-width:130px;width:100%;height:auto" role=
+=3D"presentation" data-testid=3D"image-2"><tbody><tr><td style=3D"border:0=
+;border-radius:0;margin:0" valign=3D"top"><img alt=3D"Logo" src=3D"https:/=
+/cdn-images.mailchimp.com/template_images/email/logo-placeholder.png" widt=
+h=3D"130" height=3D"auto" style=3D"display:block;max-width:100%;height:aut=
+o;border-radius:0" class=3D"mceLogo" data-block-id=3D"2" /></td></tr></tbo=
+dy></table><div><!--<![endif]--></div><div>
+<!--[if mso]>
+<span class=3D"mceImageBorder" style=3D"border:0;border-width:2px;vertical=
+-align:top;margin:0"><img role=3D"presentation" class=3D"mceLogo" src=3D"h=
+ttps://cdn-images.mailchimp.com/template_images/email/logo-placeholder.png=
+" alt=3D"Logo" width=3D"130" height=3D"auto" style=3D"display:block;max-wi=
+dth:130px;width:130px;height:auto"/></span>
+<![endif]-->
+</div></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbod=
+y></table></td></tr></tbody></table><!--[if (gte mso 9)|(IE)]></td></tr><=
+/table><![endif]--></td></tr></tbody><tbody data-block-id=3D"11" class=3D=
+"mceWrapper"><tr><td style=3D"background-color:transparent" valign=3D"top"=
+ align=3D"center" class=3D"mceSection11"><!--[if (gte mso 9)|(IE)]><table=
+ align=3D"center" border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=
+=3D"660" style=3D"width:660px;"><tr><td><![endif]--><table border=3D"0" c=
+ellpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"max-width:660px=
+" role=3D"presentation"><tbody><tr><td style=3D"background-color:#ffffff"=
+ valign=3D"top" class=3D"mceWrapperInner"><table align=3D"center" border=
+=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presenta=
+tion" data-block-id=3D"10"><tbody><tr class=3D"mceRow"><td style=3D"backgr=
+ound-position:center;background-repeat:no-repeat;background-size:cover" va=
+lign=3D"top"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=
+=3D"100%" role=3D"presentation"><tbody><tr><td style=3D"padding-top:0;padd=
+ing-bottom:0" valign=3D"top" class=3D"mceColumn" id=3D"mceColumnId--5" dat=
+a-block-id=3D"-5" colspan=3D"12" width=3D"100%"><table border=3D"0" cellpa=
+dding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentation"><tbody>=
+<tr><td style=3D"padding-top:0;padding-bottom:0;padding-right:0;padding-le=
+ft:0" valign=3D"top" class=3D"mceGutterContainer" id=3D"gutterContainerId-=
+5"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"=
+ style=3D"border-collapse:separate" role=3D"presentation"><tbody><tr><td s=
+tyle=3D"padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;bord=
+er:0;border-radius:0" valign=3D"top" id=3D"b5"><table width=3D"100%" style=
+=3D"border:0;background-color:transparent;border-radius:0;border-collapse:=
+separate"><tbody><tr><td style=3D"padding-left:24px;padding-right:24px;pad=
+ding-top:12px;padding-bottom:12px" class=3D"mceTextBlockContainer"><div da=
+ta-block-id=3D"5" class=3D"mceText" id=3D"d5" style=3D"width:100%"><p clas=
+s=3D"last-child">My funky body text</p></div></td></tr></tbody></table></t=
+d></tr></tbody></table></td></tr><tr><td style=3D"background-color:transpa=
+rent;padding-top:12px;padding-bottom:12px;padding-right:0;padding-left:0;b=
+order:0;border-radius:0" valign=3D"top" class=3D"mceImageBlockContainer" a=
+lign=3D"center" id=3D"b6"><div><!--[if !mso]><!--></div><table align=3D"c=
+enter" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" sty=
+le=3D"border-collapse:separate;margin:0;vertical-align:top;max-width:561px=
+;width:100%;height:auto" role=3D"presentation" data-testid=3D"image-6"><tb=
+ody><tr><td style=3D"border:0;border-radius:0;margin:0" valign=3D"top"><im=
+g alt=3D"" src=3D"https://cdn-images.mailchimp.com/template_images/email/d=
+efault_image_placeholder.png" width=3D"561" height=3D"auto" style=3D"displ=
+ay:block;max-width:100%;height:auto;border-radius:0" class=3D"imageDropZon=
+e mceImage" data-block-id=3D"6" /></td></tr></tbody></table><div><!--<![e=
+ndif]--></div><div>
+<!--[if mso]>
+<span class=3D"mceImageBorder" style=3D"border:0;border-width:2px;vertical=
+-align:top;margin:0"><img role=3D"presentation" class=3D"imageDropZone mce=
+Image" src=3D"https://cdn-images.mailchimp.com/template_images/email/defau=
+lt_image_placeholder.png" alt=3D"" width=3D"561" height=3D"auto" style=3D"=
+display:block;max-width:561px;width:561px;height:auto"/></span>
+<![endif]-->
+</div></td></tr><tr><td style=3D"background-color:transparent;padding-top:=
+12px;padding-bottom:12px;padding-right:24px;padding-left:24px;border:0;bor=
+der-radius:0" valign=3D"top" class=3D"mceButtonBlockContainer" align=3D"ce=
+nter" id=3D"b7"><div><!--[if !mso]><!--></div><table align=3D"center" bor=
+der=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D"presentation" data-b=
+lock-id=3D"7" class=3D"mceButtonContainer"><tbody><tr class=3D"mceStandard=
+Button"><td style=3D"background-color:#000000;border-radius:0;text-align:c=
+enter" valign=3D"top" class=3D"mceButton"><a href=3D"" target=3D"_blank" c=
+lass=3D"mceButtonLink" style=3D"background-color:#000000;border-radius:0;b=
+order:2px solid #000000;color:#ffffff;display:block;font-family:'Helvetica=
+ Neue'=2C Helvetica=2C Arial=2C Verdana=2C sans-serif;font-size:16px;font-=
+weight:normal;font-style:normal;padding:16px 28px;text-decoration:none;tex=
+t-align:center;direction:ltr;letter-spacing:0px" rel=3D"noreferrer">Add bu=
+tton text</a></td></tr></tbody></table><div><!--<![endif]--></div><table=
+ align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" role=3D=
+"presentation" data-block-id=3D"7" class=3D"mceButtonContainer"><tbody><tr=
+>
+<!--[if mso]>
+<td align=3D"center">
+<v:roundrect xmlns:v=3D"urn:schemas-microsoft-com:vml"
+xmlns:w=3D"urn:schemas-microsoft-com:office:word"
+href=3D""
+style=3D"v-text-anchor:middle; width:167.64000000000001px; height:54px;"
+arcsize=3D"0%"
+strokecolor=3D"#000000"
+strokeweight=3D"2px"
+fillcolor=3D"#000000">
+<v:stroke dashstyle=3D"solid"/>
+<w:anchorlock />
+<center style=3D"
+color: #ffffff;
+display: block;
+font-family: 'Helvetica Neue'=2C Helvetica=2C Arial=2C Verdana=2C sans-ser=
+if;
+font-size: 16;
+font-style: normal;
+font-weight: normal;
+letter-spacing: 0px;
+text-decoration: none;
+text-align: center;
+direction: ltr;"
+>
+Add button text
+</center>
+</v:roundrect>
+</td>
+<![endif]-->
+</tr></tbody></table></td></tr><tr><td style=3D"background-color:transpare=
+nt;padding-top:20px;padding-bottom:20px;padding-right:24px;padding-left:24=
+px;border:0;border-radius:0" valign=3D"top" class=3D"mceDividerBlockContai=
+ner" id=3D"b8"><table align=3D"center" border=3D"0" cellpadding=3D"0" cell=
+spacing=3D"0" width=3D"100%" style=3D"background-color:transparent;width:1=
+00%" role=3D"presentation" class=3D"mceDividerContainer" data-block-id=3D"=
+8"><tbody><tr><td style=3D"min-width:100%;border-top-width:2px;border-top-=
+style:solid;border-top-color:#000000;line-height:0;font-size:0" valign=3D"=
+top" class=3D"mceDividerBlock">=C2=A0</td></tr></tbody></table></td></tr><=
+/tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></=
+tr></tbody></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]=
+--></td></tr></tbody><tbody data-block-id=3D"17" class=3D"mceWrapper"><tr>=
+<td style=3D"background-color:transparent" valign=3D"top" align=3D"center"=
+ class=3D"mceSection17"><!--[if (gte mso 9)|(IE)]><table align=3D"center"=
+ border=3D"0" cellspacing=3D"0" cellpadding=3D"0" width=3D"660" style=3D"w=
+idth:660px;"><tr><td><![endif]--><table border=3D"0" cellpadding=3D"0" ce=
+llspacing=3D"0" width=3D"100%" style=3D"max-width:660px" role=3D"presentat=
+ion"><tbody><tr><td style=3D"background-color:#ffffff" valign=3D"top" clas=
+s=3D"mceWrapperInner"><table align=3D"center" border=3D"0" cellpadding=3D"=
+0" cellspacing=3D"0" width=3D"100%" role=3D"presentation" data-block-id=3D=
+"16"><tbody><tr class=3D"mceRow"><td style=3D"background-position:center;b=
+ackground-repeat:no-repeat;background-size:cover" valign=3D"top"><table bo=
+rder=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"pres=
+entation"><tbody><tr><td style=3D"padding-top:0;padding-bottom:0" valign=
+=3D"top" class=3D"mceColumn" id=3D"mceColumnId--6" data-block-id=3D"-6" co=
+lspan=3D"12" width=3D"100%"><table border=3D"0" cellpadding=3D"0" cellspac=
+ing=3D"0" width=3D"100%" role=3D"presentation"><tbody><tr><td style=3D"pad=
+ding-top:8px;padding-bottom:8px;padding-right:8px;padding-left:8px;border:=
+0;border-radius:0" valign=3D"top" id=3D"b15"><table align=3D"center" borde=
+r=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"present=
+ation" data-block-id=3D"15" id=3D"section_af5080332febd03dc7ad53a18e426e7d=
+" class=3D"mceFooterSection"><tbody><tr class=3D"mceRow"><td style=3D"back=
+ground-position:center;background-repeat:no-repeat;background-size:cover"=
+ valign=3D"top"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"12" w=
+idth=3D"100%" role=3D"presentation"><tbody><tr><td style=3D"padding-top:0;=
+padding-bottom:0" valign=3D"top" class=3D"mceColumn" id=3D"mceColumnId--3"=
+ data-block-id=3D"-3" colspan=3D"12" width=3D"100%"><table border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentation"><tb=
+ody><tr><td style=3D"background-color:transparent;padding-top:12px;padding=
+-bottom:12px;padding-right:48px;padding-left:48px;border:0;border-radius:0=
+" valign=3D"top" class=3D"mceImageBlockContainer" align=3D"center" id=3D"b=
+12"><div><!--[if !mso]><!--></div><table align=3D"center" border=3D"0" ce=
+llpadding=3D"0" cellspacing=3D"0" width=3D"100%" style=3D"border-collapse:=
+separate;margin:0;vertical-align:top;max-width:130px;width:100%;height:aut=
+o" role=3D"presentation" data-testid=3D"image-12"><tbody><tr><td style=3D"=
+border:0;border-radius:0;margin:0" valign=3D"top"><img alt=3D"Logo" src=3D=
+"https://cdn-images.mailchimp.com/template_images/email/logo-placeholder.p=
+ng" width=3D"130" height=3D"auto" style=3D"display:block;max-width:100%;he=
+ight:auto;border-radius:0" class=3D"mceLogo" data-block-id=3D"12" /></td><=
+/tr></tbody></table><div><!--<![endif]--></div><div>
+<!--[if mso]>
+<span class=3D"mceImageBorder" style=3D"border:0;border-width:2px;vertical=
+-align:top;margin:0"><img role=3D"presentation" class=3D"mceLogo" src=3D"h=
+ttps://cdn-images.mailchimp.com/template_images/email/logo-placeholder.png=
+" alt=3D"Logo" width=3D"130" height=3D"auto" style=3D"display:block;max-wi=
+dth:130px;width:130px;height:auto"/></span>
+<![endif]-->
+</div></td></tr><tr><td style=3D"padding-top:0;padding-bottom:0;padding-ri=
+ght:0;padding-left:0" valign=3D"top" class=3D"mceGutterContainer" id=3D"gu=
+tterContainerId-13"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0=
+" width=3D"100%" style=3D"border-collapse:separate" role=3D"presentation">=
+<tbody><tr><td style=3D"padding-top:0;padding-bottom:0;padding-right:0;pad=
+ding-left:0;border:0;border-radius:0" valign=3D"top" align=3D"center" id=
+=3D"b13"><table width=3D"100%" style=3D"border:0;background-color:transpar=
+ent;border-radius:0;border-collapse:separate"><tbody><tr><td style=3D"padd=
+ing-left:16px;padding-right:16px;padding-top:12px;padding-bottom:12px" cla=
+ss=3D"mceTextBlockContainer"><div data-block-id=3D"13" class=3D"mceText" i=
+d=3D"d13" style=3D"display:inline-block;width:100%"><p class=3D"last-child=
+"><em><span style=3D"font-size: 12px">Copyright (C) 2026 Fun Day Out. All=
+ rights reserved.</span></em><br /><span style=3D"font-size: 12px">
+You are receiving this email because you opted in at our website.
+</span><br /><br /><span style=3D"font-size: 12px">Our mailing address is:=
+</span><br /><span style=3D"font-size: 12px">
+Fun Day Out
+PO BOX 3021
+REGENTS PARK=2C NSW 2143
+Australia
+</span><br /><br /><a href=3D"https://fundayout.us17.list-manage.com/unsub=
+scribe?u=3D095ce247fd8d4be73c80acb0d&id=3D142f1fa23a&t=3Db&e=3D__test_email__&c=
+=3D4b7a3b0980"><span style=3D"font-size: 12px">unsubscribe</span></a></p><=
+/div></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td=
+ style=3D"border:0;border-radius:0" valign=3D"top" class=3D"mceLayoutConta=
+iner" align=3D"center" id=3D"b-2"><table align=3D"center" border=3D"0" cel=
+lpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=3D"presentation" data=
+-block-id=3D"-2"><tbody><tr class=3D"mceRow"><td style=3D"background-posit=
+ion:center;background-repeat:no-repeat;background-size:cover" valign=3D"to=
+p"><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%"=
+ role=3D"presentation"><tbody><tr><td valign=3D"top" class=3D"mceColumn" i=
+d=3D"mceColumnId--7" data-block-id=3D"-7" colspan=3D"12" width=3D"100%"><t=
+able border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" role=
+=3D"presentation"><tbody><tr><td style=3D"border:0;border-radius:0" valign=
+=3D"top" align=3D"center" id=3D"b14"><div><div data-block-id=3D"14"><a hre=
+f=3D"https://us17.mailchimp.com/mctx/clicks?url=3Dhttp%3A%2F%2Feepurl.com%=
+2FjBMR0M&xid=3D0c1363e597&uid=3D90822713&iid=3D4b7a3b0980&pool=3Dcts&v=3D2=
+&c=3D1773634567&h=3De645c67852bccf283a911119aa6bdd46d98a46b1ece1fe7c68e5d3=
+7b2fe970e6" target=3D"_blank" rel=3D"noopener noreferrer"><img style=3D"ma=
+x-width:100%" width=3D"137" height=3D"53" alt=3D"Email Marketing Powered b=
+y Mailchimp" title=3D"Mailchimp Email Marketing" src=3D"https://cdn-images=
+=2Emailchimp.com/monkey_rewards/intuit-mc-rewards-1.png" /></a></div></div><=
+/td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></tab=
+le></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody><=
+/table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbo=
+dy></table></td></tr></tbody></table><!--[if (gte mso 9)|(IE)]></td></tr>=
+</table><![endif]--></td></tr></tbody></table>
+</td>
+</tr>
+</tbody></table>
+</center>
+</body></html>
+--_----------=_MCPart_536118352--
