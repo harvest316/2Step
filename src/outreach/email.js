@@ -3,8 +3,10 @@
 /**
  * Email outreach for 2Step — sends video demo emails via Resend.
  *
- * Includes thumbnail with play button overlay linking to video URL.
- * CAN-SPAM compliant with unsubscribe link.
+ * Uses Mailchimp-derived HTML template (email-template.js) with poster image
+ * (baked-in play button from creatomate.js) and spintax for subject/preheader/CTA.
+ *
+ * Layout: Logo → Hook text → Poster image → Remaining body + CTA → Divider → Footer
  *
  * Usage:
  *   node src/outreach/email.js                  # Send all pending email outreaches
@@ -19,6 +21,9 @@ import { Resend } from 'resend';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
+import { readFileSync } from 'fs';
+import { spin } from '../../../333Method/src/utils/spintax.js';
+import { buildEmailHtml } from './email-template.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -26,8 +31,16 @@ const root = resolve(__dirname, '../..');
 const DB_PATH = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const SENDER_EMAIL = process.env.TWOSTEP_SENDER_EMAIL || 'videos@auditandfix.com';
-const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || '2Step Video Reviews';
+const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || 'Audit&Fix Video Reviews';
 const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev';
+const LOGO_URL = process.env.TWOSTEP_LOGO_URL || 'https://auditandfix.com/assets/img/logo-light.svg';
+const PHYSICAL_ADDRESS = process.env.CAN_SPAM_PHYSICAL_ADDRESS || '';
+
+// CAN-SPAM countries — same list as 333Method/src/outreach/email-compliance.js
+const CAN_SPAM_COUNTRIES = new Set([
+  'US', 'CA', 'AU', 'NZ', 'UK', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE',
+  'AT', 'SE', 'DK', 'NO', 'FI', 'PL', 'IE', 'PT', 'GR', 'CZ', 'RO', 'HU', 'CH',
+]);
 
 const { values: args } = parseArgs({
   options: {
@@ -45,6 +58,20 @@ if (!RESEND_API_KEY) {
 
 const resend = new Resend(RESEND_API_KEY);
 
+// ─── Spintax Templates ──────────────────────────────────────────────────────
+
+const templateFile = resolve(root, 'data/templates/email.json');
+const { templates } = JSON.parse(readFileSync(templateFile, 'utf-8'));
+
+function pickTemplate(seed) {
+  const idx = seed % templates.length;
+  return templates[idx];
+}
+
+function spinField(spintaxText, businessName) {
+  return spin(spintaxText.replace(/\[business_name\]/g, businessName));
+}
+
 // ─── Database ────────────────────────────────────────────────────────────────
 
 const db = new Database(DB_PATH);
@@ -53,7 +80,8 @@ db.pragma('journal_mode = WAL');
 function getPendingEmails() {
   if (args.id) {
     return db.prepare(`
-      SELECT o.*, p.business_name, p.city, p.niche, v.video_url
+      SELECT o.*, p.business_name, p.city, p.niche, p.country_code,
+             v.video_url, v.thumbnail_url
       FROM outreaches o
       JOIN prospects p ON p.id = o.prospect_id
       LEFT JOIN videos v ON v.id = o.video_id
@@ -62,7 +90,8 @@ function getPendingEmails() {
   }
 
   return db.prepare(`
-    SELECT o.*, p.business_name, p.city, p.niche, v.video_url
+    SELECT o.*, p.business_name, p.city, p.niche, p.country_code,
+           v.video_url, v.thumbnail_url
     FROM outreaches o
     JOIN prospects p ON p.id = o.prospect_id
     LEFT JOIN videos v ON v.id = o.video_id
@@ -73,54 +102,96 @@ function getPendingEmails() {
   `).all(parseInt(args.limit, 10));
 }
 
-// ─── Email Template ──────────────────────────────────────────────────────────
+// ─── Email Assembly ─────────────────────────────────────────────────────────
 
-function buildEmailHtml(outreach) {
-  const videoUrl = outreach.video_url || '#';
-  const businessName = outreach.business_name;
-
-  // Thumbnail with play button overlay — links to video
-  return `
-<!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"></head>
-<body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
-
-${outreach.message_body.split('\n').map(line => `<p style="margin: 0 0 12px 0; line-height: 1.6;">${line}</p>`).join('\n')}
-
-<div style="margin: 24px 0; text-align: center;">
-  <a href="${videoUrl}" style="display: inline-block; position: relative; text-decoration: none;">
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; padding: 40px 60px; color: white; text-align: center;">
-      <div style="font-size: 48px; margin-bottom: 8px;">▶</div>
-      <div style="font-size: 16px; font-weight: 600;">Watch Your Video Review</div>
-      <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">${businessName} — 30 second preview</div>
-    </div>
-  </a>
-</div>
-
-<p style="font-size: 12px; color: #999; margin-top: 32px; border-top: 1px solid #eee; padding-top: 12px;">
-  You're receiving this because we thought ${businessName} deserved to see their great reviews turned into video.
-  <a href="${UNSUBSCRIBE_URL}?email=${encodeURIComponent(outreach.contact_uri)}" style="color: #999;">Unsubscribe</a>
-</p>
-
-</body>
-</html>`;
+/**
+ * Split message_body into hook (first paragraph) and remaining body.
+ * Hook goes above the poster image, remaining body goes below.
+ */
+function splitBody(messageBody) {
+  const parts = messageBody.split(/\n\n+/);
+  const hook = parts[0] || '';
+  const remaining = parts.slice(1).join('\n\n');
+  return { hook, remaining };
 }
 
-function buildSubject(outreach) {
-  return `We made a video from your best Google review — ${outreach.business_name}`;
+function textToHtml(text) {
+  if (!text) return '';
+  return text.split(/\n+/)
+    .filter(line => line.trim())
+    .map(line => `<p class="last-child">${line}</p>`)
+    .join('\n');
+}
+
+function buildPlainText(outreach, subject, cta) {
+  return [
+    subject,
+    '',
+    outreach.message_body,
+    '',
+    `Watch your video: ${outreach.video_url}`,
+    '',
+    cta,
+    '',
+    '---',
+    `You received this because we thought ${outreach.business_name} deserved to see their great reviews turned into video.`,
+    `Unsubscribe: ${UNSUBSCRIBE_URL}?email=${encodeURIComponent(outreach.contact_uri)}`,
+  ].join('\n');
+}
+
+function assembleEmail(outreach) {
+  if (!outreach.thumbnail_url) {
+    throw new Error('No poster image — run creatomate.js first');
+  }
+  if (!outreach.video_url) {
+    throw new Error('No video URL — run creatomate.js first');
+  }
+
+  const template = pickTemplate(outreach.id);
+  const businessName = outreach.business_name;
+
+  const subject = spinField(template.subject_spintax, businessName);
+  const previewText = spinField(template.preheader_spintax, businessName);
+  const cta = spinField(template.cta_spintax, businessName);
+
+  const { hook, remaining } = splitBody(outreach.message_body);
+  const unsubscribeUrl = `${UNSUBSCRIBE_URL}?email=${encodeURIComponent(outreach.contact_uri)}`;
+
+  // Physical address only for CAN-SPAM countries
+  const countryCode = outreach.country_code || 'AU';
+  const physicalAddressHtml = (PHYSICAL_ADDRESS && CAN_SPAM_COUNTRIES.has(countryCode))
+    ? `<br /><br /><span style="font-size: 12px">${PHYSICAL_ADDRESS}</span>`
+    : '';
+
+  const html = buildEmailHtml({
+    previewText,
+    hookHtml: textToHtml(hook),
+    posterUrl: outreach.thumbnail_url,
+    videoUrl: outreach.video_url,
+    remainingBodyHtml: textToHtml(remaining),
+    ctaHtml: `<p class="last-child" style="margin-top: 16px; font-style: italic; color: rgb(100, 100, 100);">${cta}</p>`,
+    businessName,
+    logoUrl: LOGO_URL,
+    unsubscribeUrl,
+    physicalAddressHtml,
+    year: String(new Date().getFullYear()),
+  });
+
+  const text = buildPlainText(outreach, subject, cta);
+
+  return { html, text, subject };
 }
 
 // ─── Send ────────────────────────────────────────────────────────────────────
 
 async function sendOne(outreach) {
-  const html = buildEmailHtml(outreach);
-  const subject = buildSubject(outreach);
+  const { html, text, subject } = assembleEmail(outreach);
 
   if (args['dry-run']) {
     console.log(`  To: ${outreach.contact_uri}`);
     console.log(`  Subject: ${subject}`);
-    console.log(`  Video: ${outreach.video_url || '(none)'}`);
+    console.log(`  Poster: ${outreach.thumbnail_url}`);
+    console.log(`  Video: ${outreach.video_url}`);
     console.log('  ---');
     return { success: true, dryRun: true };
   }
@@ -130,6 +201,7 @@ async function sendOne(outreach) {
     to: outreach.contact_uri,
     subject,
     html,
+    text,
     headers: {
       'List-Unsubscribe': `<${UNSUBSCRIBE_URL}?email=${encodeURIComponent(outreach.contact_uri)}>`,
     },

@@ -31,6 +31,8 @@ CREATE TABLE IF NOT EXISTS videos (
     prospect_id INTEGER NOT NULL REFERENCES prospects(id),
     video_tool TEXT NOT NULL CHECK(video_tool IN ('invideo','holo','creatomate','fliki','shotstack')),
     video_url TEXT,
+    thumbnail_url TEXT,   -- R2 URL of the poster image (Creatomate snapshot + baked-in play button)
+    -- Migration for existing DB: ALTER TABLE videos ADD COLUMN thumbnail_url TEXT;
     prompt_text TEXT,
     status TEXT DEFAULT 'prompted' CHECK(status IN ('prompted','rendering','completed','failed','delivered')),
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
