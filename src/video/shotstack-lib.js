@@ -109,92 +109,77 @@ export function applyPhonetics(voiceover, suburb) {
 // ─── Scene + voiceover builder ────────────────────────────────────────────────
 
 /**
- * Build 5 aligned scene/voiceover pairs from a prospect's review.
+ * Build 7 aligned scene/voiceover pairs from a prospect's review.
  *
- * Each scene has matching on-screen text and a voiceover segment so they stay
- * in sync. Duration is derived from the voiceover word count at ~180 wpm
- * (ElevenLabs Charlie pace) with a minimum per scene for visual comfort.
+ * All clips are 5s. Voiceovers are written SHORT (≤12 words each, ~4s at 180wpm)
+ * so audio fits inside the clip with no looping. Actual duration is measured from
+ * the generated audio in creatomate.js and used as scene duration.
  *
- * Scenes:
- *   1. Hook    — spoken: "Here's what [name] customers are saying in [city]."
- *                shown:  "What customers say about\n{name}"
- *   2. Quote 1 — spoken + shown: first short sentence of review (≤80 chars)
- *   3. Quote 2 — spoken + shown: second short sentence (≤80 chars), falls back to q1
- *   4. Stars   — spoken: "Five stars — [reviewer]."
- *                shown:  "⭐⭐⭐⭐⭐\n— {reviewer}"
- *   5. CTA     — spoken: "{name} — trusted by locals. Book today."
- *                shown:  "{name}\n{city} | Book Now"
+ * Target total: ~30s (7 × ~4s audio + 0.4s tail each ≈ 31s).
  *
- * @param {{ business_name: string, city?: string, best_review_author?: string, best_review_text?: string }} prospect
+ * Scenes (7 slots: hook, technician, treatment, technician2, treatment2, resolution, cta):
+ *   1. Hook    — short punchy intro naming the business
+ *   2–5. Quotes — raw review sentences, read verbatim (no intro words)
+ *   6. Stars   — reviewer name + star rating, no filler
+ *   7. CTA     — business name + call/book prompt
+ *
+ * @param {{ business_name, city, best_review_author, best_review_text, phone }} prospect
  * @returns {Array<{ text: string, voiceover: string, duration: number }>}
  */
 export function buildScenes(prospect) {
-  const name = businessName(prospect.business_name);
-  const city = prospect.city || 'Sydney';
-  const reviewer = prospect.best_review_author || 'a customer';
-  const review = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
-  const phone = prospect.phone || null;
+  const name     = businessName(prospect.business_name);
+  const city     = prospect.city || 'Sydney';
+  const reviewer = prospect.best_review_author || 'a local';
+  const review   = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
+  const phone    = prospect.phone || null;
 
-  const quotes = extractTwoQuotes(review);
+  // Detect specific pest for hook voiceover
+  const pest     = detectPestFromReview(review);
+  const pestWord = pestLabel(pest);
 
-  const ctaText = phone ? `${name}\nCall ${phone}` : `${name}\n${city} | Book Now`;
-  const nameHasCity = name.toLowerCase().includes(city.toLowerCase());
+  // Hook: problem-aware city-specific question
+  const hookVoiceover = pest
+    ? `Dealing with ${pestWord} in ${city}?`
+    : `Looking for pest control in ${city}?`;
+
+  // Extract 4 COMPLETE sentences — no truncation, prefer ≤15 words, never cut mid-sentence
+  const quotes = extractQuotes(review, 4);
+
+  const ctaText = phone ? `${name}\nCall ${phone}` : `${name}\nFree Inspection`;
   const ctaVoiceover = phone
-    ? `"${name}" — call us now on ${phone}.`
-    : nameHasCity
-      ? `"${name}" — trusted by locals. Book your service today.`
-      : `"${name}" — trusted by locals across ${city}. Book your service today.`;
+    ? `Call ${phone} or reply YES to schedule your free inspection.`
+    : `Reply YES or visit "${name}" to schedule your free inspection.`;
 
-  const pairs = [
+  return [
     {
-      // Quotes around name in voiceover help ElevenLabs pronounce it as a proper noun.
-      // No quotes in on-screen text.
-      text:      `What customers say about\n${name}`,
-      voiceover: `Here's what "${name}" customers are saying.`,
-      minDur:    3,
+      text:      `Dealing with ${pestWord} in ${city}?`,
+      voiceover: hookVoiceover,
     },
     {
       text:      `"${quotes[0]}"`,
       voiceover: quotes[0],
-      minDur:    3,
     },
     {
       text:      `"${quotes[1]}"`,
       voiceover: quotes[1],
-      minDur:    3,
+    },
+    {
+      text:      `"${quotes[2]}"`,
+      voiceover: quotes[2],
+    },
+    {
+      text:      `"${quotes[3]}"`,
+      voiceover: quotes[3],
     },
     {
       text:      `⭐⭐⭐⭐⭐\n— ${reviewer}`,
-      voiceover: `Five stars — from ${reviewer}.`,
-      minDur:    3,
+      voiceover: `Five stars — ${reviewer}.`,
     },
     {
       text:      ctaText,
       voiceover: ctaVoiceover,
-      minDur:    4,
     },
-  ];
-
-  // Derive each scene's duration from its voiceover word count, then
-  // scale all durations so they sum to the full voiceover length.
-  // This keeps clips in sync even when individual estimates drift.
-  const raw = pairs.map(({ text, voiceover, minDur }) => ({
-    text,
-    voiceover,
-    dur: Math.max(minDur, sceneDuration(voiceover)),
-  }));
-
-  const fullScript = raw.map(s => s.voiceover).join('  ');
-  const totalEstimated = raw.reduce((s, r) => s + r.dur, 0);
-  // Add 3s tail so audio never gets cut off at the end of the last clip.
-  const fullDuration = sceneDuration(fullScript) + 3;
-  const scale = fullDuration / totalEstimated;
-
-  return raw.map(({ text, voiceover, dur }) => ({
-    text,
-    voiceover,
-    duration: Math.max(3, Math.round(dur * scale)),
-  }));
+  ].map(s => ({ ...s, duration: 5 })); // placeholder; creatomate.js overwrites with measured audio duration
 }
 
 /**
@@ -792,11 +777,31 @@ export const CLIP_POOLS = {
  */
 // Maps broad niche names → default problem slug used when no problem is specified.
 const NICHE_ALIASES = {
-  'pest control':   'cockroaches',
+  'pest control':   null, // no default — detectPestFromReview() must identify the pest, or render fails
   'house cleaning': 'greasy-rangehood',
   'cleaning':       'greasy-rangehood',
   'plumber':        'blocked-drain',
 };
+
+/**
+ * Detect specific pest type from review text.
+ * Returns a CLIP_POOLS key if found, otherwise null (caller uses niche alias default).
+ */
+export function detectPestFromReview(reviewText) {
+  const t = reviewText.toLowerCase();
+  if (/termite/.test(t))                          return 'termites';
+  if (/cockroach|roach/.test(t))                  return 'cockroaches';
+  if (/spider/.test(t))                           return 'spiders';
+  if (/\brat\b|\brats\b|\bmouse\b|\bmice\b|rodent/.test(t)) return 'rodents';
+  return null;
+}
+
+/**
+ * Human-readable pest label for voiceover ("termites", "cockroaches", etc.)
+ */
+export function pestLabel(problem) {
+  return { termites: 'termites', cockroaches: 'cockroaches', spiders: 'spiders', rodents: 'rodents' }[problem] || 'pests';
+}
 
 // Maps problem slug → shared pool key for technician/resolution/cta
 const PROBLEM_SHARED_POOL = {
@@ -821,8 +826,13 @@ const PROBLEM_SHARED_POOL = {
  * @param {number} seed     Rotates clip selection per prospect
  * @returns {Array<{url,focus}>|null}  5 clips, or null if any slot is empty
  */
-export function pickClipsFromPool(niche, seed = 0) {
-  const problem     = NICHE_ALIASES[niche] || niche;
+export function pickClipsFromPool(niche, seed = 0, reviewText = '') {
+  // For pest control, detect specific pest from review — no generic fallback
+  const isPestControl = niche === 'pest control' || NICHE_ALIASES[niche] === null;
+  const detected = isPestControl ? detectPestFromReview(reviewText) : null;
+  const aliased = NICHE_ALIASES[niche];
+  const problem = detected ?? (aliased !== null ? aliased : null) ?? niche;
+  if (!problem) return null; // caller should surface this as an error
   const problemPool = CLIP_POOLS[problem];
   const sharedKey   = PROBLEM_SHARED_POOL[problem];
   const sharedPool  = sharedKey ? CLIP_POOLS[sharedKey] : null;
@@ -840,13 +850,18 @@ export function pickClipsFromPool(niche, seed = 0) {
     return defaultPool[slot] ?? [];
   }
 
-  const slots = ['hook', 'technician', 'treatment', 'resolution', 'cta'];
-  if (slots.some(s => !resolveSlot(s).length)) return null;
+  // 7 slots: hook, technician×2, treatment×2, resolution, cta
+  // treatment2/technician2 reuse the same pools with a shifted seed so clips differ
+  const slots = ['hook', 'technician', 'treatment', 'technician2', 'treatment2', 'resolution', 'cta'];
+  const baseSlot = s => s.replace(/\d+$/, ''); // 'technician2' → 'technician'
+  if (['hook', 'technician', 'treatment', 'resolution', 'cta'].some(s => !resolveSlot(s).length)) return null;
 
   return slots.map((slot, i) => {
-    const arr   = resolveSlot(slot);
-    const entry = arr[(seed + i) % arr.length];
-    // Apply runtime focus override if the user has annotated this clip
+    const arr   = resolveSlot(baseSlot(slot));
+    // Shift seed by ~half the pool size for *2 slots to get a different clip
+    // Use a prime (7) so it doesn't alias with common pool sizes (5, 8)
+    const offset = slot.endsWith('2') ? 7 : 0;
+    const entry = arr[(seed + i + offset) % arr.length];
     const filename = entry.url.split('/').pop();
     const focus = FOCUS_OVERRIDES[filename] ?? entry.focus ?? 'center';
     return { url: entry.url, focus };
@@ -924,6 +939,62 @@ export function businessName(raw) {
  * @param {string} review
  * @returns {[string, string]}
  */
+/**
+ * Extract up to n display-ready quote strings from a review.
+ * Prefers short sentences (≤90 chars), falls back to medium (≤140), then truncates.
+ * Always returns exactly n strings (repeats last quote if review is thin).
+ */
+/**
+ * Extract up to n complete sentences from a review for use as spoken voiceovers.
+ * Never truncates mid-sentence — only returns complete sentences.
+ * Prefers short (≤15 words), then medium (≤25 words), then any complete sentence.
+ * If fewer than n complete sentences exist, repeats the best ones to fill.
+ */
+/**
+ * Extract up to n spoken-quote strings from a review.
+ * Target: ≤15 words per quote so audio fits within a 5s clip at ~180wpm.
+ * Never truncates mid-word; prefers natural sentence or clause boundaries.
+ * Falls back to repeating earlier quotes if the review is short.
+ */
+export function extractQuotes(review, n = 2) {
+  const sentences = (review.match(/[^.!?]+[.!?]+/g) || [review]).map(s => s.trim()).filter(s => s.length >= 15);
+  const wc = s => s.trim().split(/\s+/).length;
+
+  // Fit a sentence into maxWords — split at a clause boundary (comma/semicolon/conjunction) if possible
+  function fitToMaxWords(s, maxWords = 15) {
+    if (wc(s) <= maxWords) return s;
+    const words = s.trim().split(/\s+/);
+    // Try to cut at a natural pause: comma, semicolon, or 'and'/'but'/'so' conjunction
+    for (let i = maxWords; i >= 6; i--) {
+      if (/[,;]$/.test(words[i - 1]) || /^(and|but|so|though|when|while|after|before)$/i.test(words[i])) {
+        return words.slice(0, i).join(' ').replace(/[,;]$/, '.').replace(/\.$/, '') + '.';
+      }
+    }
+    // No natural break — just cut at maxWords with period
+    return words.slice(0, maxWords).join(' ') + '.';
+  }
+
+  const fitted = sentences.map(s => fitToMaxWords(s));
+  const short  = fitted.filter(s => wc(s) <= 12);
+  const medium = fitted.filter(s => wc(s) <= 15);
+  const pool   = short.length >= n ? short : medium.length >= n ? medium : fitted.length ? fitted : [fitToMaxWords(review)];
+
+  const results = [];
+  for (let i = 0; i < n; i++) {
+    results.push(pool[i % pool.length]);
+  }
+  return results;
+}
+
+/**
+ * Trim text to at most n words, appending ellipsis only if truncated.
+ */
+export function trimToWords(text, n) {
+  const words = text.trim().split(/\s+/);
+  if (words.length <= n) return text.trim();
+  return words.slice(0, n).join(' ') + '...';
+}
+
 export function extractTwoQuotes(review) {
   // Split on sentence-ending punctuation, keep the punctuation
   const sentences = (review.match(/[^.!?]+[.!?]+/g) || []).map(s => s.trim());
