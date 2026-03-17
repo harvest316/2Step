@@ -129,18 +129,28 @@ export function applyPhonetics(voiceover, suburb) {
 export function buildScenes(prospect) {
   const name     = businessName(prospect.business_name);
   const city     = prospect.city || 'Sydney';
+  const niche    = (prospect.niche || '').toLowerCase();
   const reviewer = prospect.best_review_author || 'a local';
   const review   = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
   const phone    = prospect.phone || null;
 
-  // Detect specific pest for hook voiceover
-  const pest     = detectPestFromReview(review);
-  const pestWord = pestLabel(pest);
-
-  // Hook: problem-aware city-specific question
-  const hookVoiceover = pest
-    ? `Dealing with ${pestWord} in ${city}?`
-    : `Looking for pest control in ${city}?`;
+  // Build niche-appropriate hook text
+  let hookText, hookVoiceover;
+  if (niche === 'plumber' || niche === 'plumbing') {
+    hookText      = `Plumbing problems in ${city}?`;
+    hookVoiceover = `Plumbing problems in ${city}?`;
+  } else if (niche.includes('cleaning') || niche.includes('cleaner')) {
+    hookText      = `Need a cleaner in ${city}?`;
+    hookVoiceover = `Need a cleaner in ${city}?`;
+  } else {
+    // Pest control — detect specific pest
+    const pest     = detectPestFromReview(review);
+    const pestWord = pestLabel(pest);
+    hookText      = `Dealing with ${pestWord} in ${city}?`;
+    hookVoiceover = pest
+      ? `Dealing with ${pestWord} in ${city}?`
+      : `Looking for pest control in ${city}?`;
+  }
 
   // Extract 4 COMPLETE sentences — no truncation, prefer ≤15 words, never cut mid-sentence
   const quotes = extractQuotes(review, 4);
@@ -152,7 +162,7 @@ export function buildScenes(prospect) {
 
   return [
     {
-      text:      `Dealing with ${pestWord} in ${city}?`,
+      text:      hookText,
       voiceover: hookVoiceover,
     },
     {
@@ -777,10 +787,12 @@ export const CLIP_POOLS = {
  */
 // Maps broad niche names → default problem slug used when no problem is specified.
 const NICHE_ALIASES = {
-  'pest control':   null, // no default — detectPestFromReview() must identify the pest, or render fails
-  'house cleaning': 'greasy-rangehood',
-  'cleaning':       'greasy-rangehood',
-  'plumber':        'blocked-drain',
+  'pest control':          null, // no default — detectPestFromReview() must identify the pest, or render fails
+  'house cleaning':        'greasy-rangehood',
+  'cleaning':              'greasy-rangehood',
+  'house cleaning service':'greasy-rangehood',
+  'plumber':               'blocked-drain',
+  'plumbing':              'blocked-drain',
 };
 
 /**
