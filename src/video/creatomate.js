@@ -1,21 +1,17 @@
 #!/usr/bin/env node
 
 /**
- * Creatomate API video renderer — automated video creation from reviews.
+ * Video renderer — automated video creation from reviews.
  *
- * Flat track layout (no compositions — those broke positioning + transcript sync).
- *
- *   Track 1: video clips (one per scene, sequential)
- *   Track 2: voiceover audio (one per scene, sequential)
- *   Track 3: RSVP subtitles (transcript_source → audio id)
- *   Track 4: logo image (scenes 1 + 5)
- *   Track 5: phone text (scene 5 only)
+ * Default: renders locally via ffmpeg (zero API cost).
+ * Pass --api to use Creatomate API instead (requires CREATOMATE_API_KEY).
  *
  * Usage:
- *   node src/video/creatomate.js                     # Process all video_prompted prospects
+ *   node src/video/creatomate.js                     # Render all prompted prospects (local ffmpeg)
  *   node src/video/creatomate.js --limit 5           # Up to 5
  *   node src/video/creatomate.js --id 3              # Specific prospect
  *   node src/video/creatomate.js --dry-run           # Preview without rendering
+ *   node src/video/creatomate.js --api               # Use Creatomate API instead of ffmpeg
  */
 
 import '../utils/load-env.js';
@@ -26,9 +22,11 @@ import * as musicMetadata from 'music-metadata';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
+import { readFile, mkdir } from 'fs/promises';
 import { randomUUID } from 'crypto';
 import { buildScenes, pickClipsFromPool } from './shotstack-lib.js';
 import { pickMusicTrack } from './music-tracks.js';
+import { renderVideo, extractPosterFrame } from './ffmpeg-render.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -47,12 +45,15 @@ const { values: args } = parseArgs({
     limit: { type: 'string', default: '100' },
     id: { type: 'string' },
     'dry-run': { type: 'boolean', default: false },
+    api: { type: 'boolean', default: false },
   },
   strict: false,
 });
 
-if (!API_KEY) {
-  console.error('ERROR: CREATOMATE_API_KEY must be set in .env');
+const USE_API = args.api;
+
+if (USE_API && !API_KEY) {
+  console.error('ERROR: CREATOMATE_API_KEY must be set in .env (--api mode)');
   process.exit(1);
 }
 if (!ELEVENLABS_KEY) {
@@ -64,14 +65,17 @@ if (!CF_ACCOUNT_ID || !CF_API_TOKEN || !R2_BUCKET) {
   process.exit(1);
 }
 
-const api = axios.create({
-  baseURL: 'https://api.creatomate.com/v1',
-  headers: {
-    Authorization: `Bearer ${API_KEY}`,
-    'Content-Type': 'application/json',
-  },
-  timeout: 30000,
-});
+let api;
+if (USE_API) {
+  api = axios.create({
+    baseURL: 'https://api.creatomate.com/v1',
+    headers: {
+      Authorization: `Bearer ${API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    timeout: 30000,
+  });
+}
 
 // ─── Database ────────────────────────────────────────────────────────────────
 
@@ -143,33 +147,28 @@ async function uploadToR2(buffer, key, contentType = 'audio/mpeg') {
  * The play button is baked into the image so email clients receive one <img> tag
  * with no CSS overlay — Outlook-safe.
  */
-async function buildPosterImage(snapshotUrl, prospectId) {
-  const res = await fetch(snapshotUrl);
-  if (!res.ok) throw new Error(`Snapshot download failed ${res.status}: ${snapshotUrl}`);
-  const origBuf = Buffer.from(await res.arrayBuffer());
-
-  // Resize to 400px wide, preserving 9:16 aspect ratio (→ ~711px tall)
-  const posterBuf = await sharp(origBuf)
+/**
+ * Build poster JPEG with play button overlay from a raw frame buffer.
+ * Returns the final JPEG buffer (caller uploads to R2).
+ */
+async function buildPosterFromBuffer(frameBuf, prospectId) {
+  const posterBuf = await sharp(frameBuf)
     .resize(400, null, { fit: 'inside', withoutEnlargement: false })
     .jpeg({ quality: 85 })
     .toBuffer();
 
   const { width: W, height: H } = await sharp(posterBuf).metadata();
 
-  // Play button: 72px circle centred on image
-  const r = 36;          // circle radius
+  const r = 36;
   const cx = Math.round(W / 2);
   const cy = Math.round(H / 2);
-
-  // Triangle polygon: right-pointing, optical centre slightly right of circle centre
-  // Points form an equilateral-ish triangle inscribed in the circle
-  const tx = cx + 4;     // shift right for optical balance
+  const tx = cx + 4;
   const ty = cy;
-  const th = 22;         // half-height of triangle
-  const tw = 26;         // width of triangle
-  const p1 = `${tx - Math.round(tw * 0.4)},${ty - th}`;   // top-left
-  const p2 = `${tx - Math.round(tw * 0.4)},${ty + th}`;   // bottom-left
-  const p3 = `${tx + Math.round(tw * 0.6)},${ty}`;        // right point
+  const th = 22;
+  const tw = 26;
+  const p1 = `${tx - Math.round(tw * 0.4)},${ty - th}`;
+  const p2 = `${tx - Math.round(tw * 0.4)},${ty + th}`;
+  const p3 = `${tx + Math.round(tw * 0.6)},${ty}`;
 
   const svgOverlay = Buffer.from(
     `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
@@ -178,12 +177,21 @@ async function buildPosterImage(snapshotUrl, prospectId) {
     </svg>`
   );
 
-  const finalBuf = await sharp(posterBuf)
+  return sharp(posterBuf)
     .composite([{ input: svgOverlay, top: 0, left: 0 }])
     .jpeg({ quality: 85 })
     .toBuffer();
+}
 
-  return uploadToR2(finalBuf, `poster-p${prospectId}.jpg`, 'image/jpeg');
+/**
+ * Build poster from a Creatomate snapshot URL (API mode only).
+ */
+async function buildPosterImage(snapshotUrl, prospectId) {
+  const res = await fetch(snapshotUrl);
+  if (!res.ok) throw new Error(`Snapshot download failed ${res.status}: ${snapshotUrl}`);
+  const frameBuf = Buffer.from(await res.arrayBuffer());
+  const posterBuf = await buildPosterFromBuffer(frameBuf, prospectId);
+  return uploadToR2(posterBuf, `poster-p${prospectId}.jpg`, 'image/jpeg');
 }
 
 // ─── Logo processing ─────────────────────────────────────────────────────────
@@ -193,20 +201,22 @@ async function buildPosterImage(snapshotUrl, prospectId) {
  * upload to R2, return public URL. Result cached per prospect so we don't
  * reprocess on every render.
  *
- * Video is 720×1280. Logo target: ~90% wide (648px), max ~20% tall (256px).
- * Pill padding: 24px H / 20px V around the resized logo.
+ * Logo target: ~90% wide (972px at 1080w), max ~20% tall (384px at 1920h).
+ * Pill padding: 28px H / 18px V around the resized logo.
+ *
+ * Returns: { buf: Buffer, url: string|null }
+ *   - buf: always set (for local ffmpeg)
+ *   - url: set only if uploaded to R2 (for API mode)
  */
 async function processLogoWithGlow(logoUrl, prospectId) {
-  const key = `logo-glow-p${prospectId}.png`;
-
   // Download original logo
   const res = await fetch(logoUrl);
   if (!res.ok) throw new Error(`Logo download failed ${res.status}: ${logoUrl}`);
   const origBuf = Buffer.from(await res.arrayBuffer());
 
-  // Resize to fit within 648×256, preserving aspect ratio
-  const maxW = 648;
-  const maxH = 256;
+  // Resize to fit within 972×384, preserving aspect ratio
+  const maxW = 972;
+  const maxH = 384;
   const logoBuf = await sharp(origBuf)
     .resize(maxW, maxH, { fit: 'inside', withoutEnlargement: false })
     .png()
@@ -240,7 +250,12 @@ async function processLogoWithGlow(logoUrl, prospectId) {
     .png()
     .toBuffer();
 
-  return uploadToR2(finalBuf, key, 'image/png');
+  // Upload to R2 only in API mode
+  const url = USE_API
+    ? await uploadToR2(finalBuf, `logo-glow-p${prospectId}.png`, 'image/png')
+    : null;
+
+  return { buf: finalBuf, url };
 }
 
 // ─── Phone formatter ─────────────────────────────────────────────────────────
@@ -461,30 +476,62 @@ async function submitRender(prospect) {
   // Merge measured durations back into scenes (override shotstack defaults)
   const scenesWithDuration = scenes.map((s, i) => ({ ...s, duration: audioDurations[i] }));
 
-  process.stdout.write('  Uploading audio to R2...');
-  const audioUrls = await Promise.all(
-    audios.map((buf, i) => uploadToR2(buf, `audio-p${pid}-scene${i + 1}.mp3`))
-  );
-  process.stdout.write(' done\n');
-
   const phoneText = nationalPhone || null;
 
-  // Process logo: add grey glow pill, upload to R2
-  let logoUrl = null;
+  // Process logo: add grey glow pill
+  let logo = null;
   if (prospect.logo_url) {
     process.stdout.write('  Processing logo...');
-    logoUrl = await processLogoWithGlow(prospect.logo_url, pid);
+    logo = await processLogoWithGlow(prospect.logo_url, pid);
     process.stdout.write(' done\n');
   }
 
   const music = pickMusicTrack(pid);
   console.log(`  Music: ${music.name}`);
 
-  const source = buildSource(clips, audioUrls, scenesWithDuration, logoUrl, phoneText, music.url);
+  if (USE_API) {
+    // ── Creatomate API path ──
+    process.stdout.write('  Uploading audio to R2...');
+    const audioUrls = await Promise.all(
+      audios.map((buf, i) => uploadToR2(buf, `audio-p${pid}-scene${i + 1}.mp3`))
+    );
+    process.stdout.write(' done\n');
 
-  const { data } = await api.post('/renders', { source, render_scale: 1 });
-  const render = Array.isArray(data) ? data[0] : data;
-  return render;
+    const source = buildSource(clips, audioUrls, scenesWithDuration, logo?.url || null, phoneText, music.url);
+    const { data } = await api.post('/renders', { source, render_scale: 1 });
+    const render = Array.isArray(data) ? data[0] : data;
+    return { mode: 'api', render };
+  }
+
+  // ── Local ffmpeg path (default) ──
+  await mkdir(resolve(root, 'tmp'), { recursive: true });
+  const outPath = resolve(root, `tmp/video-p${pid}.mp4`);
+
+  const logoSceneIndices = logo ? [0, clips.length - 1] : [];
+  const result = await renderVideo({
+    clips,
+    audioBufs: audios,
+    scenes: scenesWithDuration,
+    logoBuf: logo?.buf || null,
+    musicUrl: music.url,
+    logoSceneIndices,
+    outputPath: outPath,
+  });
+
+  // Upload finished video to R2
+  process.stdout.write('  Uploading video to R2...');
+  const videoBuf = await readFile(outPath);
+  const videoUrl = await uploadToR2(videoBuf, `video-p${pid}.mp4`, 'video/mp4');
+  process.stdout.write(' done\n');
+
+  // Extract poster frame and upload
+  process.stdout.write('  Building poster image...');
+  const posterFrame = await extractPosterFrame(outPath);
+  const posterBuf = await buildPosterFromBuffer(posterFrame, pid);
+  const posterUrl = await uploadToR2(posterBuf, `poster-p${pid}.jpg`, 'image/jpeg');
+  process.stdout.write(' done\n');
+
+  return { mode: 'local', videoUrl, posterUrl, duration: result.duration };
 }
 
 async function pollRender(renderId, maxWaitMs = 300000) {
@@ -512,7 +559,8 @@ async function main() {
     return;
   }
 
-  console.log(`Rendering ${prospects.length} videos via Creatomate${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
+  const modeLabel = USE_API ? 'Creatomate API' : 'local ffmpeg';
+  console.log(`Rendering ${prospects.length} videos via ${modeLabel}${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
 
   const updateVideo = db.prepare(`UPDATE videos SET status = ?, video_url = ?, thumbnail_url = ? WHERE id = ?`);
   let success = 0, failed = 0;
@@ -531,22 +579,27 @@ async function main() {
       }
 
       console.log(`[${prospect.id}] ${prospect.business_name} (${prospect.city})...`);
-      const render = await submitRender(prospect);
+      const result = await submitRender(prospect);
 
       if (args['dry-run']) { success++; continue; }
 
-      console.log(`  Render submitted (${render.id}), waiting for completion`);
-      updateVideo.run('rendering', null, null, prospect.video_id);
-
-      const completed = await pollRender(render.id);
-      console.log(`\n  ✓ Video ready: ${completed.url}`);
-
-      process.stdout.write('  Building poster image...');
-      const posterUrl = await buildPosterImage(completed.snapshot_url, prospect.id);
-      process.stdout.write(' done\n');
-      console.log(`  Poster: ${posterUrl}`);
-
-      updateVideo.run('completed', completed.url, posterUrl, prospect.video_id);
+      if (result.mode === 'api') {
+        // Creatomate API path
+        console.log(`  Render submitted (${result.render.id}), waiting for completion`);
+        updateVideo.run('rendering', null, null, prospect.video_id);
+        const completed = await pollRender(result.render.id);
+        console.log(`\n  ✓ Video ready: ${completed.url}`);
+        process.stdout.write('  Building poster image...');
+        const posterUrl = await buildPosterImage(completed.snapshot_url, prospect.id);
+        process.stdout.write(' done\n');
+        console.log(`  Poster: ${posterUrl}`);
+        updateVideo.run('completed', completed.url, posterUrl, prospect.video_id);
+      } else {
+        // Local ffmpeg path
+        console.log(`  ✓ Video ready: ${result.videoUrl}`);
+        console.log(`  Poster: ${result.posterUrl}`);
+        updateVideo.run('completed', result.videoUrl, result.posterUrl, prospect.video_id);
+      }
       db.prepare('UPDATE prospects SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         .run('video_created', prospect.id);
       success++;
