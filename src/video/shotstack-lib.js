@@ -863,7 +863,9 @@ export function pickClipsFromPool(niche, seed = 0, reviewText = '') {
   }
 
   // 7 slots: hook, technician×2, treatment×2, resolution, cta
-  // treatment2/technician2 reuse the same pools with a shifted seed so clips differ
+  // treatment2/technician2 and cta use same pools with shifted seeds so clips differ
+  // cta is last — user feedback: CTA scene is long (~7s) so a single 5s clip loops
+  // visibly. Two different CTA clips back-to-back avoids the jump.
   const slots = ['hook', 'technician', 'treatment', 'technician2', 'treatment2', 'resolution', 'cta'];
   const baseSlot = s => s.replace(/\d+$/, ''); // 'technician2' → 'technician'
   if (['hook', 'technician', 'treatment', 'resolution', 'cta'].some(s => !resolveSlot(s).length)) return null;
