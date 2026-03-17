@@ -169,8 +169,21 @@ async function fetchBestReview(placeId, businessName) {
       return null;
     }
 
-    // Sort by text length descending — longer reviews tend to be more specific
-    fiveStars.sort((a, b) => (b.review_text?.length || 0) - (a.review_text?.length || 0));
+    // Score each review: keyword specificity wins over length.
+    // Pest-specific keywords score highest; generic length is a tiebreaker.
+    const PEST_KEYWORDS = [
+      'termite', 'termites', 'cockroach', 'cockroaches', 'spider', 'spiders',
+      'ant', 'ants', 'rodent', 'rodents', 'rat', 'rats', 'mouse', 'mice',
+      'flea', 'fleas', 'wasp', 'wasps', 'bed bug', 'bed bugs', 'mosquito',
+      'mosquitoes', 'possum', 'possums', 'silverfish', 'moth', 'moths',
+    ];
+    const score = (r) => {
+      const t = (r.review_text || '').toLowerCase();
+      const keywordHits = PEST_KEYWORDS.filter(kw => t.includes(kw)).length;
+      // 1000 pts per keyword hit so any specific review beats all generic ones
+      return keywordHits * 1000 + (r.review_text?.length || 0);
+    };
+    fiveStars.sort((a, b) => score(b) - score(a));
 
     const best = fiveStars[0];
     return {

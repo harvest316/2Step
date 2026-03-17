@@ -503,6 +503,17 @@ async function main() {
 
   for (const prospect of prospects) {
     try {
+      // Skip pest control prospects with generic reviews (no specific pest detected).
+      // These need generic clip sets first — see TODO.md "generic pest clips".
+      if (prospect.niche === 'pest control') {
+        const { detectPestFromReview } = await import('./shotstack-lib.js');
+        const pest = detectPestFromReview(prospect.best_review_text || '');
+        if (!pest) {
+          console.log(`[${prospect.id}] ${prospect.business_name} — SKIP (generic review, no pest detected)`);
+          continue;
+        }
+      }
+
       console.log(`[${prospect.id}] ${prospect.business_name} (${prospect.city})...`);
       const render = await submitRender(prospect);
 
