@@ -44,7 +44,7 @@ const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL;
 
 const { values: args } = parseArgs({
   options: {
-    limit: { type: 'string', default: '10' },
+    limit: { type: 'string', default: '100' },
     id: { type: 'string' },
     'dry-run': { type: 'boolean', default: false },
   },
