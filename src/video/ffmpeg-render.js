@@ -9,7 +9,7 @@
 
 import { execFile } from 'child_process';
 import { promisify } from 'util';
-import { writeFile, mkdir, rm, readFile } from 'fs/promises';
+import { writeFile, mkdir, rm, readFile, access } from 'fs/promises';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { randomUUID } from 'crypto';
@@ -17,6 +17,7 @@ import { STYLE_VARIANTS } from './style-variants.js';
 
 const execFileAsync = promisify(execFile);
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const CLIPS_DIR = resolve(__dirname, '../../clips');
 
 // Video dimensions (9:16 vertical)
 const W = 1080;
@@ -37,6 +38,25 @@ async function downloadToFile(url, destPath) {
 }
 
 /**
+ * Return a local path for a clip URL, downloading it to clips/ if not already cached.
+ * clips/ is gitignored — large binaries not tracked in git.
+ */
+async function localClipPath(url) {
+  const filename = url.split('/').pop();
+  const localPath = join(CLIPS_DIR, filename);
+  try {
+    await access(localPath);
+    return localPath; // already cached
+  } catch {
+    // Not cached — download
+    process.stdout.write(`\n  Caching clip ${filename}...`);
+    await mkdir(CLIPS_DIR, { recursive: true });
+    await downloadToFile(url, localPath);
+    return localPath;
+  }
+}
+
+/**
  * Escape text for ffmpeg drawtext filter.
  * Must escape: \ ' : [ ] ;
  */
@@ -54,8 +74,9 @@ function escapeDrawtext(text) {
 /**
  * Word-wrap text to fit within a max character width.
  * Preserves explicit \n line breaks.
+ * Tighter limit (22) prevents long subtitle lines from overflowing the 1080px frame.
  */
-function wordWrap(text, maxChars = 28) {
+function wordWrap(text, maxChars = 22) {
   const lines = [];
   for (const paragraph of text.split('\n')) {
     const words = paragraph.split(/\s+/);
@@ -175,15 +196,18 @@ export async function renderVideo({
   outputPath,
   variant = DEFAULT_VARIANT,
 }) {
+  // Verify font file exists — ffmpeg silently falls back to a system font if missing
+  await access(variant.font).catch(() => {
+    throw new Error(`Font file not found: ${variant.font}`);
+  });
+
   const tmpDir = resolve(__dirname, '../../tmp/ffmpeg-' + randomUUID().slice(0, 8));
   await mkdir(tmpDir, { recursive: true });
 
   try {
-    // ── Download all assets to temp dir ──
-    process.stdout.write('  Downloading clips...');
-    const clipPaths = await Promise.all(
-      clips.map((c, i) => downloadToFile(c.url, join(tmpDir, `clip${i}.mp4`)))
-    );
+    // ── Resolve clips from local cache (downloads to clips/ on first use) ──
+    process.stdout.write('  Resolving clips...');
+    const clipPaths = await Promise.all(clips.map(c => localClipPath(c.url)));
     process.stdout.write(' done\n');
 
     // Write audio buffers to temp files
@@ -262,12 +286,14 @@ export async function renderVideo({
 
     // Add logo overlays (if present)
     if (logoPath && logoSceneIndices.length > 0) {
-      // Scale logo to 90% of video width, maintain aspect
+      const n = logoSceneIndices.length;
+      // Scale logo once, then split into n copies (ffmpeg outputs can only be consumed once)
       filterParts.push(
-        `[${logoInputIdx}:v]scale=${Math.round(W * 0.9)}:-1[logo_scaled]`
+        `[${logoInputIdx}:v]scale=${Math.round(W * 0.9)}:-1,split=${n}` +
+        Array.from({ length: n }, (_, i) => `[logo${i}]`).join('')
       );
 
-      for (let li = 0; li < logoSceneIndices.length; li++) {
+      for (let li = 0; li < n; li++) {
         const idx = logoSceneIndices[li];
         const start = starts[idx];
         const end = starts[idx] + scenes[idx].duration;
@@ -278,7 +304,7 @@ export async function renderVideo({
           : `y=H*0.08-h/2`;
         const nextLabel = `vl${li}`;
         filterParts.push(
-          `[${prevLabel}][logo_scaled]overlay=x=(W-w)/2:${yExpr}:` +
+          `[${prevLabel}][logo${li}]overlay=x=(W-w)/2:${yExpr}:` +
           `enable='between(t,${start},${end})'[${nextLabel}]`
         );
         prevLabel = nextLabel;
