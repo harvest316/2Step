@@ -1,33 +1,23 @@
 # 2Step TODO
 
-## Blocked on Kling credits
+## Pending
 
-### Generic pest clips (9 prospects blocked)
-Prospects with generic reviews (no specific pest mentioned) are currently skipped by
-`creatomate.js` because we have no suitable clips. Once credits are available, generate:
+### Generate videos for remaining pest control prospects
+All 15 pest control prospects now have pest-specific reviews. Run:
+```
+node src/video/prompt-generator.js --tool creatomate
+node src/video/creatomate.js --dry-run   # verify
+node src/video/creatomate.js
+```
 
-- **5× generic pest hook clips** — e.g. homeowner looking worried, bugs generically visible,
-  "something's wrong" reaction shot
-- **5× generic pest treatment clips** — technician with sprayer, general inspection, house exterior
-- ~80 credits total (10 clips × 8 credits each)
+### Plumber + house cleaning verticals (prospects 17–37)
+Still at `found` status — no logos, no videos queued. When ready to expand:
+1. Run logo scraper / prompt-generator for these prospects
+2. Generate Kling clips for any missing plumber/cleaning sub-niches
+3. Queue creatomate renders
 
-Then re-run `prompt-generator.js --tool creatomate` for skipped prospects and clear this block.
-
-**Blocked prospects (9):**
-| ID | Business |
-|----|----------|
-| 1  | Pest Control Sydney Wide |
-| 3  | BugFree Pest Control |
-| 6  | Rentokil Pest Control Sydney |
-| 8  | NSW Pest Control Sydney |
-| 9  | Safe Pest Control Sydney |
-| 10 | Masters Pest Control Sydney |
-| 11 | Killmore Pest Control Services Sydney |
-| 12 | Competitive Pest Services |
-| 13 | Sydney Pest Crew |
-
-**Note:** Review selection in `outscraper.js` now scores pest-keyword reviews higher so
-future prospect imports should have fewer generics. Existing 9 are already in DB.
-
-### Expand to other verticals
-Once pest clips are done, repeat for plumber and house cleaning generics if needed.
+### Generic clips (future, if needed)
+If future prospect imports produce reviews with no detectable pest keyword
+(unlikely now that `outscraper.js` scores keyword reviews 1000pts higher),
+generate ~10 generic pest clips (~80 Kling credits) and expand `detectPestFromReview`
+to return `'generic-pest'` as a fallback pool key.
