@@ -130,9 +130,12 @@ export function buildScenes(prospect) {
   const name     = businessName(prospect.business_name);
   const city     = prospect.city || 'Sydney';
   const niche    = (prospect.niche || '').toLowerCase();
-  const reviewer = prospect.best_review_author || 'a local';
+  const reviewer = toTitleCase(prospect.best_review_author || 'a local');
   const review   = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
   const phone    = prospect.phone || null;
+  const rating   = prospect.google_rating ? Math.round(prospect.google_rating) : 5;
+  const starsText = `${rating} Star${rating === 1 ? '' : 's'}`;
+  const starsVoiceover = ['', 'One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'][rating] || `${rating} stars`;
 
   // Build niche-appropriate hook text
   let hookText, hookVoiceover;
@@ -182,8 +185,8 @@ export function buildScenes(prospect) {
       voiceover: quotes[3],
     },
     {
-      text:      `⭐⭐⭐⭐⭐\n— ${reviewer}`,
-      voiceover: `Five stars — ${reviewer}.`,
+      text:      `${starsText}\n— ${reviewer}`,
+      voiceover: `${starsVoiceover} — ${reviewer}.`,
     },
     {
       text:      ctaText,
@@ -945,6 +948,10 @@ export function businessName(raw) {
   return (raw || '').split('|')[0].trim();
 }
 
+export function toTitleCase(str) {
+  return (str || '').replace(/\b\w/g, c => c.toUpperCase());
+}
+
 /**
  * Extract up to two short complete-sentence quotes from a review.
  * Finds all sentences ≤80 chars; returns the first two (or repeats the first).
@@ -981,11 +988,11 @@ export function extractQuotes(review, n = 2) {
     // Try to cut at a natural pause: comma, semicolon, or 'and'/'but'/'so' conjunction
     for (let i = maxWords; i >= 6; i--) {
       if (/[,;]$/.test(words[i - 1]) || /^(and|but|so|though|when|while|after|before)$/i.test(words[i])) {
-        return words.slice(0, i).join(' ').replace(/[,;]$/, '.').replace(/\.$/, '') + '.';
+        return words.slice(0, i).join(' ').replace(/[,;]$/, '') + '...';
       }
     }
-    // No natural break — just cut at maxWords with period
-    return words.slice(0, maxWords).join(' ') + '.';
+    // No natural break — cut at maxWords with ellipsis so it reads as deliberate excerpt
+    return words.slice(0, maxWords).join(' ') + '...';
   }
 
   const fitted = sentences.map(s => fitToMaxWords(s));
