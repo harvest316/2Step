@@ -247,11 +247,26 @@ async function processLogoWithGlow(logoUrl, prospectId) {
 
 function formatPhoneNational(phone) {
   if (!phone) return phone;
-  const m = phone.replace(/\s+/g, '').match(/^\+61(\d+)$/);
-  if (!m) return phone;
-  const local = '0' + m[1];
-  if (local.length === 10) {
+  const digits = phone.replace(/\s+/g, '');
+  // +61XXXXXXXXX → local format
+  // 9-digit remainder (mobile/landline): prepend 0 → 10 digits
+  // 10-digit remainder (1300/1800): keep as-is (already national)
+  const m = digits.match(/^\+61(\d+)$/);
+  const remainder = m ? m[1] : null;
+  const local = remainder
+    ? (remainder.length === 9 ? '0' + remainder : remainder)
+    : digits;
+  // 10-digit mobile: 04XX XXX XXX
+  if (local.length === 10 && local.startsWith('04')) {
     return local.slice(0, 4) + ' ' + local.slice(4, 7) + ' ' + local.slice(7);
+  }
+  // 1300 / 1800 / 13XX: XXXX XXX XXX or XXXX XXX XXX
+  if (local.length === 10 && (local.startsWith('13') || local.startsWith('18'))) {
+    return local.slice(0, 4) + ' ' + local.slice(4, 7) + ' ' + local.slice(7);
+  }
+  // 02/03/07/08 landline: 0X XXXX XXXX
+  if (local.length === 10) {
+    return local.slice(0, 2) + ' ' + local.slice(2, 6) + ' ' + local.slice(6);
   }
   return local;
 }
@@ -418,6 +433,16 @@ async function submitRender(prospect) {
     ? scenes.map(s => ({ ...s, voiceover: s.voiceover.replace(nationalPhone, ttsPhone) }))
     : scenes;
 
+  if (args['dry-run']) {
+    const music = pickMusicTrack(pid);
+    console.log(`  Clips: ${clips.map(c => c.url.split('/').pop()).join(', ')}`);
+    console.log(`  Music: ${music.name}`);
+    console.log(`  Logo: ${prospect.logo_url || 'none'}`);
+    console.log(`  Phone: ${nationalPhone || 'none'}`);
+    console.log(`  Scenes (est): ${scenes.map(s => s.duration + 's').join(' + ')} = ${scenes.reduce((a, b) => a + b.duration, 0)}s`);
+    return { id: 'dry-run', status: 'dry-run' };
+  }
+
   process.stdout.write(`  Generating audio (${scenesForAudio.length} scenes)...`);
   const audios = [];
   for (const scene of scenesForAudio) {
@@ -456,15 +481,6 @@ async function submitRender(prospect) {
   console.log(`  Music: ${music.name}`);
 
   const source = buildSource(clips, audioUrls, scenesWithDuration, logoUrl, phoneText, music.url);
-
-  if (args['dry-run']) {
-    console.log(`  Clips: ${clips.map(c => c.url.split('/').pop()).join(', ')}`);
-    console.log(`  Logo: ${prospect.logo_url || 'none'}`);
-    console.log(`  Phone: ${phoneText || 'none'}`);
-    console.log(`  Scenes: ${scenes.map(s => s.duration + 's').join(' + ')} = ${scenes.reduce((a,b) => a+b.duration, 0)}s`);
-    console.log(`  Source:\n${JSON.stringify(source, null, 2)}`);
-    return { id: 'dry-run', status: 'dry-run' };
-  }
 
   const { data } = await api.post('/renders', { source, render_scale: 1 });
   const render = Array.isArray(data) ? data[0] : data;
