@@ -137,14 +137,34 @@ export function buildScenes(prospect) {
   const starsText = `${rating} Star${rating === 1 ? '' : 's'}`;
   const starsVoiceover = ['', 'One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'][rating] || `${rating} stars`;
 
-  // Build niche-appropriate hook text
+  // Build niche-appropriate hook text — always names the specific problem
   let hookText, hookVoiceover;
   if (niche === 'plumber' || niche === 'plumbing') {
-    hookText      = `Plumbing problems in ${city}?`;
-    hookVoiceover = `Plumbing problems in ${city}?`;
+    // Use the clip pool key to name the specific plumbing problem
+    const clips = pickClipsFromPool(niche, 0, review);
+    const problemPool = clips?.[0]?.url.split('/').pop().replace(/-hook.*/, '') || 'blocked-drain';
+    const plumbingLabels = {
+      'blocked-drain': 'a blocked drain',
+      'burst-pipe':    'a burst pipe',
+      'leaking-tap':   'a leaking tap',
+      'hot-water':     'hot water issues',
+    };
+    const problem = plumbingLabels[problemPool] || 'a plumbing problem';
+    hookText      = `Got ${problem} in ${city}?`;
+    hookVoiceover = `Got ${problem} in ${city}?`;
   } else if (niche.includes('cleaning') || niche.includes('cleaner')) {
-    hookText      = `Need a cleaner in ${city}?`;
-    hookVoiceover = `Need a cleaner in ${city}?`;
+    // Use the clip pool key to name the specific cleaning problem
+    const clips = pickClipsFromPool(niche, 0, review);
+    const problemPool = clips?.[0]?.url.split('/').pop().replace(/-hook.*/, '') || 'greasy-rangehood';
+    const cleaningLabels = {
+      'greasy-rangehood': 'your rangehood cleaned',
+      'dirty-bathroom':   'your bathroom deep-cleaned',
+      'end-of-lease':     'an end-of-lease clean',
+      'deep-clean':       'a deep clean',
+    };
+    const problem = cleaningLabels[problemPool] || 'a professional clean';
+    hookText      = `Need ${problem} in ${city}?`;
+    hookVoiceover = `Need ${problem} in ${city}?`;
   } else {
     // Pest control — detect specific pest
     const pest     = detectPestFromReview(review);
@@ -158,7 +178,11 @@ export function buildScenes(prospect) {
   // Extract 4 COMPLETE sentences — no truncation, prefer ≤15 words, never cut mid-sentence
   const quotes = extractQuotes(review, 4);
 
-  const ctaText = phone ? `${name}\nCall ${phone}` : `${name}\nFree Inspection`;
+  // CTA slide: logo is shown on this scene, so no need to repeat the business name in text
+  const hasLogo = !!prospect.logo_url;
+  const ctaText = hasLogo
+    ? (phone ? `Call ${phone}` : `Free Inspection`)
+    : (phone ? `${name}\nCall ${phone}` : `${name}\nFree Inspection`);
   const ctaVoiceover = phone
     ? `Call ${phone} or reply YES to schedule your free inspection.`
     : `Reply YES or visit "${name}" to schedule your free inspection.`;
@@ -977,8 +1001,16 @@ export function toTitleCase(str) {
  * Never truncates mid-word; prefers natural sentence or clause boundaries.
  * Falls back to repeating earlier quotes if the review is short.
  */
+// Sentence openers that produce weak or confusing standalone subtitles:
+// - mid-thought continuations ("As a...", "From the moment...", "Not only...")
+// - meta-praise openers that don't describe anything specific ("I cannot speak highly enough...")
+const DANGLING_OPENERS = /^(as a |as an |with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend)/i;
+
 export function extractQuotes(review, n = 2) {
-  const sentences = (review.match(/[^.!?]+[.!?]+/g) || [review]).map(s => s.trim()).filter(s => s.length >= 15);
+  const sentences = (review.match(/[^.!?]+[.!?]+/g) || [review])
+    .map(s => s.trim())
+    .filter(s => s.length >= 15)
+    .filter(s => !DANGLING_OPENERS.test(s));  // reject mid-thought continuations
   const wc = s => s.trim().split(/\s+/).length;
 
   // Fit a sentence into maxWords — split at a clause boundary (comma/semicolon/conjunction) if possible

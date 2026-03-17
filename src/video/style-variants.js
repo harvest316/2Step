@@ -23,8 +23,8 @@ const FONT_DIR = resolve(__dirname, '../../assets/fonts');
 export const STYLE_VARIANTS = [
   {
     id: 'A',
-    // Classic — Montserrat ExtraBold, white text, dark pill
-    font: `${FONT_DIR}/Montserrat-ExtraBold.ttf`,
+    // Oswald Bold, white text, dark pill, no transition
+    font: `${FONT_DIR}/Oswald-Bold.ttf`,
     fontSize: 76,
     textColor: 'white',
     boxColor: 'black@0.55',
@@ -36,9 +36,9 @@ export const STYLE_VARIANTS = [
   },
   {
     id: 'B',
-    // Oswald Bold, gold text, deep navy pill, dissolve transitions
-    font: `${FONT_DIR}/Oswald-Bold.ttf`,
-    fontSize: 82,
+    // Bebas Neue, gold text, deep navy pill, dissolve transitions
+    font: `${FONT_DIR}/BebasNeue-Regular.ttf`,
+    fontSize: 88,
     textColor: '0xFFD700',   // gold
     boxColor: '0x001E3C@0.70',
     boxBorderW: 22,
@@ -62,8 +62,8 @@ export const STYLE_VARIANTS = [
   },
   {
     id: 'D',
-    // Montserrat ExtraBold, cyan-mint text, dark teal pill, fade transitions
-    font: `${FONT_DIR}/Montserrat-ExtraBold.ttf`,
+    // Oswald Bold, cyan-mint text, dark teal pill, fade transitions
+    font: `${FONT_DIR}/Oswald-Bold.ttf`,
     fontSize: 76,
     textColor: '0x00FFD1',   // mint/cyan
     boxColor: '0x003333@0.60',
