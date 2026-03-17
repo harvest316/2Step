@@ -19,6 +19,9 @@ const execFileAsync = promisify(execFile);
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CLIPS_DIR = resolve(__dirname, '../../clips');
 
+// DejaVu Sans — available on Ubuntu, contains ★ (U+2605) glyph
+const DEJAVU_FONT = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf';
+
 // Video dimensions (9:16 vertical)
 const W = 1080;
 const H = 1920;
@@ -96,19 +99,30 @@ function wordWrap(text, maxChars = 22) {
 
 /**
  * Build the drawtext filter string for a single scene's text overlay.
+ * Scene index 5 (stars/reviewer) uses DejaVu Sans Bold for ★ glyph support.
  */
-function buildDrawtext(scene, startTime, endTime, clipFocus, variant) {
-  const wrapped = wordWrap(scene.text, 28);
+function buildDrawtext(scene, startTime, endTime, clipFocus, variant, sceneIdx) {
+  const isStarsScene = sceneIdx === 5;
+  // Stars scene: replace "N Stars" prefix with actual ★ glyphs
+  let displayText = scene.text;
+  if (isStarsScene) {
+    displayText = displayText.replace(/^(\d) Stars?\n/, (_, n) => '★'.repeat(Number(n)) + '\n');
+  }
+
+  const wrapped = wordWrap(displayText, 18);  // tight wrap: ~18 chars fits safely at 76px in 1080px
   const escaped = escapeDrawtext(wrapped);
+
+  // Stars scene uses DejaVu for ★ glyph; all others use variant font
+  const fontFile = isStarsScene ? DEJAVU_FONT : variant.font;
 
   // Position: text goes to y=8% if focus is 'top', else y=80%
   const isTop = clipFocus === 'top';
   const yExpr = isTop
-    ? `y=h*0.08`       // ~154px from top
-    : `y=h*0.80-th`;   // ~1536px minus text height → text sits above 80% line
+    ? `y=h*0.08`
+    : `y=h*0.80-th`;
 
   return `drawtext=` +
-    `fontfile='${variant.font}'` +
+    `fontfile='${fontFile}'` +
     `:text='${escaped}'` +
     `:fontsize=${variant.fontSize}` +
     `:fontcolor=${variant.textColor}` +
@@ -279,7 +293,7 @@ export async function renderVideo({
       const start = starts[i];
       const end = starts[i] + scenes[i].duration;
       const nextLabel = `vt${i}`;
-      const dt = buildDrawtext(scenes[i], start, end, clips[i]?.focus, variant);
+      const dt = buildDrawtext(scenes[i], start, end, clips[i]?.focus, variant, i);
       filterParts.push(`[${prevLabel}]${dt}[${nextLabel}]`);
       prevLabel = nextLabel;
     }
