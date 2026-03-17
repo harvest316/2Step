@@ -27,6 +27,7 @@ import { randomUUID } from 'crypto';
 import { buildScenes, pickClipsFromPool } from './shotstack-lib.js';
 import { pickMusicTrack } from './music-tracks.js';
 import { renderVideo, extractPosterFrame } from './ffmpeg-render.js';
+import { pickVariant } from './style-variants.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -448,12 +449,15 @@ async function submitRender(prospect) {
     ? scenes.map(s => ({ ...s, voiceover: s.voiceover.replace(nationalPhone, ttsPhone) }))
     : scenes;
 
+  const variant = pickVariant(pid);
+
   if (args['dry-run']) {
     const music = pickMusicTrack(pid);
     console.log(`  Clips: ${clips.map(c => c.url.split('/').pop()).join(', ')}`);
     console.log(`  Music: ${music.name}`);
     console.log(`  Logo: ${prospect.logo_url || 'none'}`);
     console.log(`  Phone: ${nationalPhone || 'none'}`);
+    console.log(`  Style: Variant ${variant.id} (font: ${variant.font.split('/').pop()}, pill: ${variant.boxColor}, transition: ${variant.transition})`);
     console.log(`  Scenes (est): ${scenes.map(s => s.duration + 's').join(' + ')} = ${scenes.reduce((a, b) => a + b.duration, 0)}s`);
     return { id: 'dry-run', status: 'dry-run' };
   }
@@ -516,6 +520,7 @@ async function submitRender(prospect) {
     musicUrl: music.url,
     logoSceneIndices,
     outputPath: outPath,
+    variant,
   });
 
   // Upload finished video to R2
@@ -531,7 +536,7 @@ async function submitRender(prospect) {
   const posterUrl = await uploadToR2(posterBuf, `poster-p${pid}.jpg`, 'image/jpeg');
   process.stdout.write(' done\n');
 
-  return { mode: 'local', videoUrl, posterUrl, duration: result.duration };
+  return { mode: 'local', videoUrl, posterUrl, duration: result.duration, variantId: variant.id };
 }
 
 async function pollRender(renderId, maxWaitMs = 300000) {
@@ -562,7 +567,7 @@ async function main() {
   const modeLabel = USE_API ? 'Creatomate API' : 'local ffmpeg';
   console.log(`Rendering ${prospects.length} videos via ${modeLabel}${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
 
-  const updateVideo = db.prepare(`UPDATE videos SET status = ?, video_url = ?, thumbnail_url = ? WHERE id = ?`);
+  const updateVideo = db.prepare(`UPDATE videos SET status = ?, video_url = ?, thumbnail_url = ?, style_variant = ? WHERE id = ?`);
   let success = 0, failed = 0;
 
   for (const prospect of prospects) {
@@ -586,26 +591,26 @@ async function main() {
       if (result.mode === 'api') {
         // Creatomate API path
         console.log(`  Render submitted (${result.render.id}), waiting for completion`);
-        updateVideo.run('rendering', null, null, prospect.video_id);
+        updateVideo.run('rendering', null, null, null, prospect.video_id);
         const completed = await pollRender(result.render.id);
         console.log(`\n  ✓ Video ready: ${completed.url}`);
         process.stdout.write('  Building poster image...');
         const posterUrl = await buildPosterImage(completed.snapshot_url, prospect.id);
         process.stdout.write(' done\n');
         console.log(`  Poster: ${posterUrl}`);
-        updateVideo.run('completed', completed.url, posterUrl, prospect.video_id);
+        updateVideo.run('completed', completed.url, posterUrl, null, prospect.video_id);
       } else {
         // Local ffmpeg path
-        console.log(`  ✓ Video ready: ${result.videoUrl}`);
+        console.log(`  ✓ Video ready: ${result.videoUrl} [variant ${result.variantId}]`);
         console.log(`  Poster: ${result.posterUrl}`);
-        updateVideo.run('completed', result.videoUrl, result.posterUrl, prospect.video_id);
+        updateVideo.run('completed', result.videoUrl, result.posterUrl, result.variantId, prospect.video_id);
       }
       db.prepare('UPDATE prospects SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         .run('video_created', prospect.id);
       success++;
     } catch (err) {
       console.error(`\n  ✗ Failed: ${err.message}`);
-      updateVideo.run('failed', null, null, prospect.video_id);
+      updateVideo.run('failed', null, null, null, prospect.video_id);
       failed++;
     }
   }

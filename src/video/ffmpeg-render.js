@@ -1,10 +1,10 @@
 /**
  * Local ffmpeg video renderer — replaces the Creatomate API.
  *
- * Takes the same inputs (clips, audio buffers, scenes, logo, music)
+ * Takes the same inputs (clips, audio buffers, scenes, logo, music, style variant)
  * and produces an MP4 locally. Zero API cost.
  *
- * Requires: ffmpeg in PATH, Montserrat-ExtraBold.ttf in assets/fonts/
+ * Requires: ffmpeg in PATH, fonts in assets/fonts/
  */
 
 import { execFile } from 'child_process';
@@ -13,14 +13,17 @@ import { writeFile, mkdir, rm, readFile } from 'fs/promises';
 import { resolve, dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 import { randomUUID } from 'crypto';
+import { STYLE_VARIANTS } from './style-variants.js';
 
 const execFileAsync = promisify(execFile);
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const FONT_PATH = resolve(__dirname, '../../assets/fonts/Montserrat-ExtraBold.ttf');
 
 // Video dimensions (9:16 vertical)
 const W = 1080;
 const H = 1920;
+
+// Default variant (variant A — original look)
+const DEFAULT_VARIANT = STYLE_VARIANTS[0];
 
 /**
  * Download a URL to a local file. Returns the file path.
@@ -73,32 +76,79 @@ function wordWrap(text, maxChars = 28) {
 /**
  * Build the drawtext filter string for a single scene's text overlay.
  */
-function buildDrawtext(scene, startTime, endTime, clipFocus, fontPath) {
+function buildDrawtext(scene, startTime, endTime, clipFocus, variant) {
   const wrapped = wordWrap(scene.text, 28);
   const escaped = escapeDrawtext(wrapped);
 
   // Position: text goes to y=8% if focus is 'top', else y=80%
   const isTop = clipFocus === 'top';
-  // For top placement, anchor at top edge; for bottom, anchor at bottom
   const yExpr = isTop
     ? `y=h*0.08`       // ~154px from top
     : `y=h*0.80-th`;   // ~1536px minus text height → text sits above 80% line
 
-  // Font size: 7 vmin = 7% of min(1080,1920) = 75.6px
-  const fontSize = 76;
-  // Box padding: 3% horizontal ≈ 32px, 2% vertical ≈ 38px
-  const boxBorderW = 20;
-
   return `drawtext=` +
-    `fontfile='${fontPath}'` +
+    `fontfile='${variant.font}'` +
     `:text='${escaped}'` +
-    `:fontsize=${fontSize}` +
-    `:fontcolor=white` +
-    `:borderw=2:bordercolor=black` +
-    `:box=1:boxcolor=black@0.5:boxborderw=${boxBorderW}` +
-    `:x=(w-tw)/2` +          // centred horizontally
+    `:fontsize=${variant.fontSize}` +
+    `:fontcolor=${variant.textColor}` +
+    `:borderw=${variant.borderW}:bordercolor=${variant.borderColor}` +
+    `:box=1:boxcolor=${variant.boxColor}:boxborderw=${variant.boxBorderW}` +
+    `:x=(w-tw)/2` +
     `:${yExpr}` +
     `:enable='between(t,${startTime},${endTime})'`;
+}
+
+/**
+ * Build the clip segment filters.
+ * If transition = 'none', returns simple [vi] labels and a concat filter.
+ * If transition = 'xfade:*', returns per-clip labels and a chain of xfade filters.
+ *
+ * Returns { filterParts, videoOutLabel }.
+ */
+function buildVideoFilterChain({ clips, scenes, clipInputStart, variant, starts }) {
+  const filterParts = [];
+
+  // Scale/crop each clip; freeze last frame if clip is shorter than scene duration
+  for (let i = 0; i < clips.length; i++) {
+    filterParts.push(
+      `[${clipInputStart + i}:v]` +
+      `scale=${W}:${H}:force_original_aspect_ratio=increase,` +
+      `crop=${W}:${H},setsar=1,fps=30,` +
+      `tpad=stop_mode=clone:stop_duration=${scenes[i].duration},` +
+      `trim=duration=${scenes[i].duration},setpts=PTS-STARTPTS` +
+      `[v${i}]`
+    );
+  }
+
+  let videoOutLabel;
+
+  if (variant.transition === 'none' || clips.length === 1) {
+    // Simple concat
+    const concatInputs = clips.map((_, i) => `[v${i}]`).join('');
+    filterParts.push(`${concatInputs}concat=n=${clips.length}:v=1:a=0[vraw]`);
+    videoOutLabel = 'vraw';
+  } else {
+    // xfade chain — each transition overlaps by transitionDuration seconds
+    // xfade offset = time at which the transition STARTS = cumulative duration up to clip i - overlap * i
+    const td = variant.transitionDuration;
+    const xfadeType = variant.transition.replace('xfade:', '');
+    let prevLabel = 'v0';
+    for (let i = 1; i < clips.length; i++) {
+      // Offset: cumulative scene durations before clip i, minus i*td (each xfade trims td from total)
+      let offset = 0;
+      for (let j = 0; j < i; j++) offset += scenes[j].duration;
+      offset -= i * td;
+      offset = Math.max(0, offset);
+      const nextLabel = i === clips.length - 1 ? 'vraw' : `xf${i}`;
+      filterParts.push(
+        `[${prevLabel}][v${i}]xfade=transition=${xfadeType}:duration=${td}:offset=${offset.toFixed(3)}[${nextLabel}]`
+      );
+      prevLabel = nextLabel;
+    }
+    videoOutLabel = 'vraw';
+  }
+
+  return { filterParts, videoOutLabel };
 }
 
 /**
@@ -112,6 +162,7 @@ function buildDrawtext(scene, startTime, endTime, clipFocus, fontPath) {
  * @param {string} opts.musicUrl                                - Background music URL
  * @param {number[]} opts.logoSceneIndices                      - Which scene indices show the logo (e.g. [0, 6])
  * @param {string} opts.outputPath                              - Where to write the final MP4
+ * @param {Object} [opts.variant]                               - Style variant from style-variants.js
  * @returns {Promise<{path: string, duration: number}>}
  */
 export async function renderVideo({
@@ -122,6 +173,7 @@ export async function renderVideo({
   musicUrl,
   logoSceneIndices = [],
   outputPath,
+  variant = DEFAULT_VARIANT,
 }) {
   const tmpDir = resolve(__dirname, '../../tmp/ffmpeg-' + randomUUID().slice(0, 8));
   await mkdir(tmpDir, { recursive: true });
@@ -163,10 +215,9 @@ export async function renderVideo({
 
     // ── Build ffmpeg command ──
     const inputArgs = [];
-    const filterParts = [];
     let inputIdx = 0;
 
-    // Inputs: video clips (no loop — freeze last frame if clip is short via tpad)
+    // Inputs: video clips
     const clipInputStart = inputIdx;
     for (let i = 0; i < clipPaths.length; i++) {
       inputArgs.push('-i', clipPaths[i]);
@@ -194,33 +245,17 @@ export async function renderVideo({
     }
 
     // ── Video filter chain ──
+    const { filterParts, videoOutLabel: rawLabel } = buildVideoFilterChain({
+      clips, scenes, clipInputStart, variant, starts,
+    });
 
-    // Scale, crop each clip to 1080x1920. If clip is shorter than scene duration,
-    // freeze the last frame (tpad) instead of looping — avoids visible jump/repeat.
-    for (let i = 0; i < clips.length; i++) {
-      filterParts.push(
-        `[${clipInputStart + i}:v]` +
-        `scale=${W}:${H}:force_original_aspect_ratio=increase,` +
-        `crop=${W}:${H},setsar=1,` +
-        `tpad=stop_mode=clone:stop_duration=${scenes[i].duration},` +
-        `trim=duration=${scenes[i].duration},setpts=PTS-STARTPTS` +
-        `[v${i}]`
-      );
-    }
-
-    // Concatenate all video clips
-    const concatInputs = clips.map((_, i) => `[v${i}]`).join('');
-    filterParts.push(
-      `${concatInputs}concat=n=${clips.length}:v=1:a=0[vraw]`
-    );
-
-    // Add text overlays (chained drawtext filters)
-    let prevLabel = 'vraw';
+    // Add text overlays (chained drawtext filters on top of raw/xfaded video)
+    let prevLabel = rawLabel;
     for (let i = 0; i < scenes.length; i++) {
       const start = starts[i];
       const end = starts[i] + scenes[i].duration;
       const nextLabel = `vt${i}`;
-      const dt = buildDrawtext(scenes[i], start, end, clips[i]?.focus, FONT_PATH);
+      const dt = buildDrawtext(scenes[i], start, end, clips[i]?.focus, variant);
       filterParts.push(`[${prevLabel}]${dt}[${nextLabel}]`);
       prevLabel = nextLabel;
     }
@@ -302,8 +337,8 @@ export async function renderVideo({
       outputPath,
     ];
 
-    process.stdout.write('  Rendering with ffmpeg...');
-    const { stderr } = await execFileAsync('ffmpeg', ffmpegArgs, {
+    process.stdout.write(`  Rendering with ffmpeg (variant ${variant.id})...`);
+    await execFileAsync('ffmpeg', ffmpegArgs, {
       maxBuffer: 10 * 1024 * 1024,
       timeout: 300000,   // 5 min max
     });
