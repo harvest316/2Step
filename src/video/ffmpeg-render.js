@@ -303,7 +303,7 @@ export async function renderVideo({
       const n = logoSceneIndices.length;
       // Scale logo once, then split into n copies (ffmpeg outputs can only be consumed once)
       filterParts.push(
-        `[${logoInputIdx}:v]scale=${Math.round(W * 0.9)}:-1,split=${n}` +
+        `[${logoInputIdx}:v]scale='min(iw,${Math.round(W * 0.9)})':'min(ih,${Math.round(H * 0.2)})':force_original_aspect_ratio=decrease,split=${n}` +
         Array.from({ length: n }, (_, i) => `[logo${i}]`).join('')
       );
 
