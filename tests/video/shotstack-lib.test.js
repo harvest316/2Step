@@ -14,7 +14,6 @@ import {
   timingsToSceneDurations,
   stripSsml,
   CLIP_POOLS,
-  PEXELS_FALLBACK_QUERIES,
 } from '../../src/video/shotstack-lib.js';
 
 // ─── Fixtures ─────────────────────────────────────────────────────────────────
@@ -729,22 +728,3 @@ describe('clipsBySource', () => {
   });
 });
 
-// ─── PEXELS_FALLBACK_QUERIES ──────────────────────────────────────────────────
-
-describe('PEXELS_FALLBACK_QUERIES', () => {
-  it('has 5 queries for pest control', () => {
-    assert.equal(PEXELS_FALLBACK_QUERIES['pest control'].length, 5);
-  });
-
-  it('has 5 queries for default', () => {
-    assert.equal(PEXELS_FALLBACK_QUERIES.default.length, 5);
-  });
-
-  it('all queries are non-empty strings', () => {
-    for (const queries of Object.values(PEXELS_FALLBACK_QUERIES)) {
-      for (const q of queries) {
-        assert.ok(typeof q === 'string' && q.length > 0);
-      }
-    }
-  });
-});
