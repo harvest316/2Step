@@ -142,17 +142,18 @@ CREATE TABLE IF NOT EXISTS niche_tiers (
 );
 
 INSERT OR IGNORE INTO niche_tiers (niche, tier) VALUES
-    ('roofing',                 'standard'),
-    ('med spa',                 'standard'),
-    ('dentist',                 'standard'),
-    ('real estate',             'standard'),
-    ('hvac',                    'standard'),
-    ('pest control',            'standard'),
-    ('personal injury lawyer',  'premium'),
-    ('pool installer',          'premium'),
-    ('chiropractor',            'budget'),
-    ('plumber',                 'budget'),
-    ('dog trainer',             'budget');
+    ('roofing',                  'standard'),
+    ('med spa',                  'standard'),
+    ('dentist',                  'standard'),
+    ('real estate',              'standard'),
+    ('hvac',                     'standard'),
+    ('pest control',             'standard'),
+    ('house cleaning service',   'standard'),
+    ('personal injury lawyer',   'premium'),
+    ('pool installer',           'premium'),
+    ('chiropractor',             'budget'),
+    ('plumber',                  'budget'),
+    ('dog trainer',              'budget');
 
 -- =============================================================================
 -- Pricing reference (lives in msgs.pricing — documented here for reference)
