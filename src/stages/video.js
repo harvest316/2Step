@@ -23,7 +23,7 @@
 
 import '../utils/load-env.js';
 import db from '../utils/db.js';
-import { renderVideo } from '../video/ffmpeg-render.js';
+import { renderVideo, extractPosterFrame } from '../video/ffmpeg-render.js';
 import {
   buildScenes,
   pickClipsFromPool,
@@ -32,6 +32,7 @@ import {
 } from '../video/shotstack-lib.js';
 import { pickMusicTrack } from '../video/music-tracks.js';
 import { pickVariant } from '../video/style-variants.js';
+import sharp from 'sharp';
 import { mkdir, rm, readFile } from 'fs/promises';
 import { existsSync, readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
@@ -186,6 +187,67 @@ async function uploadToR2(localPath, key) {
   return `${PUBLIC_URL}/${key}`;
 }
 
+/**
+ * Upload a buffer to Cloudflare R2 and return its public URL.
+ * @param {Buffer} buffer
+ * @param {string} key  — object key (filename) in R2
+ * @param {string} contentType
+ * @returns {Promise<string>}  public URL
+ */
+async function uploadBufferToR2(buffer, key, contentType = 'image/jpeg') {
+  const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/r2/buckets/${BUCKET}/objects/${key}`;
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${API_TOKEN}`,
+      'Content-Type': contentType,
+    },
+    body: buffer,
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`R2 poster upload failed ${res.status}: ${text.substring(0, 200)}`);
+  }
+  return `${PUBLIC_URL}/${key}`;
+}
+
+/**
+ * Build a poster JPEG with play button overlay from a raw frame buffer.
+ * Resizes to 400px wide, composites a dark circle + white triangle play button.
+ * Returns the final JPEG buffer.
+ */
+async function buildPosterFromBuffer(frameBuf) {
+  const posterBuf = await sharp(frameBuf)
+    .resize(400, null, { fit: 'inside', withoutEnlargement: false })
+    .jpeg({ quality: 85 })
+    .toBuffer();
+
+  const { width: W, height: H } = await sharp(posterBuf).metadata();
+
+  const r = 36;
+  const cx = Math.round(W / 2);
+  const cy = Math.round(H / 2);
+  const tx = cx + 4;
+  const ty = cy;
+  const th = 22;
+  const tw = 26;
+  const p1 = `${tx - Math.round(tw * 0.4)},${ty - th}`;
+  const p2 = `${tx - Math.round(tw * 0.4)},${ty + th}`;
+  const p3 = `${tx + Math.round(tw * 0.6)},${ty}`;
+
+  const svgOverlay = Buffer.from(
+    `<svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(0,0,0,0.62)" />
+      <polygon points="${p1} ${p2} ${p3}" fill="white" />
+    </svg>`
+  );
+
+  return sharp(posterBuf)
+    .composite([{ input: svgOverlay, top: 0, left: 0 }])
+    .jpeg({ quality: 85 })
+    .toBuffer();
+}
+
 // ─── Logo download ────────────────────────────────────────────────────────────
 
 /**
@@ -210,7 +272,7 @@ async function fetchLogoBuf(url) {
  * Process a single site through the video creation pipeline.
  * @param {object} site  — row from sites table
  * @param {object} opts  — { dryRun: boolean }
- * @returns {Promise<{ videoUrl: string, videoHash: string, videoId: number, durationSeconds: number, costUsd: number }>}
+ * @returns {Promise<{ videoUrl: string, posterUrl: string, videoHash: string, videoId: number, durationSeconds: number, costUsd: number }>}
  */
 async function processSite(site, { dryRun }) {
   const siteId = site.id;
@@ -314,13 +376,21 @@ async function processSite(site, { dryRun }) {
   const videoUrl = await uploadToR2(outputPath, r2Key);
   process.stdout.write(' done\n');
 
-  // 9. Compute base62 hash from site_id
+  // 9. Extract poster frame, build poster image with play button, upload to R2
+  process.stdout.write('  Building poster image...');
+  const posterFrame = await extractPosterFrame(outputPath, 2);
+  const posterBuf = await buildPosterFromBuffer(posterFrame);
+  const posterKey = `poster-s${siteId}-${Date.now()}.jpg`;
+  const posterUrl = await uploadBufferToR2(posterBuf, posterKey, 'image/jpeg');
+  process.stdout.write(` done (${posterKey})\n`);
+
+  // 10. Compute base62 hash from site_id
   const videoHash = toBase62(siteId);
 
-  // 10. Write to DB (insert videos row, update site)
+  // 11. Write to DB (insert videos row with thumbnail_url, update site)
   const insertVideo = db.prepare(`
-    INSERT INTO videos (site_id, video_tool, video_url, status, style_variant, music_track, duration_seconds, cost_usd)
-    VALUES (?, 'shotstack', ?, 'completed', ?, ?, ?, 0)
+    INSERT INTO videos (site_id, video_tool, video_url, thumbnail_url, status, style_variant, music_track, duration_seconds, cost_usd)
+    VALUES (?, 'shotstack', ?, ?, 'completed', ?, ?, ?, 0)
   `);
   const updateSite = db.prepare(`
     UPDATE sites
@@ -336,6 +406,7 @@ async function processSite(site, { dryRun }) {
     const info = insertVideo.run(
       siteId,
       videoUrl,
+      posterUrl,
       variant.id,
       musicTrack.name,
       Math.round(renderedDuration),
@@ -349,6 +420,7 @@ async function processSite(site, { dryRun }) {
 
   return {
     videoUrl,
+    posterUrl,
     videoHash,
     videoId,
     durationSeconds: Math.round(renderedDuration),
@@ -402,6 +474,7 @@ export async function runVideoStage(options = {}) {
         console.log(
           `  ✓ Created video (hash=${result.videoHash}, ${result.durationSeconds}s) → ${result.videoUrl}`,
         );
+        if (result.posterUrl) console.log(`    Poster: ${result.posterUrl}`);
         created++;
       } else {
         // dry-run — not an error
