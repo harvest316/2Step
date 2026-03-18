@@ -14,6 +14,8 @@
  *   reply_responses   — Classified inbound messages needing a sales reply
  *   extract_names     — Sites missing owner first name
  *   oversee           — System health snapshot for overseer
+ *   sequence_check    — Queue 8-touch sequence messages whose send window has arrived
+ *   followup_check    — Legacy alias for sequence_check
  *
  * Outputs JSON to stdout. The unified orchestrator pipes this to `claude -p`.
  */
@@ -337,10 +339,15 @@ function fetchOversee() {
 }
 
 /**
- * followup_check — Queue approved followup messages whose send window has arrived.
+ * sequence_check — Queue approved sequence messages whose scheduled_send_at has arrived.
+ *
+ * Handles the 8-touch cadence (Day 0, 2, 5, 8, 12, 16, 21, 28).
+ * Uses scheduled_send_at on each message to determine readiness.
+ * Stops queueing if the prospect has replied (inbound message exists).
+ *
  * Uses a separate writable connection since the module-level db is read-only.
  */
-function fetchFollowupCheck() {
+function fetchSequenceCheck() {
   const rwDb = new Database(dbPath);
   rwDb.pragma('journal_mode = WAL');
   rwDb.pragma('busy_timeout = 10000');
@@ -349,68 +356,83 @@ function fetchFollowupCheck() {
     rwDb.exec(`ATTACH DATABASE '${messagesDbPath}' AS msgs`);
   }
 
-  let followup1Queued = 0;
-  let followup2Queued = 0;
+  let queued = 0;
+  let skippedReply = 0;
 
   try {
     const closedStatuses = ['replied', 'interested', 'closed', 'not_interested'];
     const closedPlaceholders = closedStatuses.map(() => '?').join(', ');
 
-    // followup1: 24h after last_outreach_at, conversation still open
-    const f1Result = rwDb.prepare(`
+    // Queue messages whose scheduled_send_at has passed, conversation still open,
+    // and no inbound reply exists for this site
+    const result = rwDb.prepare(`
       UPDATE msgs.messages
       SET delivery_status = 'queued', updated_at = datetime('now')
       WHERE project = '2step'
-        AND message_type = 'followup1'
+        AND direction = 'outbound'
         AND approval_status = 'approved'
         AND delivery_status IS NULL
         AND sent_at IS NULL
+        AND scheduled_send_at IS NOT NULL
+        AND scheduled_send_at <= datetime('now')
+        -- Conversation still open
         AND EXISTS (
           SELECT 1 FROM sites s
           WHERE s.id = msgs.messages.site_id
-            AND s.followup1_sent_at IS NULL
-            AND s.last_outreach_at IS NOT NULL
-            AND datetime(s.last_outreach_at, '+24 hours') <= datetime('now')
             AND (s.conversation_status IS NULL
                  OR s.conversation_status NOT IN (${closedPlaceholders}))
         )
+        -- No inbound reply from this prospect
+        AND NOT EXISTS (
+          SELECT 1 FROM msgs.messages reply
+          WHERE reply.project = '2step'
+            AND reply.site_id = msgs.messages.site_id
+            AND reply.direction = 'inbound'
+        )
     `).run(...closedStatuses);
 
-    followup1Queued = f1Result.changes;
+    queued = result.changes;
 
-    // followup2: 3 days after followup1_sent_at, conversation still open
-    const f2Result = rwDb.prepare(`
+    // Cancel remaining unsent touches for sites that HAVE received a reply
+    // (mark as failed with reason so they don't linger in the queue)
+    const cancelResult = rwDb.prepare(`
       UPDATE msgs.messages
-      SET delivery_status = 'queued', updated_at = datetime('now')
+      SET delivery_status = 'failed',
+          error_message = 'sequence stopped: prospect replied',
+          updated_at = datetime('now')
       WHERE project = '2step'
-        AND message_type = 'followup2'
-        AND approval_status = 'approved'
+        AND direction = 'outbound'
         AND delivery_status IS NULL
         AND sent_at IS NULL
         AND EXISTS (
-          SELECT 1 FROM sites s
-          WHERE s.id = msgs.messages.site_id
-            AND s.followup2_sent_at IS NULL
-            AND s.followup1_sent_at IS NOT NULL
-            AND datetime(s.followup1_sent_at, '+3 days') <= datetime('now')
-            AND (s.conversation_status IS NULL
-                 OR s.conversation_status NOT IN (${closedPlaceholders}))
+          SELECT 1 FROM msgs.messages reply
+          WHERE reply.project = '2step'
+            AND reply.site_id = msgs.messages.site_id
+            AND reply.direction = 'inbound'
         )
-    `).run(...closedStatuses);
+    `).run();
 
-    followup2Queued = f2Result.changes;
+    skippedReply = cancelResult.changes;
   } finally {
     rwDb.close();
   }
 
-  const total = followup1Queued + followup2Queued;
+  const total = queued + skippedReply;
   if (total === 0) return [];
 
   return [{
-    followup1_queued: followup1Queued,
-    followup2_queued: followup2Queued,
-    total_queued: total,
+    queued,
+    cancelled_reply_received: skippedReply,
+    total_processed: total,
   }];
+}
+
+/**
+ * followup_check — Legacy alias for sequence_check.
+ * Kept for backward compatibility with orchestrator configs.
+ */
+function fetchFollowupCheck() {
+  return fetchSequenceCheck();
 }
 
 // ─── Dispatch ────────────────────────────────────────────────────────────────
@@ -423,7 +445,8 @@ const handlers = {
   reply_responses: fetchReplyResponses,
   extract_names: fetchExtractNames,
   oversee: fetchOversee,
-  followup_check: fetchFollowupCheck,
+  sequence_check: fetchSequenceCheck,
+  followup_check: fetchFollowupCheck,  // legacy alias
 };
 
 const handler = handlers[batchType];

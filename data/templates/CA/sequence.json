@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "country_code": "CA",
+  "cadence_days": [0, 2, 5, 8, 12, 16, 21, 28],
+  "touches": [
+    {
+      "step": 1,
+      "day": 0,
+      "channel": "email",
+      "message_type": "outreach",
+      "id": "seq_touch1_ca",
+      "subject_spintax": "{We made|We created|We put together} a {free video|short video} from your {best|top} Google review — [business_name]",
+      "preheader_spintax": "{We turned your best review into a 30-second video|Your customers love you — we made a video to prove it|See what your customers are saying about [business_name]}",
+      "body_spintax": "Hi {[first_name]|there},\n\nI was looking up [niche] businesses in [city] and noticed [business_name] has some {really great|fantastic|excellent} reviews on Google.\n\nOne in particular from [review_author] {stood out|caught my eye|really resonated} — so we turned it into a free 30-second video you can use {to attract more customers|for your website or socials|however you like}.\n\n{[video_url]|Watch it here: [video_url]}\n\nWe do this for [niche] businesses as a way to {show what we can do|introduce ourselves}. {There's no catch — it's yours to keep.|It's completely free, no strings attached.|It's yours, no obligation.}\n\nIf you'd like us to {create more videos like this|build you a full review video system|do this at scale for your business}, we should {have a quick chat|jump on a call|talk}.\n\n{Thanks|Best|Cheers},\nThe {Audit&Fix|AuditFix} Team"
+    },
+    {
+      "step": 2,
+      "day": 2,
+      "channel": "sms",
+      "message_type": "followup",
+      "id": "seq_touch2_ca",
+      "subject_spintax": null,
+      "preheader_spintax": null,
+      "body_spintax": "Hi {[first_name]|there}, we sent you {a free video|a video review} we made for [business_name] {a couple of days ago|on [outreach_day]}. {It's based on one of your best Google reviews|We used a real customer review to create it}. {Check it out when you get a chance|Take a look when you have a sec}: [video_url] — {Thanks|Cheers}, {Audit&Fix|AuditFix}"
+    },
+    {
+      "step": 3,
+      "day": 5,
+      "channel": "email",
+      "message_type": "followup",
+      "id": "seq_touch3_ca",
+      "subject_spintax": "{Did you know|Fun fact}: businesses with video reviews get {2x|significantly} more {inquiries|calls}",
+      "preheader_spintax": "{Video reviews drive real results for [niche] businesses|The data is clear — video social proof converts|Your competitors are already using video reviews}",
+      "body_spintax": "Hi {[first_name]|there},\n\n{Quick one|Just a quick thought} — {did you know that|research shows} businesses with video reviews on their Google listing get {up to 2x more inquiries|significantly more calls and inquiries} than those without?\n\nFor [niche] businesses in [city], that can mean {a real difference in bookings|more calls coming in each week|a noticeable bump in new customers}.\n\nWe already made a free video for [business_name] — {in case you missed it|here's the link again}:\n\n{[video_url]|Watch it here: [video_url]}\n\n{It's only 30 seconds|Quick 30-second watch} and it's {yours to use however you like|completely free to keep}.\n\n{Thanks|Best|Cheers},\nThe {Audit&Fix|AuditFix} Team"
+    },
+    {
+      "step": 4,
+      "day": 8,
+      "channel": "email",
+      "message_type": "followup",
+      "id": "seq_touch4_viewed_ca",
+      "subject_spintax": "{Glad you checked it out|Noticed you saw your video} — here's what the full {package|system} looks like",
+      "preheader_spintax": "{See what a full video review system looks like for [business_name]|The free video was just a taste — here's the full picture|Imagine having 4-8 of these working for you every month}",
+      "body_spintax": "Hi {[first_name]|there},\n\n{Noticed you checked out|Glad you had a look at} the video we made for [business_name] — {hope you liked it|what did you think}?\n\nThat was just one review turned into one video. {Imagine|Picture} having {4-8 of these|a handful of these} going out every month, {each featuring a different customer review|each showcasing a different happy customer}.\n\nHere's what our {full package|complete system} looks like:\n\n- We {pull|select} your best Google reviews each month\n- Turn them into {professional 30-second videos|polished short-form video content}\n- {Optimize|Format} them for {your website, Google listing, and socials|every platform}\n- You just {approve and share|review and post}\n\n{Here's your video again|Your video}: [video_url]\n\n{Would love to|Happy to} {walk you through it|show you how it works} — {just reply to this email|hit reply and let me know}.\n\n{Thanks|Best|Cheers},\nThe {Audit&Fix|AuditFix} Team",
+      "variant_not_viewed": {
+        "id": "seq_touch4_not_viewed_ca",
+        "subject_spintax": "{Different angle|Another way to look at it} — your free video for [business_name]",
+        "preheader_spintax": "{Your video is still waiting for you|We made something for [business_name] — check it out|30 seconds that could change how customers see you}",
+        "body_spintax": "Hi {[first_name]|there},\n\nI know {inboxes get busy|you're probably swamped}, so I wanted to {try one more time|reach out again} about the video we made for [business_name].\n\n{We used a real 5-star review from [review_author]|It features one of your actual Google reviews} and turned it into a {professional 30-second video|short video you can share anywhere}.\n\n{It takes 30 seconds to watch|Here it is — quick watch}: [video_url]\n\n{If you like it, imagine having a few of these each month|One video is great — but a system of them is what really moves the needle} for {attracting new customers|getting more [niche] inquiries in [city]}.\n\n{No pressure at all|No rush} — {but I'd hate for you to miss it|just wanted to make sure you saw it}.\n\n{Thanks|Best|Cheers},\nThe {Audit&Fix|AuditFix} Team"
+      }
+    },
+    {
+      "step": 5,
+      "day": 12,
+      "channel": "sms",
+      "message_type": "followup",
+      "id": "seq_touch5_ca",
+      "subject_spintax": null,
+      "preheader_spintax": null,
+      "body_spintax": "Hi {[first_name]|there}, we've {helped|worked with} {several|a number of} [niche] businesses in [city] {turn their best reviews into video content|showcase their Google reviews with video}. {Your free one is still live|Your video is still here}: [video_url] — {happy to chat if you're curious|let me know if you'd like to see more}. {Thanks|Cheers} — {Audit&Fix|AuditFix}"
+    },
+    {
+      "step": 6,
+      "day": 16,
+      "channel": "email",
+      "message_type": "followup",
+      "id": "seq_touch6_ca",
+      "subject_spintax": "{What {4-8|a few} videos a month {could look like|would do} for [business_name]|{Here's the full picture|See what a complete system looks like} for [business_name]}",
+      "preheader_spintax": "{A full review-to-video system built around your best Google reviews|Your single free video was a taste — here's the full menu|Monthly video content that practically creates itself}",
+      "body_spintax": "Hi {[first_name]|there},\n\n{Wanted to paint the full picture|Let me show you what the complete system looks like} for [business_name].\n\nRight now you've got one video from one review. {Here's what it looks like when we do this properly|Imagine scaling that up}:\n\n{Each month, we'd|The full system means we}:\n1. {Select|Choose|Pull} your {best|top|strongest} new Google reviews\n2. {Create|Produce|Turn them into} {4-8 professional videos|a batch of short-form videos}\n3. {Optimize each one|Format them} for {your Google Business profile, website, and social media|every channel — Google, website, Instagram, Facebook}\n4. {Deliver them ready to post|Hand them over ready to share}\n\nFor [niche] businesses, this {kind of|type of} content {builds serious trust|is what turns browsers into callers|shows potential customers exactly why people rate you so highly}.\n\n{Your free video is still live here|Here's the video we made for you}: [video_url]\n\n{Setup is [setup_price] and then [monthly_price]/month|It starts at [setup_price] with a [monthly_price] monthly plan} — {but happy to walk you through the options|reply and I'll send you the full breakdown}.\n\n{Thanks|Best|Cheers},\nThe {Audit&Fix|AuditFix} Team"
+    },
+    {
+      "step": 7,
+      "day": 21,
+      "channel": "email",
+      "message_type": "followup",
+      "id": "seq_touch7_ca",
+      "subject_spintax": "{Video reviews + Google ranking|How video content helps your Google ranking} — [business_name]",
+      "preheader_spintax": "{Video content on your listing signals quality to Google|Fresh review videos can boost your local search visibility|Here's why your competitors are investing in video reviews}",
+      "body_spintax": "Hi {[first_name]|there},\n\n{Different angle on this|One more thing I wanted to mention} — {did you know|it's worth knowing that} video content on your Google Business Profile {signals quality to Google's algorithm|can actually help your local search ranking|is one of the things Google looks at for local rankings}?\n\n{Businesses that regularly add video content|[niche] businesses that keep their listing fresh with video} tend to {rank higher in local search|show up more often in the map pack|get more visibility in Google Maps results}.\n\n{Combined with [business_name]'s strong reviews|With the reviews you've already got}, adding video {could give you a real edge|would really strengthen your presence} over other [niche] businesses in [city].\n\n{Your free video is still live|We already made you one to get started}: [video_url]\n\n{If you'd like to explore how a monthly video system could help [business_name] rank better and convert more|Happy to chat about how this fits into your marketing} — {just reply|hit reply and let me know}.\n\n{Thanks|Best|Cheers},\nThe {Audit&Fix|AuditFix} Team"
+    },
+    {
+      "step": 8,
+      "day": 28,
+      "channel": "email",
+      "message_type": "breakup",
+      "id": "seq_touch8_ca",
+      "subject_spintax": "{Closing the loop|Last note from me} — [business_name] video",
+      "preheader_spintax": "{Your free video is still yours to keep|Just wrapping up — your video is still live|Last message about your free review video}",
+      "body_spintax": "Hi {[first_name]|there},\n\n{I'll keep this short|Just a quick one to wrap up} — this is my last message about the video we made for [business_name].\n\n{It's still live here|Your video is still available}: [video_url]\n\n{Feel free to share it on your socials, embed it on your website, or just keep it|It's yours — share it, post it, or save it for later}. {No strings attached.|Completely free.}\n\nIf you ever {want to explore|decide you'd like} a {full video review system|monthly video package} for [business_name], {we're here|just reach out}. {No pressure, no hard feelings.|The door is always open.}\n\n{All the best|Thanks for your time|Cheers},\nThe {Audit&Fix|AuditFix} Team"
+    }
+  ]
+}

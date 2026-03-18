@@ -6,6 +6,9 @@
  * Sends approved messages from msgs.messages where project='2step' via
  * email (Resend) or SMS (Twilio). Checks opt-outs before sending.
  *
+ * Sequence-aware: respects scheduled_send_at cadence and stops sending
+ * further touches once a reply has been received for a site.
+ *
  * Usage:
  *   node src/stages/outreach.js              # Send all approved email+SMS
  *   node src/stages/outreach.js --limit 5    # Send up to 5
@@ -354,6 +357,7 @@ export async function runOutreachStage(options = {}) {
       const emails = db
         .prepare(
           `SELECT m.id, m.site_id, m.contact_uri, m.message_body, m.subject_line,
+                  m.sequence_step, m.scheduled_send_at,
                   s.business_name, s.country_code,
                   v.video_url, v.thumbnail_url
            FROM msgs.messages m
@@ -364,7 +368,17 @@ export async function runOutreachStage(options = {}) {
              AND m.contact_method = 'email'
              AND m.approval_status = 'approved'
              AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
-           ORDER BY m.created_at ASC
+             -- Respect cadence: only send if schedule time has passed (or no schedule set)
+             AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= datetime('now'))
+             -- Stop sequence if prospect has replied (inbound message exists for this site)
+             AND NOT EXISTS (
+               SELECT 1 FROM msgs.messages reply
+               WHERE reply.project = '2step'
+                 AND reply.site_id = m.site_id
+                 AND reply.direction = 'inbound'
+                 AND reply.contact_uri = m.contact_uri
+             )
+           ORDER BY m.sequence_step ASC, m.created_at ASC
            ${limitClause}`
         )
         .all();
@@ -412,10 +426,11 @@ export async function runOutreachStage(options = {}) {
     } else {
       const twilioClient = twilio(accountSid, authToken);
 
-      const limitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
+      const smsLimitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
       const smsList = db
         .prepare(
           `SELECT m.id, m.site_id, m.contact_uri, m.message_body,
+                  m.sequence_step, m.scheduled_send_at,
                   s.business_name, s.country_code
            FROM msgs.messages m
            JOIN sites s ON s.id = m.site_id
@@ -424,8 +439,17 @@ export async function runOutreachStage(options = {}) {
              AND m.contact_method = 'sms'
              AND m.approval_status = 'approved'
              AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
-           ORDER BY m.created_at ASC
-           ${limitClause}`
+             -- Respect cadence: only send if schedule time has passed (or no schedule set)
+             AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= datetime('now'))
+             -- Stop sequence if prospect has replied (inbound message exists for this site)
+             AND NOT EXISTS (
+               SELECT 1 FROM msgs.messages reply
+               WHERE reply.project = '2step'
+                 AND reply.site_id = m.site_id
+                 AND reply.direction = 'inbound'
+             )
+           ORDER BY m.sequence_step ASC, m.created_at ASC
+           ${smsLimitClause}`
         )
         .all();
 

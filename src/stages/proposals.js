@@ -1,24 +1,35 @@
 /**
  * Proposals pipeline stage for 2Step.
  *
- * Takes sites at status='video_created' and generates outreach messages
- * (email + SMS + followups) using country-specific spintax templates.
+ * Takes sites at status='video_created' and generates an 8-touch outreach
+ * sequence (email + SMS) using country-specific spintax templates.
+ *
+ * Sequence cadence (days from first touch):
+ *   Touch 1 (Day 0, email)  — Initial outreach: free video demo hook
+ *   Touch 2 (Day 2, SMS)    — Heads-up nudge: cross-channel coordination
+ *   Touch 3 (Day 5, email)  — ROI data point: video reviews drive enquiries
+ *   Touch 4 (Day 8, email)  — Video view signal branch (viewed vs not viewed)
+ *   Touch 5 (Day 12, SMS)   — Social proof: businesses in their city
+ *   Touch 6 (Day 16, email) — Case study: full package preview with pricing
+ *   Touch 7 (Day 21, email) — SEO/Google ranking benefits
+ *   Touch 8 (Day 28, email) — Breakup: closing the file, leave door open
  *
  * For each eligible site:
  *   1. Parse contacts_json to discover available email/phone contact methods
  *   2. Infer owner first_name from site fields or email address
- *   3. Load country-specific template file, pick template (rotate by site_id)
- *   4. Spin all spintax fields and replace [variables]
- *   5. Look up pricing_id from msgs.pricing (via niche_tiers join)
- *   6. Insert outreach + followup1 + followup2 into msgs.messages
- *   7. Update site status to 'proposals_drafted'
+ *   3. Load country-specific sequence.json template file
+ *   4. Pick template variant (rotate by site_id for multi-template support)
+ *   5. Spin all spintax fields and replace [variables]
+ *   6. Look up pricing_id from msgs.pricing (via niche_tiers join)
+ *   7. Insert all 8 touches into msgs.messages with sequence_step + scheduled_send_at
+ *   8. Update site status to 'proposals_drafted'
  *
  * Usage:
  *   node src/stages/proposals.js [--limit N] [--dry-run]
  */
 
 import '../utils/load-env.js';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
@@ -28,7 +39,40 @@ import { spin } from '../../../333Method/src/utils/spintax.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
 
-// ─── Template loader (cached) ────────────────────────────────────────────────
+// ─── Sequence template loader (cached) ──────────────────────────────────────
+
+const sequenceCache = new Map();
+
+/**
+ * Load the 8-touch sequence template for a given country.
+ * Falls back to AU if the country-specific file doesn't exist.
+ */
+function loadSequence(countryCode) {
+  if (sequenceCache.has(countryCode)) return sequenceCache.get(countryCode);
+
+  let filePath = resolve(root, `data/templates/${countryCode}/sequence.json`);
+  if (!existsSync(filePath)) {
+    console.warn(`  [warn] No sequence template for ${countryCode} — falling back to AU`);
+    filePath = resolve(root, `data/templates/AU/sequence.json`);
+  }
+
+  let data;
+  try {
+    data = JSON.parse(readFileSync(filePath, 'utf-8'));
+  } catch (err) {
+    throw new Error(`Failed to load sequence template at ${filePath}: ${err.message}`);
+  }
+
+  const touches = data.touches || [];
+  if (touches.length === 0) {
+    throw new Error(`Empty touches array in ${filePath}`);
+  }
+
+  sequenceCache.set(countryCode, data);
+  return data;
+}
+
+// ─── Legacy template loader (for backward compat with old email.json / sms.json) ─
 
 const templateCache = new Map();
 
@@ -83,8 +127,8 @@ function spinWithVars(spintaxText, vars) {
  * Priority:
  *   1. site.owner_first_name (already extracted)
  *   2. contacts_json.owner_name (set by a prior enrich stage)
- *   3. Local part of the first email address (joe@business.com → "Joe")
- *      - Only if it looks like a real name (alphabetic, 2–20 chars, not generic)
+ *   3. Local part of the first email address (joe@business.com -> "Joe")
+ *      - Only if it looks like a real name (alphabetic, 2-20 chars, not generic)
  *   4. Returns null — caller falls back to spintax [first_name|there]
  */
 const GENERIC_EMAIL_PREFIXES = new Set([
@@ -114,7 +158,7 @@ function inferFirstName(site, contacts) {
 
     if (!local) continue;
 
-    // Take just the first word (handles "joe.smith@" → "joe")
+    // Take just the first word (handles "joe.smith@" -> "joe")
     const firstWord = local.split(' ')[0];
     if (!firstWord) continue;
 
@@ -186,6 +230,16 @@ function lookupPricing(countryCode, niche) {
   }
 }
 
+/**
+ * Format a pricing value for display (e.g. "$625" or "£489").
+ */
+function formatPrice(amount, currency) {
+  if (!amount) return '';
+  const symbols = { AUD: '$', USD: '$', GBP: '\u00a3', CAD: 'C$', NZD: 'NZ$' };
+  const sym = symbols[currency] || '$';
+  return `${sym}${Math.round(amount)}`;
+}
+
 // ─── Message inserter ────────────────────────────────────────────────────────
 
 const insertMsg = db.prepare(`
@@ -193,80 +247,133 @@ const insertMsg = db.prepare(`
     project, site_id, direction, contact_method, contact_uri,
     message_body, subject_line, video_url,
     approval_status, message_type, pricing_id, template_id,
+    sequence_step, scheduled_send_at,
     created_at, updated_at
   ) VALUES (
     '2step', ?, 'outbound', ?, ?,
     ?, ?, ?,
     'pending', ?, ?, ?,
+    ?, ?,
     datetime('now'), datetime('now')
   )
 `);
 
-// ─── Core proposal generator ─────────────────────────────────────────────────
+// ─── Sequence message generator ─────────────────────────────────────────────
 
 /**
- * Generate and insert all messages for one site + one contact method.
- * Returns the number of messages inserted (3 on success, 0 on skip/dry-run).
+ * Compute the scheduled_send_at ISO datetime string for a given touch.
+ *
+ * @param {number} dayOffset — Days after Day 0 (e.g. 0, 2, 5, 8, ...)
+ * @returns {string|null} — ISO datetime string or null for Day 0 (send immediately)
  */
-function generateMessagesForContact(site, contactMethod, contactUri, vars, dryRun) {
-  const channel = contactMethod === 'sms' ? 'sms' : 'email';
+function computeScheduledAt(dayOffset) {
+  if (dayOffset === 0) return null; // Touch 1 sends immediately (no schedule constraint)
+  const now = new Date();
+  now.setDate(now.getDate() + dayOffset);
+  // Round to 9am in the sending timezone — the outreach stage will apply
+  // business-hours logic at send time, so we just set the date here.
+  now.setHours(9, 0, 0, 0);
+  return now.toISOString().replace('T', ' ').slice(0, 19);
+}
+
+/**
+ * Generate and insert all 8 sequence touches for one site + one primary contact.
+ *
+ * For email touches, uses the primary email. For SMS touches (2 and 5), uses
+ * the primary phone if available, otherwise falls back to email for those touches.
+ *
+ * @returns {number} Number of messages inserted
+ */
+function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pricing, dryRun) {
   const countryCode = site.country_code || 'AU';
 
-  let templates;
+  let sequence;
   try {
-    templates = loadTemplates(countryCode, channel);
+    sequence = loadSequence(countryCode);
   } catch (err) {
-    console.warn(`  [skip] ${site.business_name} ${channel}: ${err.message}`);
+    console.warn(`  [skip] ${site.business_name}: ${err.message}`);
     return 0;
   }
 
-  const template = pickTemplate(templates, site.id);
-  const videoUrl = site.video_hash
-    ? `https://auditandfix.com/v/${site.video_hash}`
-    : site.video_url;
-
-  if (!videoUrl) {
-    console.warn(`  [skip] ${site.business_name}: no video_hash or video_url`);
-    return 0;
-  }
-
-  const allVars = { ...vars, video_url: videoUrl };
-
-  const outreachBody = spinWithVars(template.body_spintax, allVars);
-  const outreachSubject = spinWithVars(template.subject_spintax, allVars);
-  const followup1Body = spinWithVars(template.followup1_body_spintax, allVars);
-  const followup1Subject = spinWithVars(template.followup1_subject_spintax, allVars);
-  const followup2Body = spinWithVars(template.followup2_body_spintax, allVars);
-  const followup2Subject = spinWithVars(template.followup2_subject_spintax, allVars);
-
-  const pricing = lookupPricing(countryCode, site.niche);
   const pricingId = pricing?.id ?? null;
+  const setupPrice = pricing ? formatPrice(pricing.setup_local, pricing.currency) : '';
+  const monthlyPrice = pricing ? formatPrice(pricing.monthly_4, pricing.currency) : '';
 
-  if (dryRun) {
-    console.log(`    [dry-run] ${contactMethod} → ${contactUri}`);
-    if (outreachSubject) console.log(`      Subject: ${outreachSubject}`);
-    console.log(`      Body: ${outreachBody?.slice(0, 80)}...`);
-    console.log(`      Template: ${template.id}, pricing_id: ${pricingId ?? 'null'}`);
-    return 0;
+  const allVars = {
+    ...vars,
+    setup_price: setupPrice,
+    monthly_price: monthlyPrice,
+  };
+
+  let inserted = 0;
+
+  for (const touch of sequence.touches) {
+    // Determine channel + contact URI for this touch
+    let contactMethod, contactUri;
+
+    if (touch.channel === 'sms') {
+      if (primaryPhone) {
+        contactMethod = 'sms';
+        contactUri = primaryPhone;
+      } else if (primaryEmail) {
+        // Fallback: send the SMS touch as email if no phone available
+        contactMethod = 'email';
+        contactUri = primaryEmail;
+      } else {
+        continue; // No contact available for this touch
+      }
+    } else {
+      // Email touch
+      if (primaryEmail) {
+        contactMethod = 'email';
+        contactUri = primaryEmail;
+      } else if (primaryPhone) {
+        // Fallback: send email touch as SMS if no email available
+        contactMethod = 'sms';
+        contactUri = primaryPhone;
+      } else {
+        continue;
+      }
+    }
+
+    // Touch 4 has a viewed/not-viewed variant — use not-viewed by default
+    // (the sequence_check batch will swap to the viewed variant at send time
+    // if video_viewed_at is set on the site)
+    let touchTemplate = touch;
+    if (touch.variant_not_viewed && !site.video_viewed_at) {
+      // Generate with the not-viewed variant
+      touchTemplate = { ...touch, ...touch.variant_not_viewed };
+    }
+
+    const body = spinWithVars(touchTemplate.body_spintax, allVars);
+    const subject = spinWithVars(touchTemplate.subject_spintax, allVars);
+    const scheduledAt = computeScheduledAt(touch.day);
+
+    // Map sequence step to legacy message_type for backward compat
+    const messageType = touch.step === 1 ? 'outreach'
+      : touch.message_type === 'breakup' ? 'followup2'  // breakup maps to followup2 for CHECK constraint
+      : 'followup1'; // all other followups map to followup1
+
+    if (dryRun) {
+      const dayLabel = `Day ${touch.day}`;
+      const chanLabel = contactMethod === 'sms' ? 'SMS' : 'Email';
+      console.log(`    [dry-run] Touch ${touch.step} (${dayLabel}, ${chanLabel}) -> ${contactUri}`);
+      if (subject) console.log(`      Subject: ${subject}`);
+      console.log(`      Body: ${body?.slice(0, 80)}...`);
+      console.log(`      Scheduled: ${scheduledAt || 'immediate'}`);
+      continue;
+    }
+
+    insertMsg.run(
+      site.id, contactMethod, contactUri,
+      body, subject, allVars.video_url,
+      messageType, pricingId, touchTemplate.id,
+      touch.step, scheduledAt
+    );
+    inserted++;
   }
 
-  insertMsg.run(
-    site.id, contactMethod, contactUri,
-    outreachBody, outreachSubject, videoUrl,
-    'outreach', pricingId, template.id
-  );
-  insertMsg.run(
-    site.id, contactMethod, contactUri,
-    followup1Body, followup1Subject, videoUrl,
-    'followup1', pricingId, template.id
-  );
-  insertMsg.run(
-    site.id, contactMethod, contactUri,
-    followup2Body, followup2Subject, videoUrl,
-    'followup2', pricingId, template.id
-  );
-
-  return 3;
+  return inserted;
 }
 
 // ─── Main stage function ──────────────────────────────────────────────────────
@@ -285,7 +392,7 @@ export async function runProposalsStage(options = {}) {
   const query = db.prepare(`
     SELECT id, business_name, city, country_code, niche,
            contacts_json, video_url, video_hash, status,
-           owner_first_name
+           owner_first_name, video_viewed_at
     FROM sites
     WHERE status = 'video_created'
     ORDER BY id ASC
@@ -300,6 +407,7 @@ export async function runProposalsStage(options = {}) {
   }
 
   console.log(`[proposals] Processing ${sites.length} site(s)${dryRun ? ' (DRY RUN)' : ''}...`);
+  console.log(`[proposals] Using 8-touch sequence (Day 0, 2, 5, 8, 12, 16, 21, 28)`);
 
   let processed = 0;
   let messagesCreated = 0;
@@ -316,19 +424,15 @@ export async function runProposalsStage(options = {}) {
     try {
       const { emails, phones, raw: contacts } = parseContacts(site.contacts_json);
       const firstName = inferFirstName(site, contacts);
-      const displayName = firstName
-        ? `${firstName}|there`  // becomes spintax: will be pre-resolved in spinWithVars
-        : null;
 
-      const vars = {
-        business_name: site.business_name || '',
-        first_name: firstName || '',
-        city: site.city || '',
-        niche: site.niche || '',
-        review_author: contacts?.review_author || '',
-        problem_category: site.problem_category || contacts?.problem_category || '',
-        // video_url is added per-contact in generateMessagesForContact
-      };
+      const videoUrl = site.video_hash
+        ? `https://auditandfix.com/v/${site.video_hash}`
+        : site.video_url;
+
+      if (!videoUrl) {
+        console.warn(`  [skip] ${site.business_name}: no video_hash or video_url`);
+        continue;
+      }
 
       // Log name inference result
       if (firstName) {
@@ -337,26 +441,52 @@ export async function runProposalsStage(options = {}) {
         console.log(`  Name: none — will use "Hi there" fallback`);
       }
 
+      const vars = {
+        business_name: site.business_name || '',
+        first_name: firstName || '',
+        city: site.city || '',
+        niche: site.niche || '',
+        review_author: contacts?.review_author || '',
+        problem_category: site.problem_category || contacts?.problem_category || '',
+        video_url: videoUrl,
+        star_rating: site.google_rating ? String(site.google_rating) : '',
+      };
+
+      const countryCode = site.country_code || 'AU';
+      const pricing = lookupPricing(countryCode, site.niche);
+
       let siteMessages = 0;
       let hasAnyContact = false;
 
-      // Email contacts
-      for (const emailUri of emails) {
+      // Primary email (first available)
+      const primaryEmail = emails[0] || null;
+      // Primary phone (first available)
+      const primaryPhone = phones[0] || null;
+
+      if (primaryEmail || primaryPhone) {
         hasAnyContact = true;
-        const count = generateMessagesForContact(site, 'email', emailUri, vars, dryRun);
+        const count = generateSequenceForContact(
+          site, primaryEmail, primaryPhone, vars, pricing, dryRun
+        );
         siteMessages += count;
+
         if (count > 0) {
-          console.log(`  email → ${emailUri} (${count} messages)`);
+          const channels = [];
+          if (primaryEmail) channels.push(`email:${primaryEmail}`);
+          if (primaryPhone) channels.push(`sms:${primaryPhone}`);
+          console.log(`  ${channels.join(' + ')} => ${count} touch(es) created`);
         }
       }
 
-      // SMS contacts (phones)
-      for (const phone of phones) {
+      // If there are additional email addresses, generate full sequences for them too
+      for (let i = 1; i < emails.length; i++) {
         hasAnyContact = true;
-        const count = generateMessagesForContact(site, 'sms', phone, vars, dryRun);
+        const count = generateSequenceForContact(
+          site, emails[i], primaryPhone, vars, pricing, dryRun
+        );
         siteMessages += count;
         if (count > 0) {
-          console.log(`  sms → ${phone} (${count} messages)`);
+          console.log(`  email:${emails[i]} => ${count} touch(es) created`);
         }
       }
 
@@ -371,7 +501,7 @@ export async function runProposalsStage(options = {}) {
       messagesCreated += siteMessages;
       processed++;
 
-      console.log(`  => ${siteMessages} message(s) created, status → proposals_drafted`);
+      console.log(`  => ${siteMessages} message(s) created, status -> proposals_drafted`);
     } catch (err) {
       console.error(`  [error] ${site.business_name}: ${err.message}`);
       errors++;

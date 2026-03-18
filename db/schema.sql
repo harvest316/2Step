@@ -7,6 +7,19 @@
 --   found -> reviews_downloaded -> enriched -> video_created -> proposals_drafted
 --   -> outreach_sent -> replied -> interested/closed/not_interested
 --   ignored / failing (terminal states, can retry)
+--
+-- Outreach sequence (8 touches over 28 days):
+--   Touch 1 (Day 0, email)   — Initial outreach: free video demo hook
+--   Touch 2 (Day 2, SMS)     — Heads-up nudge: cross-channel coordination
+--   Touch 3 (Day 5, email)   — ROI data point: video reviews drive enquiries
+--   Touch 4 (Day 8, email)   — Video view signal branch (viewed vs not viewed)
+--   Touch 5 (Day 12, SMS)    — Social proof: businesses in their city
+--   Touch 6 (Day 16, email)  — Case study: full package preview with pricing
+--   Touch 7 (Day 21, email)  — SEO/Google ranking benefits
+--   Touch 8 (Day 28, email)  — Breakup: closing the file, leave door open
+--
+-- Messages use sequence_step (1-8) and scheduled_send_at in msgs.messages.
+-- Sequence stops automatically if prospect replies (inbound message detected).
 
 -- =============================================================================
 -- sites: one row per prospect business
