@@ -1,0 +1,30 @@
+-- Migration 007: Copy conversations -> msgs.messages
+--
+-- THIS MIGRATION IS HANDLED BY THE NODE.JS init-db.js SCRIPT, NOT BY THIS SQL FILE.
+--
+-- Reason: same as migration 006 — copying between databases requires ATTACH at runtime.
+--
+-- The init-db.js script performs:
+--   1. (Re-uses the ATTACH from migration 006 if still open)
+--   2. INSERT INTO msgs.messages (project, site_id, direction, contact_method, ...)
+--      SELECT '2step', prospect_id, direction, channel, '' AS contact_uri,
+--             message_body, NULL AS subject_line, NULL AS delivery_status,
+--             created_at AS sent_at, created_at
+--      FROM conversations
+--   3. Maps intent values:
+--      'interested'      -> intent='interested'
+--      'not_interested'  -> intent='not-interested'
+--      'opt_out'         -> intent='opt-out'
+--      'question'        -> intent='inquiry'
+--      'unknown'         -> intent='unknown'
+--   4. Marks this migration as applied in schema_migrations
+--
+-- Mapping: conversations -> msgs.messages
+--   prospect_id  -> site_id
+--   channel      -> contact_method
+--   direction    -> direction  (already 'inbound'/'outbound')
+--   message_body -> message_body
+--   intent       -> intent     (with value remapping above)
+--   created_at   -> created_at, sent_at
+--   project      = '2step'
+--   message_type = 'reply'
