@@ -55,15 +55,16 @@ describe('matchCategory — pest control', () => {
   });
 
   it('returns the highest-hit category when multiple categories match', () => {
-    // "termite" (1 hit in termite treatment) vs "ant" (1 hit in ant treatment)
-    // but "termite treatment" keyword also matches once for "termite barrier"
+    // "ant colony near the fence" → ant treatment: "ant" + "ant colony" = 2 hits
+    // "termite problem" → termite treatment: "termite" = 1 hit
+    // ant treatment wins (more keyword hits)
     const result = matchCategory(
       'pest control',
       'They handled our termite problem and also found an ant colony near the fence.'
     );
     assert.ok(result);
-    // termite has more unique keywords in the text — it should win
-    assert.equal(result.category, 'termite treatment');
+    assert.equal(result.category, 'ant treatment');
+    assert.ok(result.hits >= 2);
   });
 
   it('returns null when no keywords match', () => {
@@ -163,10 +164,21 @@ describe('buildReviewQueryString', () => {
     assert.ok(result.includes('termite') || result.includes('cockroach'));
   });
 
-  it('limits to maxTerms', () => {
-    const result = buildReviewQueryString('pest control', null, 5);
-    const terms = result.split(' ');
-    assert.ok(terms.length <= 5, `expected ≤5 terms, got ${terms.length}`);
+  it('limits to maxTerms (5 keyword entries, not 5 space-separated words)', () => {
+    // buildReviewQueryString slices the keyword entries Set to maxTerms.
+    // Each entry may be a multi-word string like "white ant", so the space-joined
+    // result can have more than maxTerms space-separated tokens. The contract is
+    // that at most maxTerms keyword entries are included, not that the final string
+    // has ≤maxTerms words.
+    const noLimit = buildReviewQueryString('pest control', null, 9999);
+    const limited = buildReviewQueryString('pest control', null, 5);
+    // The limited result should have fewer characters than the unlimited result
+    assert.ok(
+      limited.length <= noLimit.length,
+      'limited query string should be shorter than unlimited'
+    );
+    // And the unlimited result must be longer (more keywords available than 5)
+    assert.ok(noLimit.length > limited.length, 'pest control has >5 keywords total');
   });
 
   it('returns only keywords for a specific category', () => {

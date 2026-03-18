@@ -40,13 +40,33 @@ function loadMessagesSchema() {
     resolve(root, '../mmo-platform/db/schema-messages.sql'),
     'utf8'
   );
-  // Extract only CREATE TABLE, CREATE INDEX, and CREATE UNIQUE INDEX statements.
-  // Skip PRAGMA (not valid inside a transaction), INSERT (seeded separately),
-  // and any other DDL that would conflict with re-runs.
-  return sql
-    .split(';')
-    .filter(s => s.trim().match(/^CREATE\s+(TABLE|INDEX|UNIQUE\s+INDEX)/i))
-    .join(';\n') + ';';
+
+  // The schema file contains PRAGMA, CREATE TABLE (with multi-line CHECK and
+  // DEFAULT expressions that include internal semicolons), CREATE INDEX, and
+  // INSERT statements. A naive split(';') breaks CREATE TABLE blocks.
+  //
+  // Strategy: use multiline regexes to extract TABLE and INDEX DDL independently.
+
+  // Tables must be created before indexes. Extract them separately and
+  // return tables first, then indexes.
+
+  // Match: CREATE TABLE ... ); — spans multiple lines; ends at \n); (SQLite convention).
+  // This handles CREATE TABLE blocks that contain internal semicolons inside
+  // CHECK constraints and DEFAULT expressions.
+  const tables = [];
+  const tableMatches = sql.matchAll(/CREATE\s+TABLE\s+IF\s+NOT\s+EXISTS[\s\S]*?\n\);/g);
+  for (const m of tableMatches) {
+    tables.push(m[0].trim());
+  }
+
+  // Match: CREATE [UNIQUE] INDEX ... ; (all on one line or trailing ;)
+  const indexes = [];
+  const indexMatches = sql.matchAll(/CREATE\s+(?:UNIQUE\s+)?INDEX\s+IF\s+NOT\s+EXISTS[^;]+;/gs);
+  for (const m of indexMatches) {
+    indexes.push(m[0].trim());
+  }
+
+  return [...tables, ...indexes].join(';\n') + ';';
 }
 
 // ─── DB factory ───────────────────────────────────────────────────────────────
