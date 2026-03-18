@@ -1,0 +1,219 @@
+#!/usr/bin/env node
+
+/**
+ * sync-video-views — 2Step pipeline stage.
+ *
+ * Polls auditandfix.com/api.php?action=get-video-views to fetch view data for
+ * all video pages, then writes video_viewed_at back to the local 2Step DB for
+ * any site whose video has been viewed.
+ *
+ * Also flags sites that need a priority follow-up: if a video was viewed within
+ * the last 30 minutes and the site has no followup1 sent yet, it marks
+ * conversation_status='viewed_no_followup' so the outreach stage can prioritise
+ * them.
+ *
+ * Architecture:
+ *   - auditandfix.com/api.php stores views in data/videos/{hash}.json (per
+ *     page load by the prospect's browser via the beacon in v.php)
+ *   - get-video-views returns { videos: [{ hash, view_count, last_view }] }
+ *   - We match by video_hash in the sites table
+ *
+ * Usage:
+ *   node src/stages/sync-video-views.js            # Sync and update DB
+ *   node src/stages/sync-video-views.js --dry-run  # Print changes, no DB writes
+ *
+ * Environment (loaded from 333Method/.env via load-env.js):
+ *   AUDITANDFIX_URL            — e.g. https://auditandfix.com
+ *   AUDITANDFIX_WORKER_SECRET  — shared secret for X-Auth-Secret header
+ */
+
+import '../utils/load-env.js';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { parseArgs } from 'util';
+import db from '../utils/db.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// ── Config ────────────────────────────────────────────────────────────────────
+
+const AUDITANDFIX_URL    = (process.env.AUDITANDFIX_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const WORKER_SECRET      = process.env.AUDITANDFIX_WORKER_SECRET || '';
+
+// Priority follow-up window: flag sites viewed within this many minutes
+const PRIORITY_WINDOW_MINUTES = 30;
+
+// ── Fetch view data from Hostinger ───────────────────────────────────────────
+
+/**
+ * Fetch all video view records from the auditandfix.com API.
+ * Returns an array of { hash, view_count, last_view } objects.
+ *
+ * @returns {Promise<Array<{ hash: string, view_count: number, last_view: string|null }>>}
+ */
+async function fetchVideoViews() {
+  if (!WORKER_SECRET) {
+    throw new Error(
+      'AUDITANDFIX_WORKER_SECRET is not set — cannot authenticate with get-video-views endpoint'
+    );
+  }
+
+  const url = `${AUDITANDFIX_URL}/api.php?action=get-video-views`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Auth-Secret': WORKER_SECRET,
+    },
+    body: JSON.stringify({}),
+    signal: AbortSignal.timeout(20000),
+  });
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => '');
+    throw new Error(`get-video-views returned HTTP ${res.status}: ${body.slice(0, 200)}`);
+  }
+
+  const data = await res.json();
+  return data.videos || [];
+}
+
+// ── Stage runner ─────────────────────────────────────────────────────────────
+
+/**
+ * Run the sync-video-views stage.
+ *
+ * @param {object} [options]
+ * @param {boolean} [options.dryRun=false]  Print changes without writing to DB
+ * @returns {Promise<{ checked: number, updated: number, priorityFlagged: number, errors: number }>}
+ */
+export async function runSyncVideoViewsStage(options = {}) {
+  const { dryRun = false } = options;
+
+  console.log(`[sync-video-views] Fetching view data from ${AUDITANDFIX_URL}${dryRun ? ' (DRY RUN)' : ''}...`);
+
+  let videos;
+  try {
+    videos = await fetchVideoViews();
+  } catch (err) {
+    console.error(`[sync-video-views] Failed to fetch views: ${err.message}`);
+    return { checked: 0, updated: 0, priorityFlagged: 0, errors: 1 };
+  }
+
+  const viewedVideos = videos.filter(v => v.view_count > 0 && v.last_view);
+  console.log(`[sync-video-views] ${videos.length} video pages found, ${viewedVideos.length} with views`);
+
+  if (viewedVideos.length === 0) {
+    return { checked: videos.length, updated: 0, priorityFlagged: 0, errors: 0 };
+  }
+
+  // Prepare DB statements
+  const getSite = db.prepare(`
+    SELECT id, business_name, video_viewed_at, followup1_sent_at, conversation_status
+    FROM sites
+    WHERE video_hash = ?
+    LIMIT 1
+  `);
+
+  const setViewed = db.prepare(`
+    UPDATE sites
+    SET video_viewed_at = ?,
+        updated_at      = CURRENT_TIMESTAMP
+    WHERE id = ?
+      AND (video_viewed_at IS NULL OR video_viewed_at < ?)
+  `);
+
+  const setPriorityFlag = db.prepare(`
+    UPDATE sites
+    SET conversation_status = 'viewed_no_followup',
+        updated_at          = CURRENT_TIMESTAMP
+    WHERE id = ?
+      AND (conversation_status IS NULL OR conversation_status NOT IN ('replied', 'closed', 'converted'))
+  `);
+
+  const now = new Date();
+  const priorityCutoff = new Date(now.getTime() - PRIORITY_WINDOW_MINUTES * 60 * 1000);
+
+  let updated = 0;
+  let priorityFlagged = 0;
+  let errors = 0;
+
+  for (const v of viewedVideos) {
+    try {
+      const site = getSite.get(v.hash);
+      if (!site) {
+        // Hash exists on Hostinger but not in local DB — ignore (could be a test page)
+        continue;
+      }
+
+      const lastViewDate = new Date(v.last_view);
+      const lastViewIso  = lastViewDate.toISOString().replace('T', ' ').slice(0, 19);
+
+      // Determine if this is a new view (not yet recorded locally)
+      const alreadyRecorded = site.video_viewed_at !== null;
+      const isNewer = !alreadyRecorded ||
+        new Date(site.video_viewed_at) < lastViewDate;
+
+      if (isNewer) {
+        if (dryRun) {
+          console.log(
+            `  [dry-run] Would set video_viewed_at=${lastViewIso} for site ${site.id} "${site.business_name}"`
+          );
+        } else {
+          setViewed.run(lastViewIso, site.id, lastViewIso);
+        }
+        updated++;
+      }
+
+      // Flag for priority follow-up if: viewed recently AND no followup1 sent yet
+      const viewedRecently = lastViewDate >= priorityCutoff;
+      const noFollowup1    = !site.followup1_sent_at;
+
+      if (viewedRecently && noFollowup1) {
+        if (dryRun) {
+          console.log(
+            `  [dry-run] Would flag conversation_status=viewed_no_followup for site ${site.id} "${site.business_name}" (viewed ${v.last_view})`
+          );
+        } else {
+          setPriorityFlag.run(site.id);
+        }
+        priorityFlagged++;
+      }
+    } catch (err) {
+      console.error(`  [error] hash=${v.hash}: ${err.message}`);
+      errors++;
+    }
+  }
+
+  console.log(
+    `[sync-video-views] Done: ${viewedVideos.length} viewed, ` +
+    `${updated} DB updated, ${priorityFlagged} priority-flagged, ${errors} errors`
+  );
+
+  return { checked: videos.length, updated, priorityFlagged, errors };
+}
+
+// ── CLI entry point ────────────────────────────────────────────────────────────
+
+const isMain = process.argv[1] &&
+  fileURLToPath(import.meta.url) === resolve(process.argv[1]);
+
+if (isMain) {
+  const { values: args } = parseArgs({
+    options: {
+      'dry-run': { type: 'boolean', default: false },
+    },
+    strict: false,
+  });
+
+  runSyncVideoViewsStage({ dryRun: args['dry-run'] })
+    .then(result => {
+      console.log('\nResult:', result);
+      process.exit(result.errors > 0 ? 1 : 0);
+    })
+    .catch(err => {
+      console.error('[sync-video-views] Fatal:', err.message);
+      process.exit(1);
+    });
+}
