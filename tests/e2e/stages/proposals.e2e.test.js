@@ -217,7 +217,7 @@ describe('parseContacts', () => {
 
 // ─── Template file structure ──────────────────────────────────────────────────
 
-describe('AU email templates', () => {
+describe('AU email templates (legacy)', () => {
   const templatePath = resolve(root, 'data/templates/AU/email.json');
 
   it('AU/email.json file exists and is valid JSON', () => {
@@ -260,7 +260,7 @@ describe('AU email templates', () => {
   });
 });
 
-describe('AU SMS templates', () => {
+describe('AU SMS templates (legacy)', () => {
   const templatePath = resolve(root, 'data/templates/AU/sms.json');
 
   it('AU/sms.json file exists and is valid JSON', () => {
@@ -282,6 +282,100 @@ describe('AU SMS templates', () => {
     }
   });
 });
+
+// ─── 8-touch sequence templates ─────────────────────────────────────────────
+
+const COUNTRIES = ['AU', 'UK', 'US', 'CA', 'NZ'];
+const EXPECTED_TOUCHES = 8;
+const EXPECTED_CADENCE = [0, 2, 5, 8, 12, 16, 21, 28];
+
+for (const cc of COUNTRIES) {
+  describe(`${cc} sequence template`, () => {
+    const seqPath = resolve(root, `data/templates/${cc}/sequence.json`);
+
+    it(`${cc}/sequence.json exists and is valid JSON`, () => {
+      let data;
+      assert.doesNotThrow(() => {
+        data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      });
+      assert.ok(data, 'parsed data should be truthy');
+    });
+
+    it(`has exactly ${EXPECTED_TOUCHES} touches`, () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      assert.equal(data.touches.length, EXPECTED_TOUCHES,
+        `Expected ${EXPECTED_TOUCHES} touches, got ${data.touches.length}`);
+    });
+
+    it('touches have correct step numbers 1-8', () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      for (let i = 0; i < data.touches.length; i++) {
+        assert.equal(data.touches[i].step, i + 1,
+          `Touch ${i} has step=${data.touches[i].step}, expected ${i + 1}`);
+      }
+    });
+
+    it(`cadence matches expected day offsets [${EXPECTED_CADENCE.join(', ')}]`, () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      const actualDays = data.touches.map(t => t.day);
+      assert.deepEqual(actualDays, EXPECTED_CADENCE);
+    });
+
+    it('touch 1 is email, touches 2 and 5 are sms', () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      assert.equal(data.touches[0].channel, 'email', 'Touch 1 should be email');
+      assert.equal(data.touches[1].channel, 'sms', 'Touch 2 should be sms');
+      assert.equal(data.touches[4].channel, 'sms', 'Touch 5 should be sms');
+    });
+
+    it('every touch has body_spintax containing [video_url]', () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      for (const touch of data.touches) {
+        assert.ok(
+          touch.body_spintax.includes('[video_url]'),
+          `Touch ${touch.step} (${touch.id}) body_spintax should contain [video_url]`
+        );
+      }
+    });
+
+    it('email touches have subject_spintax, sms touches do not', () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      for (const touch of data.touches) {
+        if (touch.channel === 'email') {
+          assert.ok(
+            typeof touch.subject_spintax === 'string' && touch.subject_spintax.length > 0,
+            `Email touch ${touch.step} should have subject_spintax`
+          );
+        } else {
+          assert.equal(touch.subject_spintax, null,
+            `SMS touch ${touch.step} should have null subject_spintax`);
+        }
+      }
+    });
+
+    it('touch 4 has a variant_not_viewed with body_spintax', () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      const touch4 = data.touches[3];
+      assert.ok(touch4.variant_not_viewed, 'Touch 4 should have variant_not_viewed');
+      assert.ok(
+        typeof touch4.variant_not_viewed.body_spintax === 'string' &&
+        touch4.variant_not_viewed.body_spintax.length > 0,
+        'variant_not_viewed should have body_spintax'
+      );
+    });
+
+    it('touch 8 is a breakup with message_type=breakup', () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      const touch8 = data.touches[7];
+      assert.equal(touch8.message_type, 'breakup');
+    });
+
+    it(`country_code in template matches ${cc}`, () => {
+      const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
+      assert.equal(data.country_code, cc);
+    });
+  });
+}
 
 // ─── Variable replacement logic ───────────────────────────────────────────────
 // We test the token replacement + spintax spin pattern used by spinWithVars.

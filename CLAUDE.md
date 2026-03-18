@@ -4,7 +4,7 @@
 
 2Step finds local businesses with strong Google reviews, creates a free 30-45s AI video from their best review, and sends it as cold outreach. Close: $625 setup + $99/month retainer.
 
-**Pipeline:** Prospect (import CSV / reviews stage) → Video Prompt (claude -p) → Video Creation (manual/Creatomate) → Outreach (email + DMs) → Follow-up → Close
+**Pipeline:** Prospect (import CSV / reviews stage) → Video Prompt (claude -p) → Video Creation (manual/Creatomate) → 8-Touch Outreach Sequence (28 days) → Close
 
 ## Architecture
 
@@ -23,18 +23,34 @@
 
 SQLite at `db/2step.db`. Schema in `db/schema.sql`.
 
-**Status flow:** found → video_prompted → video_created → outreach_sent → followup_1 → followup_2 → followup_3 → interested/closed/not_interested
+**Status flow:** found → reviews_downloaded → enriched → video_created → proposals_drafted → outreach_sent → replied → interested/closed/not_interested
 
-**Tables:** prospects, videos, outreaches, followups, conversations
+**Tables:** sites, videos, keywords, niche_tiers (+ msgs.messages in shared DB)
+
+**Outreach sequence (8 touches over 28 days):**
+| Touch | Day | Channel | Value angle |
+|-------|-----|---------|-------------|
+| 1 | 0 | Email | Initial outreach: free video demo hook |
+| 2 | 2 | SMS | Heads-up nudge: cross-channel coordination |
+| 3 | 5 | Email | ROI data: video reviews drive 2x enquiries |
+| 4 | 8 | Email | Video view signal branch (viewed vs not viewed) |
+| 5 | 12 | SMS | Social proof: businesses in their city |
+| 6 | 16 | Email | Case study: full package preview with pricing |
+| 7 | 21 | Email | SEO/Google ranking benefits |
+| 8 | 28 | Email | Breakup: closing the file, leave door open |
+
+Sequence stops automatically if prospect replies. Templates per country in `data/templates/{AU,UK,US,CA,NZ}/sequence.json`.
 
 ## Key Files
 
 - `src/prospect/import-csv.js` — Import prospects from CSV
 - `src/video/prompt-generator.js` — Video script generation via claude -p
-- `src/outreach/dm-generator.js` — LLM-generated DM messages
-- `src/stages/outreach.js` — Email/DM outreach stage (supersedes old email.js)
+- `src/stages/proposals.js` — 8-touch sequence proposal generator (spintax templates)
+- `src/stages/outreach.js` — Email/SMS sender (cadence-aware, stops on reply)
+- `scripts/2step-batch.js` — Batch job dispatcher (sequence_check queues due touches)
+- `data/templates/{CC}/sequence.json` — Country-specific 8-touch templates
+- `db/migrations/011-add-sequence-columns.sql` — Adds sequence_step + scheduled_send_at
 - `prompts/VIDEO-PROMPT.md` — Video prompt template
-- `prompts/DM-OUTREACH.md` — DM outreach prompt template
 
 ## Environment
 
