@@ -77,9 +77,9 @@ function escapeDrawtext(text) {
 /**
  * Word-wrap text to fit within a max character width.
  * Preserves explicit \n line breaks.
- * Tighter limit (22) prevents long subtitle lines from overflowing the 1080px frame.
+ * 18 chars keeps lines comfortably within 1080px at 76–96px across all variant fonts.
  */
-function wordWrap(text, maxChars = 22) {
+function wordWrap(text, maxChars = 18) {
   const lines = [];
   for (const paragraph of text.split('\n')) {
     const words = paragraph.split(/\s+/);
@@ -109,7 +109,7 @@ function buildDrawtext(scene, startTime, endTime, clipFocus, variant, sceneIdx) 
     displayText = displayText.replace(/^(\d) Stars?\n/, (_, n) => '★'.repeat(Number(n)) + '\n');
   }
 
-  const wrapped = wordWrap(displayText, 18);  // tight wrap: ~18 chars fits safely at 76px in 1080px
+  const wrapped = wordWrap(displayText);  // uses default 18-char limit
   const escaped = escapeDrawtext(wrapped);
 
   // Stars scene uses DejaVu for ★ glyph; all others use variant font

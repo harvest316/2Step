@@ -1004,7 +1004,7 @@ export function toTitleCase(str) {
 // Sentence openers that produce weak or confusing standalone subtitles:
 // - mid-thought continuations ("As a...", "From the moment...", "Not only...")
 // - meta-praise openers that don't describe anything specific ("I cannot speak highly enough...")
-const DANGLING_OPENERS = /^(as a |as an |with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend)/i;
+const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know)/i;
 
 export function extractQuotes(review, n = 2) {
   const sentences = (review.match(/[^.!?]+[.!?]+/g) || [review])
@@ -1013,23 +1013,25 @@ export function extractQuotes(review, n = 2) {
     .filter(s => !DANGLING_OPENERS.test(s));  // reject mid-thought continuations
   const wc = s => s.trim().split(/\s+/).length;
 
-  // Fit a sentence into maxWords — split at a clause boundary (comma/semicolon/conjunction) if possible
-  function fitToMaxWords(s, maxWords = 15) {
+  // Fit a sentence into maxWords — only truncate genuinely long sentences (>22 words).
+  // Shorter sentences are always returned whole even if above the "preferred" length,
+  // since a complete thought is always better than a truncated one.
+  function fitToMaxWords(s, maxWords = 22) {
     if (wc(s) <= maxWords) return s;
     const words = s.trim().split(/\s+/);
     // Try to cut at a natural pause: comma, semicolon, or 'and'/'but'/'so' conjunction
-    for (let i = maxWords; i >= 6; i--) {
+    for (let i = maxWords; i >= 8; i--) {
       if (/[,;]$/.test(words[i - 1]) || /^(and|but|so|though|when|while|after|before)$/i.test(words[i])) {
         return words.slice(0, i).join(' ').replace(/[,;]$/, '') + '...';
       }
     }
-    // No natural break — cut at maxWords with ellipsis so it reads as deliberate excerpt
+    // No natural break — cut at maxWords
     return words.slice(0, maxWords).join(' ') + '...';
   }
 
   const fitted = sentences.map(s => fitToMaxWords(s));
-  const short  = fitted.filter(s => wc(s) <= 12);
-  const medium = fitted.filter(s => wc(s) <= 15);
+  const short  = fitted.filter(s => wc(s) <= 15);
+  const medium = fitted.filter(s => wc(s) <= 22);
   const pool   = short.length >= n ? short : medium.length >= n ? medium : fitted.length ? fitted : [fitToMaxWords(review)];
 
   const results = [];
