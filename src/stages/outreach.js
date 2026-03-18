@@ -1,0 +1,500 @@
+#!/usr/bin/env node
+
+/**
+ * Outreach pipeline stage for 2Step.
+ *
+ * Sends approved messages from msgs.messages where project='2step' via
+ * email (Resend) or SMS (Twilio). Checks opt-outs before sending.
+ *
+ * Usage:
+ *   node src/stages/outreach.js              # Send all approved email+SMS
+ *   node src/stages/outreach.js --limit 5    # Send up to 5
+ *   node src/stages/outreach.js --dry-run    # Preview without sending
+ *   node src/stages/outreach.js --method sms # SMS only
+ */
+
+import '../utils/load-env.js';
+import { Resend } from 'resend';
+import twilio from 'twilio';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { parseArgs } from 'util';
+import db from '../utils/db.js';
+import { buildEmailHtml } from '../outreach/email-template.js';
+import { spin } from '../../../333Method/src/utils/spintax.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const ROOT = resolve(__dirname, '../..');
+
+// ── Config ──────────────────────────────────────────────────────────────────
+
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const SENDER_EMAIL = process.env.TWOSTEP_SENDER_EMAIL || 'videos@auditandfix.com';
+const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || 'Audit&Fix Video Reviews';
+const UNSUBSCRIBE_URL =
+  process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev';
+const LOGO_URL = process.env.TWOSTEP_LOGO_URL || 'https://auditandfix.com/assets/img/logo-light.svg';
+const PHYSICAL_ADDRESS = process.env.CAN_SPAM_PHYSICAL_ADDRESS || '';
+
+// CAN-SPAM countries — require physical address in footer
+const CAN_SPAM_COUNTRIES = new Set([
+  'US', 'CA', 'AU', 'NZ', 'UK', 'GB', 'DE', 'FR', 'IT', 'ES', 'NL', 'BE',
+  'AT', 'SE', 'DK', 'NO', 'FI', 'PL', 'IE', 'PT', 'GR', 'CZ', 'RO', 'HU', 'CH',
+]);
+
+// ── Email templates ──────────────────────────────────────────────────────────
+
+const templateFile = resolve(ROOT, 'data/templates/email.json');
+let templates = [];
+try {
+  ({ templates } = JSON.parse(readFileSync(templateFile, 'utf-8')));
+} catch (_) {
+  console.warn('[outreach] Could not load data/templates/email.json — using bare message body');
+}
+
+function pickTemplate(seed) {
+  if (!templates.length) return null;
+  return templates[seed % templates.length];
+}
+
+function spinField(spintaxText, businessName) {
+  return spin(spintaxText.replace(/\[business_name\]/g, businessName));
+}
+
+// ── Opt-out check ────────────────────────────────────────────────────────────
+
+/**
+ * Check whether a contact URI (email or phone) is opted out for a given method.
+ * Queries msgs.opt_outs in the shared messages DB (ATTACHed as `msgs`).
+ *
+ * @param {string|null} phone
+ * @param {string|null} email
+ * @param {'sms'|'email'} method
+ * @returns {boolean}
+ */
+function isOptedOut(phone, email, method) {
+  if (!phone && !email) return false;
+  try {
+    const row = db
+      .prepare(
+        `SELECT 1 FROM msgs.opt_outs
+         WHERE method = ?
+         AND (phone = ? OR email = ?)
+         LIMIT 1`
+      )
+      .get(method, phone ?? null, email ?? null);
+    return Boolean(row);
+  } catch (_) {
+    // msgs.opt_outs not available (e.g. messages.db not ATTACHed) — don't block
+    return false;
+  }
+}
+
+// ── Email helpers ────────────────────────────────────────────────────────────
+
+/**
+ * Split message_body into hook (first paragraph) and remaining body.
+ * Hook goes above the poster image; remaining body goes below.
+ */
+function splitBody(messageBody) {
+  const parts = (messageBody || '').split(/\n\n+/);
+  const hook = parts[0] || '';
+  const remaining = parts.slice(1).join('\n\n');
+  return { hook, remaining };
+}
+
+function textToHtml(text) {
+  if (!text) return '';
+  return text
+    .split(/\n+/)
+    .filter(line => line.trim())
+    .map(line => `<p class="last-child">${line}</p>`)
+    .join('\n');
+}
+
+function buildPlainText(msg, videoUrl, subject, cta) {
+  return [
+    subject,
+    '',
+    msg.message_body || '',
+    '',
+    `Watch your video: ${videoUrl}`,
+    '',
+    cta,
+    '',
+    '---',
+    `You received this because we thought ${msg.business_name} deserved to see their great reviews turned into video.`,
+    `Unsubscribe: ${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}`,
+  ].join('\n');
+}
+
+/**
+ * Assemble the HTML + text email for a given message row.
+ *
+ * @param {Object} msg - Row from the pending email query (includes site + video fields)
+ * @returns {{ html: string, text: string, subject: string }}
+ */
+function assembleEmail(msg) {
+  if (!msg.thumbnail_url) {
+    throw new Error(`No thumbnail_url for message #${msg.id} — run video stage first`);
+  }
+  if (!msg.video_url) {
+    throw new Error(`No video_url for message #${msg.id} — run video stage first`);
+  }
+
+  const template = pickTemplate(msg.id);
+  const businessName = msg.business_name || 'your business';
+
+  let subject, previewText, cta;
+
+  if (template) {
+    subject = spinField(template.subject_spintax, businessName);
+    previewText = spinField(template.preheader_spintax, businessName);
+    cta = spinField(template.cta_spintax, businessName);
+  } else {
+    subject = msg.subject_line || `Your free video review is ready, ${businessName}`;
+    previewText = subject;
+    cta = 'Reply to claim your video — no strings attached.';
+  }
+
+  const { hook, remaining } = splitBody(msg.message_body);
+  const unsubscribeUrl = `${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}`;
+  const countryCode = msg.country_code || 'AU';
+  const physicalAddressHtml =
+    PHYSICAL_ADDRESS && CAN_SPAM_COUNTRIES.has(countryCode)
+      ? `<br /><br /><span style="font-size: 12px">${PHYSICAL_ADDRESS}</span>`
+      : '';
+
+  const html = buildEmailHtml({
+    previewText,
+    hookHtml: textToHtml(hook),
+    posterUrl: msg.thumbnail_url,
+    videoUrl: msg.video_url,
+    remainingBodyHtml: textToHtml(remaining),
+    ctaHtml: `<p class="last-child" style="margin-top: 16px; font-style: italic; color: rgb(100, 100, 100);">${cta}</p>`,
+    businessName,
+    logoUrl: LOGO_URL,
+    unsubscribeUrl,
+    physicalAddressHtml,
+    year: String(new Date().getFullYear()),
+  });
+
+  const text = buildPlainText(msg, msg.video_url, subject, cta);
+
+  return { html, text, subject };
+}
+
+// ── Email send ───────────────────────────────────────────────────────────────
+
+/**
+ * Send a single email message.
+ *
+ * @param {Object} msg - Row from pending email query
+ * @param {Resend} resend - Resend client instance
+ * @param {boolean} dryRun
+ * @returns {Promise<{ success: boolean, resendId?: string, dryRun?: boolean }>}
+ */
+async function sendEmail(msg, resend, dryRun) {
+  if (isOptedOut(null, msg.contact_uri, 'email')) {
+    db.prepare(
+      `UPDATE msgs.messages
+       SET delivery_status = 'failed', error_message = 'opted out',
+           updated_at = datetime('now')
+       WHERE id = ?`
+    ).run(msg.id);
+    console.log(`  [${msg.id}] Skipped (opted out): ${msg.contact_uri}`);
+    return { success: false, skipped: true, reason: 'opted_out' };
+  }
+
+  const { html, text, subject } = assembleEmail(msg);
+
+  if (dryRun) {
+    console.log(`  [${msg.id}] DRY RUN to: ${msg.contact_uri}`);
+    console.log(`    Subject: ${subject}`);
+    console.log(`    Poster:  ${msg.thumbnail_url}`);
+    console.log(`    Video:   ${msg.video_url}`);
+    return { success: true, dryRun: true };
+  }
+
+  const { data, error } = await resend.emails.send({
+    from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+    to: msg.contact_uri,
+    subject,
+    html,
+    text,
+    headers: {
+      'List-Unsubscribe': `<${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}>`,
+    },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const emailId = data?.id || null;
+
+  db.prepare(
+    `UPDATE msgs.messages
+     SET delivery_status = 'sent',
+         sent_at = datetime('now'),
+         email_id = ?,
+         updated_at = datetime('now')
+     WHERE id = ?`
+  ).run(emailId, msg.id);
+
+  db.prepare(
+    `UPDATE sites SET last_outreach_at = datetime('now'), updated_at = datetime('now')
+     WHERE id = ?`
+  ).run(msg.site_id);
+
+  return { success: true, resendId: emailId };
+}
+
+// ── SMS send ─────────────────────────────────────────────────────────────────
+
+/**
+ * Format a phone number to E.164 (best-effort; mirrors 333Method's formatPhoneNumber).
+ */
+function formatPhoneNumber(phone) {
+  let cleaned = phone.replace(/\D/g, '');
+  if (cleaned.startsWith('04')) {
+    cleaned = `61${cleaned.slice(1)}`;
+  } else if (cleaned.length === 10 && !cleaned.startsWith('61')) {
+    cleaned = `1${cleaned}`;
+  }
+  return cleaned.startsWith('+') ? cleaned : `+${cleaned}`;
+}
+
+/**
+ * Send a single SMS message.
+ *
+ * @param {Object} msg - Row from pending SMS query
+ * @param {import('twilio').Twilio} twilioClient
+ * @param {boolean} dryRun
+ * @returns {Promise<{ success: boolean, sid?: string, dryRun?: boolean }>}
+ */
+async function sendSms(msg, twilioClient, dryRun) {
+  const toNumber = formatPhoneNumber(msg.contact_uri);
+
+  if (isOptedOut(toNumber, null, 'sms')) {
+    db.prepare(
+      `UPDATE msgs.messages
+       SET delivery_status = 'failed', error_message = 'opted out',
+           updated_at = datetime('now')
+       WHERE id = ?`
+    ).run(msg.id);
+    console.log(`  [${msg.id}] Skipped (opted out): ${toNumber}`);
+    return { success: false, skipped: true, reason: 'opted_out' };
+  }
+
+  const fromNumber = process.env.TWILIO_PHONE_NUMBER;
+  if (!fromNumber) {
+    throw new Error('TWILIO_PHONE_NUMBER not set');
+  }
+
+  if (dryRun) {
+    console.log(`  [${msg.id}] DRY RUN SMS to: ${toNumber}`);
+    console.log(`    Body: ${(msg.message_body || '').slice(0, 80)}...`);
+    return { success: true, dryRun: true };
+  }
+
+  const message = await twilioClient.messages.create({
+    body: msg.message_body,
+    from: fromNumber,
+    to: toNumber,
+  });
+
+  db.prepare(
+    `UPDATE msgs.messages
+     SET delivery_status = 'sent',
+         sent_at = datetime('now'),
+         updated_at = datetime('now')
+     WHERE id = ?`
+  ).run(msg.id);
+
+  db.prepare(
+    `UPDATE sites SET last_outreach_at = datetime('now'), updated_at = datetime('now')
+     WHERE id = ?`
+  ).run(msg.site_id);
+
+  return { success: true, sid: message.sid };
+}
+
+// ── Stage runner ─────────────────────────────────────────────────────────────
+
+/**
+ * Run the 2Step outreach stage — send all approved, unsent email and SMS messages.
+ *
+ * @param {Object} [options]
+ * @param {number} [options.limit]            - Max messages to send per method
+ * @param {boolean} [options.dryRun=false]    - Preview without sending
+ * @param {string[]} [options.methods]        - Channels to send (['email','sms'])
+ * @returns {Promise<{ sent: number, failed: number, skipped: number }>}
+ */
+export async function runOutreachStage(options = {}) {
+  const { limit, dryRun = false, methods = ['email', 'sms'] } = options;
+
+  console.log(
+    `[outreach] Starting 2Step outreach stage` +
+    ` (methods=${methods.join(',')}, limit=${limit ?? 'all'}${dryRun ? ', DRY RUN' : ''})`
+  );
+
+  const stats = { sent: 0, failed: 0, skipped: 0 };
+
+  // ── Email ──────────────────────────────────────────────────────────────────
+
+  if (methods.includes('email')) {
+    if (!RESEND_API_KEY) {
+      console.warn('[outreach] RESEND_API_KEY not set — skipping email');
+    } else {
+      const resend = new Resend(RESEND_API_KEY);
+
+      const limitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
+      const emails = db
+        .prepare(
+          `SELECT m.id, m.site_id, m.contact_uri, m.message_body, m.subject_line,
+                  s.business_name, s.country_code,
+                  v.video_url, v.thumbnail_url
+           FROM msgs.messages m
+           JOIN sites s ON s.id = m.site_id
+           LEFT JOIN videos v ON v.id = s.video_id
+           WHERE m.project = '2step'
+             AND m.direction = 'outbound'
+             AND m.contact_method = 'email'
+             AND m.approval_status = 'approved'
+             AND m.delivery_status IS NULL
+           ORDER BY m.created_at ASC
+           ${limitClause}`
+        )
+        .all();
+
+      console.log(`[outreach] ${emails.length} pending email message(s)`);
+
+      for (const msg of emails) {
+        try {
+          console.log(`[outreach] Email [${msg.id}] ${msg.business_name} → ${msg.contact_uri}`);
+          const result = await sendEmail(msg, resend, dryRun);
+          if (result.skipped) {
+            stats.skipped++;
+          } else {
+            stats.sent++;
+            if (result.resendId) console.log(`  sent (${result.resendId})`);
+            if (result.dryRun) console.log(`  (dry run)`);
+          }
+        } catch (err) {
+          console.error(`  failed: ${err.message}`);
+          db.prepare(
+            `UPDATE msgs.messages
+             SET delivery_status = 'failed', error_message = ?,
+                 updated_at = datetime('now')
+             WHERE id = ?`
+          ).run(err.message.slice(0, 500), msg.id);
+          stats.failed++;
+        }
+
+        // Brief pause between sends to avoid rate limits
+        if (!dryRun) {
+          await new Promise(r => setTimeout(r, 300));
+        }
+      }
+    }
+  }
+
+  // ── SMS ───────────────────────────────────────────────────────────────────
+
+  if (methods.includes('sms')) {
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+
+    if (!accountSid || !authToken) {
+      console.warn('[outreach] TWILIO_ACCOUNT_SID / TWILIO_AUTH_TOKEN not set — skipping SMS');
+    } else {
+      const twilioClient = twilio(accountSid, authToken);
+
+      const limitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
+      const smsList = db
+        .prepare(
+          `SELECT m.id, m.site_id, m.contact_uri, m.message_body,
+                  s.business_name, s.country_code
+           FROM msgs.messages m
+           JOIN sites s ON s.id = m.site_id
+           WHERE m.project = '2step'
+             AND m.direction = 'outbound'
+             AND m.contact_method = 'sms'
+             AND m.approval_status = 'approved'
+             AND m.delivery_status IS NULL
+           ORDER BY m.created_at ASC
+           ${limitClause}`
+        )
+        .all();
+
+      console.log(`[outreach] ${smsList.length} pending SMS message(s)`);
+
+      for (const msg of smsList) {
+        try {
+          console.log(`[outreach] SMS [${msg.id}] ${msg.business_name} → ${msg.contact_uri}`);
+          const result = await sendSms(msg, twilioClient, dryRun);
+          if (result.skipped) {
+            stats.skipped++;
+          } else {
+            stats.sent++;
+            if (result.sid) console.log(`  sent (${result.sid})`);
+            if (result.dryRun) console.log(`  (dry run)`);
+          }
+        } catch (err) {
+          console.error(`  failed: ${err.message}`);
+          db.prepare(
+            `UPDATE msgs.messages
+             SET delivery_status = 'failed', error_message = ?,
+                 updated_at = datetime('now')
+             WHERE id = ?`
+          ).run(err.message.slice(0, 500), msg.id);
+          stats.failed++;
+        }
+
+        // 1s between SMS to avoid carrier throttling
+        if (!dryRun) {
+          await new Promise(r => setTimeout(r, 1000));
+        }
+      }
+    }
+  }
+
+  console.log(
+    `[outreach] Stage complete: ${stats.sent} sent, ${stats.failed} failed, ${stats.skipped} skipped`
+  );
+
+  return stats;
+}
+
+// ── CLI entry point ──────────────────────────────────────────────────────────
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+  const { values: args } = parseArgs({
+    options: {
+      limit:     { type: 'string' },
+      'dry-run': { type: 'boolean', default: false },
+      method:    { type: 'string' },
+    },
+    strict: false,
+  });
+
+  const methods = args.method
+    ? [args.method]
+    : ['email', 'sms'];
+
+  runOutreachStage({
+    limit:   args.limit ? parseInt(args.limit, 10) : undefined,
+    dryRun:  args['dry-run'],
+    methods,
+  })
+    .then(stats => {
+      console.log('\nDone:', stats);
+      process.exit(0);
+    })
+    .catch(err => {
+      console.error('Fatal:', err.message);
+      process.exit(1);
+    });
+}
