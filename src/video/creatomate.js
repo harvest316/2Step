@@ -599,8 +599,10 @@ async function main() {
   for (const prospect of prospects) {
     try {
       // Skip prospects with no contact method — video is undeliverable.
-      if (!prospect.phone && !prospect.email) {
-        console.log(`[${prospect.id}] ${prospect.business_name} — SKIP (no phone or email)`);
+      // TODO: extend check to instagram_handle, facebook_page_url, and form URL
+      // once the full enrich pipeline (like 333Method) is in place.
+      if (!prospect.phone && !prospect.email && !prospect.instagram_handle && !prospect.facebook_page_url) {
+        console.log(`[${prospect.id}] ${prospect.business_name} — SKIP (no contact method)`);
         updateVideo.run('failed', null, null, null, prospect.video_id);
         failed++;
         continue;
