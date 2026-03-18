@@ -1,0 +1,27 @@
+-- Migration 006: Copy outreaches -> msgs.messages
+--
+-- THIS MIGRATION IS HANDLED BY THE NODE.JS init-db.js SCRIPT, NOT BY THIS SQL FILE.
+--
+-- Reason: copying rows between 2step.db and mmo-platform/db/messages.db requires
+-- SQLite ATTACH, which cannot be expressed in a standalone SQL migration file
+-- (the ATTACH path must be resolved at runtime from env vars or filesystem paths).
+--
+-- The init-db.js script performs:
+--   1. ATTACH DATABASE '<messages_db_path>' AS msgs
+--   2. INSERT INTO msgs.messages (project, site_id, direction, contact_method, ...)
+--      SELECT '2step', prospect_id, 'outbound', channel, contact_uri,
+--             message_body, NULL, delivery_status, sent_at, created_at
+--      FROM outreaches
+--   3. Marks this migration as applied in schema_migrations
+--
+-- Mapping: outreaches -> msgs.messages
+--   prospect_id    -> site_id
+--   channel        -> contact_method
+--   contact_uri    -> contact_uri
+--   message_body   -> message_body
+--   delivery_status (pending/sent/delivered/failed/replied/bounced)
+--              -> delivery_status (queued/sent/delivered/failed/bounced/retry_later)
+--   sent_at        -> sent_at
+--   direction      = 'outbound' (all outreach records)
+--   project        = '2step'
+--   message_type   = 'outreach'
