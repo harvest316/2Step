@@ -215,9 +215,9 @@ async function processLogoWithGlow(logoUrl, prospectId) {
   if (!res.ok) throw new Error(`Logo download failed ${res.status}: ${logoUrl}`);
   const origBuf = Buffer.from(await res.arrayBuffer());
 
-  // Resize to fit within 864×288 (80% wide, 15% tall at 1080×1920)
-  const maxW = 864;
-  const maxH = 288;
+  // Resize to fit within 972×384 (90% wide, 20% tall at 1080×1920), maintaining aspect ratio
+  const maxW = 972;
+  const maxH = 384;
   const logoBuf = await sharp(origBuf)
     .resize(maxW, maxH, { fit: 'inside', withoutEnlargement: false })
     .png()
@@ -598,6 +598,14 @@ async function main() {
 
   for (const prospect of prospects) {
     try {
+      // Skip prospects with no contact method — video is undeliverable.
+      if (!prospect.phone && !prospect.email) {
+        console.log(`[${prospect.id}] ${prospect.business_name} — SKIP (no phone or email)`);
+        updateVideo.run('failed', null, null, null, prospect.video_id);
+        failed++;
+        continue;
+      }
+
       // Skip pest control prospects with generic reviews (no specific pest detected).
       // These need generic clip sets first — see TODO.md "generic pest clips".
       if (prospect.niche === 'pest control') {
