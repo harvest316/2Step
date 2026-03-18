@@ -36,7 +36,6 @@ import {
   sceneDuration,
   timingsToSceneDurations,
   applyPhonetics,
-  PEXELS_FALLBACK_QUERIES,
 } from './shotstack-lib.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -57,7 +56,6 @@ const ANTHROPIC_MODEL = process.env.ANTHROPIC_API_KEY
 const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY;
 const SHOTSTACK_ENV = process.env.SHOTSTACK_ENV || 'stage';
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
-const PEXELS_KEY = process.env.PEXELS_API_KEY;
 
 // Charlie — only AU accent in ElevenLabs premade set
 const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'IKne3meq5aSn9XLyUdCD';
@@ -90,7 +88,6 @@ const { values: args } = parseArgs({
 
 if (!SHOTSTACK_KEY) { console.error('ERROR: SHOTSTACK_API_KEY must be set'); process.exit(1); }
 if (!ELEVENLABS_KEY) { console.error('ERROR: ELEVENLABS_API_KEY must be set'); process.exit(1); }
-if (!PEXELS_KEY) { console.error('ERROR: PEXELS_API_KEY must be set'); process.exit(1); }
 
 // ─── HTTP clients ─────────────────────────────────────────────────────────────
 
@@ -207,53 +204,13 @@ async function pollIngestSource(sourceId, maxWaitMs = 60000) {
   throw new Error('Shotstack ingest timed out');
 }
 
-// ─── Pexels clip fetcher (fallback) ──────────────────────────────────────────
-
-const pexelsCache = new Map();
-
-async function fetchPexelsClip(query, seed = 0) {
-  const cacheKey = `${query}:${seed}`;
-  if (pexelsCache.has(cacheKey)) return pexelsCache.get(cacheKey);
-
-  const url = `https://api.pexels.com/videos/search?query=${encodeURIComponent(query)}&per_page=15&orientation=portrait&size=medium`;
-  const res = await fetch(url, { headers: { Authorization: PEXELS_KEY } });
-  const data = await res.json();
-
-  const usable = (data.videos || []).filter(v => v.duration >= 5 && v.duration <= 25);
-  if (!usable.length) return null;
-
-  const pick = usable[seed % usable.length];
-  const file =
-    pick.video_files.find(f => f.width === 720 && f.height === 1280) ||
-    pick.video_files.find(f => f.height > f.width && f.quality === 'hd') ||
-    pick.video_files.find(f => f.height > f.width) ||
-    pick.video_files[0];
-
-  const clipUrl = file?.link || null;
-  pexelsCache.set(cacheKey, clipUrl);
-  return clipUrl;
-}
-
 async function fetchClips(niche, seed = 0) {
-  // Try curated pool first
   const poolClips = pickClipsFromPool(niche, seed);
   if (poolClips) {
     console.log('  Using curated clip pool.');
     return poolClips;
   }
-
-  // Fall back to Pexels search
-  console.log('  Clip pool empty — using Pexels search fallback.');
-  const queries = PEXELS_FALLBACK_QUERIES[niche] || PEXELS_FALLBACK_QUERIES.default;
-  const clips = await Promise.all(queries.map((q, i) => fetchPexelsClip(q, seed + i)));
-
-  const resolved = await Promise.all(clips.map(async (c, i) => {
-    if (c) return c;
-    console.warn(`  Clip ${i + 1} missing, using generic fallback`);
-    return fetchPexelsClip('home interior clean', seed);
-  }));
-  // Pexels clips have no focus metadata — default to center
-  return resolved.map(url => ({ url: url || null, focus: 'center' }));
+  throw new Error(`No curated clips available for niche "${niche}" — add clips to the pool in shotstack-lib.js`);
 }
 
 // ─── Shotstack render + poll ──────────────────────────────────────────────────

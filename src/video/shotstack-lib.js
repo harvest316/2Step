@@ -928,43 +928,6 @@ export function clipsBySource(source) {
   return results;
 }
 
-// ─── Pexels fallback queries ──────────────────────────────────────────────────
-
-/**
- * Fallback Pexels search queries used when the curated pool is empty.
- * These produce variable results — replace with curated pool ASAP.
- */
-export const PEXELS_FALLBACK_QUERIES = {
-  'pest control': [
-    'cockroach home interior',
-    'pest control technician home',
-    'exterminator spraying house interior',
-    'happy family clean home',
-    'professional handshake front door',
-  ],
-  plumbing: [
-    'burst pipe water leak home',
-    'plumber fixing pipes',
-    'plumber repairing drain',
-    'happy homeowner kitchen tap',
-    'plumber handshake front door',
-  ],
-  'house-cleaning': [
-    'messy cluttered living room',
-    'professional cleaner home',
-    'cleaner scrubbing bathroom',
-    'sparkling clean home interior',
-    'cleaner handshake front door',
-  ],
-  default: [
-    'worried homeowner stress',
-    'professional technician home service',
-    'home inspection professional',
-    'happy satisfied homeowner',
-    'professional service front door',
-  ],
-};
-
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
 /** Extract the first part of a business name (before any | separator). */
