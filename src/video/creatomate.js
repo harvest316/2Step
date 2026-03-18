@@ -19,7 +19,6 @@
  */
 
 import '../utils/load-env.js';
-import Database from 'better-sqlite3';
 import sharp from 'sharp';
 import * as musicMetadata from 'music-metadata';
 import { resolve, dirname } from 'path';
@@ -30,11 +29,10 @@ import { buildScenes, pickClipsFromPool } from './shotstack-lib.js';
 import { pickMusicTrack } from './music-tracks.js';
 import { renderVideo, extractPosterFrame } from './ffmpeg-render.js';
 import { pickVariant } from './style-variants.js';
+import db from '../utils/db.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
-
-const DB_PATH = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 const ELEVENLABS_KEY = process.env.ELEVENLABS_API_KEY;
 const ELEVENLABS_VOICE = process.env.ELEVENLABS_VOICE_ID || 'IKne3meq5aSn9XLyUdCD';
 const CF_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -63,26 +61,23 @@ if (!CF_ACCOUNT_ID || !CF_API_TOKEN || !R2_BUCKET) {
 
 // ─── Database ────────────────────────────────────────────────────────────────
 
-const db = new Database(DB_PATH);
-db.pragma('journal_mode = WAL');
-
-function getProspects() {
+function getSites() {
   if (args.id) {
     return db.prepare(`
-      SELECT p.*, v.id as video_id, v.prompt_text
-      FROM prospects p
-      JOIN videos v ON v.prospect_id = p.id
-      WHERE p.id = ? AND v.video_tool = 'creatomate' AND v.status = 'prompted'
+      SELECT s.*, v.id as video_id, v.prompt_text
+      FROM sites s
+      JOIN videos v ON v.site_id = s.id
+      WHERE s.id = ? AND v.video_tool = 'creatomate' AND v.status = 'prompted'
     `).all(parseInt(args.id, 10));
   }
 
   return db.prepare(`
-    SELECT p.*, v.id as video_id, v.prompt_text
-    FROM prospects p
-    JOIN videos v ON v.prospect_id = p.id
+    SELECT s.*, v.id as video_id, v.prompt_text
+    FROM sites s
+    JOIN videos v ON v.site_id = s.id
     WHERE v.video_tool = 'creatomate'
       AND v.status = 'prompted'
-    ORDER BY p.google_rating DESC
+    ORDER BY s.google_rating DESC
     LIMIT ?
   `).all(parseInt(args.limit, 10));
 }
@@ -397,58 +392,57 @@ async function submitRender(prospect) {
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-  const prospects = getProspects();
+  const sites = getSites();
 
-  if (prospects.length === 0) {
-    console.log('No prospects with video_tool="creatomate" in "prompted" status.');
+  if (sites.length === 0) {
+    console.log('No sites with video_tool="creatomate" in "prompted" status.');
     console.log('Use: node src/video/prompt-generator.js --tool creatomate');
     return;
   }
 
-  console.log(`Rendering ${prospects.length} videos via local ffmpeg${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
+  console.log(`Rendering ${sites.length} videos via local ffmpeg${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
 
   const updateVideo = db.prepare(`UPDATE videos SET status = ?, video_url = ?, thumbnail_url = ?, style_variant = ? WHERE id = ?`);
   let success = 0, failed = 0;
 
-  for (const prospect of prospects) {
+  for (const site of sites) {
     try {
-      if (!prospect.phone && !prospect.email && !prospect.instagram_handle && !prospect.facebook_page_url) {
-        console.log(`[${prospect.id}] ${prospect.business_name} — SKIP (no contact method)`);
-        updateVideo.run('failed', null, null, null, prospect.video_id);
+      if (!site.phone && !site.email && !site.instagram_handle && !site.facebook_page_url) {
+        console.log(`[${site.id}] ${site.business_name} — SKIP (no contact method)`);
+        updateVideo.run('failed', null, null, null, site.video_id);
         failed++;
         continue;
       }
 
-      if (prospect.niche === 'pest control') {
+      if (site.niche === 'pest control') {
         const { detectPestFromReview } = await import('./shotstack-lib.js');
-        const pest = detectPestFromReview(prospect.best_review_text || '');
+        const pest = detectPestFromReview(site.best_review_text || '');
         if (!pest) {
-          console.log(`[${prospect.id}] ${prospect.business_name} — SKIP (generic review, no pest detected)`);
+          console.log(`[${site.id}] ${site.business_name} — SKIP (generic review, no pest detected)`);
           continue;
         }
       }
 
-      console.log(`[${prospect.id}] ${prospect.business_name} (${prospect.city})...`);
-      const result = await submitRender(prospect);
+      console.log(`[${site.id}] ${site.business_name} (${site.city})...`);
+      const result = await submitRender(site);
 
       if (args['dry-run']) { success++; continue; }
 
       console.log(`  ✓ Video ready: ${result.videoUrl} [variant ${result.variantId}]`);
       if (result.posterUrl) console.log(`  Poster: ${result.posterUrl}`);
       if (!args.local) {
-        updateVideo.run('completed', result.videoUrl, result.posterUrl, result.variantId, prospect.video_id);
+        updateVideo.run('completed', result.videoUrl, result.posterUrl, result.variantId, site.video_id);
       }
-      db.prepare('UPDATE prospects SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
-        .run('video_created', prospect.id);
+      db.prepare('UPDATE sites SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+        .run('video_created', site.id);
       success++;
     } catch (err) {
       console.error(`\n  ✗ Failed: ${err.message}`);
-      updateVideo.run('failed', null, null, null, prospect.video_id);
+      updateVideo.run('failed', null, null, null, site.video_id);
       failed++;
     }
   }
 
-  db.close();
   console.log(`\nDone: ${success} rendered, ${failed} failed`);
 }
 

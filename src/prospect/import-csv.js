@@ -9,16 +9,15 @@
  */
 
 import '../utils/load-env.js';
-import Database from 'better-sqlite3';
 import { readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parse } from 'csv-parse/sync';
+import db from '../utils/db.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
 
-const DB_PATH = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 const csvPath = process.argv[2];
 
 if (!csvPath) {
@@ -30,11 +29,8 @@ if (!csvPath) {
 const csv = readFileSync(resolve(csvPath), 'utf8');
 const rows = parse(csv, { columns: true, skip_empty_lines: true, trim: true });
 
-const db = new Database(DB_PATH);
-db.pragma('journal_mode = WAL');
-
 const stmt = db.prepare(`
-  INSERT OR IGNORE INTO prospects (
+  INSERT OR IGNORE INTO sites (
     business_name, city, state, country_code, phone, email,
     website_url, instagram_handle, facebook_page_url,
     google_rating, review_count, best_review_text, best_review_author,
@@ -68,5 +64,4 @@ for (const row of rows) {
   if (result.changes > 0) inserted++;
 }
 
-db.close();
-console.log(`Imported ${inserted} prospects from ${rows.length} CSV rows.`);
+console.log(`Imported ${inserted} sites from ${rows.length} CSV rows.`);

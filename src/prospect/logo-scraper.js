@@ -13,24 +13,22 @@
  *   7. Brandfetch API                      (third-party, only when all on-site signals fail)
  *   8. /favicon.ico                        (last resort, low quality)
  *
- * Stores result in prospects.logo_url column.
+ * Stores result in sites.logo_url column.
  *
  * Usage:
- *   node src/prospect/logo-scraper.js           # All prospects without logo_url
- *   node src/prospect/logo-scraper.js --id 1    # Specific prospect
+ *   node src/prospect/logo-scraper.js           # All sites without logo_url
+ *   node src/prospect/logo-scraper.js --id 1    # Specific site
  *   node src/prospect/logo-scraper.js --dry-run # Print URLs without saving
  *   node src/prospect/logo-scraper.js --force   # Re-scrape even if logo_url already set
  */
 
 import '../utils/load-env.js';
-import Database from 'better-sqlite3';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
+import db from '../utils/db.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const root = resolve(__dirname, '../..');
-const DB_PATH = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 
 const { values: args } = parseArgs({
   options: {
@@ -41,23 +39,16 @@ const { values: args } = parseArgs({
   strict: false,
 });
 
-const db = new Database(DB_PATH);
-db.pragma('journal_mode = WAL');
-
-// Add logo_url column if it doesn't exist
-const hasCol = db.prepare(`PRAGMA table_info(prospects)`).all().some(c => c.name === 'logo_url');
-if (!hasCol) db.prepare(`ALTER TABLE prospects ADD COLUMN logo_url TEXT`).run();
-
-function getProspects() {
+function getSites() {
   if (args.id) {
-    return db.prepare('SELECT id, business_name, website_url FROM prospects WHERE id = ?')
+    return db.prepare('SELECT id, business_name, website_url FROM sites WHERE id = ?')
       .all(parseInt(args.id, 10));
   }
   if (args.force) {
-    return db.prepare('SELECT id, business_name, website_url FROM prospects WHERE website_url IS NOT NULL ORDER BY id').all();
+    return db.prepare('SELECT id, business_name, website_url FROM sites WHERE website_url IS NOT NULL ORDER BY id').all();
   }
   return db.prepare(
-    'SELECT id, business_name, website_url FROM prospects WHERE logo_url IS NULL AND website_url IS NOT NULL ORDER BY id'
+    'SELECT id, business_name, website_url FROM sites WHERE logo_url IS NULL AND website_url IS NOT NULL ORDER BY id'
   ).all();
 }
 
@@ -157,29 +148,29 @@ function resolveUrl(base, url) {
 }
 
 async function main() {
-  const prospects = getProspects();
+  const sites = getSites();
 
-  if (prospects.length === 0) {
-    console.log('No prospects need logo scraping.');
+  if (sites.length === 0) {
+    console.log('No sites need logo scraping.');
     return;
   }
 
-  console.log(`Scraping logos for ${prospects.length} prospects${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
+  console.log(`Scraping logos for ${sites.length} sites${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
 
-  const update = db.prepare('UPDATE prospects SET logo_url = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?');
+  const update = db.prepare('UPDATE sites SET logo_url = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?');
 
   let found = 0;
   let failed = 0;
 
-  for (const p of prospects) {
-    const name = p.business_name.split('|')[0].trim();
-    process.stdout.write(`[${p.id}] ${name}... `);
+  for (const site of sites) {
+    const name = site.business_name.split('|')[0].trim();
+    process.stdout.write(`[${site.id}] ${name}... `);
 
-    const logo = await scrapeLogo(p.website_url);
+    const logo = await scrapeLogo(site.website_url);
 
     if (logo) {
       console.log(logo);
-      if (!args['dry-run']) update.run(logo, p.id);
+      if (!args['dry-run']) update.run(logo, site.id);
       found++;
     } else {
       console.log('not found');
@@ -187,7 +178,6 @@ async function main() {
     }
   }
 
-  db.close();
   console.log(`\nDone: ${found} found, ${failed} failed`);
 }
 

@@ -19,12 +19,12 @@
  */
 
 import '../utils/load-env.js';
-import Database from 'better-sqlite3';
 import axios from 'axios';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
 import { existsSync, readFileSync } from 'fs';
+import db from '../utils/db.js';
 // execSync no longer needed — Opus called via API directly
 // Pure functions live in shotstack-lib.js (also imported by tests)
 import {
@@ -40,8 +40,6 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
-
-const DB_PATH = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
@@ -105,24 +103,21 @@ const shotstackIngest = axios.create({
 
 // ─── Database ────────────────────────────────────────────────────────────────
 
-const db = new Database(DB_PATH);
-db.pragma('journal_mode = WAL');
-
-function getProspects() {
+function getSites() {
   if (args.id) {
     return db.prepare(`
-      SELECT p.*, v.id as video_id, v.prompt_text
-      FROM prospects p
-      JOIN videos v ON v.prospect_id = p.id
-      WHERE p.id = ? AND v.video_tool = 'shotstack' AND v.status = 'prompted'
+      SELECT s.*, v.id as video_id, v.prompt_text
+      FROM sites s
+      JOIN videos v ON v.site_id = s.id
+      WHERE s.id = ? AND v.video_tool = 'shotstack' AND v.status = 'prompted'
     `).all(parseInt(args.id, 10));
   }
   return db.prepare(`
-    SELECT p.*, v.id as video_id, v.prompt_text
-    FROM prospects p
-    JOIN videos v ON v.prospect_id = p.id
+    SELECT s.*, v.id as video_id, v.prompt_text
+    FROM sites s
+    JOIN videos v ON v.site_id = s.id
     WHERE v.video_tool = 'shotstack' AND v.status = 'prompted'
-    ORDER BY p.google_rating DESC, p.review_count DESC
+    ORDER BY s.google_rating DESC, s.review_count DESC
     LIMIT ?
   `).all(parseInt(args.limit, 10));
 }
@@ -422,37 +417,36 @@ async function processProspect(prospect, updateVideo) {
   console.log(`  Video ready: ${videoUrl}`);
 
   updateVideo.run('completed', videoUrl, prospect.video_id);
-  db.prepare('UPDATE prospects SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+  db.prepare('UPDATE sites SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
     .run('video_created', prospect.id);
 }
 
 async function main() {
-  const prospects = getProspects();
+  const sites = getSites();
 
-  if (prospects.length === 0) {
-    console.log('No prospects with shotstack videos in "prompted" status.');
+  if (sites.length === 0) {
+    console.log('No sites with shotstack videos in "prompted" status.');
     console.log('Run: node src/video/prompt-generator.js --tool shotstack');
     return;
   }
 
-  console.log(`Rendering ${prospects.length} videos via Shotstack${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
+  console.log(`Rendering ${sites.length} videos via Shotstack${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
 
   const updateVideo = db.prepare('UPDATE videos SET status = ?, video_url = ? WHERE id = ?');
   let success = 0;
   let failed = 0;
 
-  for (const prospect of prospects) {
+  for (const site of sites) {
     try {
-      await processProspect(prospect, updateVideo);
+      await processProspect(site, updateVideo);
       success++;
     } catch (err) {
       console.error(`  ✗ Failed: ${err.message}`);
-      if (prospect.video_id) updateVideo.run('failed', null, prospect.video_id);
+      if (site.video_id) updateVideo.run('failed', null, site.video_id);
       failed++;
     }
   }
 
-  db.close();
   console.log(`\nDone: ${success} rendered, ${failed} failed`);
 }
 
