@@ -47,6 +47,7 @@ const { values: args } = parseArgs({
     id: { type: 'string' },
     'dry-run': { type: 'boolean', default: false },
     api: { type: 'boolean', default: false },
+    local: { type: 'boolean', default: false },  // skip R2, print file:// URI
   },
   strict: false,
 });
@@ -476,9 +477,15 @@ async function submitRender(prospect) {
     return { id: 'dry-run', status: 'dry-run' };
   }
 
-  process.stdout.write(`  Generating audio (${scenesForAudio.length} scenes)...`);
+  // Prepend a short SSML break to scene 1 (first quote, index 1) to reset ElevenLabs
+  // prosody after the hook question — prevents rising intonation carrying over.
+  const scenesForTTS = scenesForAudio.map((s, i) =>
+    i === 1 ? { ...s, voiceover: `<break time="400ms"/>${s.voiceover}` } : s
+  );
+
+  process.stdout.write(`  Generating audio (${scenesForTTS.length} scenes)...`);
   const audios = [];
-  for (const scene of scenesForAudio) {
+  for (const scene of scenesForTTS) {
     audios.push(await generateAudio(scene.voiceover));
   }
   process.stdout.write(' done\n');
@@ -536,6 +543,11 @@ async function submitRender(prospect) {
     outputPath: outPath,
     variant,
   });
+
+  if (args.local) {
+    // Skip R2 — just return local file:// URI for quick testing
+    return { mode: 'local', videoUrl: `file://${outPath}`, posterUrl: null, duration: result.duration, variantId: variant.id };
+  }
 
   // Upload finished video to R2
   process.stdout.write('  Uploading video to R2...');
@@ -616,8 +628,10 @@ async function main() {
       } else {
         // Local ffmpeg path
         console.log(`  ✓ Video ready: ${result.videoUrl} [variant ${result.variantId}]`);
-        console.log(`  Poster: ${result.posterUrl}`);
-        updateVideo.run('completed', result.videoUrl, result.posterUrl, result.variantId, prospect.video_id);
+        if (result.posterUrl) console.log(`  Poster: ${result.posterUrl}`);
+        if (!args.local) {
+          updateVideo.run('completed', result.videoUrl, result.posterUrl, result.variantId, prospect.video_id);
+        }
       }
       db.prepare('UPDATE prospects SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
         .run('video_created', prospect.id);
