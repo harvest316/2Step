@@ -363,7 +363,7 @@ export async function runOutreachStage(options = {}) {
              AND m.direction = 'outbound'
              AND m.contact_method = 'email'
              AND m.approval_status = 'approved'
-             AND m.delivery_status IS NULL
+             AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
            ORDER BY m.created_at ASC
            ${limitClause}`
         )
@@ -423,7 +423,7 @@ export async function runOutreachStage(options = {}) {
              AND m.direction = 'outbound'
              AND m.contact_method = 'sms'
              AND m.approval_status = 'approved'
-             AND m.delivery_status IS NULL
+             AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
            ORDER BY m.created_at ASC
            ${limitClause}`
         )
