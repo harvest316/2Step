@@ -198,40 +198,56 @@ async function buildPosterImage(snapshotUrl, prospectId) {
 // ─── Logo processing ─────────────────────────────────────────────────────────
 
 /**
- * Download logo, add a mid-grey semi-transparent rounded pill behind it,
- * upload to R2, return public URL. Result cached per prospect so we don't
- * reprocess on every render.
+ * Download logo, optionally add a grey pill backdrop (only if logo has no opaque background),
+ * and return a buffer ready for ffmpeg overlay.
  *
- * Logo target: ~90% wide (972px at 1080w), max ~20% tall (384px at 1920h).
- * Pill padding: 28px H / 18px V around the resized logo.
+ * Logo target: fit within 80% wide × 15% tall of video (864×288px at 1080×1920).
+ * Pill: only added when the logo has meaningful transparency (alpha channel with non-opaque pixels).
+ *   Opaque logos (JPEG, or PNG with solid white/dark bg) don't need a pill — they bring their own bg.
  *
  * Returns: { buf: Buffer, url: string|null }
  *   - buf: always set (for local ffmpeg)
- *   - url: set only if uploaded to R2 (for API mode)
+ *   - url: set only in API mode
  */
 async function processLogoWithGlow(logoUrl, prospectId) {
-  // Download original logo
   const res = await fetch(logoUrl);
   if (!res.ok) throw new Error(`Logo download failed ${res.status}: ${logoUrl}`);
   const origBuf = Buffer.from(await res.arrayBuffer());
 
-  // Resize to fit within 972×384, preserving aspect ratio
-  const maxW = 972;
-  const maxH = 384;
+  // Resize to fit within 864×288 (80% wide, 15% tall at 1080×1920)
+  const maxW = 864;
+  const maxH = 288;
   const logoBuf = await sharp(origBuf)
     .resize(maxW, maxH, { fit: 'inside', withoutEnlargement: false })
     .png()
     .toBuffer();
 
-  const { width: logoW, height: logoH } = await sharp(logoBuf).metadata();
+  // Detect whether the logo has meaningful transparency.
+  // Sharp's stats() on the alpha channel: if mean alpha < 254, there are transparent pixels.
+  const { channels } = await sharp(logoBuf).metadata();
+  let hasTransparency = false;
+  if (channels === 4) {
+    const stats = await sharp(logoBuf).stats();
+    const alphaMean = stats.channels[3]?.mean ?? 255;
+    hasTransparency = alphaMean < 250; // any meaningful transparency → add pill
+  }
 
-  const padH = 28;  // horizontal padding each side
-  const padV = 18;  // vertical padding each side
+  if (!hasTransparency) {
+    // Opaque logo — use as-is, no pill needed
+    const url = USE_API
+      ? await uploadToR2(logoBuf, `logo-glow-p${prospectId}.png`, 'image/png')
+      : null;
+    return { buf: logoBuf, url };
+  }
+
+  // Transparent logo — add grey rounded-rect pill backdrop
+  const { width: logoW, height: logoH } = await sharp(logoBuf).metadata();
+  const padH = 24;
+  const padV = 16;
   const pillW = logoW + padH * 2;
   const pillH = logoH + padV * 2;
-  const radius = Math.round(pillH * 0.35); // ~35% radius for pill shape
+  const radius = Math.round(pillH * 0.35);
 
-  // Build SVG rounded rect as grey backdrop
   const svgPill = Buffer.from(
     `<svg width="${pillW}" height="${pillH}" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="${pillW}" height="${pillH}"
@@ -240,7 +256,6 @@ async function processLogoWithGlow(logoUrl, prospectId) {
     </svg>`
   );
 
-  // Composite: pill behind, logo on top centred
   const finalBuf = await sharp({
     create: { width: pillW, height: pillH, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
   })
@@ -251,7 +266,6 @@ async function processLogoWithGlow(logoUrl, prospectId) {
     .png()
     .toBuffer();
 
-  // Upload to R2 only in API mode
   const url = USE_API
     ? await uploadToR2(finalBuf, `logo-glow-p${prospectId}.png`, 'image/png')
     : null;

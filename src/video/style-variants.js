@@ -36,7 +36,7 @@ export const STYLE_VARIANTS = [
   },
   {
     id: 'B',
-    // Bebas Neue, gold text, deep navy pill, dissolve transitions
+    // Bebas Neue, gold text, deep navy pill, fade transitions (clean, no grain)
     font: `${FONT_DIR}/BebasNeue-Regular.ttf`,
     fontSize: 88,
     textColor: '0xFFD700',   // gold
@@ -44,12 +44,12 @@ export const STYLE_VARIANTS = [
     boxBorderW: 22,
     borderW: 3,
     borderColor: '0x000000',
-    transition: 'xfade:dissolve',
-    transitionDuration: 0.4,
+    transition: 'xfade:fade',
+    transitionDuration: 0.3,
   },
   {
     id: 'C',
-    // Bebas Neue, white text, purple-tinted pill, slide-left transitions
+    // Bebas Neue, white text, purple-tinted pill, wipe-left transitions (clean, directional)
     font: `${FONT_DIR}/BebasNeue-Regular.ttf`,
     fontSize: 96,
     textColor: 'white',
@@ -57,8 +57,8 @@ export const STYLE_VARIANTS = [
     boxBorderW: 24,
     borderW: 2,
     borderColor: '0x000000',
-    transition: 'xfade:slideleft',
-    transitionDuration: 0.35,
+    transition: 'xfade:wipeleft',
+    transitionDuration: 0.25,
   },
   {
     id: 'D',
