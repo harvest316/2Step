@@ -25,6 +25,8 @@
     "batch": "node scripts/2step-batch.js",
     "store": "node scripts/2step-store.js",
     "test": "NODE_ENV=test LOGS_DIR=/tmp/test-logs DATABASE_PATH=/tmp/test-2step.db node --test 'tests/**/*.test.js'",
+    "test:e2e": "NODE_ENV=test LOGS_DIR=/tmp/test-logs DATABASE_PATH=/tmp/test-2step-e2e.db node --test 'tests/e2e/**/*.test.js'",
+    "test:all": "npm test && npm run test:e2e",
     "lint": "eslint src/ scripts/",
     "lint:fix": "eslint src/ scripts/ --fix"
   },
