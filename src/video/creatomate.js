@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 
 /**
+ * @deprecated This standalone renderer is superseded by src/stages/video.js
+ * which integrates into the pipeline (enriched -> video_created) and uses
+ * the shared db.js connection with ATTACH'd messages DB. This file remains
+ * for reference and one-off re-renders but should not be used for new
+ * pipeline work. The buildPosterFromBuffer and extractPosterFrame logic
+ * has been incorporated into stages/video.js directly.
+ *
  * Video renderer — automated video creation from reviews via local ffmpeg.
  *
  * Usage:

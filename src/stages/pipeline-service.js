@@ -75,6 +75,15 @@ async function runProposalsStage(options = {}) {
   return mod.runProposalsStage(options);
 }
 
+async function runSyncVideoViewsStage(options = {}) {
+  const mod = await safeImport('./sync-video-views.js');
+  if (!mod) {
+    console.log('[pipeline] sync-video-views.js not found — skipping sync-video-views stage');
+    return { skipped: true };
+  }
+  return mod.runSyncVideoViewsStage(options);
+}
+
 // ── Shutdown handling ────────────────────────────────────────────────────────
 
 let shuttingDown = false;
@@ -103,12 +112,13 @@ async function runIteration() {
   const summary = {};
 
   const stages = [
-    { name: 'reviews',   fn: runReviewsStage },
-    { name: 'enrich',    fn: runEnrichStage },
-    { name: 'video',     fn: runVideoStage },
-    { name: 'proposals', fn: runProposalsStage },
-    { name: 'outreach',  fn: runOutreachStage },
-    { name: 'replies',   fn: runRepliesStage },
+    { name: 'reviews',          fn: runReviewsStage },
+    { name: 'enrich',           fn: runEnrichStage },
+    { name: 'video',            fn: runVideoStage },
+    { name: 'proposals',        fn: runProposalsStage },
+    { name: 'outreach',         fn: runOutreachStage },
+    { name: 'sync-video-views', fn: runSyncVideoViewsStage },
+    { name: 'replies',          fn: runRepliesStage },
   ];
 
   for (const { name, fn } of stages) {
