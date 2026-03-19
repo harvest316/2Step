@@ -116,7 +116,16 @@ function spinWithVars(spintaxText, vars) {
     return fallback !== undefined ? fallback : '';
   });
 
-  return spin(resolved);
+  // Clean up empty spintax alternatives left by empty variable resolution.
+  // {|there} → there, {Hi |Hi there} → Hi there (removes empty-prefix option)
+  const cleaned = resolved.replace(/\{([^{}]*)\}/g, (match, inner) => {
+    const options = inner.split('|').filter(o => o.trim() !== '');
+    if (options.length === 0) return '';
+    if (options.length === 1) return options[0];
+    return `{${options.join('|')}}`;
+  });
+
+  return spin(cleaned);
 }
 
 // ─── Name inference ──────────────────────────────────────────────────────────
@@ -391,7 +400,7 @@ export async function runProposalsStage(options = {}) {
 
   const query = db.prepare(`
     SELECT id, business_name, city, country_code, niche,
-           contacts_json, video_url, video_hash, status,
+           contacts_json, email, phone, video_url, video_hash, status,
            owner_first_name, video_viewed_at
     FROM sites
     WHERE status = 'video_created'
@@ -423,6 +432,10 @@ export async function runProposalsStage(options = {}) {
 
     try {
       const { emails, phones, raw: contacts } = parseContacts(site.contacts_json);
+
+      // Fallback: if contacts_json is empty, use direct email/phone columns
+      if (emails.length === 0 && site.email) emails.push(site.email);
+      if (phones.length === 0 && site.phone) phones.push(site.phone);
       const firstName = inferFirstName(site, contacts);
 
       const videoUrl = site.video_hash
@@ -443,7 +456,7 @@ export async function runProposalsStage(options = {}) {
 
       const vars = {
         business_name: site.business_name || '',
-        first_name: firstName || '',
+        first_name: firstName || null,
         city: site.city || '',
         niche: site.niche || '',
         review_author: contacts?.review_author || '',

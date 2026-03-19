@@ -23,7 +23,8 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const dbPath = process.env.DATABASE_PATH
+const dbPath = process.env.TWOSTEP_DATABASE_PATH
+  || process.env.DATABASE_PATH_2STEP
   || path.resolve(__dirname, '../../db/2step.db');
 
 const messagesDbPath = process.env.MESSAGES_DB_PATH
