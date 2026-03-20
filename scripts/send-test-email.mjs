@@ -31,29 +31,29 @@ const PHYSICAL_ADDRESS = process.env.CAN_SPAM_PHYSICAL_ADDRESS || '';
 // ── Sample data ─────────────────────────────────────────────────────────────
 
 const SAMPLE = {
-  business_name: 'Pest Control Sydney Wide',
+  business_name: 'ACME Pest Control',
   city: 'Sydney',
   niche: 'pest control',
-  review_author: 'Adrienne Vili',
+  review_author: 'Sarah Mitchell',
   star_rating: '4.9',
   review_count: '492',
-  video_url: 'https://auditandfix.com/v/demo-pest-control',
-  // Use a real poster-sized placeholder image
-  thumbnail_url: 'https://placehold.co/561x315/1a1a2e/ffffff?text=Pest+Control+Sydney+Wide%0A%E2%98%85+4.9+stars+%C2%B7+492+reviews%0A%E2%96%B6+Watch+Video',
+  video_url: 'https://auditandfix.com/demo/pest-control',
+  // TODO: replace with R2-hosted demo poster once demo videos are rendered
+  thumbnail_url: 'https://placehold.co/400x711/1a1a2e/ffffff?text=ACME+Pest+Control%0A4.9+stars+%C2%B7+492+reviews%0A%E2%96%B6',
 };
 
-const SUBJECT = 'We created a free video from your top Google review — Pest Control Sydney Wide';
+const SUBJECT = 'We created a free video from your top Google review — ACME Pest Control';
 
 // Simulate a spun body with [poster] placeholder (Touch 1 style)
 const BODY = `Hi there,
 
-I was looking up pest control businesses in Sydney and noticed Pest Control Sydney Wide has some fantastic reviews on Google.
+I was looking up pest control businesses in Sydney and noticed ACME Pest Control has some fantastic reviews on Google.
 
-One in particular from Adrienne Vili really resonated — so we turned it into a free 30-second video you can use for your website or socials.
+One in particular from Sarah Mitchell really resonated — so we turned it into a free 30-second video you can use for your website or socials.
 
 [poster]
 
-Pest Control Sydney Wide — 4.9 stars across 492 reviews. That's seriously impressive for a pest control business in Sydney. We chose Adrienne Vili's standout review and turned it into the video above — completely free, no strings attached. Businesses using video reviews see up to 2x more enquiries than those without. Want anything changed?
+ACME Pest Control — 4.9 stars across 492 reviews. That's seriously impressive for a pest control business in Sydney. We chose Sarah Mitchell's standout review and turned it into the video above — completely free, no strings attached. Businesses using video reviews see up to 2x more enquiries than those without. Want anything changed?
 
 Just hit reply if you'd like any changes — or if you want to chat about getting more of these made.
 
@@ -107,7 +107,7 @@ const plainText = [
   SUBJECT, '', hookText, '',
   `Watch your video: ${SAMPLE.video_url}`, '',
   '---',
-  'You received this because we thought Pest Control Sydney Wide deserved to see their great reviews turned into video.',
+  'You received this because we thought ACME Pest Control deserved to see their great reviews turned into video.',
   `Unsubscribe: ${unsubscribeUrl}`,
 ].join('\n');
 
