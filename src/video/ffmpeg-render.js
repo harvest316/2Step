@@ -246,8 +246,10 @@ export async function renderVideo({
     process.stdout.write(' done\n');
 
     // ── Compute timing ──
+    // Add 250ms lead-in silence to work around Chromium audio context cold-start
+    const LEAD_IN_SILENCE = 0.25;
     const starts = [];
-    let t = 0;
+    let t = LEAD_IN_SILENCE;
     for (const s of scenes) { starts.push(t); t += s.duration; }
     const totalDuration = t;
 
