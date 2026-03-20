@@ -213,24 +213,25 @@ async function uploadBufferToR2(buffer, key, contentType = 'image/jpeg') {
 
 /**
  * Build a poster JPEG with play button overlay from a raw frame buffer.
- * Resizes to 400px wide, composites a dark circle + white triangle play button.
+ * Resizes to 561px wide (matches email template max-width), JPEG quality 80.
+ * Composites a dark circle + white triangle play button in the centre.
  * Returns the final JPEG buffer.
  */
 async function buildPosterFromBuffer(frameBuf) {
   const posterBuf = await sharp(frameBuf)
-    .resize(400, null, { fit: 'inside', withoutEnlargement: false })
-    .jpeg({ quality: 85 })
+    .resize(561, null, { fit: 'inside', withoutEnlargement: false })
+    .jpeg({ quality: 80 })
     .toBuffer();
 
   const { width: W, height: H } = await sharp(posterBuf).metadata();
 
-  const r = 36;
+  const r = Math.round(W * 0.09);   // ~50px at 561w (was 36 at 400w)
   const cx = Math.round(W / 2);
   const cy = Math.round(H / 2);
-  const tx = cx + 4;
+  const tx = cx + Math.round(r * 0.1);
   const ty = cy;
-  const th = 22;
-  const tw = 26;
+  const th = Math.round(r * 0.6);
+  const tw = Math.round(r * 0.72);
   const p1 = `${tx - Math.round(tw * 0.4)},${ty - th}`;
   const p2 = `${tx - Math.round(tw * 0.4)},${ty + th}`;
   const p3 = `${tx + Math.round(tw * 0.6)},${ty}`;
@@ -244,7 +245,7 @@ async function buildPosterFromBuffer(frameBuf) {
 
   return sharp(posterBuf)
     .composite([{ input: svgOverlay, top: 0, left: 0 }])
-    .jpeg({ quality: 85 })
+    .jpeg({ quality: 80 })
     .toBuffer();
 }
 
