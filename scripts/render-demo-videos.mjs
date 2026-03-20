@@ -45,7 +45,7 @@ const DEMOS = [
     review_count: 492,
     phone: '0412 345 678',
     problem_category: 'cockroaches',
-    logo_url: null, // will use ACME logo
+    logo_url: 'https://pub-9e277996d5a74eee9508a861cccead66.r2.dev/demo-logo-pest-control.png',
     selected_review_json: JSON.stringify({
       author_name: 'Sarah Mitchell',
       text: 'Absolutely fantastic service — professional, thorough, and genuinely friendly. They explained everything clearly and the problem was sorted same day. Highly recommend to anyone in Sydney.',
@@ -65,7 +65,7 @@ const DEMOS = [
     review_count: 318,
     phone: '0413 456 789',
     problem_category: 'deep-clean',
-    logo_url: null,
+    logo_url: 'https://pub-9e277996d5a74eee9508a861cccead66.r2.dev/demo-logo-cleaning.png',
     selected_review_json: JSON.stringify({
       author_name: 'James Thornton',
       text: 'Best cleaning service we have ever used in Sydney. The team arrived right on time and were incredibly thorough from top to bottom. They left our entire office absolutely spotless, including the kitchen and bathrooms. We have already booked them for weekly cleans going forward. Highly recommend ACME Cleaning to any business looking for reliable cleaners.',
@@ -85,7 +85,7 @@ const DEMOS = [
     review_count: 256,
     phone: '0414 567 890',
     problem_category: 'blocked-drain',
-    logo_url: null,
+    logo_url: 'https://pub-9e277996d5a74eee9508a861cccead66.r2.dev/demo-logo-plumber.png',
     selected_review_json: JSON.stringify({
       author_name: 'Kate Williams',
       text: 'Called them for an emergency leak on a Sunday morning and they were here within the hour. The plumber was professional, friendly, and explained everything before starting work. Fixed the issue quickly with fair and transparent pricing. They even cleaned up after themselves which was a nice touch. Would not hesitate to call ACME Plumbing again for any future plumbing needs.',
