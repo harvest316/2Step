@@ -354,8 +354,14 @@ function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pric
       touchTemplate = { ...touch, ...touch.variant_not_viewed };
     }
 
-    const body = spinWithVars(touchTemplate.body_spintax, allVars);
-    const subject = spinWithVars(touchTemplate.subject_spintax, allVars);
+    // Append UTM tracking params to video URL per touch
+    const utmParams = `utm_source=google&utm_medium=${contactMethod}&utm_campaign=2step_touch${touch.step}`;
+    const separator = allVars.video_url.includes('?') ? '&' : '?';
+    const touchVideoUrl = `${allVars.video_url}${separator}${utmParams}`;
+
+    const touchVars = { ...allVars, video_url: touchVideoUrl };
+    const body = spinWithVars(touchTemplate.body_spintax, touchVars);
+    const subject = spinWithVars(touchTemplate.subject_spintax, touchVars);
     const scheduledAt = computeScheduledAt(touch.day);
 
     // Map sequence step to legacy message_type for backward compat
@@ -375,7 +381,7 @@ function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pric
 
     insertMsg.run(
       site.id, contactMethod, contactUri,
-      body, subject, allVars.video_url,
+      body, subject, touchVideoUrl,
       messageType, pricingId, touchTemplate.id,
       touch.step, scheduledAt
     );
