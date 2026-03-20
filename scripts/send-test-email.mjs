@@ -96,20 +96,18 @@ const html = buildEmailHtml({
   businessName: SAMPLE.business_name,
   logoUrl: LOGO_URL,
   unsubscribeUrl,
-  physicalAddressHtml: PHYSICAL_ADDRESS
-    ? `<br /><br /><span style="font-size: 12px">${PHYSICAL_ADDRESS}</span>`
-    : '',
-  finePrintHtml: finePrint ? `<br /><span style="font-size: 12px">${finePrint}</span>` : '',
+  physicalAddressHtml: PHYSICAL_ADDRESS || '',
+  finePrintHtml: finePrint || '',
   year: String(new Date().getFullYear()),
   subject: SUBJECT,
 });
 
-// Plain text: hook + video link only (no blurb)
+// Plain text: hook + video link only (no blurb, no fine_print)
 const plainText = [
   SUBJECT, '', hookText, '',
   `Watch your video: ${SAMPLE.video_url}`, '',
   '---',
-  finePrint || 'You received this because we thought Pest Control Sydney Wide deserved to see their great reviews turned into video.',
+  'You received this because we thought Pest Control Sydney Wide deserved to see their great reviews turned into video.',
   `Unsubscribe: ${unsubscribeUrl}`,
 ].join('\n');
 

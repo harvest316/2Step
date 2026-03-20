@@ -119,8 +119,9 @@ function textToHtml(text) {
     .join('\n');
 }
 
-function buildPlainText(msg, videoUrl, subject, finePrint) {
+function buildPlainText(msg, videoUrl, subject) {
   // Plain text: hook only (above poster), skip blurb (no image = no spam rule)
+  // No fine_print in plain text — it's HTML padding only
   const body = msg.message_body || '';
   const posterIdx = body.indexOf('[poster]');
   const hookText = posterIdx !== -1 ? body.slice(0, posterIdx).replace(/\n+$/, '') : body;
@@ -132,7 +133,7 @@ function buildPlainText(msg, videoUrl, subject, finePrint) {
     `Watch your video: ${videoUrl}`,
     '',
     '---',
-    finePrint || `You received this because we thought ${msg.business_name} deserved to see their great reviews turned into video.`,
+    `You received this because we thought ${msg.business_name} deserved to see their great reviews turned into video.`,
     `Unsubscribe: ${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}`,
   ].join('\n');
 }
@@ -177,7 +178,7 @@ function assembleEmail(msg) {
   const unsubscribeUrl = `${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}`;
   const physicalAddressHtml =
     PHYSICAL_ADDRESS && CAN_SPAM_COUNTRIES.has(countryCode)
-      ? `<br /><br /><span style="font-size: 12px">${PHYSICAL_ADDRESS}</span>`
+      ? PHYSICAL_ADDRESS
       : '';
 
   const html = buildEmailHtml({
@@ -191,12 +192,12 @@ function assembleEmail(msg) {
     logoUrl: LOGO_URL,
     unsubscribeUrl,
     physicalAddressHtml,
-    finePrintHtml: finePrint ? `<br /><span style="font-size: 12px">${finePrint}</span>` : '',
+    finePrintHtml: finePrint || '',
     year: String(new Date().getFullYear()),
     subject,
   });
 
-  const text = buildPlainText(msg, msg.video_url, subject, finePrint);
+  const text = buildPlainText(msg, msg.video_url, subject);
 
   return { html, text, subject };
 }
