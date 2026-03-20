@@ -293,6 +293,7 @@ export async function processSite(site, { dryRun }) {
     business_name:      site.business_name,
     city:               site.city || 'Sydney',
     niche:              site.niche || 'pest control',
+    problem_category:   site.problem_category || null,
     best_review_author: review?.author_name || review?.author || site.best_review_author || 'A Customer',
     best_review_text:   review?.text || review?.review_text || site.best_review_text || '',
     google_rating:      review?.rating ?? site.google_rating ?? 5,
@@ -378,8 +379,12 @@ export async function processSite(site, { dryRun }) {
   process.stdout.write(' done\n');
 
   // 9. Extract poster frame, build poster image with play button, upload to R2
-  process.stdout.write('  Building poster image...');
-  const posterFrame = await extractPosterFrame(outputPath, 2);
+  // Pick midpoint of scene 1 (first review quote) to avoid scene transitions
+  const scene0Duration = scenes[0]?.duration ?? 4;
+  const scene1Duration = scenes[1]?.duration ?? 4;
+  const posterTime = Math.round(scene0Duration + scene1Duration / 2);
+  process.stdout.write(`  Building poster image (t=${posterTime}s)...`);
+  const posterFrame = await extractPosterFrame(outputPath, posterTime);
   const posterBuf = await buildPosterFromBuffer(posterFrame);
   const posterKey = `poster-s${siteId}-${Date.now()}.jpg`;
   const posterUrl = await uploadBufferToR2(posterBuf, posterKey, 'image/jpeg');

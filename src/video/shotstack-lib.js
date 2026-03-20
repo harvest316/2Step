@@ -138,10 +138,11 @@ export function buildScenes(prospect) {
   const starsVoiceover = ['', 'One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'][rating] || `${rating} stars`;
 
   // Build niche-appropriate hook text — always names the specific problem
+  // Use problem_category if available (matches actual clip pool used at render time)
   let hookText, hookVoiceover;
   if (niche === 'plumber' || niche === 'plumbing') {
-    // Use the clip pool key to name the specific plumbing problem
-    const clips = pickClipsFromPool(niche, 0, review);
+    const poolKey = prospect.problem_category || niche;
+    const clips = pickClipsFromPool(poolKey, 0, review);
     const problemPool = clips?.[0]?.url.split('/').pop().replace(/-hook.*/, '') || 'blocked-drain';
     const plumbingLabels = {
       'blocked-drain': 'a blocked drain',
@@ -153,9 +154,9 @@ export function buildScenes(prospect) {
     hookText      = `Got ${problem} in ${city}?`;
     hookVoiceover = `Got ${problem} in ${city}?`;
   } else if (niche.includes('cleaning') || niche.includes('cleaner')) {
-    // Use the clip pool key to name the specific cleaning problem
-    const clips = pickClipsFromPool(niche, 0, review);
-    const problemPool = clips?.[0]?.url.split('/').pop().replace(/-hook.*/, '') || 'greasy-rangehood';
+    const poolKey = prospect.problem_category || niche;
+    const clips = pickClipsFromPool(poolKey, 0, review);
+    const problemPool = clips?.[0]?.url.split('/').pop().replace(/-hook.*/, '') || 'deep-clean';
     const cleaningLabels = {
       'greasy-rangehood': 'your rangehood cleaned',
       'dirty-bathroom':   'your bathroom deep-cleaned',
