@@ -30,9 +30,12 @@
  */
 export function buildEmailHtml({
   previewText, hookHtml, posterUrl, videoUrl, remainingBodyHtml,
-  ctaHtml, businessName, logoUrl, unsubscribeUrl, physicalAddressHtml, year,
+  ctaHtml, businessName, logoUrl, unsubscribeUrl, physicalAddressHtml,
+  finePrintHtml = '', year, subject = '',
 }) {
-  return `<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>
+  const titleText = subject ? subject.replace(/</g, '&lt;') : 'Audit&amp;Fix Video Review';
+  return `<!DOCTYPE html><html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head>
+<title>${titleText}</title>
 <!--[if gte mso 15]>
 <xml>
 <o:OfficeDocumentSettings>
@@ -177,7 +180,7 @@ Add button text
 <!--[if mso]>
 <span class="mceImageBorder" style="border:0;border-width:2px;vertical-align:top;margin:0"><img role="presentation" class="mceLogo" src="${logoUrl}" alt="Audit&amp;Fix" width="130" height="auto" style="display:block;max-width:130px;width:130px;height:auto"/></span>
 <![endif]-->
-</div></td></tr><tr><td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" valign="top" class="mceGutterContainer" id="gutterContainerId-13"><table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:separate" role="presentation"><tbody><tr><td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;border:0;border-radius:0" valign="top" align="center" id="b13"><table width="100%" style="border:0;background-color:transparent;border-radius:0;border-collapse:separate"><tbody><tr><td style="padding-left:16px;padding-right:16px;padding-top:12px;padding-bottom:12px" class="mceTextBlockContainer"><div data-block-id="13" class="mceText" id="d13" style="display:inline-block;width:100%"><p class="last-child"><em><span style="font-size: 12px">Copyright (C) ${year} Audit&amp;Fix. All rights reserved.</span></em><br /><span style="font-size: 12px">You received this because we thought ${businessName} deserved to see their great reviews turned into video.</span>${physicalAddressHtml}<br /><br /><a href="${unsubscribeUrl}"><span style="font-size: 12px">unsubscribe</span></a></p></div></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--></td></tr></tbody></table>
+</div></td></tr><tr><td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0" valign="top" class="mceGutterContainer" id="gutterContainerId-13"><table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:separate" role="presentation"><tbody><tr><td style="padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;border:0;border-radius:0" valign="top" align="center" id="b13"><table width="100%" style="border:0;background-color:transparent;border-radius:0;border-collapse:separate"><tbody><tr><td style="padding-left:16px;padding-right:16px;padding-top:12px;padding-bottom:12px" class="mceTextBlockContainer"><div data-block-id="13" class="mceText" id="d13" style="display:inline-block;width:100%"><p class="last-child">${finePrintHtml ? `<span style="font-size: 12px">${finePrintHtml}</span><br /><br />` : ''}<em><span style="font-size: 12px">Copyright (C) ${year} Audit&amp;Fix. All rights reserved.</span></em>${physicalAddressHtml}<br /><br /><a href="${unsubscribeUrl}"><span style="font-size: 12px">unsubscribe</span></a></p></div></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--[if (gte mso 9)|(IE)]></td></tr></table><![endif]--></td></tr></tbody></table>
 </td>
 </tr>
 </tbody></table>

@@ -46,23 +46,16 @@ const CAN_SPAM_COUNTRIES = new Set([
   'AT', 'SE', 'DK', 'NO', 'FI', 'PL', 'IE', 'PT', 'GR', 'CZ', 'RO', 'HU', 'CH',
 ]);
 
-// ── Email templates ──────────────────────────────────────────────────────────
+// ── Sequence template loader (cached) ────────────────────────────────────────
 
-const templateFile = resolve(ROOT, 'data/templates/email.json');
-let templates = [];
-try {
-  ({ templates } = JSON.parse(readFileSync(templateFile, 'utf-8')));
-} catch (_) {
-  console.warn('[outreach] Could not load data/templates/email.json — using bare message body');
-}
+const sequenceCache = new Map();
 
-function pickTemplate(seed) {
-  if (!templates.length) return null;
-  return templates[seed % templates.length];
-}
-
-function spinField(spintaxText, businessName) {
-  return spin(spintaxText.replace(/\[business_name\]/g, businessName));
+function loadSequenceTemplate(countryCode) {
+  if (sequenceCache.has(countryCode)) return sequenceCache.get(countryCode);
+  const filePath = resolve(ROOT, `data/templates/${countryCode}/sequence.json`);
+  const data = JSON.parse(readFileSync(filePath, 'utf-8'));
+  sequenceCache.set(countryCode, data);
+  return data;
 }
 
 // ── Opt-out check ────────────────────────────────────────────────────────────
@@ -97,11 +90,21 @@ function isOptedOut(phone, email, method) {
 // ── Email helpers ────────────────────────────────────────────────────────────
 
 /**
- * Split message_body into hook (first paragraph) and remaining body.
- * Hook goes above the poster image; remaining body goes below.
+ * Split message_body on [poster] placeholder.
+ * Hook (above poster image) = everything before [poster].
+ * Remaining (below poster) = everything after [poster].
+ * Falls back to first-paragraph split if no [poster] tag found.
  */
 function splitBody(messageBody) {
-  const parts = (messageBody || '').split(/\n\n+/);
+  const body = messageBody || '';
+  const posterIdx = body.indexOf('[poster]');
+  if (posterIdx !== -1) {
+    const hook = body.slice(0, posterIdx).replace(/\n+$/, '');
+    const remaining = body.slice(posterIdx + '[poster]'.length).replace(/^\n+/, '');
+    return { hook, remaining };
+  }
+  // Legacy fallback: split on first double-newline
+  const parts = body.split(/\n\n+/);
   const hook = parts[0] || '';
   const remaining = parts.slice(1).join('\n\n');
   return { hook, remaining };
@@ -116,18 +119,20 @@ function textToHtml(text) {
     .join('\n');
 }
 
-function buildPlainText(msg, videoUrl, subject, cta) {
+function buildPlainText(msg, videoUrl, subject, finePrint) {
+  // Plain text: hook only (above poster), skip blurb (no image = no spam rule)
+  const body = msg.message_body || '';
+  const posterIdx = body.indexOf('[poster]');
+  const hookText = posterIdx !== -1 ? body.slice(0, posterIdx).replace(/\n+$/, '') : body;
   return [
     subject,
     '',
-    msg.message_body || '',
+    hookText,
     '',
     `Watch your video: ${videoUrl}`,
     '',
-    cta,
-    '',
     '---',
-    `You received this because we thought ${msg.business_name} deserved to see their great reviews turned into video.`,
+    finePrint || `You received this because we thought ${msg.business_name} deserved to see their great reviews turned into video.`,
     `Unsubscribe: ${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}`,
   ].join('\n');
 }
@@ -146,24 +151,30 @@ function assembleEmail(msg) {
     throw new Error(`No video_url for message #${msg.id} — run video stage first`);
   }
 
-  const template = pickTemplate(msg.id);
   const businessName = msg.business_name || 'your business';
+  const countryCode = msg.country_code || 'AU';
 
-  let subject, previewText, cta;
+  // Use stored subject/preheader from proposal generation
+  const subject = msg.subject_line || `Your free video review is ready, ${businessName}`;
+  const previewText = subject; // preheader was spun at proposal time
 
-  if (template) {
-    subject = spinField(template.subject_spintax, businessName);
-    previewText = spinField(template.preheader_spintax, businessName);
-    cta = spinField(template.cta_spintax, businessName);
-  } else {
-    subject = msg.subject_line || `Your free video review is ready, ${businessName}`;
-    previewText = subject;
-    cta = 'Reply to claim your video — no strings attached.';
+  // Load country sequence template for fine_print
+  let finePrint = '';
+  try {
+    const seqTemplate = loadSequenceTemplate(countryCode);
+    if (seqTemplate.fine_print_spintax) {
+      finePrint = spin(seqTemplate.fine_print_spintax
+        .replace(/\[business_name\]/g, businessName)
+        .replace(/\[city\]/g, msg.city || '')
+        .replace(/\[niche\]/g, msg.niche || ''));
+    }
+  } catch {
+    // Non-fatal: fine print is supplementary
   }
 
+  // Split on [poster] — hook above image, remaining below
   const { hook, remaining } = splitBody(msg.message_body);
   const unsubscribeUrl = `${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}`;
-  const countryCode = msg.country_code || 'AU';
   const physicalAddressHtml =
     PHYSICAL_ADDRESS && CAN_SPAM_COUNTRIES.has(countryCode)
       ? `<br /><br /><span style="font-size: 12px">${PHYSICAL_ADDRESS}</span>`
@@ -175,15 +186,17 @@ function assembleEmail(msg) {
     posterUrl: msg.thumbnail_url,
     videoUrl: msg.video_url,
     remainingBodyHtml: textToHtml(remaining),
-    ctaHtml: `<p class="last-child" style="margin-top: 16px; font-style: italic; color: rgb(100, 100, 100);">${cta}</p>`,
+    ctaHtml: '', // CTA is now embedded in body_spintax, not separate
     businessName,
     logoUrl: LOGO_URL,
     unsubscribeUrl,
     physicalAddressHtml,
+    finePrintHtml: finePrint ? `<br /><span style="font-size: 12px">${finePrint}</span>` : '',
     year: String(new Date().getFullYear()),
+    subject,
   });
 
-  const text = buildPlainText(msg, msg.video_url, subject, cta);
+  const text = buildPlainText(msg, msg.video_url, subject, finePrint);
 
   return { html, text, subject };
 }
@@ -228,7 +241,9 @@ async function sendEmail(msg, resend, dryRun) {
     text,
     headers: {
       'List-Unsubscribe': `<${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}>`,
+      'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
     },
+    tracking: { open: true }, // 2Step emails already have images — pixel adds zero spam cost
   });
 
   if (error) {
@@ -358,7 +373,8 @@ export async function runOutreachStage(options = {}) {
         .prepare(
           `SELECT m.id, m.site_id, m.contact_uri, m.message_body, m.subject_line,
                   m.sequence_step, m.scheduled_send_at,
-                  s.business_name, s.country_code,
+                  s.business_name, s.country_code, s.city, s.niche,
+                  s.best_review_author, s.google_rating, s.review_count,
                   v.video_url, v.thumbnail_url
            FROM msgs.messages m
            JOIN sites s ON s.id = m.site_id
