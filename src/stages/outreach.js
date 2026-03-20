@@ -376,7 +376,7 @@ export async function runOutreachStage(options = {}) {
                   m.sequence_step, m.scheduled_send_at,
                   s.business_name, s.country_code, s.city, s.niche,
                   s.best_review_author, s.google_rating, s.review_count,
-                  v.video_url, v.thumbnail_url
+                  COALESCE(m.video_url, v.video_url) AS video_url, v.thumbnail_url
            FROM msgs.messages m
            JOIN sites s ON s.id = m.site_id
            LEFT JOIN videos v ON v.id = s.video_id
