@@ -275,7 +275,7 @@ async function fetchLogoBuf(url) {
  * @param {object} opts  — { dryRun: boolean }
  * @returns {Promise<{ videoUrl: string, posterUrl: string, videoHash: string, videoId: number, durationSeconds: number, costUsd: number }>}
  */
-async function processSite(site, { dryRun }) {
+export async function processSite(site, { dryRun }) {
   const siteId = site.id;
 
   // 1. Parse selected_review_json
