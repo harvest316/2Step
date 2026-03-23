@@ -152,8 +152,8 @@ describe('sceneDuration', () => {
 // ─── buildScenes ──────────────────────────────────────────────────────────────
 
 describe('buildScenes', () => {
-  it('returns exactly 5 scenes', () => {
-    assert.equal(buildScenes(FULL_PROSPECT).length, 5);
+  it('returns exactly 7 scenes', () => {
+    assert.equal(buildScenes(FULL_PROSPECT).length, 7);
   });
 
   it('each scene has text, voiceover, and duration', () => {
@@ -164,15 +164,15 @@ describe('buildScenes', () => {
     }
   });
 
-  it('scene 1 text is the hook with business name', () => {
+  it('scene 1 text is the hook with city and pest context', () => {
     const scenes = buildScenes(FULL_PROSPECT);
-    assert.ok(scenes[0].text.includes('BugFree Pest Control'));
-    assert.ok(scenes[0].text.toLowerCase().includes('customers'));
+    assert.ok(scenes[0].text.includes('Auburn'));
+    assert.ok(/pest|pests|control/i.test(scenes[0].text));
   });
 
-  it('scene 1 voiceover contains name', () => {
+  it('scene 1 voiceover contains city', () => {
     const scenes = buildScenes(FULL_PROSPECT);
-    assert.ok(scenes[0].voiceover.includes('BugFree Pest Control'));
+    assert.ok(scenes[0].voiceover.includes('Auburn'));
   });
 
   it('scenes 2 and 3 text contain quoted review text', () => {
@@ -186,27 +186,26 @@ describe('buildScenes', () => {
     assert.ok(scenes[1].voiceover.includes('fantastic experience'));
   });
 
-  it('scene 4 text contains 5 stars and reviewer name', () => {
+  it('scene 6 text contains star rating and reviewer name', () => {
     const scenes = buildScenes(FULL_PROSPECT);
-    assert.ok(scenes[3].text.includes('⭐'));
-    assert.ok(scenes[3].text.includes('Cathy Zhuang'));
+    assert.ok(/stars?/i.test(scenes[5].text));
+    assert.ok(scenes[5].text.includes('Cathy Zhuang'));
   });
 
-  it('scene 4 voiceover contains reviewer name', () => {
+  it('scene 6 voiceover contains reviewer name', () => {
     const scenes = buildScenes(FULL_PROSPECT);
-    assert.ok(scenes[3].voiceover.includes('Cathy Zhuang'));
+    assert.ok(scenes[5].voiceover.includes('Cathy Zhuang'));
   });
 
-  it('scene 5 text is the CTA with city and Book Now', () => {
+  it('scene 7 text is the CTA with business name', () => {
     const scenes = buildScenes(FULL_PROSPECT);
-    assert.ok(scenes[4].text.includes('Auburn'));
-    assert.ok(scenes[4].text.includes('Book Now'));
+    assert.ok(scenes[6].text.includes('BugFree Pest Control'));
+    assert.ok(/inspection|call/i.test(scenes[6].text));
   });
 
-  it('scene 5 voiceover is the CTA with city', () => {
+  it('scene 7 voiceover is the CTA', () => {
     const scenes = buildScenes(FULL_PROSPECT);
-    assert.ok(scenes[4].voiceover.includes('Auburn'));
-    assert.ok(scenes[4].voiceover.toLowerCase().includes('book'));
+    assert.ok(scenes[6].voiceover.includes('BugFree Pest Control') || /inspection|schedule/i.test(scenes[6].voiceover));
   });
 
   it('durations are derived from voiceover length (not hardcoded)', () => {
@@ -216,16 +215,16 @@ describe('buildScenes', () => {
     assert.ok(short[1].duration <= long[1].duration);
   });
 
-  it('uses only the first part of a piped business name', () => {
+  it('uses only the first part of a piped business name in CTA', () => {
     const scenes = buildScenes(PIPED_NAME_PROSPECT);
-    assert.ok(scenes[0].text.includes('Iconic Pest Solutions'));
-    assert.ok(!scenes[0].text.includes('|'));
+    assert.ok(scenes[6].text.includes('Iconic Pest Solutions'));
+    assert.ok(!scenes[6].text.includes('|'));
   });
 
-  it('defaults city to Sydney in CTA text and reviewer to "a customer" for minimal prospect', () => {
+  it('defaults city in hook and reviewer fallback for minimal prospect', () => {
     const scenes = buildScenes(MINIMAL_PROSPECT);
-    assert.ok(scenes[4].text.includes('Sydney'));
-    assert.ok(scenes[3].voiceover.includes('a customer'));
+    assert.ok(scenes[0].text.includes('Sydney'));
+    assert.ok(scenes[5].voiceover.toLowerCase().includes('a local'));
   });
 
   it('falls back to scene 2 quote when scene 3 quote is empty', () => {
@@ -268,9 +267,9 @@ describe('buildVoiceoverScript', () => {
 // ─── buildSceneTexts ─────────────────────────────────────────────────────────
 
 describe('buildSceneTexts', () => {
-  it('returns exactly 5 { text, duration } objects', () => {
+  it('returns exactly 7 { text, duration } objects', () => {
     const sceneTexts = buildSceneTexts(buildScenes(FULL_PROSPECT));
-    assert.equal(sceneTexts.length, 5);
+    assert.equal(sceneTexts.length, 7);
     for (const s of sceneTexts) {
       assert.ok(typeof s.text === 'string');
       assert.ok(typeof s.duration === 'number');
@@ -287,6 +286,8 @@ const MOCK_CLIPS = [
   'https://example.com/clip3.mp4',
   'https://example.com/clip4.mp4',
   'https://example.com/clip5.mp4',
+  'https://example.com/clip6.mp4',
+  'https://example.com/clip7.mp4',
 ];
 const MOCK_AUDIO = 'https://example.com/audio.mp3';
 const MOCK_SCENES = buildSceneTexts(buildScenes(FULL_PROSPECT));
@@ -453,22 +454,22 @@ describe('buildRenderPayload', () => {
     }
   });
 
-  it('text positioned at bottom when clip focus is top', () => {
+  it('text positioned at top when clip focus is top (focus = text position directly)', () => {
     const topFocusClips = MOCK_CLIPS.map(url => ({ url, focus: 'top' }));
     const payload = buildRenderPayload(topFocusClips, MOCK_AUDIO, MOCK_SCENES);
     const textTrack = payload.timeline.tracks.find(t =>
       t.clips.some(c => c.asset.type === 'text')
     );
-    assert.ok(textTrack.clips.every(c => c.position === 'bottom'));
+    assert.ok(textTrack.clips.every(c => c.position === 'top'));
   });
 
-  it('text positioned at top when clip focus is bottom', () => {
+  it('text positioned at bottom when clip focus is bottom', () => {
     const bottomFocusClips = MOCK_CLIPS.map(url => ({ url, focus: 'bottom' }));
     const payload = buildRenderPayload(bottomFocusClips, MOCK_AUDIO, MOCK_SCENES);
     const textTrack = payload.timeline.tracks.find(t =>
       t.clips.some(c => c.asset.type === 'text')
     );
-    assert.ok(textTrack.clips.every(c => c.position === 'top'));
+    assert.ok(textTrack.clips.every(c => c.position === 'bottom'));
   });
 
   it('accepts plain string clips (backward compat) and defaults focus to center', () => {
@@ -476,8 +477,8 @@ describe('buildRenderPayload', () => {
     const textTrack = payload.timeline.tracks.find(t =>
       t.clips.some(c => c.asset.type === 'text')
     );
-    // focus 'center' → text goes to 'top' (away from subject, which tends to be lower in portrait)
-    assert.ok(textTrack.clips.every(c => c.position === 'top'));
+    // focus 'center' → text position is 'center' (focus-overrides.json stores text position directly)
+    assert.ok(textTrack.clips.every(c => c.position === 'center'));
   });
 });
 
@@ -575,44 +576,44 @@ describe('pickClipsFromPool', () => {
     assert.equal(pickClipsFromPool('unknown-niche-xyz', 0), null);
   });
 
-  it('returns 5 clips for blocked-drain (plumbing problem pool)', () => {
+  it('returns 7 clips for blocked-drain (plumbing problem pool)', () => {
     const clips = pickClipsFromPool('blocked-drain', 0);
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
     assert.ok(clips.every(c => typeof c.url === 'string' && c.url.startsWith('https://')));
   });
 
   it('resolves plumber alias to blocked-drain (default plumbing problem)', () => {
     const clips = pickClipsFromPool('plumber', 0);
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
   });
 
-  it('returns 5 clips for greasy-rangehood (cleaning problem pool)', () => {
+  it('returns 7 clips for greasy-rangehood (cleaning problem pool)', () => {
     const clips = pickClipsFromPool('greasy-rangehood', 0);
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
     assert.ok(clips.every(c => typeof c.url === 'string' && c.url.startsWith('https://')));
   });
 
   it('resolves house cleaning alias to greasy-rangehood (default cleaning problem)', () => {
     const clips = pickClipsFromPool('house cleaning', 0);
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
   });
 
-  it('returns 5 {url, focus} objects for cockroaches (pool is populated)', () => {
+  it('returns 7 {url, focus} objects for cockroaches (pool is populated)', () => {
     const clips = pickClipsFromPool('cockroaches', 0);
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
     assert.ok(clips.every(c => typeof c.url === 'string' && c.url.startsWith('https://')));
     assert.ok(clips.every(c => ['top', 'center', 'bottom'].includes(c.focus)));
   });
 
-  it('maps pest control alias to cockroaches pool', () => {
-    const clips = pickClipsFromPool('pest control', 0);
+  it('maps pest control + cockroach review to cockroaches pool', () => {
+    const clips = pickClipsFromPool('pest control', 0, 'We had a cockroach infestation.');
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
   });
 
   it('returns 5 URLs when all slots are populated (shared + specific)', () => {
@@ -630,7 +631,7 @@ describe('pickClipsFromPool', () => {
 
     const clips = pickClipsFromPool('cockroaches', 0);
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
     // Returns {url, focus} objects
     assert.ok(clips.every(c => typeof c.url === 'string'));
 
@@ -669,7 +670,7 @@ describe('pickClipsFromPool', () => {
 
     const clips = pickClipsFromPool('unknown niche', 0);
     assert.ok(Array.isArray(clips));
-    assert.equal(clips.length, 5);
+    assert.equal(clips.length, 7);
 
     for (const slot of Object.keys(original)) pool[slot] = original[slot];
   });
