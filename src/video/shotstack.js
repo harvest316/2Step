@@ -25,7 +25,7 @@ import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
 import { existsSync, readFileSync } from 'fs';
 import db from '../utils/db.js';
-// execSync no longer needed — Opus called via API directly
+// execSync no longer needed — Opus called via OpenRouter API
 // Pure functions live in shotstack-lib.js (also imported by tests)
 import {
   buildScenes,
@@ -43,13 +43,9 @@ const root = resolve(__dirname, '../..');
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const ANTHROPIC_KEY  = process.env.ANTHROPIC_API_KEY || process.env.OPENROUTER_API_KEY;
-const ANTHROPIC_BASE = process.env.ANTHROPIC_API_KEY
-  ? 'https://api.anthropic.com/v1'
-  : 'https://openrouter.ai/api/v1';
-const ANTHROPIC_MODEL = process.env.ANTHROPIC_API_KEY
-  ? 'claude-opus-4-6'
-  : 'anthropic/claude-opus-4';
+const OPENROUTER_KEY = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_BASE = 'https://openrouter.ai/api/v1';
+const OPENROUTER_MODEL = 'anthropic/claude-opus-4';
 
 const SHOTSTACK_KEY = process.env.SHOTSTACK_API_KEY;
 const SHOTSTACK_ENV = process.env.SHOTSTACK_ENV || 'stage';
@@ -311,18 +307,15 @@ Example output format:
 ]`;
 
   try {
-    if (!ANTHROPIC_KEY) throw new Error('No ANTHROPIC_API_KEY or OPENROUTER_API_KEY');
+    if (!OPENROUTER_KEY) throw new Error('No OPENROUTER_API_KEY set');
 
-    const isOpenRouter = !process.env.ANTHROPIC_API_KEY;
-    const headers = isOpenRouter
-      ? { 'Authorization': `Bearer ${ANTHROPIC_KEY}`, 'Content-Type': 'application/json' }
-      : { 'x-api-key': ANTHROPIC_KEY, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' };
+    const headers = { 'Authorization': `Bearer ${OPENROUTER_KEY}`, 'Content-Type': 'application/json' };
 
-    const res = await fetch(`${ANTHROPIC_BASE}/messages`, {
+    const res = await fetch(`${OPENROUTER_BASE}/messages`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        model: ANTHROPIC_MODEL,
+        model: OPENROUTER_MODEL,
         max_tokens: 1024,
         messages: [{ role: 'user', content: prompt }],
       }),
