@@ -1,5 +1,5 @@
 -- 2Step Database Schema
--- This file reflects the final schema AFTER all migrations (001-008) have been applied.
+-- This file reflects the final schema AFTER all migrations (001-014) have been applied.
 -- It is the reference for greenfield deployments only — do not use it to reset an
 -- existing production database. Migrations in db/migrations/ are the source of truth.
 --
@@ -81,6 +81,13 @@ CREATE TABLE IF NOT EXISTS sites (
     resulted_in_sale INTEGER DEFAULT 0,
     sale_amount REAL DEFAULT 0,
 
+    -- Subscription tracking
+    paypal_subscription_id TEXT,
+    subscription_status TEXT CHECK(subscription_status IN ('active','paused','cancelled','expired','payment_failed')),
+    subscription_tier TEXT CHECK(subscription_tier IN ('monthly_4','monthly_8','monthly_12')),
+    next_billing_date TEXT,
+    cancellation_date TEXT,
+
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -116,6 +123,22 @@ CREATE TABLE IF NOT EXISTS videos (
 
 CREATE INDEX IF NOT EXISTS idx_videos_site ON videos(site_id);
 CREATE INDEX IF NOT EXISTS idx_videos_status ON videos(status);
+
+-- =============================================================================
+-- subscription_events: audit trail for PayPal subscription lifecycle events
+-- Populated by the paypal-webhook worker via R2 polling.
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS subscription_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    subscription_id TEXT NOT NULL,
+    event_type TEXT NOT NULL,
+    site_id INTEGER REFERENCES sites(id),
+    raw_json TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_sub_events_subscription ON subscription_events(subscription_id);
+CREATE INDEX IF NOT EXISTS idx_sub_events_type ON subscription_events(event_type);
 
 -- =============================================================================
 -- keywords: niche + location search pairs for Outscraper Maps discovery

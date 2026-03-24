@@ -406,7 +406,7 @@ export async function processSite(site, { dryRun, localOnly = false }) {
   // 11. Write to DB (insert videos row with thumbnail_url, update site)
   const insertVideo = db.prepare(`
     INSERT INTO videos (site_id, video_tool, video_url, thumbnail_url, status, style_variant, music_track, duration_seconds, cost_usd)
-    VALUES (?, 'shotstack', ?, ?, 'completed', ?, ?, ?, 0)
+    VALUES (?, 'ffmpeg', ?, ?, 'completed', ?, ?, ?, 0)
   `);
   const updateSite = db.prepare(`
     UPDATE sites
