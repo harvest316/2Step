@@ -82,7 +82,7 @@ async function fetchPendingDemos() {
   const url = `${WORKER_URL}/video-demos/pending`;
   const res = await fetch(url, {
     headers: {
-      'Authorization': `Bearer ${WORKER_SECRET}`,
+      'X-Auth-Secret': WORKER_SECRET,
       'Content-Type': 'application/json',
     },
     signal: AbortSignal.timeout(30_000),
@@ -108,7 +108,7 @@ async function completeDemoCallback(kvKey, videoUrl) {
   const res = await fetch(url, {
     method: 'DELETE',
     headers: {
-      'Authorization': `Bearer ${WORKER_SECRET}`,
+      'X-Auth-Secret': WORKER_SECRET,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ video_url: videoUrl, status: 'ready' }),
