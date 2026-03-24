@@ -1,0 +1,37 @@
+{
+  "_comment": [
+    "Outscraper reviewsQuery search terms for house-cleaning in AU.",
+    "Only problems with video clip pools are included.",
+    "Currently: greasy-rangehood and deep-clean have dedicated hook/treatment clips."
+  ],
+  "problems": {
+    "greasy-rangehood": {
+      "clip_pool": "greasy-rangehood",
+      "query_terms": [
+        "rangehood",
+        "range hood",
+        "oven clean",
+        "oven cleaning",
+        "kitchen clean",
+        "kitchen deep clean",
+        "greasy",
+        "stovetop",
+        "cooktop"
+      ]
+    },
+    "deep-clean": {
+      "clip_pool": "deep-clean",
+      "query_terms": [
+        "deep clean",
+        "deep cleaning",
+        "spring clean",
+        "spring cleaning",
+        "end of lease",
+        "bond clean",
+        "move out clean",
+        "thorough clean",
+        "top to bottom"
+      ]
+    }
+  }
+}

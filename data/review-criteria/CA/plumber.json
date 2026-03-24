@@ -1,0 +1,25 @@
+{
+  "_comment": [
+    "Outscraper reviewsQuery search terms for plumber in AU.",
+    "Only problems with video clip pools are included.",
+    "Currently only blocked-drain has dedicated hook/treatment clips.",
+    "Add new problems here as new clip pools are generated."
+  ],
+  "problems": {
+    "blocked-drain": {
+      "clip_pool": "blocked-drain",
+      "query_terms": [
+        "blocked drain",
+        "blocked drains",
+        "clogged drain",
+        "drain blocked",
+        "blocked pipe",
+        "blocked sewer",
+        "drain clearing",
+        "drain unblocking",
+        "slow drain",
+        "overflowing drain"
+      ]
+    }
+  }
+}

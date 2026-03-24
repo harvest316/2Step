@@ -1,0 +1,65 @@
+{
+  "_comment": [
+    "Outscraper reviewsQuery search terms for pest-control in AU.",
+    "Only problems with video clip pools are included here.",
+    "IMPORTANT — matching behaviour: reviewsQuery passes through to Google's own review",
+    "text search. We BELIEVE it does whole-word matching (so 'roach' would NOT match",
+    "'cockroach') but this is unconfirmed. Test by searching a known cockroach review",
+    "with query='roach' vs 'cockroach' and comparing result counts.",
+    "Quoted phrases (e.g. '\"rat infestation\"') enforce phrase-level matching and are",
+    "safer for ambiguous stems. 'rat' alone would match 'grateful', 'brat', 'stratum' etc.",
+    "When building the search query, terms from ALL problems are concatenated (OR logic).",
+    "The winning problem is determined client-side by keyword hit count."
+  ],
+  "problems": {
+    "cockroaches": {
+      "clip_pool": "cockroaches",
+      "query_terms": [
+        "cockroach",
+        "roach",
+        "german cockroach",
+        "cockroach infestation",
+        "cockroach treatment"
+      ]
+    },
+    "termites": {
+      "clip_pool": "termites",
+      "query_terms": [
+        "termite",
+        "white ant",
+        "termite inspection",
+        "termite damage",
+        "termite nest",
+        "termite treatment",
+        "termite barrier"
+      ]
+    },
+    "spiders": {
+      "clip_pool": "spiders",
+      "query_terms": [
+        "spider",
+        "redback",
+        "funnel web",
+        "huntsman",
+        "white tail",
+        "spider infestation",
+        "spider treatment"
+      ]
+    },
+    "rodents": {
+      "clip_pool": "rodents",
+      "query_terms": [
+        "rodent",
+        "mice",
+        "mouse",
+        "possum",
+        "rat infestation",
+        "rat in the roof",
+        "rat in roof",
+        "rat problem",
+        "rat trap",
+        "rat bait"
+      ]
+    }
+  }
+}
