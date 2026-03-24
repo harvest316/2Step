@@ -23,8 +23,13 @@
 import '../utils/load-env.js';
 import axios from 'axios';
 import { parseArgs } from 'util';
+import { readFileSync, existsSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import db from '../utils/db.js';
-import { matchCategory, buildReviewQueryString } from '../config/problem-categories.js';
+import { matchCategory } from '../config/problem-categories.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
@@ -33,6 +38,65 @@ const BASE_URL       = 'https://api.app.outscraper.com';
 const MIN_RATING     = parseFloat(process.env.MIN_GOOGLE_RATING  || '4.0');
 const MIN_REVIEWS    = parseInt(process.env.MIN_REVIEW_COUNT     || '30', 10);
 const MIN_WORD_COUNT = parseInt(process.env.MIN_REVIEW_WORDS     || '30', 10);
+
+const CONCURRENCY   = 5;   // max parallel Outscraper review-fetch requests
+const FETCH_LADDER  = [2, 10, 25, 50, 100]; // escalating reviewsLimit per attempt
+
+// ─── Review criteria loader ───────────────────────────────────────────────────
+
+/**
+ * Load review-criteria config for a country + niche.
+ * Falls back to AU if no country-specific file exists.
+ *
+ * Returns { problems: { [name]: { clip_pool, query_terms[] } } }
+ * or null if no config found.
+ */
+function loadReviewCriteria(countryCode, niche) {
+  const slug = niche.toLowerCase().replace(/\s+/g, '-').replace(/\//g, '-');
+  const base  = resolve(__dirname, '../../data/review-criteria');
+  const paths = [
+    resolve(base, countryCode.toUpperCase(), `${slug}.json`),
+    resolve(base, 'AU', `${slug}.json`),  // fallback
+  ];
+  for (const p of paths) {
+    if (existsSync(p)) {
+      try {
+        return JSON.parse(readFileSync(p, 'utf8'));
+      } catch (e) {
+        console.warn(`[reviews] Failed to parse ${p}: ${e.message}`);
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Build the Outscraper reviewsQuery string from all problems in a criteria config.
+ * Terms are joined with spaces (Outscraper uses implicit OR).
+ */
+function buildQueryFromCriteria(criteria) {
+  const terms = new Set();
+  for (const problem of Object.values(criteria.problems)) {
+    for (const t of (problem.query_terms || [])) terms.add(t);
+  }
+  return [...terms].join(' ');
+}
+
+// ─── Simple concurrency semaphore ────────────────────────────────────────────
+
+function makeSemaphore(limit) {
+  let active = 0;
+  const queue = [];
+  return function acquire() {
+    return new Promise(resolve => {
+      const tryRun = () => {
+        if (active < limit) { active++; resolve(() => { active--; const next = queue.shift(); if (next) next(); }); }
+        else queue.push(tryRun);
+      };
+      tryRun();
+    });
+  };
+}
 
 // ─── Outscraper HTTP client ───────────────────────────────────────────────────
 
@@ -118,71 +182,106 @@ async function searchBusinesses(api, keyword, location, countryCode, limit) {
 // ─── Step 2: Review download ──────────────────────────────────────────────────
 
 /**
- * Fetch one keyword-matching review for a business.
+ * Score a review for suitability — higher is better.
+ * Keyword hits are weighted heavily so a short but specific review can beat a
+ * long but generic one.
+ */
+function scoreReview(text, niche) {
+  const match = matchCategory(niche, text);
+  if (!match) return -1;  // no category match = disqualified
+  const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
+  if (wordCount < MIN_WORD_COUNT) return -1;  // too short = disqualified
+  return match.hits * 1000 + wordCount;
+}
+
+/**
+ * Fetch the best keyword-matching 5-star review for a business.
  *
- * Passes a query string built from niche category keywords to Outscraper's
- * `query` parameter so the API filters results server-side, minimising cost.
- * We then verify locally: the review must have >= MIN_WORD_COUNT words.
+ * Uses escalating reviewsLimit (FETCH_LADDER) to minimise credit spend:
+ *   - Fetch 2 → score all → if a winner found, done (2 credits)
+ *   - Otherwise fetch 10 → score new reviews → if winner, done (10 credits total)
+ *   - Continue up the ladder until a winner is found or all batches exhausted.
+ *
+ * NOTE: Outscraper has no offset parameter — each call always returns the FIRST N
+ * reviews. We track which review_ids we've already scored and skip them.
  *
  * @param {import('axios').AxiosInstance} api
- * @param {string} placeId      - Google place_id / google_id
- * @param {string} businessName - For logging
- * @param {string} niche        - e.g. "pest control"
+ * @param {string} placeId        - Google place_id / google_id
+ * @param {string} businessName   - For logging
+ * @param {string} niche          - e.g. "pest control"
+ * @param {string} reviewsQuery   - Space-joined keyword stems (Outscraper implicit OR)
+ * @param {string} countryCode    - ISO 3166-1 alpha-2
  * @returns {Promise<{ text: string, author: string, rating: number, category: string } | null>}
  */
-async function fetchMatchingReview(api, placeId, businessName, niche) {
-  const reviewQuery = buildReviewQueryString(niche);
+async function fetchMatchingReview(api, placeId, businessName, niche, reviewsQuery, countryCode) {
+  const seenIds = new Set();
+  let best = null;
 
-  try {
-    const { data } = await api.get('/maps/reviews-v3', {
-      params: {
-        query:        placeId,
-        reviewsLimit: 1,
-        sort:         'highest_rating',
-        language:     'en',
-        // Pass niche keywords so Outscraper pre-filters review content
-        cutReviewsAfter: reviewQuery,
-      },
-    });
-
+  for (const limit of FETCH_LADDER) {
     let placeData;
-    if (data.status === 'Pending' && data.results_location) {
-      process.stdout.write('    Fetching review');
-      const jobData = await pollJob(data.results_location, businessName, 60_000);
-      console.log('');
-      placeData = Array.isArray(jobData?.[0]) ? jobData[0][0] : (jobData?.[0] ?? null);
-    } else {
-      placeData = Array.isArray(data?.[0]) ? data[0][0] : (data?.[0] ?? null);
+    try {
+      const { data } = await api.get('/maps/reviews-v3', {
+        params: {
+          query:         placeId,
+          reviewsLimit:  limit,
+          cutoffRating:  5,          // 5-star reviews only
+          sort:          'most_relevant',
+          language:      'en',
+          reviewsQuery,              // keyword pre-filter (Outscraper implicit OR)
+        },
+      });
+
+      if (data.status === 'Pending' && data.results_location) {
+        const jobData = await pollJob(data.results_location, businessName, 90_000);
+        placeData = Array.isArray(jobData?.[0]) ? jobData[0][0] : (jobData?.[0] ?? null);
+      } else {
+        placeData = Array.isArray(data?.[0]) ? data[0][0] : (data?.[0] ?? null);
+      }
+    } catch (err) {
+      console.warn(`[reviews]   Review fetch failed for "${businessName}" (limit=${limit}): ${err.message}`);
+      break;
     }
 
     const reviews = placeData?.reviews_data ?? [];
+    let newCount = 0;
 
     for (const r of reviews) {
-      const text   = r.review_text ?? '';
-      const rating = r.review_rating ?? 0;
+      const id = r.review_id || r.review_link || `${r.author_title}:${r.review_datetime_utc}`;
+      if (seenIds.has(id)) continue;
+      seenIds.add(id);
+      newCount++;
 
-      // Word count gate
-      const wordCount = text.trim().split(/\s+/).filter(Boolean).length;
-      if (wordCount < MIN_WORD_COUNT) continue;
-
-      // Category match gate
-      const match = matchCategory(niche, text);
-      if (!match) continue;
-
-      return {
-        text,
-        author:   r.author_title || r.author_name || 'Anonymous',
-        rating,
-        category: match.category,
-      };
+      const text  = r.review_text ?? '';
+      const score = scoreReview(text, niche);
+      if (score > (best?.score ?? -1)) {
+        const match = matchCategory(niche, text);
+        best = {
+          text,
+          author:   r.author_title || r.author_name || 'Anonymous',
+          rating:   r.review_rating ?? 5,
+          category: match?.category ?? niche,
+          score,
+        };
+      }
     }
 
+    // Found a winner — stop fetching
+    if (best) break;
+
+    // No new reviews came in — we've exhausted the pool
+    if (newCount === 0) break;
+
+    // Reached the last ladder rung — stop regardless
+    if (limit === FETCH_LADDER[FETCH_LADDER.length - 1]) break;
+  }
+
+  if (!best) {
     console.log(`[reviews]   No qualifying review for "${businessName}"`);
     return null;
-  } catch (err) {
-    console.warn(`[reviews]   Review fetch failed for "${businessName}": ${err.message}`);
-    return null;
   }
+
+  const { score: _score, ...result } = best;
+  return result;
 }
 
 // ─── Social extraction ────────────────────────────────────────────────────────
@@ -273,8 +372,17 @@ async function processKeyword(api, kwRow, limit, dryRun) {
   const stats = { searched: 0, found: 0, inserted: 0, skipped: 0, errors: 0 };
 
   const { keyword, location, country_code: countryCode, niche } = kwRow;
-  // Derive niche from keyword if not set (first two words or the whole thing)
   const resolvedNiche = (niche || keyword).toLowerCase();
+
+  // Load review-criteria config for this country + niche
+  const criteria = loadReviewCriteria(countryCode || 'AU', resolvedNiche);
+  const reviewsQuery = criteria
+    ? buildQueryFromCriteria(criteria)
+    : resolvedNiche;  // fallback to niche name if no config file
+
+  if (!criteria) {
+    console.warn(`[reviews] No review-criteria config for ${countryCode}/${resolvedNiche} — using niche name as query`);
+  }
 
   // Step 1 — search
   let rawResults;
@@ -298,81 +406,88 @@ async function processKeyword(api, kwRow, limit, dryRun) {
   console.log(`[reviews] After filter (>= ${MIN_RATING}★, >= ${MIN_REVIEWS} reviews): ${filtered.length}`);
   stats.found = filtered.length;
 
-  // Step 2 — per business: dedup → fetch review → insert
-  for (const result of filtered) {
+  // Step 2 — per business (parallelised, max CONCURRENCY at a time):
+  // dedup → fetch review → insert
+  const semaphore = makeSemaphore(CONCURRENCY);
+
+  await Promise.allSettled(filtered.map(async (result) => {
+    const release      = await semaphore();
     const placeId      = result.place_id ?? result.google_id ?? null;
     const businessName = result.name ?? result.title ?? '(unknown)';
     const city         = result.city ?? result.borough ?? null;
 
-    // Dedup
-    if (isDuplicate(placeId, businessName, city)) {
-      console.log(`[reviews]   Skip (dup): ${businessName}`);
-      stats.skipped++;
-      continue;
-    }
-
-    // Fetch review
-    let review = null;
-    if (placeId) {
-      review = await fetchMatchingReview(api, placeId, businessName, resolvedNiche);
-    } else {
-      console.warn(`[reviews]   No place_id for "${businessName}" — skipping review fetch`);
-    }
-
-    if (!review) {
-      stats.skipped++;
-      continue;
-    }
-
-    // Build site row
-    const { instagram, facebook } = extractSocials(result);
-
-    const site = {
-      business_name:       businessName,
-      google_maps_url:     result.google_maps_url ?? result.place_url ?? null,
-      website_url:         result.site ?? result.website ?? null,
-      phone:               result.phone ?? result.us_phone ?? null,
-      email:               result.email_1 ?? result.email ?? null,
-      instagram_handle:    instagram,
-      facebook_page_url:   facebook,
-      city,
-      state:               result.state ?? null,
-      country_code:        countryCode,
-      google_rating:       result.rating ?? null,
-      review_count:        result.reviews ?? result.reviews_count ?? null,
-      niche:               resolvedNiche,
-      keyword,
-      google_place_id:     placeId,
-      selected_review_json: JSON.stringify({
-        text:   review.text,
-        author: review.author,
-        rating: review.rating,
-      }),
-      problem_category:    review.category,
-    };
-
-    if (dryRun) {
-      console.log(`[reviews]   [DRY RUN] Would insert: ${businessName} — category: ${review.category}`);
-      stats.inserted++;
-      continue;
-    }
-
     try {
-      stmtInsertSite.run(site);
-      console.log(`[reviews]   Inserted: ${businessName} — category: ${review.category}`);
-      stats.inserted++;
-    } catch (err) {
-      console.error(`[reviews]   Insert failed for "${businessName}": ${err.message}`);
-      stats.errors++;
+      // Dedup
+      if (isDuplicate(placeId, businessName, city)) {
+        console.log(`[reviews]   Skip (dup): ${businessName}`);
+        stats.skipped++;
+        return;
+      }
+
+      // Fetch review
+      let review = null;
+      if (placeId) {
+        review = await fetchMatchingReview(api, placeId, businessName, resolvedNiche, reviewsQuery, countryCode);
+      } else {
+        console.warn(`[reviews]   No place_id for "${businessName}" — skipping review fetch`);
+      }
+
+      if (!review) {
+        stats.skipped++;
+        return;
+      }
+
+      // Build site row
+      const { instagram, facebook } = extractSocials(result);
+
+      const site = {
+        business_name:        businessName,
+        google_maps_url:      result.google_maps_url ?? result.place_url ?? null,
+        website_url:          result.site ?? result.website ?? null,
+        phone:                result.phone ?? result.us_phone ?? null,
+        email:                result.email_1 ?? result.email ?? null,
+        instagram_handle:     instagram,
+        facebook_page_url:    facebook,
+        city,
+        state:                result.state ?? null,
+        country_code:         countryCode,
+        google_rating:        result.rating ?? null,
+        review_count:         result.reviews ?? result.reviews_count ?? null,
+        niche:                resolvedNiche,
+        keyword,
+        google_place_id:      placeId,
+        selected_review_json: JSON.stringify({
+          text:   review.text,
+          author: review.author,
+          rating: review.rating,
+        }),
+        problem_category:     review.category,
+      };
+
+      if (dryRun) {
+        console.log(`[reviews]   [DRY RUN] Would insert: ${businessName} — category: ${review.category}`);
+        stats.inserted++;
+        return;
+      }
+
+      try {
+        stmtInsertSite.run(site);
+        console.log(`[reviews]   Inserted: ${businessName} — category: ${review.category}`);
+        stats.inserted++;
+      } catch (err) {
+        console.error(`[reviews]   Insert failed for "${businessName}": ${err.message}`);
+        stats.errors++;
+      }
+    } finally {
+      release();
     }
-  }
+  }));
 
   // Update keyword row stats (skip on dry-run or if no DB id)
   if (!dryRun && kwRow.id) {
     try {
       stmtUpdateKeyword.run({ id: kwRow.id, delta: stats.inserted });
     } catch (err) {
-      // Non-fatal
       console.warn(`[reviews] Failed to update keyword stats for id=${kwRow.id}: ${err.message}`);
     }
   }
