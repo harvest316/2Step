@@ -127,9 +127,10 @@ export function applyPhonetics(voiceover, suburb) {
  * @returns {Array<{ text: string, voiceover: string, duration: number }>}
  */
 export function buildScenes(prospect) {
-  const name     = businessName(prospect.business_name);
-  const city     = prospect.city || 'Sydney';
-  const niche    = (prospect.niche || '').toLowerCase();
+  const name      = businessName(prospect.business_name);
+  const cityRaw   = prospect.city || 'Sydney';  // display text (subtitle)
+  const city      = applyPhonetics(cityRaw, cityRaw); // voiceover pronunciation
+  const niche     = (prospect.niche || '').toLowerCase();
   const reviewer = toTitleCase(prospect.best_review_author || 'a local');
   const review   = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
   const phone    = prospect.phone || null;
@@ -151,7 +152,7 @@ export function buildScenes(prospect) {
       'hot-water':     'hot water issues',
     };
     const problem = plumbingLabels[problemPool] || 'a plumbing problem';
-    hookText      = `Got ${problem} in ${city}?`;
+    hookText      = `Got ${problem} in ${cityRaw}?`;
     hookVoiceover = `Got ${problem} in ${city}?`;
   } else if (niche.includes('cleaning') || niche.includes('cleaner')) {
     const poolKey = prospect.problem_category || niche;
@@ -164,13 +165,13 @@ export function buildScenes(prospect) {
       'deep-clean':       'a deep clean',
     };
     const problem = cleaningLabels[problemPool] || 'a professional clean';
-    hookText      = `Need ${problem} in ${city}?`;
+    hookText      = `Need ${problem} in ${cityRaw}?`;
     hookVoiceover = `Need ${problem} in ${city}?`;
   } else {
     // Pest control — detect specific pest
     const pest     = detectPestFromReview(review);
     const pestWord = pestLabel(pest);
-    hookText      = `Dealing with ${pestWord} in ${city}?`;
+    hookText      = `Dealing with ${pestWord} in ${cityRaw}?`;
     hookVoiceover = pest
       ? `Dealing with ${pestWord} in ${city}?`
       : `Looking for pest control in ${city}?`;
@@ -829,11 +830,29 @@ const NICHE_ALIASES = {
  */
 export function detectPestFromReview(reviewText) {
   const t = reviewText.toLowerCase();
-  if (/termite/.test(t))                          return 'termites';
-  if (/cockroach|roach/.test(t))                  return 'cockroaches';
-  if (/spider/.test(t))                           return 'spiders';
-  if (/\brat\b|\brats\b|\bmouse\b|\bmice\b|rodent/.test(t)) return 'rodents';
-  return null;
+
+  // Count mentions of each pest — most-mentioned wins.
+  // "termite inspection" counts less than active infestation language.
+  const score = (patterns) => {
+    let n = 0;
+    for (const p of patterns) { const m = t.match(new RegExp(p, 'g')); if (m) n += m.length; }
+    return n;
+  };
+
+  const counts = {
+    termites:    score([/termite(?!.{0,20}inspection)/]),  // termite mentions NOT followed by "inspection" within 20 chars
+    cockroaches: score([/cockroach|roach/]),
+    spiders:     score([/spider/]),
+    rodents:     score([/\brat\b|\brats\b|\bmouse\b|\bmice\b|rodent|possum/]),
+  };
+
+  // Fall back to including inspection mentions if no active pest found
+  if (Object.values(counts).every(n => n === 0)) {
+    counts.termites = score([/termite/]);
+  }
+
+  const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return best[1] > 0 ? best[0] : null;
 }
 
 /**
@@ -968,7 +987,7 @@ export function toTitleCase(str) {
 // Sentence openers that produce weak or confusing standalone subtitles:
 // - mid-thought continuations ("As a...", "From the moment...", "Not only...")
 // - meta-praise openers that don't describe anything specific ("I cannot speak highly enough...")
-const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know)/i;
+const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
 
 export function extractQuotes(review, n = 2) {
   const sentences = (review.match(/[^.!?]+[.!?]+/g) || [review])
@@ -996,12 +1015,25 @@ export function extractQuotes(review, n = 2) {
   const fitted = sentences.map(s => fitToMaxWords(s));
   const short  = fitted.filter(s => wc(s) <= 15);
   const medium = fitted.filter(s => wc(s) <= 22);
-  const pool   = short.length >= n ? short : medium.length >= n ? medium : fitted.length ? fitted : [fitToMaxWords(review)];
+  // Pick the best pool with enough variety; fall back to wider pools as needed
+  const pool = short.length >= n ? short : medium.length >= n ? medium : fitted.length ? fitted : [fitToMaxWords(review)];
 
+  // Fill n slots without repeating — cycle only if we must (pool < n)
   const results = [];
   for (let i = 0; i < n; i++) {
+    // Prefer unique sentences; only wrap around once all are used
     results.push(pool[i % pool.length]);
   }
+
+  // Deduplicate: replace repeated entries with next unused pool entry
+  for (let i = 1; i < results.length; i++) {
+    if (results.slice(0, i).includes(results[i])) {
+      const used = new Set(results.slice(0, i));
+      const next = pool.find(s => !used.has(s));
+      if (next) results[i] = next;
+    }
+  }
+
   return results;
 }
 
