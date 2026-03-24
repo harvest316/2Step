@@ -18,7 +18,9 @@
  * Usage:
  *   node src/stages/video.js                # Process all eligible sites
  *   node src/stages/video.js --limit 5      # Up to 5 sites
+ *   node src/stages/video.js --id 8         # Specific site by ID
  *   node src/stages/video.js --dry-run      # Print plan, skip render/upload
+ *   node src/stages/video.js --local        # Render locally, skip R2 upload, print file:// URI
  */
 
 import '../utils/load-env.js';
@@ -275,7 +277,7 @@ async function fetchLogoBuf(url) {
  * @param {object} opts  — { dryRun: boolean }
  * @returns {Promise<{ videoUrl: string, posterUrl: string, videoHash: string, videoId: number, durationSeconds: number, costUsd: number }>}
  */
-export async function processSite(site, { dryRun }) {
+export async function processSite(site, { dryRun, localOnly = false }) {
   const siteId = site.id;
 
   // 1. Parse selected_review_json
@@ -369,13 +371,21 @@ export async function processSite(site, { dryRun }) {
     variant,
   });
 
-  // 8. Upload to R2
+  // 8. Upload to R2 (skip in --local mode)
+  let videoUrl, posterUrl;
+  if (localOnly) {
+    videoUrl  = `file://${outputPath}`;
+    posterUrl = null;
+    console.log(`  ✓ Local render: ${videoUrl}`);
+    return { videoUrl, posterUrl, videoHash: null, videoId: null, durationSeconds: Math.round(renderedDuration), costUsd: 0 };
+  }
+
   if (!ACCOUNT_ID || !API_TOKEN || !BUCKET || !PUBLIC_URL) {
     throw new Error('Cloudflare R2 env vars not set (CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN, R2_BUCKET_NAME, R2_PUBLIC_URL)');
   }
-  const r2Key    = `video-s${siteId}-${Date.now()}.mp4`;
+  const r2Key = `video-s${siteId}-${Date.now()}.mp4`;
   process.stdout.write(`  Uploading to R2 (${r2Key})...`);
-  const videoUrl = await uploadToR2(outputPath, r2Key);
+  videoUrl = await uploadToR2(outputPath, r2Key);
   process.stdout.write(' done\n');
 
   // 9. Extract poster frame, build poster image with play button, upload to R2
@@ -387,7 +397,7 @@ export async function processSite(site, { dryRun }) {
   const posterFrame = await extractPosterFrame(outputPath, posterTime);
   const posterBuf = await buildPosterFromBuffer(posterFrame);
   const posterKey = `poster-s${siteId}-${Date.now()}.jpg`;
-  const posterUrl = await uploadBufferToR2(posterBuf, posterKey, 'image/jpeg');
+  posterUrl = await uploadBufferToR2(posterBuf, posterKey, 'image/jpeg');
   process.stdout.write(` done (${posterKey})\n`);
 
   // 10. Compute base62 hash from site_id
@@ -440,25 +450,37 @@ export async function processSite(site, { dryRun }) {
  * Run the video creation stage.
  *
  * @param {object} [options]
- * @param {number} [options.limit=50]     Max sites to process
+ * @param {number} [options.limit=50]      Max sites to process
+ * @param {number} [options.siteId]        Process only this site ID (any status)
  * @param {boolean} [options.dryRun=false] Print plan, skip render/upload
+ * @param {boolean} [options.localOnly=false] Skip R2 upload, print file:// URI
  * @returns {Promise<{ processed: number, created: number, errors: number }>}
  */
 export async function runVideoStage(options = {}) {
-  const limit  = options.limit  ?? 50;
-  const dryRun = options.dryRun ?? false;
+  const limit     = options.limit     ?? 50;
+  const dryRun    = options.dryRun    ?? false;
+  const localOnly = options.localOnly ?? false;
+  const siteId    = options.siteId    ?? null;
 
-  const sites = db.prepare(`
-    SELECT id, business_name, city, niche, phone,
-           best_review_text, best_review_author, google_rating,
-           logo_url, selected_review_json, problem_category,
-           status, video_url
-    FROM sites
-    WHERE status = 'enriched'
-      AND logo_url IS NOT NULL
-    ORDER BY id
-    LIMIT ?
-  `).all(limit);
+  const sites = siteId
+    ? db.prepare(`
+        SELECT id, business_name, city, niche, phone,
+               best_review_text, best_review_author, google_rating,
+               logo_url, selected_review_json, problem_category,
+               status, video_url
+        FROM sites WHERE id = ?
+      `).all(siteId)
+    : db.prepare(`
+        SELECT id, business_name, city, niche, phone,
+               best_review_text, best_review_author, google_rating,
+               logo_url, selected_review_json, problem_category,
+               status, video_url
+        FROM sites
+        WHERE status = 'enriched'
+          AND logo_url IS NOT NULL
+        ORDER BY id
+        LIMIT ?
+      `).all(limit);
 
   if (sites.length === 0) {
     console.log('No enriched sites with logo_url. Nothing to do.');
@@ -474,7 +496,7 @@ export async function runVideoStage(options = {}) {
     process.stdout.write(`[${site.id}] ${site.business_name} (${site.city || 'unknown'})...\n`);
 
     try {
-      const result = await processSite(site, { dryRun });
+      const result = await processSite(site, { dryRun, localOnly });
 
       if (result) {
         console.log(
@@ -507,14 +529,18 @@ if (isMain) {
   const { values: args } = parseArgs({
     options: {
       limit:     { type: 'string',  default: '50' },
+      id:        { type: 'string' },
       'dry-run': { type: 'boolean', default: false },
+      local:     { type: 'boolean', default: false },
     },
     strict: false,
   });
 
   runVideoStage({
-    limit:  parseInt(args.limit, 10),
-    dryRun: args['dry-run'],
+    limit:     parseInt(args.limit, 10),
+    siteId:    args.id ? parseInt(args.id, 10) : null,
+    dryRun:    args['dry-run'],
+    localOnly: args.local,
   }).catch(err => {
     console.error('Fatal:', err.message);
     process.exit(1);
