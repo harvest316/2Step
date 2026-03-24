@@ -450,6 +450,38 @@ export const PROBLEM_CATEGORIES = {
     ],
   },
 
+  // ─── House Cleaning ─────────────────────────────────────────────────────────
+  'house cleaning': {
+    'deep clean': [
+      'deep clean', 'deep cleaning', 'spring clean', 'spring cleaning',
+      'thorough clean', 'top to bottom', 'detailed clean', 'move out clean',
+      'move in clean', 'end of lease', 'bond clean', 'bond cleaning',
+      'one-off clean', 'one off clean',
+    ],
+    'regular clean': [
+      'regular clean', 'weekly clean', 'fortnightly clean', 'recurring',
+      'scheduled clean', 'maintenance clean', 'routine clean', 'general clean',
+      'house clean', 'home clean',
+    ],
+    'kitchen/rangehood': [
+      'kitchen', 'oven', 'oven clean', 'rangehood', 'range hood',
+      'stovetop', 'grease', 'greasy', 'cooktop', 'kitchen clean',
+      'splashback',
+    ],
+    'bathroom': [
+      'bathroom', 'toilet', 'shower', 'bathtub', 'tiles', 'grout',
+      'mould', 'mold', 'bathroom clean', 'ensuite',
+    ],
+    'carpet/floor': [
+      'carpet', 'carpet clean', 'floor', 'floors', 'mopping', 'vacuuming',
+      'steam clean', 'tile clean', 'hardwood', 'polishing',
+    ],
+    'window': [
+      'window', 'windows', 'window clean', 'window cleaning', 'glass',
+      'window wash', 'streak free', 'streak-free',
+    ],
+  },
+
 };
 
 /**

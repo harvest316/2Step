@@ -198,6 +198,7 @@ function buildVideoFilterChain({ clips, scenes, clipInputStart, variant, starts 
  * @param {number[]} opts.logoSceneIndices                      - Which scene indices show the logo (e.g. [0, 6])
  * @param {string} opts.outputPath                              - Where to write the final MP4
  * @param {Object} [opts.variant]                               - Style variant from style-variants.js
+ * @param {boolean} [opts.watermark=false]                       - Add semi-transparent "auditandfix.com" watermark (bottom-right)
  * @returns {Promise<{path: string, duration: number}>}
  */
 export async function renderVideo({
@@ -209,6 +210,7 @@ export async function renderVideo({
   logoSceneIndices = [],
   outputPath,
   variant = DEFAULT_VARIANT,
+  watermark = false,
 }) {
   // Verify font file exists — ffmpeg silently falls back to a system font if missing
   await access(variant.font).catch(() => {
@@ -325,6 +327,23 @@ export async function renderVideo({
         );
         prevLabel = nextLabel;
       }
+    }
+
+    // Add watermark overlay (if enabled) — semi-transparent text, bottom-right, entire duration
+    if (watermark) {
+      const wmText = escapeDrawtext('auditandfix.com');
+      const nextLabel = 'vwm';
+      filterParts.push(
+        `[${prevLabel}]drawtext=` +
+        `fontfile='${DEJAVU_FONT}'` +
+        `:text='${wmText}'` +
+        `:fontsize=36` +
+        `:fontcolor=white@0.5` +
+        `:x=w-tw-40` +
+        `:y=h-th-40` +
+        `[${nextLabel}]`
+      );
+      prevLabel = nextLabel;
     }
 
     const videoOutLabel = prevLabel;

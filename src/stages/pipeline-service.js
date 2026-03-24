@@ -8,12 +8,13 @@
  * current iteration completes before exit.
  *
  * Stages (in order):
- *   1. reviews   — fetch/download Google reviews for new prospects
- *   2. enrich    — contact extraction + logo treatment
- *   3. video     — AI video generation
- *   4. proposals — draft outreach messages
- *   5. outreach  — send approved emails + SMS
- *   6. replies   — classify and auto-respond to inbound messages
+ *   1. video-demo-requests — poll CF Worker for inbound VoD requests, insert sites
+ *   2. reviews   — fetch/download Google reviews for new prospects
+ *   3. enrich    — contact extraction + logo treatment
+ *   4. video     — AI video generation
+ *   5. proposals — draft outreach messages
+ *   6. outreach  — send approved emails + SMS
+ *   7. replies   — classify and auto-respond to inbound messages
  *
  * Usage:
  *   node src/stages/pipeline-service.js              # Continuous loop (default 60s interval)
@@ -84,6 +85,15 @@ async function runSyncVideoViewsStage(options = {}) {
   return mod.runSyncVideoViewsStage(options);
 }
 
+async function runVideoDemoRequestsStage(options = {}) {
+  const mod = await safeImport('./video-demo-requests.js');
+  if (!mod) {
+    console.log('[pipeline] video-demo-requests.js not found — skipping video-demo-requests stage');
+    return { skipped: true };
+  }
+  return mod.runVideoDemoRequestsStage(options);
+}
+
 // ── Shutdown handling ────────────────────────────────────────────────────────
 
 let shuttingDown = false;
@@ -112,13 +122,14 @@ async function runIteration() {
   const summary = {};
 
   const stages = [
-    { name: 'reviews',          fn: runReviewsStage },
-    { name: 'enrich',           fn: runEnrichStage },
-    { name: 'video',            fn: runVideoStage },
-    { name: 'proposals',        fn: runProposalsStage },
-    { name: 'outreach',         fn: runOutreachStage },
-    { name: 'sync-video-views', fn: runSyncVideoViewsStage },
-    { name: 'replies',          fn: runRepliesStage },
+    { name: 'video-demo-requests', fn: runVideoDemoRequestsStage },
+    { name: 'reviews',             fn: runReviewsStage },
+    { name: 'enrich',              fn: runEnrichStage },
+    { name: 'video',               fn: runVideoStage },
+    { name: 'proposals',           fn: runProposalsStage },
+    { name: 'outreach',            fn: runOutreachStage },
+    { name: 'sync-video-views',    fn: runSyncVideoViewsStage },
+    { name: 'replies',             fn: runRepliesStage },
   ];
 
   for (const { name, fn } of stages) {
