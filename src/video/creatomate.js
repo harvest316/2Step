@@ -202,10 +202,7 @@ async function processLogoWithGlow(logoUrl, prospectId) {
 
   if (!hasTransparency) {
     // Opaque logo — use as-is, no pill needed
-    const url = USE_API
-      ? await uploadToR2(logoBuf, `logo-glow-p${prospectId}.png`, 'image/png')
-      : null;
-    return { buf: logoBuf, url };
+    return { buf: logoBuf, url: null };
   }
 
   // Transparent logo — add grey rounded-rect pill backdrop
@@ -234,9 +231,7 @@ async function processLogoWithGlow(logoUrl, prospectId) {
     .png()
     .toBuffer();
 
-  const url = USE_API
-    ? await uploadToR2(finalBuf, `logo-glow-p${prospectId}.png`, 'image/png')
-    : null;
+  const url = null; // logo uploaded only if needed for API mode (not currently used)
 
   return { buf: finalBuf, url };
 }
