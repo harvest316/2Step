@@ -204,6 +204,7 @@ function assembleEmail(msg) {
 
 // ── Email send ───────────────────────────────────────────────────────────────
 
+/* c8 ignore start — Resend/Twilio API + DB writes I/O */
 /**
  * Send a single email message.
  *
@@ -509,12 +510,15 @@ export async function runOutreachStage(options = {}) {
   return stats;
 }
 
+/* c8 ignore stop */
+
 // ── Test-visible exports for pure helper functions ───────────────────────────
 
 export { splitBody, textToHtml, buildPlainText, CAN_SPAM_COUNTRIES, formatPhoneNumber, assembleEmail, loadSequenceTemplate, isOptedOut };
 
 // ── CLI entry point ──────────────────────────────────────────────────────────
 
+/* c8 ignore start — CLI entry point */
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const { values: args } = parseArgs({
     options: {
@@ -543,3 +547,4 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       process.exit(1);
     });
 }
+/* c8 ignore stop */

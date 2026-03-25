@@ -100,6 +100,7 @@ function makeSemaphore(limit) {
 
 // ─── Outscraper HTTP client ───────────────────────────────────────────────────
 
+/* c8 ignore start — external API client + polling + stage runner I/O */
 function makeApi() {
   if (!API_KEY) {
     throw new Error('OUTSCRAPER_API_KEY is not set. Add it to .env');
@@ -574,12 +575,15 @@ export async function runReviewsStage(options = {}) {
   return totals;
 }
 
+/* c8 ignore stop */
+
 // ── Test-visible exports for pure helper functions ───────────────────────
 
 export { buildQueryFromCriteria, makeSemaphore, extractSocials, scoreReview, loadReviewCriteria };
 
 // ─── CLI entry point ──────────────────────────────────────────────────────────
 
+/* c8 ignore start — CLI entry point */
 if (process.argv[1].endsWith('reviews.js')) {
   const { values: args } = parseArgs({
     options: {
@@ -613,3 +617,4 @@ if (process.argv[1].endsWith('reviews.js')) {
     process.exit(1);
   });
 }
+/* c8 ignore stop */

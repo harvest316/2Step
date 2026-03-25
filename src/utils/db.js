@@ -33,12 +33,14 @@ const messagesDbPath = process.env.MESSAGES_DB_PATH
 // Startup assertion: if MESSAGES_DB_PATH was explicitly set but the file
 // doesn't exist, throw immediately with a clear error rather than silently
 // creating an empty database at the wrong path.
+/* c8 ignore start — startup assertion for missing messages DB */
 if (process.env.MESSAGES_DB_PATH && !existsSync(messagesDbPath)) {
   throw new Error(
     `MESSAGES_DB_PATH is set but file not found: ${messagesDbPath}\n` +
     `Run mmo-platform/scripts/init-messages-db.js first to create the shared DB.`
   );
 }
+/* c8 ignore stop */
 
 const db = new Database(dbPath);
 
@@ -51,6 +53,7 @@ db.pragma('foreign_keys = ON');
 if (existsSync(messagesDbPath)) {
   db.exec(`ATTACH DATABASE '${messagesDbPath}' AS msgs`);
 } else {
+  /* c8 ignore start — dev fallback: messages.db not yet initialised */
   // Dev: messages.db not yet initialised — log a warning but don't crash.
   // Pipeline stages that query msgs.messages will fail at query time with a
   // clear "no such table: msgs.messages" error, which is easier to diagnose
@@ -60,6 +63,7 @@ if (existsSync(messagesDbPath)) {
     `Run mmo-platform/scripts/init-messages-db.js to create it. ` +
     `Queries against msgs.* will fail until the shared DB is initialised.`
   );
+  /* c8 ignore stop */
 }
 
 export default db;

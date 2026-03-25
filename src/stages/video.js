@@ -85,6 +85,7 @@ const pronunciationDictLocators = (() => {
 
 // ─── ElevenLabs voiceover generation ─────────────────────────────────────────
 
+/* c8 ignore start — ElevenLabs API + R2 upload + ffmpeg render I/O */
 /**
  * Generate a single MP3 audio buffer for a voiceover string via ElevenLabs.
  * Uses the /with-timestamps endpoint so we get alignment data for scene timing.
@@ -269,6 +270,8 @@ async function fetchLogoBuf(url) {
   }
 }
 
+/* c8 ignore stop */
+
 // ─── Main per-site processing ─────────────────────────────────────────────────
 
 /**
@@ -336,6 +339,7 @@ export async function processSite(site, { dryRun, localOnly = false }) {
     return null;
   }
 
+  /* c8 ignore start — live render path: ElevenLabs + ffmpeg + R2 I/O */
   // 5. Generate ElevenLabs voiceover per scene
   if (!ELEVENLABS_KEY) throw new Error('ELEVENLABS_API_KEY must be set');
   process.stdout.write('  Generating voiceovers');
@@ -442,6 +446,7 @@ export async function processSite(site, { dryRun, localOnly = false }) {
     durationSeconds: Math.round(renderedDuration),
     costUsd: 0,
   };
+  /* c8 ignore stop */
 }
 
 // ─── runVideoStage ────────────────────────────────────────────────────────────
@@ -487,6 +492,7 @@ export async function runVideoStage(options = {}) {
     return { processed: 0, created: 0, errors: 0 };
   }
 
+  /* c8 ignore start — per-site processing loop: requires ElevenLabs + ffmpeg + R2 */
   console.log(`Video stage: ${sites.length} site(s) to process${dryRun ? ' [dry-run]' : ''}\n`);
 
   let created = 0;
@@ -519,6 +525,7 @@ export async function runVideoStage(options = {}) {
 
   console.log(`\nDone: ${created} created, ${errors} errors`);
   return { processed: sites.length, created, errors };
+  /* c8 ignore stop */
 }
 
 // ─── CLI ──────────────────────────────────────────────────────────────────────
@@ -529,6 +536,7 @@ export { toBase62, buildPosterFromBuffer };
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]);
 
+/* c8 ignore start — CLI entry point */
 if (isMain) {
   const { values: args } = parseArgs({
     options: {
@@ -550,3 +558,4 @@ if (isMain) {
     process.exit(1);
   });
 }
+/* c8 ignore stop */

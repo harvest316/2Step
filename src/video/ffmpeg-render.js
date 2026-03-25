@@ -32,6 +32,7 @@ const DEFAULT_VARIANT = STYLE_VARIANTS[0];
 /**
  * Download a URL to a local file. Returns the file path.
  */
+/* c8 ignore start — network I/O */
 async function downloadToFile(url, destPath) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Download failed ${res.status}: ${url}`);
@@ -39,11 +40,13 @@ async function downloadToFile(url, destPath) {
   await writeFile(destPath, buf);
   return destPath;
 }
+/* c8 ignore stop */
 
 /**
  * Return a local path for a clip URL, downloading it to clips/ if not already cached.
  * clips/ is gitignored — large binaries not tracked in git.
  */
+/* c8 ignore start — filesystem cache + network I/O */
 async function localClipPath(url) {
   const filename = url.split('/').pop();
   const localPath = join(CLIPS_DIR, filename);
@@ -58,6 +61,7 @@ async function localClipPath(url) {
     return localPath;
   }
 }
+/* c8 ignore stop */
 
 /**
  * Escape text for ffmpeg drawtext filter.
@@ -201,6 +205,7 @@ function buildVideoFilterChain({ clips, scenes, clipInputStart, variant, starts 
  * @param {boolean} [opts.watermark=false]                       - Add semi-transparent "auditandfix.com" watermark (bottom-right)
  * @returns {Promise<{path: string, duration: number}>}
  */
+/* c8 ignore start — ffmpeg subprocess + network/filesystem I/O */
 export async function renderVideo({
   clips,
   audioBufs,
@@ -416,6 +421,12 @@ export async function renderVideo({
  * Extract a poster frame from a video at a given timestamp using ffmpeg.
  * Returns the frame as a JPEG buffer.
  */
+/* c8 ignore stop */
+
+// ── Test-visible exports for pure helper functions ───────────────────────
+export { escapeDrawtext, wordWrap, buildDrawtext, buildVideoFilterChain, W, H, DEJAVU_FONT };
+
+/* c8 ignore start — ffmpeg subprocess I/O */
 export async function extractPosterFrame(videoPath, timestampSec = 2) {
   const tmpPoster = videoPath.replace(/\.mp4$/, '-poster.jpg');
   await execFileAsync('ffmpeg', [
@@ -430,3 +441,4 @@ export async function extractPosterFrame(videoPath, timestampSec = 2) {
   await rm(tmpPoster, { force: true }).catch(() => {});
   return buf;
 }
+/* c8 ignore stop */
