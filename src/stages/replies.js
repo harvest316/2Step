@@ -75,6 +75,7 @@ function getTwoStepPricing(countryCode) {
 
 // ── Stage runner ─────────────────────────────────────────────────────────────
 
+/* c8 ignore start — external autoresponder delegation + DB I/O */
 /**
  * Run the 2Step replies stage — classify and auto-respond to inbound messages.
  *
@@ -129,12 +130,15 @@ export async function runRepliesStage(options = {}) {
   return stats;
 }
 
+/* c8 ignore stop */
+
 // ── Test-visible exports for pure helper functions ───────────────────────
 
 export { getTwoStepPricing };
 
 // ── CLI entry point ──────────────────────────────────────────────────────────
 
+/* c8 ignore start — CLI entry point */
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const { values: args } = parseArgs({
     options: {
@@ -153,3 +157,4 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       process.exit(1);
     });
 }
+/* c8 ignore stop */

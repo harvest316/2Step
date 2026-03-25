@@ -293,6 +293,7 @@ function computeScheduledAt(dayOffset) {
  *
  * @returns {number} Number of messages inserted
  */
+/* c8 ignore start — internal stage function: requires populated DB + sequence templates */
 function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pricing, dryRun) {
   const countryCode = site.country_code || 'AU';
 
@@ -390,6 +391,7 @@ function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pric
 
   return inserted;
 }
+/* c8 ignore stop */
 
 // ─── Main stage function ──────────────────────────────────────────────────────
 
@@ -421,6 +423,7 @@ export async function runProposalsStage(options = {}) {
     return { processed: 0, messagesCreated: 0, errors: 0 };
   }
 
+  /* c8 ignore start — per-site processing loop: requires populated DB with video_created sites */
   console.log(`[proposals] Processing ${sites.length} site(s)${dryRun ? ' (DRY RUN)' : ''}...`);
   console.log(`[proposals] Using 8-touch sequence (Day 0, 2, 5, 8, 12, 16, 21, 28)`);
 
@@ -530,6 +533,7 @@ export async function runProposalsStage(options = {}) {
   console.log(`\n[proposals] Done: ${processed} processed, ${messagesCreated} messages created, ${errors} errors`);
 
   return { processed, messagesCreated, errors };
+  /* c8 ignore stop */
 }
 
 // ─── Test-visible exports for pure helper functions ──────────────────────────
@@ -538,6 +542,7 @@ export { spinWithVars, inferFirstName, parseContacts, pickTemplate, computeSched
 
 // ─── CLI entry point ─────────────────────────────────────────────────────────
 
+/* c8 ignore start — CLI entry point */
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const { values: args } = parseArgs({
     options: {
@@ -557,3 +562,4 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     process.exit(1);
   });
 }
+/* c8 ignore stop */

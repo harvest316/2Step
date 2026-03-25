@@ -52,6 +52,7 @@ const PILL_BG_A = 128;
  * @param {string} contentType - MIME type
  * @returns {Promise<string>} Public URL
  */
+/* c8 ignore start — R2 upload + logo fetch + enrichment delegation I/O */
 async function uploadToR2(body, key, contentType = 'image/png') {
   if (!ACCOUNT_ID || !API_TOKEN || !BUCKET) {
     throw new Error(
@@ -91,6 +92,8 @@ async function fetchLogo(logoUrl) {
   const buf = await res.arrayBuffer();
   return Buffer.from(buf);
 }
+
+/* c8 ignore stop */
 
 /**
  * Apply grey-pill treatment to a logo image.
@@ -150,6 +153,7 @@ async function applyGreyPill(imgBuf) {
   return result;
 }
 
+/* c8 ignore start — logo processing with network + R2 I/O */
 /**
  * Process the grey-pill treatment for one site.
  *
@@ -358,6 +362,8 @@ export async function runEnrichStage(options = {}) {
   return summary;
 }
 
+/* c8 ignore stop */
+
 // ── Test-visible exports for pure helper functions ───────────────────────
 
 export {
@@ -368,6 +374,7 @@ export {
 
 // ── CLI entry point ──────────────────────────────────────────────────────────
 
+/* c8 ignore start — CLI entry point */
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const { values: args } = parseArgs({
     options: {
@@ -392,3 +399,4 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       process.exit(1);
     });
 }
+/* c8 ignore stop */

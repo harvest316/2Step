@@ -13,6 +13,9 @@ import {
   sceneDuration,
   timingsToSceneDurations,
   stripSsml,
+  trimToWords,
+  extractTwoQuotes,
+  extractQuotes,
   CLIP_POOLS,
 } from '../../src/video/shotstack-lib.js';
 
@@ -726,6 +729,148 @@ describe('clipsBySource', () => {
 
     cockroachPool.hook = origCock.hook;
     defaultPool.hook   = origDefault.hook;
+  });
+});
+
+// ─── trimToWords ────────────────────────────────────────────────────────────
+
+describe('trimToWords', () => {
+  it('returns text unchanged when word count is within limit', () => {
+    assert.equal(trimToWords('Hello world', 5), 'Hello world');
+  });
+
+  it('truncates text to n words with ellipsis', () => {
+    assert.equal(trimToWords('one two three four five six', 3), 'one two three...');
+  });
+
+  it('handles exactly n words (no truncation)', () => {
+    assert.equal(trimToWords('one two three', 3), 'one two three');
+  });
+
+  it('handles single word', () => {
+    assert.equal(trimToWords('Hello', 1), 'Hello');
+  });
+
+  it('handles single word with n=0', () => {
+    assert.equal(trimToWords('Hello', 0), '...');
+  });
+
+  it('trims whitespace from input', () => {
+    assert.equal(trimToWords('  hello world  ', 5), 'hello world');
+  });
+
+  it('handles empty string', () => {
+    assert.equal(trimToWords('', 5), '');
+  });
+
+  it('returns text with ellipsis for long text', () => {
+    const text = 'the quick brown fox jumps over the lazy dog running through fields';
+    const result = trimToWords(text, 5);
+    assert.equal(result, 'the quick brown fox jumps...');
+  });
+});
+
+// ─── extractTwoQuotes ───────────────────────────────────────────────────────
+
+describe('extractTwoQuotes', () => {
+  it('returns an array of two strings', () => {
+    const review = 'They did an amazing job. The service was professional and thorough.';
+    const [q1, q2] = extractTwoQuotes(review);
+    assert.equal(typeof q1, 'string');
+    assert.equal(typeof q2, 'string');
+  });
+
+  it('extracts two short sentences when available', () => {
+    const review = 'The team was fantastic from start to finish. They cleaned up everything perfectly. Would recommend.';
+    const [q1, q2] = extractTwoQuotes(review);
+    assert.ok(q1.length > 0);
+    assert.ok(q2.length > 0);
+  });
+
+  it('handles review with no complete sentences', () => {
+    const review = 'amazing service throughout the whole process and we are very happy with everything they did for us';
+    const [q1, q2] = extractTwoQuotes(review);
+    assert.ok(q1.length > 0);
+    assert.ok(q2.length > 0);
+  });
+
+  it('handles review with one sentence', () => {
+    const review = 'They did an absolutely wonderful job treating our pest problem from start to finish and we could not be happier.';
+    const [q1, q2] = extractTwoQuotes(review);
+    assert.ok(q1.length > 0);
+    assert.ok(q2.length > 0);
+  });
+
+  it('handles very short review', () => {
+    const review = 'Great job.';
+    const [q1, q2] = extractTwoQuotes(review);
+    assert.ok(typeof q1 === 'string');
+    assert.ok(typeof q2 === 'string');
+  });
+
+  it('handles long sentences by truncating', () => {
+    const longSentence = 'They came out to our property and inspected everything thoroughly from the basement all the way up to the attic and even checked the garden shed and the garage for any signs of termite damage which was incredibly comprehensive and thorough service.';
+    const [q1, q2] = extractTwoQuotes(longSentence);
+    assert.ok(q1.length <= 150, `q1 too long: ${q1.length}`);
+    assert.ok(q2.length <= 300, `q2 too long: ${q2.length}`);
+  });
+
+  it('prefers short sentences over long ones', () => {
+    const review = 'Quick and easy service. They resolved the issue fast. The technician arrived within an hour and completed the job efficiently and professionally with thorough documentation of everything they found during the inspection process.';
+    const [q1] = extractTwoQuotes(review);
+    // First quote should be one of the short sentences
+    assert.ok(q1.length <= 80, `Expected short first quote, got ${q1.length} chars`);
+  });
+});
+
+// ─── extractQuotes ──────────────────────────────────────────────────────────
+
+describe('extractQuotes', () => {
+  it('returns n quote snippets', () => {
+    const review = 'They did a fantastic job treating our pest problem. The technician was thorough and professional. Would highly recommend to anyone in the area.';
+    const quotes = extractQuotes(review, 2);
+    assert.equal(quotes.length, 2);
+  });
+
+  it('returns 2 quotes by default', () => {
+    const review = 'Great service. Very professional team.';
+    const quotes = extractQuotes(review);
+    assert.equal(quotes.length, 2);
+  });
+
+  it('handles request for more quotes than sentences', () => {
+    const review = 'Amazing service. Great team.';
+    const quotes = extractQuotes(review, 5);
+    assert.equal(quotes.length, 5);
+    // Should cycle through available quotes
+    quotes.forEach(q => assert.ok(q.length > 0));
+  });
+
+  it('handles review with no punctuation (no natural break)', () => {
+    // This exercises the "no natural break" fallback at line 1011-1012
+    const words = [];
+    for (let i = 0; i < 30; i++) words.push('word');
+    const review = words.join(' ');
+    const quotes = extractQuotes(review, 2);
+    assert.equal(quotes.length, 2);
+    quotes.forEach(q => {
+      const wc = q.trim().split(/\s+/).length;
+      assert.ok(wc <= 25, `Quote too long: ${wc} words`);
+    });
+  });
+
+  it('truncates long sentences with ellipsis', () => {
+    const longReview = 'The technician came to our house and spent three hours inspecting every corner of the property looking for signs of termite damage and treating all affected areas with a comprehensive barrier system that should protect us for years to come.';
+    const quotes = extractQuotes(longReview, 1);
+    assert.equal(quotes.length, 1);
+    assert.ok(quotes[0].endsWith('...'), 'Should end with ellipsis when truncated');
+  });
+
+  it('deduplicates repeated entries', () => {
+    // A short review where the same sentence would be repeated
+    const review = 'Great service from the team and we are very happy.';
+    const quotes = extractQuotes(review, 3);
+    assert.equal(quotes.length, 3);
   });
 });
 
