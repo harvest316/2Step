@@ -532,6 +532,10 @@ export async function runProposalsStage(options = {}) {
   return { processed, messagesCreated, errors };
 }
 
+// ─── Test-visible exports for pure helper functions ──────────────────────────
+
+export { spinWithVars, inferFirstName, parseContacts, pickTemplate, computeScheduledAt, formatPrice };
+
 // ─── CLI entry point ─────────────────────────────────────────────────────────
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {

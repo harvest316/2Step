@@ -358,6 +358,14 @@ export async function runEnrichStage(options = {}) {
   return summary;
 }
 
+// ── Test-visible exports for pure helper functions ───────────────────────
+
+export {
+  applyGreyPill,
+  PILL_MAX_W, PILL_MAX_H, PILL_RADIUS,
+  PILL_BG_R, PILL_BG_G, PILL_BG_B, PILL_BG_A,
+};
+
 // ── CLI entry point ──────────────────────────────────────────────────────────
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {

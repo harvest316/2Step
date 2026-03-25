@@ -574,6 +574,10 @@ export async function runReviewsStage(options = {}) {
   return totals;
 }
 
+// ── Test-visible exports for pure helper functions ───────────────────────
+
+export { buildQueryFromCriteria, makeSemaphore, extractSocials, scoreReview, loadReviewCriteria };
+
 // ─── CLI entry point ──────────────────────────────────────────────────────────
 
 if (process.argv[1].endsWith('reviews.js')) {
