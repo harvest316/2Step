@@ -2,63 +2,52 @@
   "_comment": [
     "Outscraper reviewsQuery search terms for pest-control in AU.",
     "Only problems with video clip pools are included here.",
-    "CONFIRMED matching behaviour (tested 2026-03-25):",
-    "  - Substring matching: 'roach' matches 'cockroach' AND 'roach' standalone.",
-    "    'cockroach' is therefore redundant but harmless (OR logic, no extra cost).",
-    "  - Quoted phrases DO NOT work — '\"rat infestation\"' returns 0 results.",
-    "    Outscraper strips or ignores quotes. Do not use quoted phrases.",
-    "  - Bare ambiguous stems are risky: 'rat' matches nothing here but could match",
-    "    'grateful', 'brat' etc. Use multi-word terms instead (e.g. 'rat infestation').",
-    "When building the search query, terms from ALL problems are concatenated (OR logic).",
+    "CONFIRMED matching behaviour (tested 2026-03-25, DR-092):",
+    "  - WHOLE-WORD matching: 'roach' does NOT match 'cockroach'. Include both.",
+    "  - Multi-word terms = phrase/AND match: 'rat infestation' returns 0 even",
+    "    when 'rat' and 'infestation' return results separately. Use SINGLE WORDS.",
+    "  - Commas = spaces (no special behaviour). Quotes stripped/ignored.",
+    "  - Word-boundary safe: 'rat' matches 'rat' but NOT 'grateful' or 'brat'.",
+    "All terms from ALL problems are concatenated (Outscraper implicit OR).",
     "The winning problem is determined client-side by keyword hit count."
   ],
   "problems": {
     "cockroaches": {
       "clip_pool": "cockroaches",
       "query_terms": [
+        "cockroach",
+        "cockroaches",
         "roach",
-        "german cockroach",
-        "cockroach infestation",
-        "cockroach treatment"
+        "roaches"
       ]
     },
     "termites": {
       "clip_pool": "termites",
       "query_terms": [
         "termite",
-        "white ant",
-        "termite inspection",
-        "termite damage",
-        "termite nest",
-        "termite treatment",
-        "termite barrier"
+        "termites"
       ]
     },
     "spiders": {
       "clip_pool": "spiders",
       "query_terms": [
         "spider",
+        "spiders",
         "redback",
-        "funnel web",
-        "huntsman",
-        "white tail",
-        "spider infestation",
-        "spider treatment"
+        "huntsman"
       ]
     },
     "rodents": {
       "clip_pool": "rodents",
       "query_terms": [
-        "rodent",
-        "mice",
+        "rat",
+        "rats",
         "mouse",
+        "mice",
+        "rodent",
+        "rodents",
         "possum",
-        "rat infestation",
-        "rat in the roof",
-        "rat in roof",
-        "rat problem",
-        "rat trap",
-        "rat bait"
+        "possums"
       ]
     }
   }
