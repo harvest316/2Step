@@ -1,38 +1,30 @@
 {
   "_comment": [
     "Outscraper reviewsQuery search terms for plumber in UK.",
-    "UK-specific terms added: boiler (common in UK, uncommon in AU/US).",
-    "Spelling variants: recognised vs recognized — use both where relevant."
+    "UK-specific: includes boiler terms (uncommon in AU/US).",
+    "Single words only — multi-word phrases are treated as AND (DR-092)."
   ],
   "problems": {
     "blocked-drain": {
       "clip_pool": "blocked-drain",
       "query_terms": [
-        "blocked drain",
-        "blocked drains",
-        "clogged drain",
-        "drain blocked",
-        "blocked pipe",
-        "drain clearing",
-        "drain unblocking",
-        "slow drain",
-        "overflowing drain"
+        "blocked",
+        "clogged",
+        "drain",
+        "drains",
+        "sewer",
+        "unblocking",
+        "overflowing"
       ]
     },
     "boiler": {
       "clip_pool": "blocked-drain",
-      "_comment": "No boiler clip pool yet — falls back to blocked-drain. Replace clip_pool when boiler clips are generated.",
+      "_comment": "No boiler clip pool yet — falls back to blocked-drain. Replace when boiler clips generated.",
       "query_terms": [
         "boiler",
-        "boiler repair",
-        "boiler service",
-        "boiler installation",
-        "boiler breakdown",
-        "central heating",
-        "no heating",
+        "heating",
         "radiator",
-        "combi boiler",
-        "gas boiler"
+        "combi"
       ]
     }
   }
