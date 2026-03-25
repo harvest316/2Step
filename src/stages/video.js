@@ -523,6 +523,10 @@ export async function runVideoStage(options = {}) {
 
 // ─── CLI ──────────────────────────────────────────────────────────────────────
 
+// ── Test-visible exports for pure helper functions ───────────────────────
+
+export { toBase62, buildPosterFromBuffer };
+
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1]);
 
 if (isMain) {

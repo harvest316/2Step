@@ -217,48 +217,9 @@ describe('parseContacts', () => {
 
 // ─── Template file structure ──────────────────────────────────────────────────
 
-describe('AU email templates (legacy)', () => {
-  const templatePath = resolve(root, 'data/templates/AU/email.json');
-
-  it('AU/email.json file exists and is valid JSON', () => {
-    let data;
-    assert.doesNotThrow(() => {
-      data = JSON.parse(readFileSync(templatePath, 'utf-8'));
-    });
-    assert.ok(data, 'parsed data should be truthy');
-  });
-
-  it('has a non-empty templates array', () => {
-    const { templates } = JSON.parse(readFileSync(templatePath, 'utf-8'));
-    assert.ok(Array.isArray(templates) && templates.length > 0);
-  });
-
-  it('each template has required spintax fields', () => {
-    const { templates } = JSON.parse(readFileSync(templatePath, 'utf-8'));
-    const required = [
-      'id', 'body_spintax', 'subject_spintax',
-      'followup1_body_spintax', 'followup2_body_spintax',
-    ];
-    for (const tpl of templates) {
-      for (const field of required) {
-        assert.ok(
-          typeof tpl[field] === 'string' && tpl[field].length > 0,
-          `Template ${tpl.id} is missing field: ${field}`
-        );
-      }
-    }
-  });
-
-  it('each template body_spintax contains [video_url] placeholder', () => {
-    const { templates } = JSON.parse(readFileSync(templatePath, 'utf-8'));
-    for (const tpl of templates) {
-      assert.ok(
-        tpl.body_spintax.includes('[video_url]'),
-        `Template ${tpl.id} body_spintax should contain [video_url]`
-      );
-    }
-  });
-});
+// NOTE: AU/email.json (legacy single-template format) was replaced by
+// the 8-touch sequence.json format. Legacy tests removed — sequence
+// template validation below covers the current format.
 
 describe('AU SMS templates (legacy)', () => {
   const templatePath = resolve(root, 'data/templates/AU/sms.json');
@@ -328,13 +289,20 @@ for (const cc of COUNTRIES) {
       assert.equal(data.touches[4].channel, 'sms', 'Touch 5 should be sms');
     });
 
-    it('every touch has body_spintax containing [video_url]', () => {
+    it('every touch references the video: SMS uses [video_url], email uses [poster]', () => {
       const data = JSON.parse(readFileSync(seqPath, 'utf-8'));
       for (const touch of data.touches) {
-        assert.ok(
-          touch.body_spintax.includes('[video_url]'),
-          `Touch ${touch.step} (${touch.id}) body_spintax should contain [video_url]`
-        );
+        if (touch.channel === 'sms') {
+          assert.ok(
+            touch.body_spintax.includes('[video_url]'),
+            `SMS touch ${touch.step} (${touch.id}) body_spintax should contain [video_url]`
+          );
+        } else {
+          assert.ok(
+            touch.body_spintax.includes('[poster]'),
+            `Email touch ${touch.step} (${touch.id}) body_spintax should contain [poster]`
+          );
+        }
       }
     });
 

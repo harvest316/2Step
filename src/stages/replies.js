@@ -129,6 +129,10 @@ export async function runRepliesStage(options = {}) {
   return stats;
 }
 
+// ── Test-visible exports for pure helper functions ───────────────────────
+
+export { getTwoStepPricing };
+
 // ── CLI entry point ──────────────────────────────────────────────────────────
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
