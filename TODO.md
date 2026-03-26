@@ -2,22 +2,43 @@
 
 ## Pending
 
-### Generate videos for remaining pest control prospects
-All 15 pest control prospects now have pest-specific reviews. Run:
-```
-node src/video/prompt-generator.js --tool creatomate
-node src/video/creatomate.js --dry-run   # verify
-node src/video/creatomate.js
-```
+### Generate Kling clips — MEDIUM priority problems
+Prompts written in `kling-batch-round9.js` (removed before commit). Re-add and run when credits available.
+
+Each needs 5 hook + 5 treatment clips = 10 clips × 8 credits = 80 credits per problem.
+
+**Pest control:**
+- `ant` — common in AU (fire ants, carpenter ants, kitchen trails)
+- `bed-bug` — common in urban areas
+
+**Plumbing:**
+- `gas-fitting` — gas hot water systems, cooktops, gas leaks
+
+**House cleaning:**
+- `carpet-floor` — steam cleaning, tile/grout, timber polishing
+
+**Also:** 5th clip (e variant) for each HIGH priority pool once they're proven:
+possum-hook-e, possum-treatment-e, general-pest-hook-e, general-pest-treatment-e,
+toilet-hook-e, toilet-treatment-e, regular-clean-hook-e, regular-clean-treatment-e
+
+Total: ~400 credits for all medium + 5th variants
+
+### Wire new clip pools into CLIP_POOLS + review-criteria
+After round 9 clips are generated:
+1. Add `possum`, `general-pest`, `toilet`, `regular-clean` entries to `CLIP_POOLS` in `shotstack-lib.js`
+2. Add Outscraper search terms to `data/review-criteria/AU/*.json`
+3. Add `PROBLEM_SHARED_POOL` mappings
+4. Add `NICHE_ALIASES` entries where needed
+5. Update `buildScenes()` hook text for new problems
 
 ### Plumber + house cleaning verticals (prospects 17–37)
 Still at `found` status — no logos, no videos queued. When ready to expand:
 1. Run logo scraper / prompt-generator for these prospects
 2. Generate Kling clips for any missing plumber/cleaning sub-niches
-3. Queue creatomate renders
+3. Queue video renders
 
-### Generic clips (future, if needed)
-If future prospect imports produce reviews with no detectable pest keyword
-(unlikely now that `outscraper.js` scores keyword reviews 1000pts higher),
-generate ~10 generic pest clips (~80 Kling credits) and expand `detectPestFromReview`
-to return `'generic-pest'` as a fallback pool key.
+### Video quality fixes
+- Quote selection: sentences starting with subordinate clauses still pass occasionally
+- CTA slide subtitle: remove business name when logo is present on that scene
+- Voiceover rising intonation on exclamation sentences — consider SSML break
+- Short reviews (sites 1, 3, 6, 8): re-fetch longer reviews from Outscraper

@@ -865,7 +865,6 @@ export function pestLabel(problem) {
 
 // Maps problem slug → shared pool key for technician/resolution/cta
 const PROBLEM_SHARED_POOL = {
-  'possums':         'shared',     // no possum clip pool — uses rodents clips via NICHE_ALIASES fallback
   'cockroaches':     'shared',
   'rodents':         'shared',
   'spiders':         'shared',
@@ -894,9 +893,7 @@ export function pickClipsFromPool(niche, seed = 0, reviewText = '') {
   const aliased = NICHE_ALIASES[niche];
   const problem = detected ?? (aliased !== null ? aliased : null) ?? niche;
   if (!problem) return null; // caller should surface this as an error
-  // Possum uses rodents clips (closest visual match — no possum-specific clips yet)
-  const CLIP_POOL_ALIASES = { 'possums': 'rodents' };
-  const problemPool = CLIP_POOLS[CLIP_POOL_ALIASES[problem] || problem];
+  const problemPool = CLIP_POOLS[problem];
   const sharedKey   = PROBLEM_SHARED_POOL[problem];
   const sharedPool  = sharedKey ? CLIP_POOLS[sharedKey] : null;
   const defaultPool = CLIP_POOLS.default;
