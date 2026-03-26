@@ -4,12 +4,13 @@
     "Only problems with video clip pools are included here.",
     "CONFIRMED matching behaviour (tested 2026-03-25, DR-092):",
     "  - WHOLE-WORD matching: 'roach' does NOT match 'cockroach'. Include both.",
-    "  - Multi-word terms = phrase/AND match: 'rat infestation' returns 0 even",
-    "    when 'rat' and 'infestation' return results separately. Use SINGLE WORDS.",
+    "  - Multi-word terms = phrase/AND match. Use SINGLE WORDS only.",
     "  - Commas = spaces (no special behaviour). Quotes stripped/ignored.",
     "  - Word-boundary safe: 'rat' matches 'rat' but NOT 'grateful' or 'brat'.",
     "All terms from ALL problems are concatenated (Outscraper implicit OR).",
-    "The winning problem is determined client-side by keyword hit count."
+    "The winning problem is determined client-side by keyword hit count.",
+    "NOTE: possum is a marsupial, not a rodent. Separate problem entry mapping",
+    "to rodents clip pool (closest visual match) until possum clips are generated."
   ],
   "problems": {
     "cockroaches": {
@@ -45,7 +46,13 @@
         "mouse",
         "mice",
         "rodent",
-        "rodents",
+        "rodents"
+      ]
+    },
+    "possums": {
+      "clip_pool": "rodents",
+      "_comment": "No possum clip pool yet — using rodents as closest visual match.",
+      "query_terms": [
         "possum",
         "possums"
       ]

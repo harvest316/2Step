@@ -1,8 +1,8 @@
 {
   "_comment": [
     "Outscraper reviewsQuery search terms for house-cleaning in AU.",
-    "Only problems with video clip pools are included.",
-    "Single words only — multi-word phrases are treated as AND (DR-092)."
+    "All 4 cleaning problem clip pools covered.",
+    "Single words only — multi-word = phrase/AND match (DR-092)."
   ],
   "problems": {
     "greasy-rangehood": {
@@ -17,6 +17,32 @@
         "cooktop"
       ]
     },
+    "dirty-bathroom": {
+      "clip_pool": "dirty-bathroom",
+      "query_terms": [
+        "bathroom",
+        "toilet",
+        "shower",
+        "bathtub",
+        "tiles",
+        "grout",
+        "mould",
+        "mold",
+        "ensuite"
+      ]
+    },
+    "end-of-lease": {
+      "clip_pool": "end-of-lease",
+      "query_terms": [
+        "lease",
+        "bond",
+        "vacate",
+        "moving",
+        "landlord",
+        "tenant",
+        "inspection"
+      ]
+    },
     "deep-clean": {
       "clip_pool": "deep-clean",
       "query_terms": [
@@ -24,8 +50,7 @@
         "thorough",
         "spotless",
         "immaculate",
-        "bond",
-        "lease"
+        "spring"
       ]
     }
   }
