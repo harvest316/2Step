@@ -131,7 +131,7 @@ export function buildScenes(prospect) {
   const cityRaw   = prospect.city || 'Sydney';  // display text (subtitle)
   const city      = applyPhonetics(cityRaw, cityRaw); // voiceover pronunciation
   const niche     = (prospect.niche || '').toLowerCase();
-  const reviewer = toTitleCase(prospect.best_review_author || 'a local');
+  const reviewer = cleanReviewerName(prospect.best_review_author);
   const review   = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
   const phone    = prospect.phone || null;
   const rating   = prospect.google_rating ? Math.round(prospect.google_rating) : 5;
@@ -957,7 +957,39 @@ export function businessName(raw) {
 }
 
 export function toTitleCase(str) {
-  return (str || '').replace(/\b\w/g, c => c.toUpperCase());
+  return (str || '')
+    .toLowerCase()
+    .replace(/(?:^|\s)\w/g, c => c.toUpperCase());  // uppercase after whitespace only (not after ')
+}
+
+/**
+ * Clean a Google reviewer name for display.
+ * Handles: "Trillian'S Mouse" → "Trillian Mouse", "JOHN DOE" → "John Doe",
+ * "jane d." → "Jane D", trailing periods, double spaces, possessive artifacts.
+ */
+export function cleanReviewerName(raw) {
+  if (!raw) return 'a local';
+  let name = raw.trim();
+  // Remove possessive 's that Google sometimes injects ("Trillian'S")
+  // But preserve legitimate names like "O'Brien" (lowercase after apostrophe)
+  name = name.replace(/'[Ss]\b/g, '');
+  // Remove stray apostrophes left over (but keep mid-word ones like O'Brien)
+  name = name.replace(/'\s/g, ' ');
+  // Normalise casing — only if the name appears to be ALL CAPS or all lowercase.
+  // Leave mixed-case names alone (preserves "McDonald", "O'Brien").
+  // Leave initials alone ("R VM", "N B") — all words ≤2 chars.
+  const words = name.split(/\s+/);
+  const isInitials = words.every(w => w.length <= 2);
+  const isAllUpper = name === name.toUpperCase() && name.length > 2;
+  const isAllLower = name === name.toLowerCase();
+  if ((isAllUpper || isAllLower) && !isInitials) {
+    name = name.toLowerCase().replace(/(?:^|\s)\w/g, c => c.toUpperCase());
+  }
+  // Remove trailing periods ("Jane D." → "Jane D")
+  name = name.replace(/\.\s*$/, '');
+  // Collapse whitespace
+  name = name.replace(/\s{2,}/g, ' ').trim();
+  return name || 'a local';
 }
 
 /**
@@ -991,7 +1023,19 @@ export function toTitleCase(str) {
 const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
 
 export function extractQuotes(review, n = 2) {
-  const sentences = (review.match(/[^.!?]+[.!?]+/g) || [review])
+  // Pre-process: expand parenthetical abbreviations that contain periods
+  // "(incl. rust stain removal)" → "including rust stain removal"
+  let cleaned = review
+    .replace(/\(incl\.\s*/gi, 'including ')
+    .replace(/\(e\.g\.\s*/gi, 'for example ')
+    .replace(/\(i\.e\.\s*/gi, 'that is ')
+    .replace(/\(approx\.\s*/gi, 'approximately ')
+    // Remove any remaining unmatched opening parens (prevents mid-paren splits)
+    .replace(/\([^)]*$/gm, '')
+    // Strip parentheses entirely — content stays, brackets go
+    .replace(/[()]/g, '');
+
+  const sentences = (cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned])
     .map(s => s.trim())
     .filter(s => s.length >= 15)
     .filter(s => !DANGLING_OPENERS.test(s));  // reject mid-thought continuations
