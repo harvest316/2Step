@@ -131,10 +131,13 @@ export function buildScenes(prospect) {
   const cityRaw   = prospect.city || 'Sydney';  // display text (subtitle)
   const city      = applyPhonetics(cityRaw, cityRaw); // voiceover pronunciation
   const niche     = (prospect.niche || '').toLowerCase();
-  const reviewer = cleanReviewerName(prospect.best_review_author);
-  const review   = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
-  const phone    = prospect.phone || null;
-  const rating   = prospect.google_rating ? Math.round(prospect.google_rating) : 5;
+  const reviewer  = cleanReviewerName(prospect.best_review_author);
+  const rawReview = (prospect.best_review_text || '').replace(/\s+/g, ' ').trim();
+  const review    = cleanReviewText(rawReview) || rawReview;  // clean, fall back to raw if spam-detected
+  const phoneRaw  = prospect.phone || null;
+  const phone     = formatPhoneNational(phoneRaw);  // national display format
+  const phoneTTS  = formatPhoneTTS(phone);           // spelled-out for voiceover
+  const rating    = prospect.google_rating ? Math.round(prospect.google_rating) : 5;
   const starsText = `${rating} Star${rating === 1 ? '' : 's'}`;
   const starsVoiceover = ['', 'One star', 'Two stars', 'Three stars', 'Four stars', 'Five stars'][rating] || `${rating} stars`;
 
@@ -142,29 +145,32 @@ export function buildScenes(prospect) {
   // Use problem_category if available (matches actual clip pool used at render time)
   let hookText, hookVoiceover;
   if (niche === 'plumber' || niche === 'plumbing') {
-    const poolKey = prospect.problem_category || niche;
-    const clips = pickClipsFromPool(poolKey, 0, review);
-    const problemPool = clips?.[0]?.url.split('/').pop().replace(/-hook.*/, '') || 'blocked-drain';
+    // Detect specific plumbing problem from review text (like pest detection)
+    const detected = detectPlumbingProblem(review);
+    const poolKey = prospect.problem_category || detected || 'blocked-drain';
     const plumbingLabels = {
       'blocked-drain': 'a blocked drain',
       'burst-pipe':    'a burst pipe',
       'leaking-tap':   'a leaking tap',
       'hot-water':     'hot water issues',
+      'toilet':        'a toilet problem',
+      'gas-fitting':   'a gas fitting issue',
     };
-    const problem = plumbingLabels[problemPool] || 'a plumbing problem';
+    const problem = plumbingLabels[poolKey] || 'a plumbing problem';
     hookText      = `Got ${problem} in ${cityRaw}?`;
     hookVoiceover = `Got ${problem} in ${city}?`;
   } else if (niche.includes('cleaning') || niche.includes('cleaner')) {
-    const poolKey = prospect.problem_category || niche;
-    const clips = pickClipsFromPool(poolKey, 0, review);
-    const problemPool = clips?.[0]?.url.split('/').pop().replace(/-hook.*/, '') || 'deep-clean';
+    const detected = detectCleaningProblem(review);
+    const poolKey = prospect.problem_category || detected || 'deep-clean';
     const cleaningLabels = {
       'greasy-rangehood': 'your rangehood cleaned',
       'dirty-bathroom':   'your bathroom deep-cleaned',
       'end-of-lease':     'an end-of-lease clean',
       'deep-clean':       'a deep clean',
+      'regular-clean':    'a regular clean',
+      'carpet-floor':     'your carpets cleaned',
     };
-    const problem = cleaningLabels[problemPool] || 'a professional clean';
+    const problem = cleaningLabels[poolKey] || 'a professional clean';
     hookText      = `Need ${problem} in ${cityRaw}?`;
     hookVoiceover = `Need ${problem} in ${city}?`;
   } else {
@@ -186,7 +192,7 @@ export function buildScenes(prospect) {
     ? (phone ? `Call ${phone}` : `Free Inspection`)
     : (phone ? `${name}\nCall ${phone}` : `${name}\nFree Inspection`);
   const ctaVoiceover = phone
-    ? `Call ${phone} or reply YES to schedule your free inspection.`
+    ? `Call ${phoneTTS} or reply YES to schedule your free inspection.`
     : `Reply YES or visit "${name}" to schedule your free inspection.`;
 
   return [
@@ -857,6 +863,56 @@ export function detectPestFromReview(reviewText) {
 }
 
 /**
+ * Detect specific cleaning problem from review text.
+ * Returns a clip pool key or null.
+ */
+export function detectCleaningProblem(reviewText) {
+  const t = reviewText.toLowerCase();
+  const score = (patterns) => {
+    let n = 0;
+    for (const p of patterns) { const m = t.match(new RegExp(p, 'g')); if (m) n += m.length; }
+    return n;
+  };
+
+  const counts = {
+    'greasy-rangehood': score([/rangehood/, /oven/, /stovetop/, /cooktop/, /greasy/, /grease/]),
+    'dirty-bathroom':   score([/bathroom/, /toilet/, /shower/, /bathtub/, /grout/, /mould/, /mold/]),
+    'end-of-lease':     score([/lease/, /bond/, /vacate/, /moving out/, /landlord/]),
+    'deep-clean':       score([/deep clean/, /spring clean/, /thorough/, /spotless/, /immaculate/]),
+    'regular-clean':    score([/weekly/, /fortnightly/, /regular/, /scheduled/, /recurring/]),
+    'carpet-floor':     score([/carpet/, /floor/, /steam clean/, /timber/, /grout/]),
+  };
+
+  const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return best[1] > 0 ? best[0] : null;
+}
+
+/**
+ * Detect specific plumbing problem from review text.
+ * Returns a CLIP_POOLS key if found, otherwise null (falls back to 'blocked-drain').
+ */
+export function detectPlumbingProblem(reviewText) {
+  const t = reviewText.toLowerCase();
+  const score = (patterns) => {
+    let n = 0;
+    for (const p of patterns) { const m = t.match(new RegExp(p, 'g')); if (m) n += m.length; }
+    return n;
+  };
+
+  const counts = {
+    'blocked-drain': score([/blocked drain/, /blocked pipe/, /clogged drain/, /\bdrain\b/, /sewer/, /unblocking/]),
+    'burst-pipe':    score([/burst pipe/, /burst/, /flood/, /emergency plumb/]),
+    'leaking-tap':   score([/leak/, /drip/, /\btap\b/, /\btaps\b/, /faucet/]),
+    'hot-water':     score([/hot water/, /heater/, /boiler/, /rheem/, /rinnai/]),
+    'toilet':        score([/toilet/, /cistern/, /flush/, /blocked toilet/]),
+    'gas-fitting':   score([/\bgas\b/, /gas fit/, /cooktop/, /gas leak/]),
+  };
+
+  const best = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return best[1] > 0 ? best[0] : null;
+}
+
+/**
  * Human-readable pest label for voiceover ("termites", "cockroaches", etc.)
  */
 export function pestLabel(problem) {
@@ -970,6 +1026,8 @@ export function toTitleCase(str) {
 export function cleanReviewerName(raw) {
   if (!raw) return 'a local';
   let name = raw.trim();
+  // Strip parenthetical suffixes — "David Kirk (100adventures4u2c)" → "David Kirk"
+  name = name.replace(/\s*\([^)]*\)\s*$/, '');
   // Remove possessive 's that Google sometimes injects ("Trillian'S")
   // But preserve legitimate names like "O'Brien" (lowercase after apostrophe)
   name = name.replace(/'[Ss]\b/g, '');
@@ -991,6 +1049,100 @@ export function cleanReviewerName(raw) {
   name = name.replace(/\s{2,}/g, ' ').trim();
   return name || 'a local';
 }
+
+// ─── Phone formatting ─────────────────────────────────────────────────────────
+
+/**
+ * Format phone to national display format.
+ * +61412931208 → 0412 931 208, +611300319275 → 1300 319 275
+ */
+export function formatPhoneNational(phone) {
+  if (!phone) return phone;
+  const digits = phone.replace(/\s+/g, '');
+  const m = digits.match(/^\+61(\d+)$/);
+  const remainder = m ? m[1] : null;
+  const local = remainder
+    ? (remainder.length === 9 ? '0' + remainder : remainder)
+    : digits;
+  if (local.length === 10 && local.startsWith('04')) {
+    return local.slice(0, 4) + ' ' + local.slice(4, 7) + ' ' + local.slice(7);
+  }
+  if (local.length === 10 && (local.startsWith('13') || local.startsWith('18'))) {
+    return local.slice(0, 4) + ' ' + local.slice(4, 7) + ' ' + local.slice(7);
+  }
+  if (local.length === 10) {
+    return local.slice(0, 2) + ' ' + local.slice(2, 6) + ' ' + local.slice(6);
+  }
+  return local;
+}
+
+/**
+ * Format phone for TTS — spells out digits so ElevenLabs doesn't mispronounce "0" as "zoe".
+ */
+export function formatPhoneTTS(phone) {
+  if (!phone) return phone;
+  const digitWords = { '0': 'zero', '1': 'one', '2': 'two', '3': 'three', '4': 'four',
+    '5': 'five', '6': 'six', '7': 'seven', '8': 'eight', '9': 'nine' };
+  return phone.split(' ').map(group =>
+    group.split('').map(d => digitWords[d] || d).join(' ')
+  ).join(', ');
+}
+
+// ─── Review cleaning ──────────────────────────────────────────────────────────
+
+/**
+ * Clean review text before quote extraction.
+ * Strips emoji, fixes common typos, removes spam patterns.
+ * Returns null if review appears to be spam/AI-generated.
+ */
+export function cleanReviewText(text) {
+  if (!text) return null;
+  let t = text;
+
+  // Strip emoji (Unicode emoji ranges)
+  t = t.replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu, '');
+  // Strip emoji-style star ratings at start: "⭐️⭐️⭐️ 5/5 —" or "★★★★★"
+  t = t.replace(/^[★⭐️\s]*\d\/\d\s*[—–-]\s*/i, '');
+
+  // Fix common typos (only unambiguous ones)
+  const TYPOS = {
+    'agian': 'again', 'definately': 'definitely', 'reccomend': 'recommend',
+    'recomend': 'recommend', 'proffessional': 'professional', 'accomodation': 'accommodation',
+    'occured': 'occurred', 'seperate': 'separate', 'occassion': 'occasion',
+    'maintainance': 'maintenance', 'definetly': 'definitely', 'definatly': 'definitely',
+  };
+  for (const [wrong, right] of Object.entries(TYPOS)) {
+    t = t.replace(new RegExp(`\\b${wrong}\\b`, 'gi'), right);
+  }
+
+  // Fix double periods
+  t = t.replace(/\.{2,}/g, '.');
+  // Fix space before period/exclamation
+  t = t.replace(/\s+([.!?])/g, '$1');
+
+  // Spam detection: nonsensical word salad specific to known spam patterns.
+  // Keep this list tight — false positives skip legitimate businesses.
+  const spamPatterns = [
+    /radish rainbow row/i,
+    /root raves/i,
+    /buffer-bulb buffers/i,
+    /porch radish/i,
+    /row-rowed leak pipes/i,
+  ];
+  for (const p of spamPatterns) {
+    if (p.test(t)) return null;  // spam detected
+  }
+
+  return t.trim() || null;
+}
+
+// ─── Negative sentiment filter ────────────────────────────────────────────────
+
+/**
+ * Sentences containing negative sentiment that would undermine a positive ad.
+ * These get filtered from quote selection.
+ */
+const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|rip-off|ripoff|wouldn't recommend|not recommend|don't recommend|wasn't happy|wasn't going to be happy|was not happy|disappointed|terrible|horrible|awful|worst|waste of|charged too|not worth|didn't fix|didn't solve|still broken|came back|returned within|not infected|was not infected|weren't found|no .{0,20} found|luckily .{0,30} not)\b/i;
 
 /**
  * Extract up to two short complete-sentence quotes from a review.
@@ -1023,8 +1175,6 @@ export function cleanReviewerName(raw) {
 const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
 
 export function extractQuotes(review, n = 2) {
-  // Pre-process: expand parenthetical abbreviations that contain periods
-  // "(incl. rust stain removal)" → "including rust stain removal"
   let cleaned = review
     .replace(/\(incl\.\s*/gi, 'including ')
     .replace(/\(e\.g\.\s*/gi, 'for example ')
@@ -1038,7 +1188,8 @@ export function extractQuotes(review, n = 2) {
   const sentences = (cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned])
     .map(s => s.trim())
     .filter(s => s.length >= 15)
-    .filter(s => !DANGLING_OPENERS.test(s));  // reject mid-thought continuations
+    .filter(s => !DANGLING_OPENERS.test(s))    // reject mid-thought continuations
+    .filter(s => !NEGATIVE_PATTERNS.test(s));   // reject negative sentiment
   const wc = s => s.trim().split(/\s+/).length;
 
   // Fit a sentence into maxWords — only truncate genuinely long sentences (>22 words).
