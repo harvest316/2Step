@@ -174,10 +174,12 @@ export function buildScenes(prospect) {
     hookText      = `Need ${problem} in ${cityRaw}?`;
     hookVoiceover = `Need ${problem} in ${city}?`;
   } else {
-    // Pest control — detect specific pest; fall back to general-pest if none found
+    // Pest control — detect specific pest from review.
+    // Only name the pest in the hook if we have matching clips for it.
     const pest     = detectPestFromReview(review);
-    const pestWord = pestLabel(pest);
-    if (pest) {
+    const hasClips = pest && CLIP_POOLS[pest]; // wasps/ants/bedbugs won't have pools
+    const pestWord = hasClips ? pestLabel(pest) : null;
+    if (pestWord) {
       hookText      = `Dealing with ${pestWord} in ${cityRaw}?`;
       hookVoiceover = `Dealing with ${pestWord} in ${city}?`;
     } else {
@@ -911,14 +913,17 @@ export function detectPestFromReview(reviewText) {
   };
 
   const counts = {
-    termites:    score([/termite(?!.{0,20}inspection)/]),  // termite mentions NOT followed by "inspection" within 20 chars
+    termites:    score([/termite(?!.{0,20}(inspection|barrier|warranty))/]),  // discount routine/preventive mentions
     cockroaches: score([/cockroach|roach/]),
     spiders:     score([/spider/]),
     rodents:     score([/\brat\b|\brats\b|\bmouse\b|\bmice\b|rodent/]),
     possums:     score([/possum/]),
+    wasps:       score([/wasp/]),
+    ants:        score([/\bant\b|\bants\b|carpenter ant/]),
+    bedbugs:     score([/bed ?bug/]),
   };
 
-  // Fall back to including inspection mentions if no active pest found
+  // Fall back to including routine/preventive termite mentions if no active pest found
   if (Object.values(counts).every(n => n === 0)) {
     counts.termites = score([/termite/]);
   }
@@ -1225,7 +1230,7 @@ const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|
 // Sentence openers that produce weak or confusing standalone subtitles:
 // - mid-thought continuations ("As a...", "From the moment...", "Not only...")
 // - meta-praise openers that don't describe anything specific ("I cannot speak highly enough...")
-const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |however |however,|having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is|gave)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|we (also|later|then)|living in |\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
+const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |however |however,|having |being |after |before |when |once |within |by the end|at the end|despite |although |even though |while |during |throughout |because |because of |thanks to |due to |given that |since then|following |since (the|their|my)|if (the|they|we|you|it|he|she|i )|this (means|is|gave)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|we (also|later|then)|living in |\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
 
 export function extractQuotes(review, n = 2) {
   let cleaned = review
