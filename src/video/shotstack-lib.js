@@ -1251,12 +1251,28 @@ export function extractQuotes(review, n = 2) {
   function fitToMaxWords(s, maxWords = 22) {
     if (wc(s) <= maxWords) return s;
     const words = s.trim().split(/\s+/);
-    // Try to cut at a natural pause: comma, semicolon, conjunction, or before an article
+
+    const cut = (i) => words.slice(0, i).join(' ').replace(/[,;]$/, '') + '...';
+
+    // Scan in priority order — strongest break type first across ALL positions,
+    // then fall back to weaker break types. This ensures "due" at i=11 wins
+    // over "the" at i=19 because subordinate > article.
+
+    // P1: After a comma or semicolon
     for (let i = maxWords; i >= 8; i--) {
-      if (/[,;]$/.test(words[i - 1]) ||
-          /^(and|but|so|though|when|while|after|before|the|a|an|including|with)$/i.test(words[i])) {
-        return words.slice(0, i).join(' ').replace(/[,;]$/, '') + '...';
-      }
+      if (/[,;]$/.test(words[i - 1])) return cut(i);
+    }
+    // P2: Before a subordinate clause starter (main thought is already complete)
+    for (let i = maxWords; i >= 8; i--) {
+      if (/^(due|because|since|although|though|where|which|who|whom|whose|that|whereby|whereas|unless|until|once|whether|if|so|yet)$/i.test(words[i])) return cut(i);
+    }
+    // P3: Before a coordinating conjunction or preposition
+    for (let i = maxWords; i >= 8; i--) {
+      if (/^(and|but|or|nor|for|including|with|without|from|into|through|after|before|during|while|when)$/i.test(words[i])) return cut(i);
+    }
+    // P4: Before an article (weakest break)
+    for (let i = maxWords; i >= 8; i--) {
+      if (/^(the|a|an)$/i.test(words[i])) return cut(i);
     }
     // No natural break — cut at maxWords
     return words.slice(0, maxWords).join(' ') + '...';
