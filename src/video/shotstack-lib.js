@@ -174,26 +174,31 @@ export function buildScenes(prospect) {
     hookText      = `Need ${problem} in ${cityRaw}?`;
     hookVoiceover = `Need ${problem} in ${city}?`;
   } else {
-    // Pest control — detect specific pest
+    // Pest control — detect specific pest; fall back to general-pest if none found
     const pest     = detectPestFromReview(review);
     const pestWord = pestLabel(pest);
-    hookText      = `Dealing with ${pestWord} in ${cityRaw}?`;
-    hookVoiceover = pest
-      ? `Dealing with ${pestWord} in ${city}?`
-      : `Looking for pest control in ${city}?`;
+    if (pest) {
+      hookText      = `Dealing with ${pestWord} in ${cityRaw}?`;
+      hookVoiceover = `Dealing with ${pestWord} in ${city}?`;
+    } else {
+      hookText      = `Got a pest problem in ${cityRaw}?`;
+      hookVoiceover = `Got a pest problem in ${city}?`;
+    }
   }
 
   // Extract 4 COMPLETE sentences — no truncation, prefer ≤15 words, never cut mid-sentence
   const quotes = extractQuotes(review, 4);
 
-  // CTA slide: logo is shown on this scene, so no need to repeat the business name in text
+  // CTA slide: logo is shown → don't repeat name in subtitle (logo IS the name).
+  // But DO say the name in voiceover so the viewer hears it while seeing the logo.
+  // Without logo → show name in subtitle where logo would be.
   const hasLogo = !!prospect.logo_url;
   const ctaText = hasLogo
     ? (phone ? `Call ${phone}` : `Free Inspection`)
     : (phone ? `${name}\nCall ${phone}` : `${name}\nFree Inspection`);
   const ctaVoiceover = phone
-    ? `Call ${phoneTTS} or reply YES to schedule your free inspection.`
-    : `Reply YES or visit "${name}" to schedule your free inspection.`;
+    ? `${name}. Call ${phoneTTS} or reply YES to schedule your free inspection.`
+    : `Reply YES or visit ${name} to schedule your free inspection.`;
 
   return [
     {
@@ -613,6 +618,36 @@ export const CLIP_POOLS = {
     ],
   },
 
+  possums: {
+    hook: [
+      { url: `${R2}/possum-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/possum-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/possum-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/possum-hook-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/possum-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/possum-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/possum-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/possum-treatment-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'general-pest': {
+    hook: [
+      { url: `${R2}/general-pest-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/general-pest-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/general-pest-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/general-pest-hook-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/general-pest-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/general-pest-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/general-pest-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/general-pest-treatment-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
   // ── Plumbing shared (technician, resolution, cta) ─────────────────────────
   'plumbing-shared': {
     technician: [
@@ -704,6 +739,21 @@ export const CLIP_POOLS = {
       { url: `${R2}/hot-water-treatment-c.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/hot-water-treatment-d.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/hot-water-treatment-e.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
+  'toilet': {
+    hook: [
+      { url: `${R2}/toilet-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/toilet-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/toilet-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/toilet-hook-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/toilet-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/toilet-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/toilet-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/toilet-treatment-d.mp4`, source: 'kling', focus: 'center' },
     ],
   },
 
@@ -801,6 +851,21 @@ export const CLIP_POOLS = {
     ],
   },
 
+  'regular-clean': {
+    hook: [
+      { url: `${R2}/regular-clean-hook-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/regular-clean-hook-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/regular-clean-hook-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/regular-clean-hook-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+    treatment: [
+      { url: `${R2}/regular-clean-treatment-a.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/regular-clean-treatment-b.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/regular-clean-treatment-c.mp4`, source: 'kling', focus: 'center' },
+      { url: `${R2}/regular-clean-treatment-d.mp4`, source: 'kling', focus: 'center' },
+    ],
+  },
+
   // Generic fallback (used by unknown niches)
   default: {
     hook:        [],
@@ -822,7 +887,7 @@ export const CLIP_POOLS = {
  */
 // Maps broad niche names → default problem slug used when no problem is specified.
 const NICHE_ALIASES = {
-  'pest control':          null, // no default — detectPestFromReview() must identify the pest, or render fails
+  'pest control':          'general-pest',  // fallback when no specific pest detected
   'house cleaning':        'greasy-rangehood',
   'cleaning':              'greasy-rangehood',
   'house cleaning service':'greasy-rangehood',
@@ -925,14 +990,18 @@ const PROBLEM_SHARED_POOL = {
   'rodents':         'shared',
   'spiders':         'shared',
   'termites':        'shared',
+  'possums':         'shared',
+  'general-pest':    'shared',
   'blocked-drain':   'plumbing-shared',
   'burst-pipe':      'plumbing-shared',
   'leaking-tap':     'plumbing-shared',
   'hot-water':       'plumbing-shared',
+  'toilet':          'plumbing-shared',
   'greasy-rangehood':'house-cleaning-shared',
   'dirty-bathroom':  'house-cleaning-shared',
   'end-of-lease':    'house-cleaning-shared',
   'deep-clean':      'house-cleaning-shared',
+  'regular-clean':   'house-cleaning-shared',
 };
 
 /**
@@ -943,11 +1012,11 @@ const PROBLEM_SHARED_POOL = {
  * @returns {Array<{url,focus}>|null}  5 clips, or null if any slot is empty
  */
 export function pickClipsFromPool(niche, seed = 0, reviewText = '') {
-  // For pest control, detect specific pest from review — no generic fallback
-  const isPestControl = niche === 'pest control' || NICHE_ALIASES[niche] === null;
+  // For pest control, try to detect specific pest from review; fall back to general-pest
+  const isPestControl = niche === 'pest control' || NICHE_ALIASES[niche] === 'general-pest';
   const detected = isPestControl ? detectPestFromReview(reviewText) : null;
   const aliased = NICHE_ALIASES[niche];
-  const problem = detected ?? (aliased !== null ? aliased : null) ?? niche;
+  const problem = detected ?? aliased ?? niche;
   if (!problem) return null; // caller should surface this as an error
   const problemPool = CLIP_POOLS[problem];
   const sharedKey   = PROBLEM_SHARED_POOL[problem];
@@ -1114,6 +1183,10 @@ export function cleanReviewText(text) {
   for (const [wrong, right] of Object.entries(TYPOS)) {
     t = t.replace(new RegExp(`\\b${wrong}\\b`, 'gi'), right);
   }
+
+  // Fix informal abbreviations for cleaner voiceover
+  t = t.replace(/\blol\b/gi, 'LOL');
+  t = t.replace(/\bomg\b/gi, 'OMG');
 
   // Fix double periods
   t = t.replace(/\.{2,}/g, '.');
