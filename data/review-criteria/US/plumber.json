@@ -1,8 +1,8 @@
 {
   "_comment": [
     "Outscraper reviewsQuery search terms for plumber in AU.",
-    "Only problems with video clip pools are included.",
-    "Single words only — multi-word phrases are treated as AND (DR-092)."
+    "All 4 plumber problem clip pools covered.",
+    "Single words only — multi-word = phrase/AND match (DR-092)."
   ],
   "problems": {
     "blocked-drain": {
@@ -15,6 +15,40 @@
         "sewer",
         "unblocking",
         "overflowing"
+      ]
+    },
+    "burst-pipe": {
+      "clip_pool": "burst-pipe",
+      "query_terms": [
+        "burst",
+        "flooding",
+        "flooded",
+        "emergency",
+        "pipe",
+        "pipes"
+      ]
+    },
+    "leaking-tap": {
+      "clip_pool": "leaking-tap",
+      "query_terms": [
+        "leak",
+        "leaking",
+        "leaky",
+        "dripping",
+        "tap",
+        "taps",
+        "faucet"
+      ]
+    },
+    "hot-water": {
+      "clip_pool": "hot-water",
+      "query_terms": [
+        "heater",
+        "boiler",
+        "rheem",
+        "rinnai",
+        "dux",
+        "aquamax"
       ]
     }
   }
