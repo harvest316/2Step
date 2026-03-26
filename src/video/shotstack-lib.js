@@ -1095,23 +1095,15 @@ export function toTitleCase(str) {
 export function cleanReviewerName(raw) {
   if (!raw) return 'a local';
   let name = raw.trim();
-  // Strip parenthetical suffixes — "David Kirk (100adventures4u2c)" → "David Kirk"
+  // Strip parenthetical suffixes — Google platform artefact, not part of reviewer's name
+  // "David Kirk (100adventures4u2c)" → "David Kirk"
   name = name.replace(/\s*\([^)]*\)\s*$/, '');
-  // Remove possessive 's that Google sometimes injects ("Trillian'S")
-  // But preserve legitimate names like "O'Brien" (lowercase after apostrophe)
-  name = name.replace(/'[Ss]\b/g, '');
+  // Remove possessive 's that Google sometimes injects — platform bug not the reviewer's text
+  // "Trillian'S Mouse" → "Trillian Mouse". Preserve O'Brien (lowercase after apostrophe).
+  name = name.replace(/'[S]\b/g, '');
   // Remove stray apostrophes left over (but keep mid-word ones like O'Brien)
   name = name.replace(/'\s/g, ' ');
-  // Normalise casing — only if the name appears to be ALL CAPS or all lowercase.
-  // Leave mixed-case names alone (preserves "McDonald", "O'Brien").
-  // Leave initials alone ("R VM", "N B") — all words ≤2 chars.
-  const words = name.split(/\s+/);
-  const isInitials = words.every(w => w.length <= 2);
-  const isAllUpper = name === name.toUpperCase() && name.length > 2;
-  const isAllLower = name === name.toLowerCase();
-  if ((isAllUpper || isAllLower) && !isInitials) {
-    name = name.toLowerCase().replace(/(?:^|\s)\w/g, c => c.toUpperCase());
-  }
+  // Don't alter casing — show the reviewer's name as they set it on Google.
   // Remove trailing periods ("Jane D." → "Jane D")
   name = name.replace(/\.\s*$/, '');
   // Collapse whitespace
@@ -1173,24 +1165,12 @@ export function cleanReviewText(text) {
   // Strip emoji-style star ratings at start: "⭐️⭐️⭐️ 5/5 —" or "★★★★★"
   t = t.replace(/^[★⭐️\s]*\d\/\d\s*[—–-]\s*/i, '');
 
-  // Fix common typos (only unambiguous ones)
-  const TYPOS = {
-    'agian': 'again', 'definately': 'definitely', 'reccomend': 'recommend',
-    'recomend': 'recommend', 'proffessional': 'professional', 'accomodation': 'accommodation',
-    'occured': 'occurred', 'seperate': 'separate', 'occassion': 'occasion',
-    'maintainance': 'maintenance', 'definetly': 'definitely', 'definatly': 'definitely',
-  };
-  for (const [wrong, right] of Object.entries(TYPOS)) {
-    t = t.replace(new RegExp(`\\b${wrong}\\b`, 'gi'), right);
-  }
+  // Do NOT fix spelling/grammar — reviews must be verbatim per ACL compliance.
+  // Typos read as authentic; corrections risk "misquoted testimonial" under s.29(1)(e).
 
-  // Fix informal abbreviations for cleaner voiceover
-  t = t.replace(/\blol\b/gi, 'LOL');
-  t = t.replace(/\bomg\b/gi, 'OMG');
-
-  // Fix double periods
+  // Fix double periods (formatting artefact, not content change)
   t = t.replace(/\.{2,}/g, '.');
-  // Fix space before period/exclamation
+  // Fix space before period/exclamation (formatting artefact)
   t = t.replace(/\s+([.!?])/g, '$1');
 
   // Spam detection: nonsensical word salad specific to known spam patterns.
@@ -1215,7 +1195,7 @@ export function cleanReviewText(text) {
  * Sentences containing negative sentiment that would undermine a positive ad.
  * These get filtered from quote selection.
  */
-const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|rip-off|ripoff|wouldn't recommend|not recommend|don't recommend|wasn't happy|wasn't going to be happy|was not happy|disappointed|terrible|horrible|awful|worst|waste of|charged too|not worth|didn't fix|didn't solve|still broken|came back|returned within|not infected|was not infected|weren't found|no .{0,20} found|luckily .{0,30} not)\b/i;
+const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|rip-off|ripoff|wouldn't recommend|not recommend|don't recommend|wasn't happy|wasn't going to be happy|was not happy|disappointed|terrible|horrible|awful|worst|waste of|charged too|not worth|didn't fix|didn't solve|still broken|came back|returned within|returning within|proved to be persistent|not infected|was not infected|weren't found|no .{0,20} found|luckily .{0,30} not|wanted to charge|another company)\b/i;
 
 /**
  * Extract up to two short complete-sentence quotes from a review.
@@ -1245,7 +1225,7 @@ const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|
 // Sentence openers that produce weak or confusing standalone subtitles:
 // - mid-thought continuations ("As a...", "From the moment...", "Not only...")
 // - meta-praise openers that don't describe anything specific ("I cannot speak highly enough...")
-const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
+const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |however |however,|having |being |after |before |when i |once i |within |by the end|at the end|despite |although |even though |while |during |throughout |because of |thanks to |due to |given that |since then|following |since (the|their|my)|this (means|is|gave)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|we (also|later|then)|living in |\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
 
 export function extractQuotes(review, n = 2) {
   let cleaned = review
@@ -1271,9 +1251,10 @@ export function extractQuotes(review, n = 2) {
   function fitToMaxWords(s, maxWords = 22) {
     if (wc(s) <= maxWords) return s;
     const words = s.trim().split(/\s+/);
-    // Try to cut at a natural pause: comma, semicolon, or 'and'/'but'/'so' conjunction
+    // Try to cut at a natural pause: comma, semicolon, conjunction, or before an article
     for (let i = maxWords; i >= 8; i--) {
-      if (/[,;]$/.test(words[i - 1]) || /^(and|but|so|though|when|while|after|before)$/i.test(words[i])) {
+      if (/[,;]$/.test(words[i - 1]) ||
+          /^(and|but|so|though|when|while|after|before|the|a|an|including|with)$/i.test(words[i])) {
         return words.slice(0, i).join(' ').replace(/[,;]$/, '') + '...';
       }
     }
