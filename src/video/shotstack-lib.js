@@ -174,12 +174,24 @@ export function buildScenes(prospect) {
     hookText      = `Need ${problem} in ${cityRaw}?`;
     hookVoiceover = `Need ${problem} in ${city}?`;
   } else {
-    // Pest control — detect specific pest from review.
-    // Only name the pest in the hook if we have matching clips for it.
+    // Pest control — placeholder hook; finalised after quote extraction
+    // so we can verify the detected pest actually appears in selected quotes.
+    hookText = hookVoiceover = null; // set below
+  }
+
+  // Extract 4 COMPLETE sentences — no truncation, prefer ≤15 words, never cut mid-sentence
+  const quotes = extractQuotes(review, 4);
+
+  // Finalise pest hook: only name the pest if we have clips AND quotes mention it.
+  if (!hookText) {
     const pest     = detectPestFromReview(review);
-    const hasClips = pest && CLIP_POOLS[pest]; // wasps/ants/bedbugs won't have pools
+    const hasClips = pest && CLIP_POOLS[pest];
     const pestWord = hasClips ? pestLabel(pest) : null;
-    if (pestWord) {
+    const quotesText = quotes.join(' ').toLowerCase();
+    // Match singular or plural form (e.g. "termite" matches "termites" pest label)
+    const pestStem = pestWord?.toLowerCase().replace(/e?s$/, '');
+    const pestInQuotes = pestStem && quotesText.includes(pestStem);
+    if (pestWord && pestInQuotes) {
       hookText      = `Dealing with ${pestWord} in ${cityRaw}?`;
       hookVoiceover = `Dealing with ${pestWord} in ${city}?`;
     } else {
@@ -187,9 +199,6 @@ export function buildScenes(prospect) {
       hookVoiceover = `Got a pest problem in ${city}?`;
     }
   }
-
-  // Extract 4 COMPLETE sentences — no truncation, prefer ≤15 words, never cut mid-sentence
-  const quotes = extractQuotes(review, 4);
 
   // CTA slide: logo is shown → don't repeat name in subtitle (logo IS the name).
   // But DO say the name in voiceover so the viewer hears it while seeing the logo.
