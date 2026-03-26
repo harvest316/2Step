@@ -162,7 +162,13 @@ async function searchBusinesses(api, keyword, location, countryCode, limit) {
   console.log(`[reviews] Searching Maps: "${query}" (limit: ${limit}, country: ${countryCode})`);
 
   const { data } = await api.get('/maps/search-v3', {
-    params: { query, limit, language: 'en', region: countryCode },
+    params: {
+      query,
+      limit,
+      language: 'en',
+      region: countryCode,
+      dropIfHasNoPhone: true,  // server-side filter — saves credits on phoneless businesses
+    },
   });
 
   let raw;
@@ -397,14 +403,15 @@ async function processKeyword(api, kwRow, limit, dryRun) {
 
   stats.searched = rawResults.length;
 
-  // Filter by rating + review count
+  // Filter by rating + review count + must have phone number
   const filtered = rawResults.filter(r => {
     const rating  = r.rating ?? 0;
     const reviews = r.reviews ?? r.reviews_count ?? 0;
-    return rating >= MIN_RATING && reviews >= MIN_REVIEWS;
+    const phone   = r.phone ?? r.us_phone ?? null;
+    return rating >= MIN_RATING && reviews >= MIN_REVIEWS && phone;
   });
 
-  console.log(`[reviews] After filter (>= ${MIN_RATING}★, >= ${MIN_REVIEWS} reviews): ${filtered.length}`);
+  console.log(`[reviews] After filter (>= ${MIN_RATING}★, >= ${MIN_REVIEWS} reviews, has phone): ${filtered.length}`);
   stats.found = filtered.length;
 
   // Step 2 — per business (parallelised, max CONCURRENCY at a time):
