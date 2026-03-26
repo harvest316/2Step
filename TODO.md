@@ -2,6 +2,12 @@
 
 ## Pending
 
+### Logo scraper: OCR-based logo selection
+When multiple logo candidates are found (e.g. favicon + header logo + footer logo),
+run quick OCR across each candidate and pick the one whose text best matches the
+business name. Prevents selecting favicon-only logos that lack the company name.
+Could use Tesseract.js or sharp-based text detection.
+
 ### Generate Kling clips — MEDIUM priority problems
 Prompts written in `kling-batch-round9.js` (removed before commit). Re-add and run when credits available.
 
