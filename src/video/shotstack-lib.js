@@ -1112,9 +1112,10 @@ export function cleanReviewerName(raw) {
   // Strip parenthetical suffixes — Google platform artefact, not part of reviewer's name
   // "David Kirk (100adventures4u2c)" → "David Kirk"
   name = name.replace(/\s*\([^)]*\)\s*$/, '');
-  // Remove possessive 's that Google sometimes injects — platform bug not the reviewer's text
-  // "Trillian'S Mouse" → "Trillian Mouse". Preserve O'Brien (lowercase after apostrophe).
-  name = name.replace(/'[S]\b/g, '');
+  // Remove possessive 's/'S that Google sometimes injects — platform bug, not reviewer's text.
+  // "Trillian's Mouse" → "Trillian Mouse", "Trillian'S Mouse" → "Trillian Mouse".
+  // Preserves O'Brien (apostrophe mid-word followed by lowercase letter).
+  name = name.replace(/'[Ss]\b/g, '');
   // Remove stray apostrophes left over (but keep mid-word ones like O'Brien)
   name = name.replace(/'\s/g, ' ');
   // Don't alter casing — show the reviewer's name as they set it on Google.
@@ -1216,7 +1217,7 @@ export function smoothReviewerName(raw) {
   let name = raw.trim();
   // Strip Google platform artefacts (same as cleanReviewerName)
   name = name.replace(/\s*\([^)]*\)\s*$/, '');
-  name = name.replace(/'[S]\b/g, '');
+  name = name.replace(/'[Ss]\b/g, '');
   name = name.replace(/'\s/g, ' ');
   // Normalise casing for voiceover — fix all-lower ("jose") and ALL CAPS ("DAVID KIRK")
   // Leave mixed-case alone (preserves "McDonald", "O'Brien")
