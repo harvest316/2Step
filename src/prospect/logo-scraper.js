@@ -52,8 +52,57 @@ function getSites() {
   ).all();
 }
 
-async function scrapeLogo(websiteUrl) {
+/**
+ * Score a logo candidate. Higher = better.
+ * Uses URL heuristics + HEAD request for size/type.
+ * No tesseract available in sandbox — OCR skipped.
+ */
+async function scoreLogo(url, businessName) {
+  let score = 0;
+  const lc = url.toLowerCase();
+
+  // URL heuristics
+  if (/\.svg(\?|$)/i.test(lc)) score += 2;           // SVG scales perfectly
+  if (/logo/i.test(lc)) score += 2;                   // "logo" in URL
+  if (/favicon/i.test(lc)) score -= 5;                // Favicon = bad
+  if (/apple-touch-icon/i.test(lc)) score -= 1;       // Often square app icon
+  if (/og[:-]image|hero|banner/i.test(lc)) score -= 2; // Banner, not logo
+
+  // HEAD request to check size + content type
+  try {
+    const res = await fetch(url, {
+      method: 'HEAD',
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; logobot/1.0)' },
+      signal: AbortSignal.timeout(5000),
+      redirect: 'follow',
+    });
+    if (!res.ok) return -10;
+
+    const size = parseInt(res.headers.get('content-length') || '0', 10);
+    const type = (res.headers.get('content-type') || '').toLowerCase();
+
+    if (size > 0 && size < 2000) score -= 3;           // Tiny file = favicon
+    if (size > 5000) score += 1;                        // Decent size
+    if (size > 20000) score += 1;                       // Large = full logo
+    if (type.includes('svg')) score += 2;               // SVG confirmed
+    if (type.includes('ico')) score -= 5;               // .ico = favicon
+  } catch {
+    // Can't HEAD — don't penalise heavily
+  }
+
+  return score;
+}
+
+async function scrapeLogo(websiteUrl, businessName) {
   const base = new URL(websiteUrl);
+  const candidates = [];
+
+  function add(url, source) {
+    const resolved = resolveUrl(base, url);
+    if (resolved && !candidates.some(c => c.url === resolved)) {
+      candidates.push({ url: resolved, source });
+    }
+  }
 
   let html;
   try {
@@ -65,7 +114,8 @@ async function scrapeLogo(websiteUrl) {
     html = await res.text();
   } catch {
     // Can't fetch site — try Brandfetch directly
-    return brandfetch(base.hostname) ?? `${base.origin}/favicon.ico`;
+    const bf = await brandfetch(base.hostname);
+    return bf ?? `${base.origin}/favicon.ico`;
   }
 
   // 1. JSON-LD Organization logo
@@ -76,8 +126,8 @@ async function scrapeLogo(websiteUrl) {
       const orgs = [data, ...(data['@graph'] || [])].filter(n => n?.['@type'] === 'Organization');
       for (const org of orgs) {
         const logo = org.logo;
-        if (typeof logo === 'string') return resolveUrl(base, logo);
-        if (logo?.url) return resolveUrl(base, logo.url);
+        if (typeof logo === 'string') add(logo, 'json-ld');
+        else if (logo?.url) add(logo.url, 'json-ld');
       }
     } catch { /* malformed JSON-LD — skip */ }
   }
@@ -89,29 +139,44 @@ async function scrapeLogo(websiteUrl) {
   if (imgLogoAttr) {
     for (const tag of imgLogoAttr) {
       const src = tag.match(/src=["']([^"']+)["']/i)?.[1];
-      if (src) return resolveUrl(base, src);
+      if (src) add(src, 'img-attr');
     }
   }
 
   // 3. <a> with class/id "logo" wrapping an <img>
   const anchorLogo = html.match(/<a[^>]+(?:class|id)=["'][^"']*logo[^"']*["'][^>]*>[\s\S]*?<img[^>]+src=["']([^"']+)["']/i)?.[1];
-  if (anchorLogo) return resolveUrl(base, anchorLogo);
+  if (anchorLogo) add(anchorLogo, 'anchor-logo');
 
   // 4. <img> with "logo" in src filename
   const logoSrc = html.match(/src=["']([^"']*logo[^"']*)["']/i)?.[1];
-  if (logoSrc) return resolveUrl(base, logoSrc);
+  if (logoSrc) add(logoSrc, 'src-filename');
 
-  // 5. <link rel="apple-touch-icon"> — higher-res than favicon
+  // 5. <link rel="apple-touch-icon">
   const touchIcon = html.match(/<link[^>]+rel=["']apple-touch-icon["'][^>]+href=["']([^"']+)["']/i)?.[1]
     || html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["']apple-touch-icon["']/i)?.[1];
-  if (touchIcon) return resolveUrl(base, touchIcon);
+  if (touchIcon) add(touchIcon, 'touch-icon');
 
-  // 6. og:image — their own image, often a banner but better than a third-party call
+  // 6. og:image
   const ogImage = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)?.[1]
     || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i)?.[1];
-  if (ogImage) return resolveUrl(base, ogImage);
+  if (ogImage) add(ogImage, 'og-image');
 
-  // 7. Brandfetch API — only when all on-site signals failed (conserve 100/mo quota)
+  // If we have candidates, score and pick the best
+  if (candidates.length > 0) {
+    const scored = await Promise.all(
+      candidates.map(async c => ({
+        ...c,
+        score: await scoreLogo(c.url, businessName),
+      }))
+    );
+    scored.sort((a, b) => b.score - a.score);
+    // Only use the winner if it's not actively bad
+    if (scored[0].score >= -2) {
+      return scored[0].url;
+    }
+  }
+
+  // 7. Brandfetch API — only when on-site signals all scored poorly
   const bf = await brandfetch(base.hostname);
   if (bf) return bf;
 
@@ -166,7 +231,7 @@ async function main() {
     const name = site.business_name.split('|')[0].trim();
     process.stdout.write(`[${site.id}] ${name}... `);
 
-    const logo = await scrapeLogo(site.website_url);
+    const logo = await scrapeLogo(site.website_url, site.business_name);
 
     if (logo) {
       console.log(logo);
