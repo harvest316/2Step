@@ -19,7 +19,7 @@
 import '../utils/load-env.js';
 import { createHmac } from 'crypto';
 import { parseArgs } from 'util';
-import { clipsBySource } from './shotstack-lib.js';
+import { clipsBySource } from './scene-builder.js';
 
 const KLING_ACCESS_KEY = process.env.KLING_ACCESS_KEY;
 const KLING_SECRET_KEY = process.env.KLING_SECRET_KEY;
@@ -124,7 +124,7 @@ async function pollKlingTask(taskId, maxWaitMs = 300000) {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function printClipEntry(niche, slot, url) {
-  console.log('\n  ─── Add this to CLIP_POOLS in shotstack-lib.js ───');
+  console.log('\n  ─── Add this to CLIP_POOLS in scene-builder.js ───');
   console.log(`  Niche: "${niche}"  Slot: "${slot}"`);
   console.log(`  { url: '${url}', source: 'kling' }`);
   console.log('  ──────────────────────────────────────────────────\n');
@@ -151,7 +151,7 @@ function printRemoveInstructions() {
     console.log('No kling clips to remove.');
     return;
   }
-  console.log(`\nTo remove all ${clips.length} kling clip(s), delete these entries from CLIP_POOLS in src/video/shotstack-lib.js:\n`);
+  console.log(`\nTo remove all ${clips.length} kling clip(s), delete these entries from CLIP_POOLS in src/video/scene-builder.js:\n`);
   for (const c of clips) {
     console.log(`  [${c.niche}] ${c.slot}: ${c.url}`);
   }

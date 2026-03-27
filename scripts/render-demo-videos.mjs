@@ -26,7 +26,7 @@ const ROOT = resolve(__dirname, '..');
 import {
   buildScenes,
   pickClipsFromPool,
-} from '../src/video/shotstack-lib.js';
+} from '../src/video/scene-builder.js';
 import { processSite } from '../src/stages/video.js';
 
 // ── Demo sites ──────────────────────────────────────────────────────────────

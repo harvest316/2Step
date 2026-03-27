@@ -26,7 +26,7 @@ import { parseArgs } from 'util';
 import { existsSync, readFileSync } from 'fs';
 import db from '../utils/db.js';
 // execSync no longer needed — Opus called via OpenRouter API
-// Pure functions live in shotstack-lib.js (also imported by tests)
+// Pure functions live in scene-builder.js (also imported by tests)
 import {
   buildScenes,
   buildVoiceoverScript,
@@ -36,7 +36,7 @@ import {
   sceneDuration,
   timingsToSceneDurations,
   applyPhonetics,
-} from './shotstack-lib.js';
+} from './scene-builder.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -201,7 +201,7 @@ async function fetchClips(niche, seed = 0) {
     console.log('  Using curated clip pool.');
     return poolClips;
   }
-  throw new Error(`No curated clips available for niche "${niche}" — add clips to the pool in shotstack-lib.js`);
+  throw new Error(`No curated clips available for niche "${niche}" — add clips to the pool in scene-builder.js`);
 }
 
 // ─── Shotstack render + poll ──────────────────────────────────────────────────

@@ -31,7 +31,7 @@ import {
   pickClipsFromPool,
   timingsToSceneDurations,
   applyPhonetics,
-} from '../video/shotstack-lib.js';
+} from '../video/scene-builder.js';
 import { pickMusicTrack } from '../video/music-tracks.js';
 import { pickVariant } from '../video/style-variants.js';
 import sharp from 'sharp';
@@ -293,7 +293,7 @@ export async function processSite(site, { dryRun, localOnly = false }) {
     }
   }
 
-  // Build a prospect-shaped object compatible with shotstack-lib helpers
+  // Build a prospect-shaped object compatible with scene-builder helpers
   const prospect = {
     business_name:      site.business_name,
     city:               site.city || 'Sydney',
