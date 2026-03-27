@@ -24,11 +24,19 @@ You are writing a cold outreach DM to a local business owner. You've already cre
 ## Tone
 
 - Casual and friendly, like a message from a fellow local business person
-- Short — under 100 words for DMs
+- Short – under 100 words for DMs
 - No emojis (unless it's a single thumbs up or similar)
 - No "Dear Sir/Madam" formality
 - No corporate buzzwords ("leverage", "optimize", "synergy")
 - Sound like a real person, not a marketing bot
+
+## Human Voice (Anti-AI-Pattern Rules)
+
+- Vary sentence length – mix short fragments with longer ones. Never 3+ similar-length sentences in a row
+- Use n-dashes with spaces ( – ) not m-dashes (—), straight quotes, no special Unicode characters
+- Allow natural imperfections – sentence fragments, trailing thoughts, starting with "And" or "But"
+- Avoid formulaic AI openers that platforms flag: "I hope this message finds you well", "I came across your business and was impressed by..."
+- One soft CTA only, stated conversationally – no stacked imperatives ("Check out... Visit... Book...")
 
 ## Examples of good openers
 
