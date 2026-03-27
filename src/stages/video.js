@@ -31,6 +31,8 @@ import {
   pickClipsFromPool,
   timingsToSceneDurations,
   applyPhonetics,
+  extractQuotes,
+  smoothGrammar,
 } from '../video/scene-builder.js';
 import { pickMusicTrack } from '../video/music-tracks.js';
 import { pickVariant } from '../video/style-variants.js';
@@ -162,6 +164,111 @@ async function generateSceneAudio(scenes, suburb = null) {
   }
 
   return { audioBufs, durations };
+}
+
+// ─── Script proofreading via LLM ─────────────────────────────────────────────
+
+const OPENROUTER_KEY   = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_BASE  = 'https://openrouter.ai/api/v1';
+const PROOFREAD_MODEL  = 'anthropic/claude-haiku-4.5';
+
+const PROOFREAD_PROMPT = readFileSync(
+  resolve(ROOT, 'prompts/PROOFREAD-SCRIPT.md'), 'utf8',
+);
+
+/**
+ * Run an LLM proofreading pass over a 7-scene script.
+ * Returns the scenes with voiceover fixes applied. If the LLM flags
+ * quotes for replacement, logs a warning but continues (manual review needed).
+ *
+ * @param {Array<{ text: string, voiceover: string }>} scenes
+ * @param {string} fullReview — the full review text (for re-extracting quotes)
+ * @returns {Promise<Array<{ text: string, voiceover: string }>>} — scenes with VO fixes applied
+ */
+async function proofreadScript(scenes, fullReview) {
+  if (!OPENROUTER_KEY) {
+    console.warn('  ⚠ OPENROUTER_API_KEY not set — skipping LLM proofreading');
+    return scenes;
+  }
+
+  const scriptData = scenes.map((s, i) => ({
+    scene: i + 1,
+    label: ['HOOK', 'Q1', 'Q2', 'Q3', 'Q4', 'STARS', 'CTA'][i],
+    text: s.text,
+    voiceover: s.voiceover,
+  }));
+
+  const userMessage = `Proofread this 7-scene video script.
+
+<untrusted_content>
+${JSON.stringify(scriptData, null, 2)}
+</untrusted_content>`;
+
+  process.stdout.write('  Proofreading script...');
+
+  const res = await fetch(`${OPENROUTER_BASE}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${OPENROUTER_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: PROOFREAD_MODEL,
+      messages: [
+        { role: 'system', content: PROOFREAD_PROMPT },
+        { role: 'user', content: userMessage },
+      ],
+      temperature: 0,
+      max_tokens: 1024,
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    console.warn(` ⚠ LLM proofread failed ${res.status}: ${body.substring(0, 200)} — using unproofed script`);
+    return scenes;
+  }
+
+  const json = await res.json();
+  const content = json.choices?.[0]?.message?.content || '';
+
+  let result;
+  try {
+    // Strip markdown fences if present
+    const cleaned = content.replace(/^```json?\n?/m, '').replace(/\n?```$/m, '').trim();
+    result = JSON.parse(cleaned);
+  } catch {
+    console.warn(` ⚠ LLM returned unparseable JSON — using unproofed script`);
+    return scenes;
+  }
+
+  // Apply VO fixes
+  if (result.vo_fixes?.length) {
+    for (const fix of result.vo_fixes) {
+      const idx = fix.scene - 1;
+      if (idx >= 1 && idx <= 4 && scenes[idx]) {
+        scenes[idx].voiceover = fix.fixed;
+        process.stdout.write(` [Q${idx} VO fixed]`);
+      }
+    }
+  }
+
+  // Log replacement flags (manual action needed)
+  if (result.replace_quotes?.length) {
+    for (const rq of result.replace_quotes) {
+      console.warn(`\n  ⚠ LLM suggests replacing scene ${rq.scene}: ${rq.reason}`);
+    }
+  }
+
+  if (result.decision === 'approve') {
+    process.stdout.write(' ✓ approved\n');
+  } else {
+    process.stdout.write(` (${result.decision})\n`);
+  }
+
+  if (result.notes) console.log(`  Proofreader note: ${result.notes}`);
+
+  return scenes;
 }
 
 // ─── R2 upload ────────────────────────────────────────────────────────────────
@@ -310,8 +417,11 @@ export async function processSite(site, { dryRun, localOnly = false }) {
     throw new Error('No review text available (selected_review_json has no text field and best_review_text is empty)');
   }
 
-  // 2. Build scene script (7 scenes: hook, technician×2, treatment×2, stars, cta)
-  const scenes = buildScenes(prospect);
+  // 2. Build scene script (7 scenes: hook, Q1-Q4, stars, cta)
+  let scenes = buildScenes(prospect);
+
+  // 2b. LLM proofreading — fix VO grammar, flag bad quotes
+  scenes = await proofreadScript(scenes, prospect.best_review_text);
 
   // 3. Pick clips from pool using problem_category or niche
   const poolKey = site.problem_category || prospect.niche;
