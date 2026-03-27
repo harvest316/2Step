@@ -310,9 +310,11 @@ export async function renderVideo({
     // Add logo overlays (if present)
     if (logoPath && logoSceneIndices.length > 0) {
       const n = logoSceneIndices.length;
-      // Scale logo once, then split into n copies (ffmpeg outputs can only be consumed once)
+      // Scale logo to ~40% of video width (capped at 15% height), upscaling small logos
+      const logoW = Math.round(W * 0.4);
+      const logoH = Math.round(H * 0.15);
       filterParts.push(
-        `[${logoInputIdx}:v]scale='min(iw,${Math.round(W * 0.9)})':'min(ih,${Math.round(H * 0.2)})':force_original_aspect_ratio=decrease,split=${n}` +
+        `[${logoInputIdx}:v]scale=${logoW}:${logoH}:force_original_aspect_ratio=decrease,split=${n}` +
         Array.from({ length: n }, (_, i) => `[logo${i}]`).join('')
       );
 
