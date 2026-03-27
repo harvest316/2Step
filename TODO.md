@@ -2,6 +2,12 @@
 
 ## Pending
 
+### Split test: proofreading model (Opus vs Haiku vs Sonnet)
+Currently using Opus for script proofreading. Run a split test comparing
+Opus, Sonnet, and Haiku on ~50 scripts to measure: (a) catch rate for
+real issues, (b) false positive rate, (c) latency, (d) cost if moved
+off Claude Max to OpenRouter direct billing.
+
 ### Logo scraper: OCR-based logo selection
 When multiple logo candidates are found (e.g. favicon + header logo + footer logo),
 run quick OCR across each candidate and pick the one whose text best matches the
