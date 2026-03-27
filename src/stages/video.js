@@ -170,7 +170,7 @@ async function generateSceneAudio(scenes, suburb = null) {
 
 const OPENROUTER_KEY   = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_BASE  = 'https://openrouter.ai/api/v1';
-const PROOFREAD_MODEL  = 'anthropic/claude-haiku-4.5';
+const PROOFREAD_MODEL  = 'anthropic/claude-opus-4';
 
 const PROOFREAD_PROMPT = readFileSync(
   resolve(ROOT, 'prompts/PROOFREAD-SCRIPT.md'), 'utf8',
