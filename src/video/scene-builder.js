@@ -1387,11 +1387,21 @@ export function extractQuotes(review, n = 2) {
     return words.slice(0, maxWords).join(' ') + '...';
   }
 
-  const fitted = sentences.map(s => fitToMaxWords(s));
-  const short  = fitted.filter(s => wc(s) <= 15);
-  const medium = fitted.filter(s => wc(s) <= 22);
-  // Pick the best pool with enough variety; fall back to wider pools as needed
-  const pool = short.length >= n ? short : medium.length >= n ? medium : fitted.length ? fitted : [fitToMaxWords(review)];
+  // Strongly prefer COMPLETE sentences (no truncation). Only use truncated
+  // versions as a last resort — the proofreader flags "..." endings as dangling thoughts.
+  const complete = sentences.filter(s => wc(s) <= 22);  // fits without truncation
+  const fitted   = sentences.map(s => fitToMaxWords(s)); // truncated fallbacks
+
+  const shortComplete  = complete.filter(s => wc(s) <= 15);
+  const mediumComplete = complete.filter(s => wc(s) <= 22);
+
+  // Priority: short complete → medium complete → any complete → truncated → raw review
+  const pool = shortComplete.length >= n ? shortComplete
+    : mediumComplete.length >= n ? mediumComplete
+    : complete.length >= n ? complete
+    : fitted.length >= n ? fitted
+    : fitted.length ? fitted
+    : [fitToMaxWords(review)];
 
   // Fill n slots without repeating — cycle only if we must (pool < n)
   const results = [];
