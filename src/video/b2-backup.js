@@ -14,7 +14,7 @@
 import '../utils/load-env.js';
 import { createHash } from 'crypto';
 import { parseArgs } from 'util';
-import { CLIP_POOLS } from './shotstack-lib.js';
+import { CLIP_POOLS } from './scene-builder.js';
 
 const KEY_ID   = process.env.B2_KEY_ID;
 const APP_KEY  = process.env.B2_APPLICATION_KEY;

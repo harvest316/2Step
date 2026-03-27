@@ -28,7 +28,7 @@ import { mkdirSync, createWriteStream, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-import { CLIP_POOLS } from './shotstack-lib.js';
+import { CLIP_POOLS } from './scene-builder.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const CLIPS_ROOT = resolve(__dirname, '../../clips');
