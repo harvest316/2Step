@@ -1369,7 +1369,11 @@ export function extractQuotes(review, n = 2) {
     }
     // P2: Before a subordinate clause starter (main thought is already complete)
     for (let i = maxWords; i >= 8; i--) {
-      if (/^(due|because|since|although|though|where|which|who|whom|whose|that|whereby|whereas|unless|until|once|whether|if|so|yet)$/i.test(words[i])) return cut(i);
+      if (/^(due|because|since|although|though|where|which|who|whom|whose|that|whereby|whereas|unless|until|once|whether|if|so|yet|even|especially|particularly|regardless)$/i.test(words[i])) {
+        // "even if", "even though", "even when" — cut before "even" not between them
+        if (/^(if|though|when)$/i.test(words[i]) && i > 8 && /^even$/i.test(words[i - 1])) return cut(i - 1);
+        return cut(i);
+      }
     }
     // P3: Before a coordinating conjunction or preposition
     for (let i = maxWords; i >= 8; i--) {
