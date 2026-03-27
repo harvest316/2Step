@@ -26,6 +26,7 @@ import { parseArgs } from 'util';
 import db from '../utils/db.js';
 import { buildEmailHtml } from '../outreach/email-template.js';
 import { spin } from '../../../333Method/src/utils/spintax.js';
+import { openDb as openSuppressionDb, checkBeforeSend } from '../../../mmo-platform/src/suppression.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -214,6 +215,19 @@ function assembleEmail(msg) {
  * @returns {Promise<{ success: boolean, resendId?: string, dryRun?: boolean }>}
  */
 async function sendEmail(msg, resend, dryRun) {
+  // Cross-project suppression check (shared with 333Method)
+  try {
+    const sDb = openSuppressionDb();
+    const suppression = checkBeforeSend({ email: msg.contact_uri }, sDb);
+    sDb.close();
+    if (suppression.blocked) {
+      console.log(`  [${msg.id}] Blocked by cross-project suppression: ${suppression.reason}`);
+      return { success: false, skipped: true, reason: 'cross_project_suppressed' };
+    }
+  } catch (e) {
+    console.warn(`  Suppression check failed (non-fatal): ${e.message}`);
+  }
+
   if (isOptedOut(null, msg.contact_uri, 'email')) {
     db.prepare(
       `UPDATE msgs.messages
@@ -296,6 +310,19 @@ function formatPhoneNumber(phone) {
  */
 async function sendSms(msg, twilioClient, dryRun) {
   const toNumber = formatPhoneNumber(msg.contact_uri);
+
+  // Cross-project suppression check (shared with 333Method)
+  try {
+    const sDb = openSuppressionDb();
+    const suppression = checkBeforeSend({ phone: toNumber }, sDb);
+    sDb.close();
+    if (suppression.blocked) {
+      console.log(`  [${msg.id}] Blocked by cross-project suppression: ${suppression.reason}`);
+      return { success: false, skipped: true, reason: 'cross_project_suppressed' };
+    }
+  } catch (e) {
+    console.warn(`  Suppression check failed (non-fatal): ${e.message}`);
+  }
 
   if (isOptedOut(toNumber, null, 'sms')) {
     db.prepare(
