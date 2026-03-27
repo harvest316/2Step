@@ -67,3 +67,5 @@ temp/
 *.bak
 !clips/focus-overrides.json
 .pronunciation-dict.json
+.wrangler/
+db/backup
