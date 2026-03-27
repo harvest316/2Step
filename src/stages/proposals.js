@@ -468,10 +468,13 @@ export async function runProposalsStage(options = {}) {
         first_name: firstName || null,
         city: site.city || '',
         niche: site.niche || '',
-        review_author: contacts?.review_author || '',
+        review_author: site.best_review_author || contacts?.review_author || 'a happy customer',
         problem_category: site.problem_category || contacts?.problem_category || '',
         video_url: videoUrl,
-        star_rating: site.google_rating ? String(site.google_rating) : '',
+        star_rating: site.google_rating ? String(site.google_rating) : '5',
+        review_count: site.review_count ? String(site.review_count) : '',
+        poster: `[poster]`,  // placeholder — resolved to HTML at send time by email-template.js
+        outreach_day: new Date().toLocaleDateString('en-AU', { weekday: 'long' }),
       };
 
       const countryCode = site.country_code || 'AU';
