@@ -234,7 +234,7 @@ export function buildScenes(prospect) {
     },
     {
       text:      `${starsText}\n— ${reviewer}`,
-      voiceover: `${starsVoiceover} — ${reviewer}.`,
+      voiceover: `${starsVoiceover} — ${smoothReviewerName(prospect.best_review_author)}.`,
     },
     {
       text:      ctaText,
@@ -1163,34 +1163,74 @@ export function smoothGrammar(text) {
   if (!text) return text;
   let t = text;
 
-  // Adjective used where past participle expected (ESL pattern)
-  // "leak pipes" → "leaking pipes", "leak taps" → "leaking taps"
+  // ── Common typos (unambiguous) ──
+  const TYPOS = {
+    'agian': 'again', 'definately': 'definitely', 'reccomend': 'recommend',
+    'recomend': 'recommend', 'proffessional': 'professional', 'accomodation': 'accommodation',
+    'occured': 'occurred', 'seperate': 'separate', 'occassion': 'occasion',
+    'maintainance': 'maintenance', 'definetly': 'definitely', 'definatly': 'definitely',
+    'rediculous': 'ridiculous', 'recieved': 'received', 'bussiness': 'business',
+    'excelent': 'excellent', 'acheive': 'achieve', 'occurance': 'occurrence',
+    'independant': 'independent', 'consistant': 'consistent', 'immediantly': 'immediately',
+    'knowledgable': 'knowledgeable', 'throughly': 'thoroughly', 'thier': 'their',
+  };
+  for (const [wrong, right] of Object.entries(TYPOS)) {
+    t = t.replace(new RegExp(`\\b${wrong}\\b`, 'gi'), right);
+  }
+
+  // ── ESL adjective → participle ──
   t = t.replace(/\bleak (pipe|tap|roof|wall|toilet|faucet|shower|hose)/gi, 'leaking $1');
-  // "block drain" → "blocked drain", "block pipe" → "blocked pipe"
   t = t.replace(/\bblock (drain|pipe|toilet|sink|sewer)/gi, 'blocked $1');
-  // "broke pipe" → "broken pipe", "broke tap" → "broken tap"
   t = t.replace(/\bbroke (pipe|tap|toilet|heater|system)/gi, 'broken $1');
-  // "clog drain" → "clogged drain"
   t = t.replace(/\bclog (drain|pipe|sink|toilet|sewer)/gi, 'clogged $1');
-  // "damage roof" → "damaged roof"
   t = t.replace(/\bdamage (roof|wall|pipe|floor|ceiling|property)/gi, 'damaged $1');
-  // "stain carpet" → "stained carpet"
   t = t.replace(/\bstain (carpet|tile|floor|wall|ceiling|bench)/gi, 'stained $1');
 
-  // Article agreement: "a" before vowel sounds → "an"
-  t = t.replace(/\ba (immaculate|excellent|outstanding|amazing|incredible|impressive|absolute|awful|easy|efficient|effective|expert|honest|hour|unusual|urgent|ultimate|update)/gi, 'an $1');
+  // ── Article agreement ──
+  t = t.replace(/\ba (immaculate|excellent|outstanding|amazing|incredible|impressive|absolute|awful|easy|efficient|effective|expert|honest|hour|unusual|urgent|ultimate|update|end of)/gi, 'an $1');
 
-  // Double "and and", "the the" etc (copy-paste artefacts)
-  t = t.replace(/\b(and|the|to|of|in|is|a|an) \1\b/gi, '$1');
-
-  // "did and end" → "did an end" (common typo)
+  // ── Common autocorrect / typo swaps ──
+  t = t.replace(/\b(and|the|to|of|in|is|a|an) \1\b/gi, '$1');   // doubled words
   t = t.replace(/\bdid and end\b/gi, 'did an end');
-
-  // "The confirmed" → "They confirmed" (common typo/autocorrect)
   t = t.replace(/\bThe confirmed\b/g, 'They confirmed');
   t = t.replace(/\bThe returned\b/g, 'They returned');
+  t = t.replace(/\bThe were\b/g, 'They were');
+  t = t.replace(/\bThe did\b/g, 'They did');
+  t = t.replace(/\bThe came\b/g, 'They came');
+  t = t.replace(/\bThe went\b/g, 'They went');
+
+  // ── Informal abbreviations → spoken form ──
+  t = t.replace(/\blol\b/gi, '');
+  t = t.replace(/\bomg\b/gi, '');
 
   return t;
+}
+
+/**
+ * Clean reviewer name for voiceover — normalise casing for spoken form.
+ * Subtitle uses cleanReviewerName() (minimal — platform artefacts only).
+ * Voiceover uses this to fix "jose" → "Jose", "DAVID KIRK" → "David Kirk".
+ */
+export function smoothReviewerName(raw) {
+  if (!raw) return 'a local';
+  let name = raw.trim();
+  // Strip Google platform artefacts (same as cleanReviewerName)
+  name = name.replace(/\s*\([^)]*\)\s*$/, '');
+  name = name.replace(/'[S]\b/g, '');
+  name = name.replace(/'\s/g, ' ');
+  // Normalise casing for voiceover — fix all-lower ("jose") and ALL CAPS ("DAVID KIRK")
+  // Leave mixed-case alone (preserves "McDonald", "O'Brien")
+  // Leave initials alone ("R VM", "N B")
+  const words = name.split(/\s+/);
+  const isInitials = words.every(w => w.length <= 2);
+  const isAllUpper = name === name.toUpperCase() && name.length > 2;
+  const isAllLower = name === name.toLowerCase();
+  if ((isAllUpper || isAllLower) && !isInitials) {
+    name = name.toLowerCase().replace(/(?:^|\s)\w/g, c => c.toUpperCase());
+  }
+  name = name.replace(/\.\s*$/, '');
+  name = name.replace(/\s{2,}/g, ' ').trim();
+  return name || 'a local';
 }
 
 /**
