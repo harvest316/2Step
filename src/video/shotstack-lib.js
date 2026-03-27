@@ -218,19 +218,19 @@ export function buildScenes(prospect) {
     },
     {
       text:      `"${quotes[0]}"`,
-      voiceover: quotes[0],
+      voiceover: smoothGrammar(quotes[0]),
     },
     {
       text:      `"${quotes[1]}"`,
-      voiceover: quotes[1],
+      voiceover: smoothGrammar(quotes[1]),
     },
     {
       text:      `"${quotes[2]}"`,
-      voiceover: quotes[2],
+      voiceover: smoothGrammar(quotes[2]),
     },
     {
       text:      `"${quotes[3]}"`,
-      voiceover: quotes[3],
+      voiceover: smoothGrammar(quotes[3]),
     },
     {
       text:      `${starsText}\n— ${reviewer}`,
@@ -1152,6 +1152,48 @@ export function formatPhoneNational(phone) {
 }
 
 /**
+ * Smooth grammar for voiceover ONLY — never applied to subtitle text.
+ * Fixes form (not meaning) so TTS sounds natural. The on-screen text
+ * stays verbatim per ACL s.29 compliance.
+ *
+ * Rules are strictly meaning-neutral: "leak pipes" → "leaking pipes",
+ * "a immaculate" → "an immaculate", etc.
+ */
+export function smoothGrammar(text) {
+  if (!text) return text;
+  let t = text;
+
+  // Adjective used where past participle expected (ESL pattern)
+  // "leak pipes" → "leaking pipes", "leak taps" → "leaking taps"
+  t = t.replace(/\bleak (pipe|tap|roof|wall|toilet|faucet|shower|hose)/gi, 'leaking $1');
+  // "block drain" → "blocked drain", "block pipe" → "blocked pipe"
+  t = t.replace(/\bblock (drain|pipe|toilet|sink|sewer)/gi, 'blocked $1');
+  // "broke pipe" → "broken pipe", "broke tap" → "broken tap"
+  t = t.replace(/\bbroke (pipe|tap|toilet|heater|system)/gi, 'broken $1');
+  // "clog drain" → "clogged drain"
+  t = t.replace(/\bclog (drain|pipe|sink|toilet|sewer)/gi, 'clogged $1');
+  // "damage roof" → "damaged roof"
+  t = t.replace(/\bdamage (roof|wall|pipe|floor|ceiling|property)/gi, 'damaged $1');
+  // "stain carpet" → "stained carpet"
+  t = t.replace(/\bstain (carpet|tile|floor|wall|ceiling|bench)/gi, 'stained $1');
+
+  // Article agreement: "a" before vowel sounds → "an"
+  t = t.replace(/\ba (immaculate|excellent|outstanding|amazing|incredible|impressive|absolute|awful|easy|efficient|effective|expert|honest|hour|unusual|urgent|ultimate|update)/gi, 'an $1');
+
+  // Double "and and", "the the" etc (copy-paste artefacts)
+  t = t.replace(/\b(and|the|to|of|in|is|a|an) \1\b/gi, '$1');
+
+  // "did and end" → "did an end" (common typo)
+  t = t.replace(/\bdid and end\b/gi, 'did an end');
+
+  // "The confirmed" → "They confirmed" (common typo/autocorrect)
+  t = t.replace(/\bThe confirmed\b/g, 'They confirmed');
+  t = t.replace(/\bThe returned\b/g, 'They returned');
+
+  return t;
+}
+
+/**
  * Format phone for TTS — spells out digits so ElevenLabs doesn't mispronounce "0" as "zoe".
  */
 export function formatPhoneTTS(phone) {
@@ -1209,7 +1251,7 @@ export function cleanReviewText(text) {
  * Sentences containing negative sentiment that would undermine a positive ad.
  * These get filtered from quote selection.
  */
-const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|rip-off|ripoff|wouldn't recommend|not recommend|don't recommend|wasn't happy|wasn't going to be happy|was not happy|disappointed|terrible|horrible|awful|worst|waste of|charged too|not worth|didn't fix|didn't solve|still broken|came back|returned within|returning within|proved to be persistent|not infected|was not infected|weren't found|no .{0,20} found|luckily .{0,30} not|wanted to charge|another company)\b/i;
+const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|rip-off|ripoff|wouldn't recommend|not recommend|don't recommend|wasn't happy|wasn't going to be happy|was not happy|disappointed|terrible|horrible|awful|worst|waste of|charged too|not worth|didn't fix|didn't solve|still broken|came back|returned within|returning within|proved to be persistent|not infected|was not infected|weren't found|no .{0,20} found|luckily .{0,30} not|wanted to charge|another company|lol|lmao|haha|rofl)\b/i;
 
 /**
  * Extract up to two short complete-sentence quotes from a review.
@@ -1252,8 +1294,16 @@ export function extractQuotes(review, n = 2) {
     // Strip parentheses entirely — content stays, brackets go
     .replace(/[()]/g, '');
 
-  const sentences = (cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned])
-    .map(s => s.trim())
+  // Split on sentence-ending punctuation, then further split long sentences on dashes
+  const rawSentences = (cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned]).map(s => s.trim());
+  const sentences = rawSentences
+    .flatMap(s => {
+      // If a sentence is >25 words and contains a dash clause, split on the dash
+      if (s.trim().split(/\s+/).length > 25 && /\s[-–—]\s/.test(s)) {
+        return s.split(/\s[-–—]\s/).map(c => c.trim().replace(/[.!?]+$/, '') + '.');
+      }
+      return [s];
+    })
     .filter(s => s.length >= 15)
     .filter(s => !DANGLING_OPENERS.test(s))    // reject mid-thought continuations
     .filter(s => !NEGATIVE_PATTERNS.test(s));   // reject negative sentiment
