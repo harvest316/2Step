@@ -19,7 +19,7 @@ import '../utils/load-env.js';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-import db from '../utils/db.js';
+import { getOne, getPool } from '../utils/db.js';
 import { processInboundQueue } from '../../../333Method/src/inbound/autoresponder.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -34,22 +34,21 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
  * and expects { amount, currency, symbol } back.
  *
  * @param {string} countryCode
- * @returns {{ amount: number, currency: string, symbol: string }}
+ * @returns {Promise<{ amount: number, currency: string, symbol: string }>}
  */
-function getTwoStepPricing(countryCode) {
+async function getTwoStepPricing(countryCode) {
   // Query the shared pricing table for the current active row for 2step
   try {
-    const row = db
-      .prepare(
-        `SELECT setup_local, monthly_8, currency
-         FROM msgs.pricing
-         WHERE project = '2step'
-           AND country_code = ?
-           AND superseded_at IS NULL
-         ORDER BY effective_from DESC
-         LIMIT 1`
-      )
-      .get(countryCode);
+    const row = await getOne(
+      `SELECT setup_local, monthly_8, currency
+       FROM msgs.pricing
+       WHERE project = '2step'
+         AND country_code = $1
+         AND superseded_at IS NULL
+       ORDER BY effective_from DESC
+       LIMIT 1`,
+      [countryCode]
+    );
 
     if (row) {
       const symbols = { AUD: '$', USD: '$', GBP: '\u00a3', CAD: '$', NZD: '$' };
@@ -100,7 +99,7 @@ export async function runRepliesStage(options = {}) {
   let result;
   try {
     result = await processInboundQueue({
-      db,
+      db: { getPool },
       messagesTable: 'msgs.messages',
       pricing: getTwoStepPricing,
       project: '2step',

@@ -22,7 +22,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
 import sharp from 'sharp';
-import db from '../utils/db.js';
+import { getOne, getAll, run, getPool } from '../utils/db.js';
 import { runEnrichmentStage } from '../../../333Method/src/stages/enrich.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -201,10 +201,12 @@ async function processLogoPill(site, dryRun) {
     return null;
   }
 
-  db.prepare('UPDATE sites SET logo_url = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
-    .run(r2Url, site.id);
+  await run(
+    'UPDATE sites SET logo_url = $1, updated_at = NOW() WHERE id = $2',
+    [r2Url, site.id]
+  );
 
-  console.log(`  [${site.id}] Logo treated → ${r2Url}`);
+  console.log(`  [${site.id}] Logo treated -> ${r2Url}`);
   return r2Url;
 }
 
@@ -238,15 +240,13 @@ export async function runEnrichStage(options = {}) {
 
   // Query sites at reviews_downloaded
   const limitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
-  const sites = db
-    .prepare(
-      `SELECT id, business_name, logo_url, contacts_json, screenshot_path, status
-       FROM sites
-       WHERE status = 'reviews_downloaded'
-       ORDER BY id
-       ${limitClause}`
-    )
-    .all();
+  const sites = await getAll(
+    `SELECT id, business_name, logo_url, contacts_json, screenshot_path, status
+     FROM sites
+     WHERE status = 'reviews_downloaded'
+     ORDER BY id
+     ${limitClause}`
+  );
 
   if (sites.length === 0) {
     console.log('[enrich] No sites at reviews_downloaded — nothing to do');
@@ -263,7 +263,7 @@ export async function runEnrichStage(options = {}) {
   let enrichStats = { processed: 0, succeeded: 0, failed: 0 };
   try {
     enrichStats = await runEnrichmentStage({
-      db,
+      db: { getPool },
       statusFilter: 'reviews_downloaded',
       limit,
       concurrency,
@@ -281,12 +281,11 @@ export async function runEnrichStage(options = {}) {
   // ── Step 2: Grey-pill logo treatment + R2 upload ──
   // Re-query to get current logo_url values (may have been populated by enrichment above)
   const siteIds = sites.map(s => s.id);
-  const placeholders = siteIds.map(() => '?').join(',');
-  const enrichedSites = db
-    .prepare(
-      `SELECT id, business_name, logo_url FROM sites WHERE id IN (${placeholders})`
-    )
-    .all(...siteIds);
+  const placeholders = siteIds.map((_, i) => `$${i + 1}`).join(',');
+  const enrichedSites = await getAll(
+    `SELECT id, business_name, logo_url FROM sites WHERE id IN (${placeholders})`,
+    siteIds
+  );
 
   console.log(`[enrich] Step 2: grey-pill logo treatment for ${enrichedSites.length} site(s)...`);
 
@@ -317,9 +316,10 @@ export async function runEnrichStage(options = {}) {
   let errorCount = 0;
 
   for (const site of sites) {
-    const current = db
-      .prepare('SELECT status, error_message FROM sites WHERE id = ?')
-      .get(site.id);
+    const current = await getOne(
+      'SELECT status, error_message FROM sites WHERE id = $1',
+      [site.id]
+    );
 
     if (!current) continue;
 
@@ -335,11 +335,12 @@ export async function runEnrichStage(options = {}) {
 
     // Enrichment moved it forward (enriched_regex, enriched_llm, enriched, or ignored)
     if (!dryRun) {
-      db.prepare(
+      await run(
         `UPDATE sites
-         SET status = 'enriched', updated_at = CURRENT_TIMESTAMP
-         WHERE id = ? AND status NOT IN ('ignored', 'enriched')`
-      ).run(site.id);
+         SET status = 'enriched', updated_at = NOW()
+         WHERE id = $1 AND status NOT IN ('ignored', 'enriched')`,
+        [site.id]
+      );
     }
 
     enrichedCount++;

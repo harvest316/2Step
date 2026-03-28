@@ -23,7 +23,7 @@
  */
 
 import '../utils/load-env.js';
-import db from '../utils/db.js';
+import { getOne, getAll, run, query } from '../utils/db.js';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
@@ -34,43 +34,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const WORKER_URL    = process.env.AUDITANDFIX_WORKER_URL;
 const WORKER_SECRET = process.env.AUDITANDFIX_WORKER_SECRET;
-
-// ─── Self-migrating columns ──────────────────────────────────────────────────
-
-try { db.exec("ALTER TABLE sites ADD COLUMN source TEXT"); } catch {}
-try { db.exec("ALTER TABLE sites ADD COLUMN demo_kv_key TEXT"); } catch {}
-try { db.exec("ALTER TABLE sites ADD COLUMN manual_fulfillment INTEGER DEFAULT 0"); } catch {}
-
-// ─── DB helpers ──────────────────────────────────────────────────────────────
-
-const stmtExistsByPlaceIdAndSource = db.prepare(
-  "SELECT id FROM sites WHERE google_place_id = ? AND source = 'demo_request'"
-);
-
-const stmtInsertDemoSite = db.prepare(`
-  INSERT INTO sites (
-    business_name, niche, city, country_code,
-    google_place_id, status, source, demo_kv_key, manual_fulfillment
-  ) VALUES (
-    @business_name, @niche, @city, @country_code,
-    @google_place_id, 'found', 'demo_request', @demo_kv_key, @manual_fulfillment
-  )
-`);
-
-const stmtReadyDemos = db.prepare(`
-  SELECT id, business_name, video_url, demo_kv_key
-  FROM sites
-  WHERE source = 'demo_request'
-    AND (status = 'video_created' OR video_url IS NOT NULL)
-    AND demo_kv_key IS NOT NULL
-`);
-
-const stmtClearDemoKvKey = db.prepare(`
-  UPDATE sites
-  SET demo_kv_key = NULL,
-      updated_at  = CURRENT_TIMESTAMP
-  WHERE id = ?
-`);
 
 // ─── Worker HTTP helpers ─────────────────────────────────────────────────────
 
@@ -161,7 +124,10 @@ async function phaseA(dryRun) {
     }
 
     // Check if already exists
-    const existing = stmtExistsByPlaceIdAndSource.get(placeId);
+    const existing = await getOne(
+      "SELECT id FROM sites WHERE google_place_id = $1 AND source = 'demo_request'",
+      [placeId]
+    );
     if (existing) {
       console.log(`[video-demo-requests]   Skip (already processing, site ${existing.id}): ${businessName}`);
       stats.skipped++;
@@ -175,15 +141,24 @@ async function phaseA(dryRun) {
     }
 
     try {
-      stmtInsertDemoSite.run({
-        business_name:      businessName,
-        niche:              demo.niche || null,
-        city:               demo.city || null,
-        country_code:       demo.country_code || null,
-        google_place_id:    placeId,
-        demo_kv_key:        kvKey,
-        manual_fulfillment: demo.manual_fulfillment ? 1 : 0,
-      });
+      await run(
+        `INSERT INTO sites (
+          business_name, niche, city, country_code,
+          google_place_id, status, source, demo_kv_key, manual_fulfillment
+        ) VALUES (
+          $1, $2, $3, $4,
+          $5, 'found', 'demo_request', $6, $7
+        )`,
+        [
+          businessName,
+          demo.niche || null,
+          demo.city || null,
+          demo.country_code || null,
+          placeId,
+          kvKey,
+          demo.manual_fulfillment ? true : false,
+        ]
+      );
       console.log(`[video-demo-requests]   Inserted: ${businessName} (kv=${kvKey})`);
       stats.inserted++;
     } catch (err) {
@@ -205,7 +180,13 @@ async function phaseA(dryRun) {
 async function phaseB(dryRun) {
   const stats = { completed: 0, errors: 0 };
 
-  const readySites = stmtReadyDemos.all();
+  const readySites = await getAll(
+    `SELECT id, business_name, video_url, demo_kv_key
+     FROM sites
+     WHERE source = 'demo_request'
+       AND (status = 'video_created' OR video_url IS NOT NULL)
+       AND demo_kv_key IS NOT NULL`
+  );
 
   if (readySites.length === 0) {
     console.log('[video-demo-requests] Phase B: no ready demos to complete');
@@ -216,14 +197,17 @@ async function phaseB(dryRun) {
 
   for (const site of readySites) {
     if (dryRun) {
-      console.log(`[video-demo-requests]   [DRY RUN] Would complete: site ${site.id} "${site.business_name}" → ${site.video_url}`);
+      console.log(`[video-demo-requests]   [DRY RUN] Would complete: site ${site.id} "${site.business_name}" -> ${site.video_url}`);
       stats.completed++;
       continue;
     }
 
     try {
       await completeDemoCallback(site.demo_kv_key, site.video_url);
-      stmtClearDemoKvKey.run(site.id);
+      await run(
+        `UPDATE sites SET demo_kv_key = NULL, updated_at = NOW() WHERE id = $1`,
+        [site.id]
+      );
       console.log(`[video-demo-requests]   Completed: site ${site.id} "${site.business_name}" (kv=${site.demo_kv_key})`);
       stats.completed++;
     } catch (err) {

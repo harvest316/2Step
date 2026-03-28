@@ -24,7 +24,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
 import { existsSync, readFileSync } from 'fs';
-import db from '../utils/db.js';
+import { getAll, run } from '../utils/db.js';
 // execSync no longer needed — Opus called via OpenRouter API
 // Pure functions live in scene-builder.js (also imported by tests)
 import {
@@ -99,23 +99,25 @@ const shotstackIngest = axios.create({
 
 // ─── Database ────────────────────────────────────────────────────────────────
 
-function getSites() {
+async function getSites() {
   if (args.id) {
-    return db.prepare(`
-      SELECT s.*, v.id as video_id, v.prompt_text
-      FROM sites s
-      JOIN videos v ON v.site_id = s.id
-      WHERE s.id = ? AND v.video_tool = 'shotstack' AND v.status = 'prompted'
-    `).all(parseInt(args.id, 10));
+    return await getAll(
+      `SELECT s.*, v.id as video_id, v.prompt_text
+       FROM sites s
+       JOIN videos v ON v.site_id = s.id
+       WHERE s.id = $1 AND v.video_tool = 'shotstack' AND v.status = 'prompted'`,
+      [parseInt(args.id, 10)]
+    );
   }
-  return db.prepare(`
-    SELECT s.*, v.id as video_id, v.prompt_text
-    FROM sites s
-    JOIN videos v ON v.site_id = s.id
-    WHERE v.video_tool = 'shotstack' AND v.status = 'prompted'
-    ORDER BY s.google_rating DESC, s.review_count DESC
-    LIMIT ?
-  `).all(parseInt(args.limit, 10));
+  return await getAll(
+    `SELECT s.*, v.id as video_id, v.prompt_text
+     FROM sites s
+     JOIN videos v ON v.site_id = s.id
+     WHERE v.video_tool = 'shotstack' AND v.status = 'prompted'
+     ORDER BY s.google_rating DESC, s.review_count DESC
+     LIMIT $1`,
+    [parseInt(args.limit, 10)]
+  );
 }
 
 // ─── ElevenLabs voiceover ─────────────────────────────────────────────────────
@@ -223,9 +225,9 @@ async function pollRender(renderId, maxWaitMs = 300000) {
     await sleep(6000);
     const { data } = await shotstack.get(`/render/${renderId}`);
     const { status, url } = data.response;
-    if (status === 'done') { process.stdout.write(' ✓\n'); return url; }
+    if (status === 'done') { process.stdout.write(' done\n'); return url; }
     if (status === 'failed') {
-      process.stdout.write(' ✗\n');
+      process.stdout.write(' failed\n');
       throw new Error(`Render failed: ${data.response.error || 'unknown'}`);
     }
     process.stdout.write('.');
@@ -283,8 +285,8 @@ Generate exactly 5 scenes as a JSON array. Each scene has:
 
 Scene structure:
 1. Hook: grab attention, mention business name and city
-2. Quote part 1: a short punchy excerpt from the review (≤15 words, complete sentence or phrase)
-3. Quote part 2: a different short excerpt from the review (≤15 words, must differ from scene 2)
+2. Quote part 1: a short punchy excerpt from the review (<=15 words, complete sentence or phrase)
+3. Quote part 2: a different short excerpt from the review (<=15 words, must differ from scene 2)
 4. Attribution: five stars, reviewer name
 5. CTA: call to action, business name, phone number (if provided)
 
@@ -302,7 +304,7 @@ Example output format:
   {"voiceover": "Why \\"Wahroonga\\" locals trust \\"Name\\".", "text": "Why Wahroonga Locals\\nTrust Name"},
   {"voiceover": "Absolutely fantastic from start to finish.", "text": "\\"Absolutely fantastic\\nfrom start to finish.\\""},
   {"voiceover": "He went above and beyond every time.", "text": "\\"He went above\\nand beyond every time.\\""},
-  {"voiceover": "Five stars — from Jane Smith.", "text": "⭐⭐⭐⭐⭐\\n— Jane Smith"},
+  {"voiceover": "Five stars — from Jane Smith.", "text": "stars\\n— Jane Smith"},
   {"voiceover": ${ctaVoiceExample}, "text": ${ctaTextExample}}
 ]`;
 
@@ -366,7 +368,7 @@ Example output format:
 // Leave unset to render without background music.
 const MUSIC_URL = process.env.BACKGROUND_MUSIC_URL || null;
 
-async function processProspect(prospect, updateVideo) {
+async function processProspect(prospect) {
   const name = prospect.business_name.split('|')[0].trim();
   console.log(`\n[${prospect.id}] ${name}`);
 
@@ -401,7 +403,7 @@ async function processProspect(prospect, updateVideo) {
   console.log(`  Audio hosted: ${audioUrl}`);
 
   const payload = buildRenderPayload(clips, audioUrl, sceneTexts, logoUrl, MUSIC_URL);
-  updateVideo.run('rendering', null, prospect.video_id);
+  await run('UPDATE videos SET status = $1, video_url = $2 WHERE id = $3', ['rendering', null, prospect.video_id]);
 
   const renderId = await submitRender(payload);
   console.log(`  Render submitted: ${renderId}`);
@@ -409,13 +411,12 @@ async function processProspect(prospect, updateVideo) {
   const videoUrl = await pollRender(renderId);
   console.log(`  Video ready: ${videoUrl}`);
 
-  updateVideo.run('completed', videoUrl, prospect.video_id);
-  db.prepare('UPDATE sites SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
-    .run('video_created', prospect.id);
+  await run('UPDATE videos SET status = $1, video_url = $2 WHERE id = $3', ['completed', videoUrl, prospect.video_id]);
+  await run('UPDATE sites SET status = $1, updated_at = NOW() WHERE id = $2', ['video_created', prospect.id]);
 }
 
 async function main() {
-  const sites = getSites();
+  const sites = await getSites();
 
   if (sites.length === 0) {
     console.log('No sites with shotstack videos in "prompted" status.');
@@ -425,17 +426,18 @@ async function main() {
 
   console.log(`Rendering ${sites.length} videos via Shotstack${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
 
-  const updateVideo = db.prepare('UPDATE videos SET status = ?, video_url = ? WHERE id = ?');
   let success = 0;
   let failed = 0;
 
   for (const site of sites) {
     try {
-      await processProspect(site, updateVideo);
+      await processProspect(site);
       success++;
     } catch (err) {
-      console.error(`  ✗ Failed: ${err.message}`);
-      if (site.video_id) updateVideo.run('failed', null, site.video_id);
+      console.error(`  Failed: ${err.message}`);
+      if (site.video_id) {
+        await run('UPDATE videos SET status = $1, video_url = $2 WHERE id = $3', ['failed', null, site.video_id]);
+      }
       failed++;
     }
   }

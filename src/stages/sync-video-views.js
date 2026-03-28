@@ -31,7 +31,7 @@ import '../utils/load-env.js';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-import db from '../utils/db.js';
+import { getOne, run } from '../utils/db.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -108,30 +108,6 @@ export async function runSyncVideoViewsStage(options = {}) {
     return { checked: videos.length, updated: 0, priorityFlagged: 0, errors: 0 };
   }
 
-  // Prepare DB statements
-  const getSite = db.prepare(`
-    SELECT id, business_name, video_viewed_at, followup1_sent_at, conversation_status
-    FROM sites
-    WHERE video_hash = ?
-    LIMIT 1
-  `);
-
-  const setViewed = db.prepare(`
-    UPDATE sites
-    SET video_viewed_at = ?,
-        updated_at      = CURRENT_TIMESTAMP
-    WHERE id = ?
-      AND (video_viewed_at IS NULL OR video_viewed_at < ?)
-  `);
-
-  const setPriorityFlag = db.prepare(`
-    UPDATE sites
-    SET conversation_status = 'viewed_no_followup',
-        updated_at          = CURRENT_TIMESTAMP
-    WHERE id = ?
-      AND (conversation_status IS NULL OR conversation_status NOT IN ('replied', 'closed', 'converted'))
-  `);
-
   const now = new Date();
   const priorityCutoff = new Date(now.getTime() - PRIORITY_WINDOW_MINUTES * 60 * 1000);
 
@@ -141,14 +117,21 @@ export async function runSyncVideoViewsStage(options = {}) {
 
   for (const v of viewedVideos) {
     try {
-      const site = getSite.get(v.hash);
+      const site = await getOne(
+        `SELECT id, business_name, video_viewed_at, followup1_sent_at, conversation_status
+         FROM sites
+         WHERE video_hash = $1
+         LIMIT 1`,
+        [v.hash]
+      );
+
       if (!site) {
         // Hash exists on Hostinger but not in local DB — ignore (could be a test page)
         continue;
       }
 
       const lastViewDate = new Date(v.last_view);
-      const lastViewIso  = lastViewDate.toISOString().replace('T', ' ').slice(0, 19);
+      const lastViewIso  = lastViewDate.toISOString();
 
       // Determine if this is a new view (not yet recorded locally)
       const alreadyRecorded = site.video_viewed_at !== null;
@@ -161,7 +144,14 @@ export async function runSyncVideoViewsStage(options = {}) {
             `  [dry-run] Would set video_viewed_at=${lastViewIso} for site ${site.id} "${site.business_name}"`
           );
         } else {
-          setViewed.run(lastViewIso, site.id, lastViewIso);
+          await run(
+            `UPDATE sites
+             SET video_viewed_at = $1,
+                 updated_at      = NOW()
+             WHERE id = $2
+               AND (video_viewed_at IS NULL OR video_viewed_at < $3)`,
+            [lastViewIso, site.id, lastViewIso]
+          );
         }
         updated++;
       }
@@ -176,7 +166,14 @@ export async function runSyncVideoViewsStage(options = {}) {
             `  [dry-run] Would flag conversation_status=viewed_no_followup for site ${site.id} "${site.business_name}" (viewed ${v.last_view})`
           );
         } else {
-          setPriorityFlag.run(site.id);
+          await run(
+            `UPDATE sites
+             SET conversation_status = 'viewed_no_followup',
+                 updated_at          = NOW()
+             WHERE id = $1
+               AND (conversation_status IS NULL OR conversation_status NOT IN ('replied', 'closed', 'converted'))`,
+            [site.id]
+          );
         }
         priorityFlagged++;
       }

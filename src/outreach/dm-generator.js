@@ -19,7 +19,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 import { parseArgs } from 'util';
-import db from '../utils/db.js';
+import { getAll, run, withTransaction } from '../utils/db.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -38,34 +38,36 @@ const { values: args } = parseArgs({
 
 // ─── Database ────────────────────────────────────────────────────────────────
 
-function getSitesWithVideos() {
+async function getSitesWithVideos() {
   if (args.id) {
-    return db.prepare(`
-      SELECT s.*, v.video_url, v.id as video_id
-      FROM sites s
-      JOIN videos v ON v.site_id = s.id
-      WHERE s.id = ? AND v.status = 'completed' AND v.video_url IS NOT NULL
-      ORDER BY v.created_at DESC
-      LIMIT 1
-    `).all(parseInt(args.id, 10));
+    return await getAll(
+      `SELECT s.*, v.video_url, v.id as video_id
+       FROM sites s
+       JOIN videos v ON v.site_id = s.id
+       WHERE s.id = $1 AND v.status = 'completed' AND v.video_url IS NOT NULL
+       ORDER BY v.created_at DESC
+       LIMIT 1`,
+      [parseInt(args.id, 10)]
+    );
   }
 
-  return db.prepare(`
-    SELECT s.*, v.video_url, v.id as video_id
-    FROM sites s
-    JOIN videos v ON v.site_id = s.id
-    WHERE s.status IN ('video_created', 'video_prompted')
-      AND v.status = 'completed'
-      AND v.video_url IS NOT NULL
-      AND NOT EXISTS (
-        SELECT 1 FROM msgs.messages m
-        WHERE m.project = '2step'
-          AND m.site_id = s.id
-          AND m.contact_method = ?
-      )
-    ORDER BY s.google_rating DESC
-    LIMIT ?
-  `).all(args.channel, parseInt(args.limit, 10));
+  return await getAll(
+    `SELECT s.*, v.video_url, v.id as video_id
+     FROM sites s
+     JOIN videos v ON v.site_id = s.id
+     WHERE s.status IN ('video_created', 'video_prompted')
+       AND v.status = 'completed'
+       AND v.video_url IS NOT NULL
+       AND NOT EXISTS (
+         SELECT 1 FROM msgs.messages m
+         WHERE m.project = '2step'
+           AND m.site_id = s.id
+           AND m.contact_method = $1
+       )
+     ORDER BY s.google_rating DESC
+     LIMIT $2`,
+    [args.channel, parseInt(args.limit, 10)]
+  );
 }
 
 // ─── Message Generation ─────────────────────────────────────────────────────
@@ -113,7 +115,7 @@ function getContactUri(site, channel) {
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
-const sites = getSitesWithVideos();
+const sites = await getSitesWithVideos();
 
 if (sites.length === 0) {
   console.log('No sites with completed videos ready for outreach.');
@@ -122,16 +124,6 @@ if (sites.length === 0) {
 }
 
 console.log(`Generating ${args.channel} messages for ${sites.length} sites...\n`);
-
-const insertMessage = db.prepare(`
-  INSERT INTO msgs.messages
-    (project, site_id, direction, contact_method, contact_uri, message_body, approval_status)
-  VALUES ('2step', ?, 'outbound', ?, ?, ?, 'pending')
-`);
-
-const updateStatus = db.prepare(`
-  UPDATE sites SET status = 'outreach_sent', updated_at = CURRENT_TIMESTAMP WHERE id = ?
-`);
 
 let success = 0;
 
@@ -144,7 +136,7 @@ for (const site of sites) {
     const contactUri = getContactUri(site, args.channel);
 
     if (!contactUri) {
-      console.log(`  ⚠ No ${args.channel} contact info — skipping`);
+      console.log(`  No ${args.channel} contact info — skipping`);
       continue;
     }
 
@@ -153,10 +145,15 @@ for (const site of sites) {
       console.log(`  Message:\n${message}\n`);
       console.log('  ---');
     } else {
-      db.transaction(() => {
-        insertMessage.run(site.id, args.channel, contactUri, message);
-      })();
-      console.log(`  ✓ Message generated for ${contactUri}`);
+      await withTransaction(async (client) => {
+        await client.query(
+          `INSERT INTO msgs.messages
+             (project, site_id, direction, contact_method, contact_uri, message_body, approval_status)
+           VALUES ('2step', $1, 'outbound', $2, $3, $4, 'pending')`,
+          [site.id, args.channel, contactUri, message]
+        );
+      });
+      console.log(`  Message generated for ${contactUri}`);
     }
 
     // Always print the message for copy-paste
@@ -168,7 +165,7 @@ for (const site of sites) {
 
     success++;
   } catch (err) {
-    console.error(`  ✗ Failed: ${err.message}`);
+    console.error(`  Failed: ${err.message}`);
   }
 }
 

@@ -19,7 +19,7 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
 import { parseArgs } from 'util';
-import db from '../utils/db.js';
+import { getOne, getAll, run, withTransaction } from '../utils/db.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -44,14 +44,15 @@ if (!VALID_TOOLS.includes(videoTool)) {
 
 // ─── Database ────────────────────────────────────────────────────────────────
 
-function getSites() {
+async function getSites() {
   if (args.id) {
-    const row = db.prepare('SELECT * FROM sites WHERE id = ?').get(parseInt(args.id, 10));
+    const row = await getOne('SELECT * FROM sites WHERE id = $1', [parseInt(args.id, 10)]);
     return row ? [row] : [];
   }
-  return db.prepare(
-    'SELECT * FROM sites WHERE status = ? AND best_review_text IS NOT NULL ORDER BY google_rating DESC LIMIT ?'
-  ).all('found', parseInt(args.limit, 10));
+  return await getAll(
+    'SELECT * FROM sites WHERE status = $1 AND best_review_text IS NOT NULL ORDER BY google_rating DESC LIMIT $2',
+    ['found', parseInt(args.limit, 10)]
+  );
 }
 
 // ─── Prompt Generation ──────────────────────────────────────────────────────
@@ -89,7 +90,7 @@ function generateVideoScript(prompt) {
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
-const sites = getSites();
+const sites = await getSites();
 
 if (sites.length === 0) {
   console.log('No sites with status=found and a review. Run outscraper.js first.');
@@ -97,15 +98,6 @@ if (sites.length === 0) {
 }
 
 console.log(`Generating video prompts for ${sites.length} sites (tool: ${videoTool})...\n`);
-
-const insertVideo = db.prepare(`
-  INSERT INTO videos (site_id, video_tool, prompt_text, status)
-  VALUES (?, ?, ?, 'prompted')
-`);
-
-const updateStatus = db.prepare(`
-  UPDATE sites SET status = 'video_prompted', updated_at = CURRENT_TIMESTAMP WHERE id = ?
-`);
 
 let success = 0;
 let failed = 0;
@@ -117,18 +109,25 @@ for (const site of sites) {
     const prompt = buildPrompt(site);
     const script = generateVideoScript(prompt);
 
-    db.transaction(() => {
-      insertVideo.run(site.id, videoTool, script);
-      updateStatus.run(site.id);
-    })();
+    await withTransaction(async (client) => {
+      await client.query(
+        `INSERT INTO videos (site_id, video_tool, prompt_text, status) VALUES ($1, $2, $3, 'prompted')`,
+        [site.id, videoTool, script]
+      );
+      await client.query(
+        `UPDATE sites SET status = 'video_prompted', updated_at = NOW() WHERE id = $1`,
+        [site.id]
+      );
+    });
 
-    console.log(`  ✓ Video script generated (${script.length} chars)`);
+    console.log(`  Video script generated (${script.length} chars)`);
     success++;
   } catch (err) {
-    console.error(`  ✗ Failed: ${err.message}`);
-    db.prepare(
-      'UPDATE sites SET error_message = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?'
-    ).run(err.message, site.id);
+    console.error(`  Failed: ${err.message}`);
+    await run(
+      'UPDATE sites SET error_message = $1, updated_at = NOW() WHERE id = $2',
+      [err.message, site.id]
+    );
     failed++;
   }
 }

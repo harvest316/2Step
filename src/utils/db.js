@@ -1,69 +1,169 @@
 /**
- * 2Step database connection module.
+ * Database Utilities — PostgreSQL (pg.Pool)
  *
- * Opens 2step.db and ATTACHes mmo-platform/db/messages.db as `msgs`.
- * All message queries use the `msgs.` schema prefix:
- *   INSERT INTO msgs.messages (project, site_id, ...) VALUES ('2step', ?, ...)
- *   SELECT * FROM msgs.messages WHERE project='2step' AND site_id=?
+ * Single `mmo` database with schemas:
+ *   twostep — 2Step application data (sites, videos, keywords, etc.)
+ *   msgs    — shared cross-project (messages, opt_outs, pricing, suppression)
+ *
+ * Schema-prefixed queries (msgs.messages, msgs.opt_outs) work unchanged —
+ * search_path resolves unqualified names to twostep first.
  *
  * Environment variables:
- *   DATABASE_PATH    — absolute path to 2step.db (default: ../../db/2step.db)
- *   MESSAGES_DB_PATH — absolute path to messages.db (default: ../../../mmo-platform/db/messages.db)
- *
- * Production: always set MESSAGES_DB_PATH to an absolute path in .env and
- * systemd unit. The relative default is a dev fallback only.
- * SQLite ATTACH on a non-existent path silently creates an empty database —
- * the startup assertion below catches this configuration error early.
+ *   DATABASE_URL       — PostgreSQL connection string (e.g. postgresql:///mmo)
+ *   PG_SEARCH_PATH     — schema search path (default: twostep, msgs)
+ *   PG_POOL_MAX        — max pool connections (default: 10)
+ *   PGHOST, PGDATABASE, PGUSER, PG_PASSWORD — fallback individual vars
  */
 
-import Database from 'better-sqlite3';
-import { existsSync } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import pg from 'pg';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+let pool;
 
-const dbPath = process.env.TWOSTEP_DATABASE_PATH
-  || process.env.DATABASE_PATH_2STEP
-  || path.resolve(__dirname, '../../db/2step.db');
-
-const messagesDbPath = process.env.MESSAGES_DB_PATH
-  || path.resolve(__dirname, '../../../mmo-platform/db/messages.db');
-
-// Startup assertion: if MESSAGES_DB_PATH was explicitly set but the file
-// doesn't exist, throw immediately with a clear error rather than silently
-// creating an empty database at the wrong path.
-/* c8 ignore start — startup assertion for missing messages DB */
-if (process.env.MESSAGES_DB_PATH && !existsSync(messagesDbPath)) {
-  throw new Error(
-    `MESSAGES_DB_PATH is set but file not found: ${messagesDbPath}\n` +
-    `Run mmo-platform/scripts/init-messages-db.js first to create the shared DB.`
-  );
-}
-/* c8 ignore stop */
-
-const db = new Database(dbPath);
-
-db.pragma('journal_mode = WAL');
-db.pragma('busy_timeout = 15000');
-db.pragma('foreign_keys = ON');
-
-// ATTACH the shared messages DB if it exists.
-// busy_timeout is set on the connection and covers all attached databases.
-if (existsSync(messagesDbPath)) {
-  db.exec(`ATTACH DATABASE '${messagesDbPath}' AS msgs`);
-} else {
-  /* c8 ignore start — dev fallback: messages.db not yet initialised */
-  // Dev: messages.db not yet initialised — log a warning but don't crash.
-  // Pipeline stages that query msgs.messages will fail at query time with a
-  // clear "no such table: msgs.messages" error, which is easier to diagnose
-  // than a silent missing-DB issue.
-  console.warn(
-    `[db] WARNING: messages.db not found at ${messagesDbPath}. ` +
-    `Run mmo-platform/scripts/init-messages-db.js to create it. ` +
-    `Queries against msgs.* will fail until the shared DB is initialised.`
-  );
-  /* c8 ignore stop */
+/**
+ * Validate search_path schemas against injection.
+ * SET doesn't support parameterised values, so we whitelist identifiers.
+ */
+function validateSearchPath(path) {
+  const schemas = path.split(',').map(s => s.trim());
+  const valid = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
+  for (const s of schemas) {
+    if (!valid.test(s)) throw new Error(`Invalid schema name in PG_SEARCH_PATH: "${s}"`);
+  }
+  return schemas.join(', ');
 }
 
-export default db;
+/**
+ * Get or create the shared connection pool.
+ * @returns {pg.Pool}
+ */
+export function getPool() {
+  if (!pool) {
+    const poolMax = parseInt(process.env.PG_POOL_MAX || '10', 10);
+
+    const poolConfig = {
+      max: poolMax,
+      idleTimeoutMillis: 300_000,     // 5 min — long-running pipeline processes
+      connectionTimeoutMillis: 5_000,
+    };
+
+    if (process.env.DATABASE_URL) {
+      poolConfig.connectionString = process.env.DATABASE_URL;
+    } else {
+      poolConfig.host = process.env.PGHOST || '/run/postgresql';
+      poolConfig.database = process.env.PGDATABASE || 'mmo';
+      poolConfig.user = process.env.PGUSER || 'jason';
+      if (process.env.PG_PASSWORD) poolConfig.password = process.env.PG_PASSWORD;
+    }
+
+    pool = new pg.Pool(poolConfig);
+
+    const searchPath = validateSearchPath(
+      process.env.PG_SEARCH_PATH || 'twostep, msgs'
+    );
+
+    pool.on('connect', (client) => {
+      client.query(`SET search_path TO ${searchPath}, public`);
+      client.query('SET timezone TO \'UTC\'');
+      client.query('SET statement_timeout = 30000');
+    });
+
+    // Prevent process crash on idle client errors
+    pool.on('error', (err) => {
+      console.error('[db] Pool error on idle client:', err.message);
+    });
+  }
+  return pool;
+}
+
+/**
+ * Run a query and return the full pg Result.
+ * @param {string} text — SQL with $1, $2 placeholders
+ * @param {any[]} [params]
+ * @returns {Promise<pg.QueryResult>}
+ */
+export async function query(text, params) {
+  return await getPool().query(text, params);
+}
+
+/**
+ * Run a SELECT and return the first row, or null.
+ * @param {string} text
+ * @param {any[]} [params]
+ * @returns {Promise<object|null>}
+ */
+export async function getOne(text, params) {
+  const { rows } = await query(text, params);
+  return rows[0] || null;
+}
+
+/**
+ * Run a SELECT and return all rows.
+ * @param {string} text
+ * @param {any[]} [params]
+ * @returns {Promise<object[]>}
+ */
+export async function getAll(text, params) {
+  const { rows } = await query(text, params);
+  return rows;
+}
+
+/**
+ * Run an INSERT/UPDATE/DELETE and return { changes, lastInsertRowid }.
+ * For INSERTs that need the new id, add RETURNING id to the SQL.
+ * @param {string} text
+ * @param {any[]} [params]
+ * @returns {Promise<{changes: number, lastInsertRowid: number|undefined}>}
+ */
+export async function run(text, params) {
+  const { rowCount, rows } = await query(text, params);
+  return { changes: rowCount, lastInsertRowid: rows[0]?.id };
+}
+
+/**
+ * Execute a function inside a transaction.
+ * The callback receives a dedicated client (not from the pool query shortcut).
+ * On error, ROLLBACK is issued and the error re-thrown.
+ *
+ * @param {(client: pg.PoolClient) => Promise<T>} fn
+ * @returns {Promise<T>}
+ * @template T
+ */
+export async function withTransaction(fn) {
+  const client = await getPool().connect();
+  let failed = false;
+  try {
+    await client.query('BEGIN');
+    await client.query('SET LOCAL statement_timeout = 30000');
+    const result = await fn(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (e) {
+    failed = true;
+    try { await client.query('ROLLBACK'); } catch { /* connection may be dead */ }
+    throw e;
+  } finally {
+    // Destroy broken connections instead of returning them to pool
+    client.release(failed);
+  }
+}
+
+/**
+ * Gracefully shut down the pool. Call from process exit handlers.
+ * @returns {Promise<void>}
+ */
+export async function closePool() {
+  if (pool) {
+    await pool.end();
+    pool = null;
+  }
+}
+
+export default {
+  getPool,
+  query,
+  getOne,
+  getAll,
+  run,
+  withTransaction,
+  closePool,
+};

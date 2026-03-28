@@ -23,7 +23,7 @@ import { readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-import db from '../utils/db.js';
+import { getOne, getAll, run } from '../utils/db.js';
 import { buildEmailHtml } from '../outreach/email-template.js';
 import { spin } from '../../../333Method/src/utils/spintax.js';
 import { openDb as openSuppressionDb, checkBeforeSend } from '../../../mmo-platform/src/suppression.js';
@@ -63,27 +63,26 @@ function loadSequenceTemplate(countryCode) {
 
 /**
  * Check whether a contact URI (email or phone) is opted out for a given method.
- * Queries msgs.opt_outs in the shared messages DB (ATTACHed as `msgs`).
+ * Queries msgs.opt_outs in the shared messages schema.
  *
  * @param {string|null} phone
  * @param {string|null} email
  * @param {'sms'|'email'} method
- * @returns {boolean}
+ * @returns {Promise<boolean>}
  */
-function isOptedOut(phone, email, method) {
+async function isOptedOut(phone, email, method) {
   if (!phone && !email) return false;
   try {
-    const row = db
-      .prepare(
-        `SELECT 1 FROM msgs.opt_outs
-         WHERE method = ?
-         AND (phone = ? OR email = ?)
-         LIMIT 1`
-      )
-      .get(method, phone ?? null, email ?? null);
+    const row = await getOne(
+      `SELECT 1 FROM msgs.opt_outs
+       WHERE method = $1
+       AND (phone = $2 OR email = $3)
+       LIMIT 1`,
+      [method, phone ?? null, email ?? null]
+    );
     return Boolean(row);
   } catch (_) {
-    // msgs.opt_outs not available (e.g. messages.db not ATTACHed) — don't block
+    // msgs.opt_outs not available — don't block
     return false;
   }
 }
@@ -228,13 +227,14 @@ async function sendEmail(msg, resend, dryRun) {
     console.warn(`  Suppression check failed (non-fatal): ${e.message}`);
   }
 
-  if (isOptedOut(null, msg.contact_uri, 'email')) {
-    db.prepare(
+  if (await isOptedOut(null, msg.contact_uri, 'email')) {
+    await run(
       `UPDATE msgs.messages
        SET delivery_status = 'failed', error_message = 'opted out',
-           updated_at = datetime('now')
-       WHERE id = ?`
-    ).run(msg.id);
+           updated_at = NOW()
+       WHERE id = $1`,
+      [msg.id]
+    );
     console.log(`  [${msg.id}] Skipped (opted out): ${msg.contact_uri}`);
     return { success: false, skipped: true, reason: 'opted_out' };
   }
@@ -268,19 +268,20 @@ async function sendEmail(msg, resend, dryRun) {
 
   const emailId = data?.id || null;
 
-  db.prepare(
+  await run(
     `UPDATE msgs.messages
      SET delivery_status = 'sent',
-         sent_at = datetime('now'),
-         email_id = ?,
-         updated_at = datetime('now')
-     WHERE id = ?`
-  ).run(emailId, msg.id);
+         sent_at = NOW(),
+         email_id = $1,
+         updated_at = NOW()
+     WHERE id = $2`,
+    [emailId, msg.id]
+  );
 
-  db.prepare(
-    `UPDATE sites SET last_outreach_at = datetime('now'), updated_at = datetime('now')
-     WHERE id = ?`
-  ).run(msg.site_id);
+  await run(
+    `UPDATE sites SET last_outreach_at = NOW(), updated_at = NOW() WHERE id = $1`,
+    [msg.site_id]
+  );
 
   return { success: true, resendId: emailId };
 }
@@ -324,13 +325,14 @@ async function sendSms(msg, twilioClient, dryRun) {
     console.warn(`  Suppression check failed (non-fatal): ${e.message}`);
   }
 
-  if (isOptedOut(toNumber, null, 'sms')) {
-    db.prepare(
+  if (await isOptedOut(toNumber, null, 'sms')) {
+    await run(
       `UPDATE msgs.messages
        SET delivery_status = 'failed', error_message = 'opted out',
-           updated_at = datetime('now')
-       WHERE id = ?`
-    ).run(msg.id);
+           updated_at = NOW()
+       WHERE id = $1`,
+      [msg.id]
+    );
     console.log(`  [${msg.id}] Skipped (opted out): ${toNumber}`);
     return { success: false, skipped: true, reason: 'opted_out' };
   }
@@ -352,18 +354,19 @@ async function sendSms(msg, twilioClient, dryRun) {
     to: toNumber,
   });
 
-  db.prepare(
+  await run(
     `UPDATE msgs.messages
      SET delivery_status = 'sent',
-         sent_at = datetime('now'),
-         updated_at = datetime('now')
-     WHERE id = ?`
-  ).run(msg.id);
+         sent_at = NOW(),
+         updated_at = NOW()
+     WHERE id = $1`,
+    [msg.id]
+  );
 
-  db.prepare(
-    `UPDATE sites SET last_outreach_at = datetime('now'), updated_at = datetime('now')
-     WHERE id = ?`
-  ).run(msg.site_id);
+  await run(
+    `UPDATE sites SET last_outreach_at = NOW(), updated_at = NOW() WHERE id = $1`,
+    [msg.site_id]
+  );
 
   return { success: true, sid: message.sid };
 }
@@ -398,41 +401,39 @@ export async function runOutreachStage(options = {}) {
       const resend = new Resend(RESEND_API_KEY);
 
       const limitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
-      const emails = db
-        .prepare(
-          `SELECT m.id, m.site_id, m.contact_uri, m.message_body, m.subject_line,
-                  m.sequence_step, m.scheduled_send_at,
-                  s.business_name, s.country_code, s.city, s.niche,
-                  s.best_review_author, s.google_rating, s.review_count,
-                  COALESCE(m.video_url, v.video_url) AS video_url, v.thumbnail_url
-           FROM msgs.messages m
-           JOIN sites s ON s.id = m.site_id
-           LEFT JOIN videos v ON v.id = s.video_id
-           WHERE m.project = '2step'
-             AND m.direction = 'outbound'
-             AND m.contact_method = 'email'
-             AND m.approval_status = 'approved'
-             AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
-             -- Respect cadence: only send if schedule time has passed (or no schedule set)
-             AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= datetime('now'))
-             -- Stop sequence if prospect has replied (inbound message exists for this site)
-             AND NOT EXISTS (
-               SELECT 1 FROM msgs.messages reply
-               WHERE reply.project = '2step'
-                 AND reply.site_id = m.site_id
-                 AND reply.direction = 'inbound'
-                 AND reply.contact_uri = m.contact_uri
-             )
-           ORDER BY m.sequence_step ASC, m.created_at ASC
-           ${limitClause}`
-        )
-        .all();
+      const emails = await getAll(
+        `SELECT m.id, m.site_id, m.contact_uri, m.message_body, m.subject_line,
+                m.sequence_step, m.scheduled_send_at,
+                s.business_name, s.country_code, s.city, s.niche,
+                s.best_review_author, s.google_rating, s.review_count,
+                COALESCE(m.video_url, v.video_url) AS video_url, v.thumbnail_url
+         FROM msgs.messages m
+         JOIN sites s ON s.id = m.site_id
+         LEFT JOIN videos v ON v.id = s.video_id
+         WHERE m.project = '2step'
+           AND m.direction = 'outbound'
+           AND m.contact_method = 'email'
+           AND m.approval_status = 'approved'
+           AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
+           -- Respect cadence: only send if schedule time has passed (or no schedule set)
+           AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= NOW())
+           -- Stop sequence if prospect has replied (inbound message exists for this site)
+           AND NOT EXISTS (
+             SELECT 1 FROM msgs.messages reply
+             WHERE reply.project = '2step'
+               AND reply.site_id = m.site_id
+               AND reply.direction = 'inbound'
+               AND reply.contact_uri = m.contact_uri
+           )
+         ORDER BY m.sequence_step ASC, m.created_at ASC
+         ${limitClause}`
+      );
 
       console.log(`[outreach] ${emails.length} pending email message(s)`);
 
       for (const msg of emails) {
         try {
-          console.log(`[outreach] Email [${msg.id}] ${msg.business_name} → ${msg.contact_uri}`);
+          console.log(`[outreach] Email [${msg.id}] ${msg.business_name} -> ${msg.contact_uri}`);
           const result = await sendEmail(msg, resend, dryRun);
           if (result.skipped) {
             stats.skipped++;
@@ -443,12 +444,13 @@ export async function runOutreachStage(options = {}) {
           }
         } catch (err) {
           console.error(`  failed: ${err.message}`);
-          db.prepare(
+          await run(
             `UPDATE msgs.messages
-             SET delivery_status = 'failed', error_message = ?,
-                 updated_at = datetime('now')
-             WHERE id = ?`
-          ).run(err.message.slice(0, 500), msg.id);
+             SET delivery_status = 'failed', error_message = $1,
+                 updated_at = NOW()
+             WHERE id = $2`,
+            [err.message.slice(0, 500), msg.id]
+          );
           stats.failed++;
         }
 
@@ -472,37 +474,35 @@ export async function runOutreachStage(options = {}) {
       const twilioClient = twilio(accountSid, authToken);
 
       const smsLimitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
-      const smsList = db
-        .prepare(
-          `SELECT m.id, m.site_id, m.contact_uri, m.message_body,
-                  m.sequence_step, m.scheduled_send_at,
-                  s.business_name, s.country_code
-           FROM msgs.messages m
-           JOIN sites s ON s.id = m.site_id
-           WHERE m.project = '2step'
-             AND m.direction = 'outbound'
-             AND m.contact_method = 'sms'
-             AND m.approval_status = 'approved'
-             AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
-             -- Respect cadence: only send if schedule time has passed (or no schedule set)
-             AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= datetime('now'))
-             -- Stop sequence if prospect has replied (inbound message exists for this site)
-             AND NOT EXISTS (
-               SELECT 1 FROM msgs.messages reply
-               WHERE reply.project = '2step'
-                 AND reply.site_id = m.site_id
-                 AND reply.direction = 'inbound'
-             )
-           ORDER BY m.sequence_step ASC, m.created_at ASC
-           ${smsLimitClause}`
-        )
-        .all();
+      const smsList = await getAll(
+        `SELECT m.id, m.site_id, m.contact_uri, m.message_body,
+                m.sequence_step, m.scheduled_send_at,
+                s.business_name, s.country_code
+         FROM msgs.messages m
+         JOIN sites s ON s.id = m.site_id
+         WHERE m.project = '2step'
+           AND m.direction = 'outbound'
+           AND m.contact_method = 'sms'
+           AND m.approval_status = 'approved'
+           AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
+           -- Respect cadence: only send if schedule time has passed (or no schedule set)
+           AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= NOW())
+           -- Stop sequence if prospect has replied (inbound message exists for this site)
+           AND NOT EXISTS (
+             SELECT 1 FROM msgs.messages reply
+             WHERE reply.project = '2step'
+               AND reply.site_id = m.site_id
+               AND reply.direction = 'inbound'
+           )
+         ORDER BY m.sequence_step ASC, m.created_at ASC
+         ${smsLimitClause}`
+      );
 
       console.log(`[outreach] ${smsList.length} pending SMS message(s)`);
 
       for (const msg of smsList) {
         try {
-          console.log(`[outreach] SMS [${msg.id}] ${msg.business_name} → ${msg.contact_uri}`);
+          console.log(`[outreach] SMS [${msg.id}] ${msg.business_name} -> ${msg.contact_uri}`);
           const result = await sendSms(msg, twilioClient, dryRun);
           if (result.skipped) {
             stats.skipped++;
@@ -513,12 +513,13 @@ export async function runOutreachStage(options = {}) {
           }
         } catch (err) {
           console.error(`  failed: ${err.message}`);
-          db.prepare(
+          await run(
             `UPDATE msgs.messages
-             SET delivery_status = 'failed', error_message = ?,
-                 updated_at = datetime('now')
-             WHERE id = ?`
-          ).run(err.message.slice(0, 500), msg.id);
+             SET delivery_status = 'failed', error_message = $1,
+                 updated_at = NOW()
+             WHERE id = $2`,
+            [err.message.slice(0, 500), msg.id]
+          );
           stats.failed++;
         }
 
