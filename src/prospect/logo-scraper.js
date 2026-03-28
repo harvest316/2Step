@@ -26,7 +26,7 @@ import '../utils/load-env.js';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-import db from '../utils/db.js';
+import { getAll, run } from '../utils/db.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -39,17 +39,21 @@ const { values: args } = parseArgs({
   strict: false,
 });
 
-function getSites() {
+async function getSites() {
   if (args.id) {
-    return db.prepare('SELECT id, business_name, website_url FROM sites WHERE id = ?')
-      .all(parseInt(args.id, 10));
+    return await getAll(
+      'SELECT id, business_name, website_url FROM sites WHERE id = $1',
+      [parseInt(args.id, 10)]
+    );
   }
   if (args.force) {
-    return db.prepare('SELECT id, business_name, website_url FROM sites WHERE website_url IS NOT NULL ORDER BY id').all();
+    return await getAll(
+      'SELECT id, business_name, website_url FROM sites WHERE website_url IS NOT NULL ORDER BY id'
+    );
   }
-  return db.prepare(
+  return await getAll(
     'SELECT id, business_name, website_url FROM sites WHERE logo_url IS NULL AND website_url IS NOT NULL ORDER BY id'
-  ).all();
+  );
 }
 
 /**
@@ -213,7 +217,7 @@ function resolveUrl(base, url) {
 }
 
 async function main() {
-  const sites = getSites();
+  const sites = await getSites();
 
   if (sites.length === 0) {
     console.log('No sites need logo scraping.');
@@ -221,8 +225,6 @@ async function main() {
   }
 
   console.log(`Scraping logos for ${sites.length} sites${args['dry-run'] ? ' (DRY RUN)' : ''}...\n`);
-
-  const update = db.prepare('UPDATE sites SET logo_url = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?');
 
   let found = 0;
   let failed = 0;
@@ -235,7 +237,12 @@ async function main() {
 
     if (logo) {
       console.log(logo);
-      if (!args['dry-run']) update.run(logo, site.id);
+      if (!args['dry-run']) {
+        await run(
+          'UPDATE sites SET logo_url = $1, updated_at = NOW() WHERE id = $2',
+          [logo, site.id]
+        );
+      }
       found++;
     } else {
       console.log('not found');

@@ -33,7 +33,7 @@
   "dependencies": {
     "333method": "file:../333Method",
     "axios": "^1.13.4",
-    "better-sqlite3": "^12.6.2",
+    "pg": "^8.13.3",
     "dotenv": "^17.2.3",
     "googleapis": "^171.4.0",
     "music-metadata": "^11.12.3",

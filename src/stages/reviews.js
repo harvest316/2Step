@@ -26,7 +26,7 @@ import { parseArgs } from 'util';
 import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import db from '../utils/db.js';
+import { getOne, getAll, run } from '../utils/db.js';
 import { matchCategory } from '../config/problem-categories.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -321,48 +321,17 @@ function extractSocials(result) {
 /**
  * Check whether a google_place_id already exists in the sites table.
  */
-const stmtExistsByPlaceId = db.prepare(
-  'SELECT id FROM sites WHERE google_place_id = ?'
-);
-
-/**
- * Fallback duplicate check when place_id is not available.
- */
-const stmtExistsByName = db.prepare(
-  'SELECT id FROM sites WHERE business_name = ? AND city = ?'
-);
-
-function isDuplicate(placeId, businessName, city) {
+async function isDuplicate(placeId, businessName, city) {
   if (placeId) {
-    return !!stmtExistsByPlaceId.get(placeId);
+    const row = await getOne('SELECT id FROM sites WHERE google_place_id = $1', [placeId]);
+    return !!row;
   }
-  return !!stmtExistsByName.get(businessName, city ?? '');
+  const row = await getOne(
+    'SELECT id FROM sites WHERE business_name = $1 AND city = $2',
+    [businessName, city ?? '']
+  );
+  return !!row;
 }
-
-const stmtInsertSite = db.prepare(`
-  INSERT INTO sites (
-    business_name, google_maps_url, website_url, phone, email,
-    instagram_handle, facebook_page_url, city, state, country_code,
-    google_rating, review_count, niche, keyword,
-    google_place_id, selected_review_json, problem_category,
-    status
-  ) VALUES (
-    @business_name, @google_maps_url, @website_url, @phone, @email,
-    @instagram_handle, @facebook_page_url, @city, @state, @country_code,
-    @google_rating, @review_count, @niche, @keyword,
-    @google_place_id, @selected_review_json, @problem_category,
-    'reviews_downloaded'
-  )
-`);
-
-const stmtUpdateKeyword = db.prepare(`
-  UPDATE keywords
-  SET search_count      = search_count + 1,
-      sites_found_count = sites_found_count + @delta,
-      last_searched_at  = CURRENT_TIMESTAMP,
-      updated_at        = CURRENT_TIMESTAMP
-  WHERE id = @id
-`);
 
 // ─── Core stage logic ─────────────────────────────────────────────────────────
 
@@ -426,7 +395,7 @@ async function processKeyword(api, kwRow, limit, dryRun) {
 
     try {
       // Dedup
-      if (isDuplicate(placeId, businessName, city)) {
+      if (await isDuplicate(placeId, businessName, city)) {
         console.log(`[reviews]   Skip (dup): ${businessName}`);
         stats.skipped++;
         return;
@@ -479,7 +448,27 @@ async function processKeyword(api, kwRow, limit, dryRun) {
       }
 
       try {
-        stmtInsertSite.run(site);
+        await run(
+          `INSERT INTO sites (
+            business_name, google_maps_url, website_url, phone, email,
+            instagram_handle, facebook_page_url, city, state, country_code,
+            google_rating, review_count, niche, keyword,
+            google_place_id, selected_review_json, problem_category,
+            status
+          ) VALUES (
+            $1, $2, $3, $4, $5,
+            $6, $7, $8, $9, $10,
+            $11, $12, $13, $14,
+            $15, $16, $17,
+            'reviews_downloaded'
+          )`,
+          [
+            site.business_name, site.google_maps_url, site.website_url, site.phone, site.email,
+            site.instagram_handle, site.facebook_page_url, site.city, site.state, site.country_code,
+            site.google_rating, site.review_count, site.niche, site.keyword,
+            site.google_place_id, site.selected_review_json, site.problem_category,
+          ]
+        );
         console.log(`[reviews]   Inserted: ${businessName} — category: ${review.category}`);
         stats.inserted++;
       } catch (err) {
@@ -494,7 +483,15 @@ async function processKeyword(api, kwRow, limit, dryRun) {
   // Update keyword row stats (skip on dry-run or if no DB id)
   if (!dryRun && kwRow.id) {
     try {
-      stmtUpdateKeyword.run({ id: kwRow.id, delta: stats.inserted });
+      await run(
+        `UPDATE keywords
+         SET search_count      = search_count + 1,
+             sites_found_count = sites_found_count + $1,
+             last_searched_at  = NOW(),
+             updated_at        = NOW()
+         WHERE id = $2`,
+        [stats.inserted, kwRow.id]
+      );
     } catch (err) {
       console.warn(`[reviews] Failed to update keyword stats for id=${kwRow.id}: ${err.message}`);
     }
@@ -552,12 +549,12 @@ export async function runReviewsStage(options = {}) {
     }];
   } else {
     // Pipeline mode — pull from keywords table
-    keywords = db.prepare(`
+    keywords = await getAll(`
       SELECT id, keyword, location, country_code
       FROM keywords
       WHERE status IN ('active', 'pending')
       ORDER BY priority DESC, last_searched_at ASC NULLS FIRST
-    `).all();
+    `);
 
     if (keywords.length === 0) {
       console.log('[reviews] No active/pending keywords in DB. Nothing to do.');

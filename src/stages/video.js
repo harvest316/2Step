@@ -24,7 +24,7 @@
  */
 
 import '../utils/load-env.js';
-import db from '../utils/db.js';
+import { getAll, run, withTransaction } from '../utils/db.js';
 import { renderVideo, extractPosterFrame } from '../video/ffmpeg-render.js';
 import {
   buildScenes,
@@ -187,7 +187,7 @@ const PROOFREAD_PROMPT = readFileSync(
  */
 async function proofreadScript(scenes, fullReview) {
   if (!OPENROUTER_KEY) {
-    console.warn('  ⚠ OPENROUTER_API_KEY not set — skipping LLM proofreading');
+    console.warn('  OPENROUTER_API_KEY not set — skipping LLM proofreading');
     return scenes;
   }
 
@@ -225,7 +225,7 @@ ${JSON.stringify(scriptData, null, 2)}
 
   if (!res.ok) {
     const body = await res.text();
-    console.warn(` ⚠ LLM proofread failed ${res.status}: ${body.substring(0, 200)} — using unproofed script`);
+    console.warn(` LLM proofread failed ${res.status}: ${body.substring(0, 200)} — using unproofed script`);
     return scenes;
   }
 
@@ -238,7 +238,7 @@ ${JSON.stringify(scriptData, null, 2)}
     const cleaned = content.replace(/^```json?\n?/m, '').replace(/\n?```$/m, '').trim();
     result = JSON.parse(cleaned);
   } catch {
-    console.warn(` ⚠ LLM returned unparseable JSON — using unproofed script`);
+    console.warn(` LLM returned unparseable JSON — using unproofed script`);
     return scenes;
   }
 
@@ -256,12 +256,12 @@ ${JSON.stringify(scriptData, null, 2)}
   // Log replacement flags (manual action needed)
   if (result.replace_quotes?.length) {
     for (const rq of result.replace_quotes) {
-      console.warn(`\n  ⚠ LLM suggests replacing scene ${rq.scene}: ${rq.reason}`);
+      console.warn(`\n  LLM suggests replacing scene ${rq.scene}: ${rq.reason}`);
     }
   }
 
   if (result.decision === 'approve') {
-    process.stdout.write(' ✓ approved\n');
+    process.stdout.write(' approved\n');
   } else {
     process.stdout.write(` (${result.decision})\n`);
   }
@@ -490,7 +490,7 @@ export async function processSite(site, { dryRun, localOnly = false }) {
   if (localOnly) {
     videoUrl  = `file://${outputPath}`;
     posterUrl = null;
-    console.log(`  ✓ Local render: ${videoUrl}`);
+    console.log(`  Local render: ${videoUrl}`);
     return { videoUrl, posterUrl, videoHash: null, videoId: null, durationSeconds: Math.round(renderedDuration), costUsd: 0 };
   }
 
@@ -518,32 +518,26 @@ export async function processSite(site, { dryRun, localOnly = false }) {
   const videoHash = toBase62(siteId);
 
   // 11. Write to DB (insert videos row with thumbnail_url, update site)
-  const insertVideo = db.prepare(`
-    INSERT INTO videos (site_id, video_tool, video_url, thumbnail_url, status, style_variant, music_track, duration_seconds, cost_usd)
-    VALUES (?, 'ffmpeg', ?, ?, 'completed', ?, ?, ?, 0)
-  `);
-  const updateSite = db.prepare(`
-    UPDATE sites
-    SET video_url    = ?,
-        video_hash   = ?,
-        video_id     = ?,
-        status       = 'video_created',
-        updated_at   = CURRENT_TIMESTAMP
-    WHERE id = ?
-  `);
-
-  const videoId = db.transaction(() => {
-    const info = insertVideo.run(
-      siteId,
-      videoUrl,
-      posterUrl,
-      variant.id,
-      musicTrack.name,
-      Math.round(renderedDuration),
+  const videoId = await withTransaction(async (client) => {
+    const insertResult = await client.query(
+      `INSERT INTO videos (site_id, video_tool, video_url, thumbnail_url, status, style_variant, music_track, duration_seconds, cost_usd)
+       VALUES ($1, 'ffmpeg', $2, $3, 'completed', $4, $5, $6, 0)
+       RETURNING id`,
+      [siteId, videoUrl, posterUrl, variant.id, musicTrack.name, Math.round(renderedDuration)]
     );
-    updateSite.run(videoUrl, videoHash, info.lastInsertRowid, siteId);
-    return info.lastInsertRowid;
-  })();
+    const newVideoId = insertResult.rows[0].id;
+    await client.query(
+      `UPDATE sites
+       SET video_url  = $1,
+           video_hash = $2,
+           video_id   = $3,
+           status     = 'video_created',
+           updated_at = NOW()
+       WHERE id = $4`,
+      [videoUrl, videoHash, newVideoId, siteId]
+    );
+    return newVideoId;
+  });
 
   // Clean up local render file
   await rm(outputPath, { force: true }).catch(() => {});
@@ -578,25 +572,27 @@ export async function runVideoStage(options = {}) {
   const siteId    = options.siteId    ?? null;
 
   const sites = siteId
-    ? db.prepare(`
-        SELECT id, business_name, city, niche, phone,
-               best_review_text, best_review_author, google_rating,
-               logo_url, selected_review_json, problem_category,
-               status, video_url
-        FROM sites WHERE id = ?
-      `).all(siteId)
-    : db.prepare(`
-        SELECT id, business_name, city, niche, phone,
-               best_review_text, best_review_author, google_rating,
-               logo_url, selected_review_json, problem_category,
-               status, video_url
-        FROM sites
-        WHERE status IN ('enriched', 'proposals_drafted')
-          AND logo_url IS NOT NULL
-          AND (phone IS NOT NULL OR email IS NOT NULL)
-        ORDER BY id
-        LIMIT ?
-      `).all(limit);
+    ? await getAll(
+        `SELECT id, business_name, city, niche, phone,
+                best_review_text, best_review_author, google_rating,
+                logo_url, selected_review_json, problem_category,
+                status, video_url
+         FROM sites WHERE id = $1`,
+        [siteId]
+      )
+    : await getAll(
+        `SELECT id, business_name, city, niche, phone,
+                best_review_text, best_review_author, google_rating,
+                logo_url, selected_review_json, problem_category,
+                status, video_url
+         FROM sites
+         WHERE status IN ('enriched', 'proposals_drafted')
+           AND logo_url IS NOT NULL
+           AND (phone IS NOT NULL OR email IS NOT NULL)
+         ORDER BY id
+         LIMIT $1`,
+        [limit]
+      );
 
   if (sites.length === 0) {
     console.log('No enriched sites with logo_url. Nothing to do.');
@@ -617,7 +613,7 @@ export async function runVideoStage(options = {}) {
 
       if (result) {
         console.log(
-          `  ✓ Created video (hash=${result.videoHash}, ${result.durationSeconds}s) → ${result.videoUrl}`,
+          `  Created video (hash=${result.videoHash}, ${result.durationSeconds}s) -> ${result.videoUrl}`,
         );
         if (result.posterUrl) console.log(`    Poster: ${result.posterUrl}`);
         created++;
@@ -626,10 +622,11 @@ export async function runVideoStage(options = {}) {
         created++;
       }
     } catch (err) {
-      console.error(`  ✗ Failed: ${err.message}`);
-      db.prepare(
-        `UPDATE sites SET error_message = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?`,
-      ).run(err.message, site.id);
+      console.error(`  Failed: ${err.message}`);
+      await run(
+        `UPDATE sites SET error_message = $1, updated_at = NOW() WHERE id = $2`,
+        [err.message, site.id]
+      );
       errors++;
     }
   }

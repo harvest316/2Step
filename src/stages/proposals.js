@@ -33,7 +33,7 @@ import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
-import db from '../utils/db.js';
+import { getOne, getAll, run } from '../utils/db.js';
 import { spin } from '../../../333Method/src/utils/spintax.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -219,21 +219,22 @@ function parseContacts(contactsJson) {
 
 /**
  * Look up the active pricing row for this site.
- * Uses niche_tiers table in 2step.db joined to msgs.pricing.
+ * Uses niche_tiers table joined to msgs.pricing.
  * Returns the pricing row or null if not found.
  */
-function lookupPricing(countryCode, niche) {
+async function lookupPricing(countryCode, niche) {
   try {
-    return db.prepare(`
-      SELECT p.*
-      FROM msgs.pricing p
-      JOIN niche_tiers n ON n.tier = p.niche_tier
-      WHERE p.project = '2step'
-        AND p.country_code = ?
-        AND n.niche = ?
-        AND p.superseded_at IS NULL
-      LIMIT 1
-    `).get(countryCode, niche);
+    return await getOne(
+      `SELECT p.*
+       FROM msgs.pricing p
+       JOIN niche_tiers n ON n.tier = p.niche_tier
+       WHERE p.project = '2step'
+         AND p.country_code = $1
+         AND n.niche = $2
+         AND p.superseded_at IS NULL
+       LIMIT 1`,
+      [countryCode, niche]
+    );
   } catch {
     return null;
   }
@@ -248,24 +249,6 @@ function formatPrice(amount, currency) {
   const sym = symbols[currency] || '$';
   return `${sym}${Math.round(amount)}`;
 }
-
-// ─── Message inserter ────────────────────────────────────────────────────────
-
-const insertMsg = db.prepare(`
-  INSERT INTO msgs.messages (
-    project, site_id, direction, contact_method, contact_uri,
-    message_body, subject_line, video_url,
-    approval_status, message_type, pricing_id, template_id,
-    sequence_step, scheduled_send_at,
-    created_at, updated_at
-  ) VALUES (
-    '2step', ?, 'outbound', ?, ?,
-    ?, ?, ?,
-    'pending', ?, ?, ?,
-    ?, ?,
-    datetime('now'), datetime('now')
-  )
-`);
 
 // ─── Sequence message generator ─────────────────────────────────────────────
 
@@ -282,7 +265,7 @@ function computeScheduledAt(dayOffset) {
   // Round to 9am in the sending timezone — the outreach stage will apply
   // business-hours logic at send time, so we just set the date here.
   now.setHours(9, 0, 0, 0);
-  return now.toISOString().replace('T', ' ').slice(0, 19);
+  return now.toISOString();
 }
 
 /**
@@ -291,10 +274,10 @@ function computeScheduledAt(dayOffset) {
  * For email touches, uses the primary email. For SMS touches (2 and 5), uses
  * the primary phone if available, otherwise falls back to email for those touches.
  *
- * @returns {number} Number of messages inserted
+ * @returns {Promise<number>} Number of messages inserted
  */
 /* c8 ignore start — internal stage function: requires populated DB + sequence templates */
-function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pricing, dryRun) {
+async function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pricing, dryRun) {
   const countryCode = site.country_code || 'AU';
 
   let sequence;
@@ -380,11 +363,26 @@ function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pric
       continue;
     }
 
-    insertMsg.run(
-      site.id, contactMethod, contactUri,
-      body, subject, touchVideoUrl,
-      messageType, pricingId, touchTemplate.id,
-      touch.step, scheduledAt
+    await run(
+      `INSERT INTO msgs.messages (
+        project, site_id, direction, contact_method, contact_uri,
+        message_body, subject_line, video_url,
+        approval_status, message_type, pricing_id, template_id,
+        sequence_step, scheduled_send_at,
+        created_at, updated_at
+      ) VALUES (
+        '2step', $1, 'outbound', $2, $3,
+        $4, $5, $6,
+        'pending', $7, $8, $9,
+        $10, $11,
+        NOW(), NOW()
+      )`,
+      [
+        site.id, contactMethod, contactUri,
+        body, subject, touchVideoUrl,
+        messageType, pricingId, touchTemplate.id,
+        touch.step, scheduledAt,
+      ]
     );
     inserted++;
   }
@@ -401,22 +399,20 @@ function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pric
  * @param {object} options
  * @param {number} [options.limit]   Max sites to process (default: all eligible)
  * @param {boolean} [options.dryRun] Preview only, no DB writes
- * @returns {{ processed: number, messagesCreated: number, errors: number }}
+ * @returns {Promise<{ processed: number, messagesCreated: number, errors: number }>}
  */
 export async function runProposalsStage(options = {}) {
   const { limit, dryRun = false } = options;
 
-  const query = db.prepare(`
-    SELECT id, business_name, city, country_code, niche,
-           contacts_json, email, phone, video_url, video_hash, status,
-           owner_first_name, video_viewed_at
-    FROM sites
-    WHERE status = 'video_created'
-    ORDER BY id ASC
-    ${limit ? `LIMIT ${parseInt(limit, 10)}` : ''}
-  `);
-
-  const sites = query.all();
+  const sites = await getAll(
+    `SELECT id, business_name, city, country_code, niche,
+            contacts_json, email, phone, video_url, video_hash, status,
+            owner_first_name, video_viewed_at
+     FROM sites
+     WHERE status = 'video_created'
+     ORDER BY id ASC
+     ${limit ? `LIMIT ${parseInt(limit, 10)}` : ''}`
+  );
 
   if (sites.length === 0) {
     console.log('[proposals] No sites at video_created status.');
@@ -430,11 +426,6 @@ export async function runProposalsStage(options = {}) {
   let processed = 0;
   let messagesCreated = 0;
   let errors = 0;
-
-  const updateStatus = db.prepare(`
-    UPDATE sites SET status = 'proposals_drafted', updated_at = CURRENT_TIMESTAMP
-    WHERE id = ?
-  `);
 
   for (const site of sites) {
     console.log(`\n[${site.id}] ${site.business_name} (${site.city}, ${site.country_code})`);
@@ -478,7 +469,7 @@ export async function runProposalsStage(options = {}) {
       };
 
       const countryCode = site.country_code || 'AU';
-      const pricing = lookupPricing(countryCode, site.niche);
+      const pricing = await lookupPricing(countryCode, site.niche);
 
       let siteMessages = 0;
       let hasAnyContact = false;
@@ -490,7 +481,7 @@ export async function runProposalsStage(options = {}) {
 
       if (primaryEmail || primaryPhone) {
         hasAnyContact = true;
-        const count = generateSequenceForContact(
+        const count = await generateSequenceForContact(
           site, primaryEmail, primaryPhone, vars, pricing, dryRun
         );
         siteMessages += count;
@@ -506,7 +497,7 @@ export async function runProposalsStage(options = {}) {
       // If there are additional email addresses, generate full sequences for them too
       for (let i = 1; i < emails.length; i++) {
         hasAnyContact = true;
-        const count = generateSequenceForContact(
+        const count = await generateSequenceForContact(
           site, emails[i], primaryPhone, vars, pricing, dryRun
         );
         siteMessages += count;
@@ -520,7 +511,10 @@ export async function runProposalsStage(options = {}) {
       }
 
       if (!dryRun) {
-        updateStatus.run(site.id);
+        await run(
+          `UPDATE sites SET status = 'proposals_drafted', updated_at = NOW() WHERE id = $1`,
+          [site.id]
+        );
       }
 
       messagesCreated += siteMessages;
