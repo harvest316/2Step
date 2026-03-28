@@ -26,7 +26,7 @@ import { parseArgs } from 'util';
 import { getOne, getAll, run } from '../utils/db.js';
 import { buildEmailHtml } from '../outreach/email-template.js';
 import { spin } from '../../../333Method/src/utils/spintax.js';
-import { openDb as openSuppressionDb, checkBeforeSend } from '../../../mmo-platform/src/suppression.js';
+import { checkBeforeSend } from '../../../mmo-platform/src/suppression.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -216,9 +216,7 @@ function assembleEmail(msg) {
 async function sendEmail(msg, resend, dryRun) {
   // Cross-project suppression check (shared with 333Method)
   try {
-    const sDb = openSuppressionDb();
-    const suppression = checkBeforeSend({ email: msg.contact_uri }, sDb);
-    sDb.close();
+    const suppression = await checkBeforeSend({ email: msg.contact_uri });
     if (suppression.blocked) {
       console.log(`  [${msg.id}] Blocked by cross-project suppression: ${suppression.reason}`);
       return { success: false, skipped: true, reason: 'cross_project_suppressed' };
@@ -314,9 +312,7 @@ async function sendSms(msg, twilioClient, dryRun) {
 
   // Cross-project suppression check (shared with 333Method)
   try {
-    const sDb = openSuppressionDb();
-    const suppression = checkBeforeSend({ phone: toNumber }, sDb);
-    sDb.close();
+    const suppression = await checkBeforeSend({ phone: toNumber });
     if (suppression.blocked) {
       console.log(`  [${msg.id}] Blocked by cross-project suppression: ${suppression.reason}`);
       return { success: false, skipped: true, reason: 'cross_project_suppressed' };
