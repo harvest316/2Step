@@ -586,7 +586,7 @@ export async function runVideoStage(options = {}) {
                 logo_url, selected_review_json, problem_category,
                 status, video_url
          FROM sites
-         WHERE status IN ('enriched', 'proposals_drafted')
+         WHERE status IN ('enriched', 'proposals_drafted', 'video_created')
            AND logo_url IS NOT NULL
            AND (phone IS NOT NULL OR email IS NOT NULL)
          ORDER BY id
