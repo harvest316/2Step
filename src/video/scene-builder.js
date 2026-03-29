@@ -1029,8 +1029,10 @@ export function pickClipsFromPool(niche, seed = 0, reviewText = '') {
   // For pest control, try to detect specific pest from review; fall back to general-pest
   const isPestControl = niche === 'pest control' || NICHE_ALIASES[niche] === 'general-pest';
   const detected = isPestControl ? detectPestFromReview(reviewText) : null;
+  // Fall back to general-pest if detected pest has no clip pool (e.g. ants, wasps, bedbugs)
+  const detectedWithFallback = detected && CLIP_POOLS[detected] ? detected : (detected ? 'general-pest' : null);
   const aliased = NICHE_ALIASES[niche];
-  const problem = detected ?? aliased ?? niche;
+  const problem = detectedWithFallback ?? aliased ?? niche;
   if (!problem) return null; // caller should surface this as an error
   const problemPool = CLIP_POOLS[problem];
   const sharedKey   = PROBLEM_SHARED_POOL[problem];
