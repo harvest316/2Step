@@ -242,7 +242,7 @@ async function sendEmail(msg, resend, dryRun, testOpts) {
     if (await isOptedOut(null, msg.contact_uri, 'email')) {
       await run(
         `UPDATE msgs.messages
-         SET delivery_status = 'failed', error_message = 'opted out',
+         SET delivery_status = 'skipped', error_message = 'opted out',
              updated_at = NOW()
          WHERE id = $1`,
         [msg.id]
@@ -339,7 +339,7 @@ async function sendSms(msg, twilioClient, dryRun) {
   if (OUTREACH_BLOCKED_SMS_COUNTRIES.has(country)) {
     await run(
       `UPDATE msgs.messages
-       SET delivery_status = 'failed', error_message = $1,
+       SET delivery_status = 'skipped', error_message = $1,
            updated_at = NOW()
        WHERE id = $2`,
       [`sms_blocked:${country}`, msg.id]
@@ -362,7 +362,7 @@ async function sendSms(msg, twilioClient, dryRun) {
   if (await isOptedOut(toNumber, null, 'sms')) {
     await run(
       `UPDATE msgs.messages
-       SET delivery_status = 'failed', error_message = 'opted out',
+       SET delivery_status = 'skipped', error_message = 'opted out',
            updated_at = NOW()
        WHERE id = $1`,
       [msg.id]
