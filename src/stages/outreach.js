@@ -26,6 +26,7 @@ import { parseArgs } from 'util';
 import { getOne, getAll, run } from '../utils/db.js';
 import { buildEmailHtml } from '../outreach/email-template.js';
 import { spin } from '../../../333Method/src/utils/spintax.js';
+import { parseEnvSet } from '../../../333Method/src/utils/load-env.js';
 import { checkBeforeSend } from '../../../mmo-platform/src/suppression.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -49,12 +50,7 @@ const CAN_SPAM_COUNTRIES = new Set([
 
 // Countries blocked from SMS (legal compliance — DR-121).
 // Only AU and NZ have a clean legal basis for cold SMS.
-const OUTREACH_BLOCKED_SMS_COUNTRIES = new Set(
-  (process.env.OUTREACH_BLOCKED_SMS_COUNTRIES || '')
-    .split(',')
-    .map(s => s.trim().toUpperCase())
-    .filter(Boolean)
-);
+const OUTREACH_BLOCKED_SMS_COUNTRIES = parseEnvSet(process.env.OUTREACH_BLOCKED_SMS_COUNTRIES);
 
 // ── Sequence template loader (cached) ────────────────────────────────────────
 
