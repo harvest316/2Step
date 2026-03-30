@@ -85,7 +85,7 @@ function fetchProposalsBatch(channel) {
           AND m.direction = 'outbound'
           AND m.message_type = 'outreach'
       )
-    ORDER BY s.id ASC
+    ORDER BY s.is_google_guaranteed DESC, s.id ASC
     LIMIT ?
   `).all(contactField, contactMethod, contactMethod, limit);
 

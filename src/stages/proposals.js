@@ -410,7 +410,7 @@ export async function runProposalsStage(options = {}) {
             owner_first_name, video_viewed_at
      FROM sites
      WHERE status = 'video_created'
-     ORDER BY id ASC
+     ORDER BY is_google_guaranteed DESC, id ASC
      ${limit ? `LIMIT ${parseInt(limit, 10)}` : ''}`
   );
 
