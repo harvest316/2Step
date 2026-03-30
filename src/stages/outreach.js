@@ -224,51 +224,62 @@ function assembleEmail(msg) {
  * @returns {Promise<{ success: boolean, resendId?: string, dryRun?: boolean }>}
  */
 async function sendEmail(msg, resend, dryRun, testOpts) {
-  // Cross-project suppression check (shared with 333Method)
-  try {
-    const suppression = await checkBeforeSend({ email: msg.contact_uri });
-    if (suppression.blocked) {
-      console.log(`  [${msg.id}] Blocked by cross-project suppression: ${suppression.reason}`);
-      return { success: false, skipped: true, reason: 'cross_project_suppressed' };
-    }
-  } catch (e) {
-    console.warn(`  Suppression check failed (non-fatal): ${e.message}`);
-  }
+  const isTest = Boolean(testOpts?.email);
+  const toAddress = isTest ? testOpts.email : msg.contact_uri;
 
-  if (await isOptedOut(null, msg.contact_uri, 'email')) {
-    await run(
-      `UPDATE msgs.messages
-       SET delivery_status = 'failed', error_message = 'opted out',
-           updated_at = NOW()
-       WHERE id = $1`,
-      [msg.id]
-    );
-    console.log(`  [${msg.id}] Skipped (opted out): ${msg.contact_uri}`);
-    return { success: false, skipped: true, reason: 'opted_out' };
+  if (!isTest) {
+    // Cross-project suppression check (shared with 333Method)
+    try {
+      const suppression = await checkBeforeSend({ email: msg.contact_uri });
+      if (suppression.blocked) {
+        console.log(`  [${msg.id}] Blocked by cross-project suppression: ${suppression.reason}`);
+        return { success: false, skipped: true, reason: 'cross_project_suppressed' };
+      }
+    } catch (e) {
+      console.warn(`  Suppression check failed (non-fatal): ${e.message}`);
+    }
+
+    if (await isOptedOut(null, msg.contact_uri, 'email')) {
+      await run(
+        `UPDATE msgs.messages
+         SET delivery_status = 'failed', error_message = 'opted out',
+             updated_at = NOW()
+         WHERE id = $1`,
+        [msg.id]
+      );
+      console.log(`  [${msg.id}] Skipped (opted out): ${msg.contact_uri}`);
+      return { success: false, skipped: true, reason: 'opted_out' };
+    }
   }
 
   const { html, text, subject } = assembleEmail(msg);
 
   if (dryRun) {
-    console.log(`  [${msg.id}] DRY RUN to: ${msg.contact_uri}`);
+    console.log(`  [${msg.id}] DRY RUN to: ${toAddress}${isTest ? ' [TEST]' : ''}`);
     console.log(`    Subject: ${subject}`);
     console.log(`    Poster:  ${msg.thumbnail_url}`);
     console.log(`    Video:   ${msg.video_url}`);
     return { success: true, dryRun: true };
   }
 
-  const { data, error } = await resend.emails.send({
+  const sendPayload = {
     from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
-    to: msg.contact_uri,
-    subject,
+    to: toAddress,
+    subject: isTest ? `[TEST] ${subject}` : subject,
     html,
     text,
     headers: {
       'List-Unsubscribe': `<${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}>`,
       'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
     },
-    tracking: { open: true }, // 2Step emails already have images — pixel adds zero spam cost
-  });
+    tracking: { open: true },
+  };
+
+  if (isTest && testOpts.cc) {
+    sendPayload.cc = testOpts.cc;
+  }
+
+  const { data, error } = await resend.emails.send(sendPayload);
 
   if (error) {
     throw new Error(error.message);
@@ -276,20 +287,24 @@ async function sendEmail(msg, resend, dryRun, testOpts) {
 
   const emailId = data?.id || null;
 
-  await run(
-    `UPDATE msgs.messages
-     SET delivery_status = 'sent',
-         sent_at = NOW(),
-         email_id = $1,
-         updated_at = NOW()
-     WHERE id = $2`,
-    [emailId, msg.id]
-  );
+  if (!isTest) {
+    await run(
+      `UPDATE msgs.messages
+       SET delivery_status = 'sent',
+           sent_at = NOW(),
+           email_id = $1,
+           updated_at = NOW()
+       WHERE id = $2`,
+      [emailId, msg.id]
+    );
 
-  await run(
-    `UPDATE sites SET last_outreach_at = NOW(), updated_at = NOW() WHERE id = $1`,
-    [msg.site_id]
-  );
+    await run(
+      `UPDATE sites SET last_outreach_at = NOW(), updated_at = NOW() WHERE id = $1`,
+      [msg.site_id]
+    );
+  } else {
+    console.log(`  [TEST] Sent to ${toAddress} (real address ${msg.contact_uri} not updated)`);
+  }
 
   return { success: true, resendId: emailId };
 }
@@ -321,7 +336,6 @@ async function sendSms(msg, twilioClient, dryRun) {
   const toNumber = formatPhoneNumber(msg.contact_uri);
   const country = (msg.country_code || '').toUpperCase();
 
-  // Country-level SMS block (DR-121 — only AU/NZ have legal basis for cold SMS)
   if (OUTREACH_BLOCKED_SMS_COUNTRIES.has(country)) {
     await run(
       `UPDATE msgs.messages
@@ -455,8 +469,10 @@ export async function runOutreachStage(options = {}) {
 
       for (const msg of emails) {
         try {
-          console.log(`[outreach] Email [${msg.id}] ${msg.business_name} -> ${msg.contact_uri}`);
-          const result = await sendEmail(msg, resend, dryRun);
+          const testLabel = testEmail ? ` [TEST -> ${testEmail}]` : '';
+          console.log(`[outreach] Email [${msg.id}] ${msg.business_name} -> ${msg.contact_uri}${testLabel}`);
+          const testOpts = testEmail ? { email: testEmail, cc: testCc } : undefined;
+          const result = await sendEmail(msg, resend, dryRun, testOpts);
           if (result.skipped) {
             stats.skipped++;
           } else {
@@ -496,13 +512,11 @@ export async function runOutreachStage(options = {}) {
       const twilioClient = twilio(accountSid, authToken);
 
       const smsLimitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
+      // $1 = smsBlockedCountries — only param; update index if query gains earlier params
       const smsBlockedCountries = [...OUTREACH_BLOCKED_SMS_COUNTRIES];
-      let smsBlockedClause = '';
-      const smsParams = [];
-      if (smsBlockedCountries.length > 0) {
-        smsBlockedClause = `AND s.country_code != ALL($1::text[])`;
-        smsParams.push(smsBlockedCountries);
-      }
+      const smsBlockedClause = smsBlockedCountries.length > 0
+        ? `AND s.country_code != ALL($1::text[])`
+        : '';
       const smsList = await getAll(
         `SELECT m.id, m.site_id, m.contact_uri, m.message_body,
                 m.sequence_step, m.scheduled_send_at,
@@ -527,7 +541,7 @@ export async function runOutreachStage(options = {}) {
            )
          ORDER BY m.sequence_step ASC, m.created_at ASC
          ${smsLimitClause}`,
-        smsParams.length ? smsParams : undefined
+        smsBlockedCountries.length ? [smsBlockedCountries] : []
       );
 
       console.log(`[outreach] ${smsList.length} pending SMS message(s)`);
@@ -582,21 +596,25 @@ export { splitBody, textToHtml, buildPlainText, CAN_SPAM_COUNTRIES, formatPhoneN
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const { values: args } = parseArgs({
     options: {
-      limit:     { type: 'string' },
-      'dry-run': { type: 'boolean', default: false },
-      method:    { type: 'string' },
+      limit:        { type: 'string' },
+      'dry-run':    { type: 'boolean', default: false },
+      method:       { type: 'string' },
+      'test-email': { type: 'string' },
+      'test-cc':    { type: 'string' },
     },
     strict: false,
   });
 
   const methods = args.method
     ? [args.method]
-    : ['email', 'sms'];
+    : (args['test-email'] ? ['email'] : ['email', 'sms']); // test mode is email-only
 
   runOutreachStage({
-    limit:   args.limit ? parseInt(args.limit, 10) : undefined,
-    dryRun:  args['dry-run'],
+    limit:     args.limit ? parseInt(args.limit, 10) : undefined,
+    dryRun:    args['dry-run'],
     methods,
+    testEmail: args['test-email'],
+    testCc:    args['test-cc'],
   })
     .then(stats => {
       console.log('\nDone:', stats);
