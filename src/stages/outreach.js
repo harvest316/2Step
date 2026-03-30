@@ -47,6 +47,15 @@ const CAN_SPAM_COUNTRIES = new Set([
   'AT', 'SE', 'DK', 'NO', 'FI', 'PL', 'IE', 'PT', 'GR', 'CZ', 'RO', 'HU', 'CH',
 ]);
 
+// Countries blocked from SMS (legal compliance — DR-121).
+// Only AU and NZ have a clean legal basis for cold SMS.
+const OUTREACH_BLOCKED_SMS_COUNTRIES = new Set(
+  (process.env.OUTREACH_BLOCKED_SMS_COUNTRIES || '')
+    .split(',')
+    .map(s => s.trim().toUpperCase())
+    .filter(Boolean)
+);
+
 // ── Sequence template loader (cached) ────────────────────────────────────────
 
 const sequenceCache = new Map();
@@ -211,9 +220,10 @@ function assembleEmail(msg) {
  * @param {Object} msg - Row from pending email query
  * @param {Resend} resend - Resend client instance
  * @param {boolean} dryRun
+ * @param {Object} [testOpts] - { email, cc } — overrides recipient; skips DB update
  * @returns {Promise<{ success: boolean, resendId?: string, dryRun?: boolean }>}
  */
-async function sendEmail(msg, resend, dryRun) {
+async function sendEmail(msg, resend, dryRun, testOpts) {
   // Cross-project suppression check (shared with 333Method)
   try {
     const suppression = await checkBeforeSend({ email: msg.contact_uri });
@@ -309,6 +319,20 @@ function formatPhoneNumber(phone) {
  */
 async function sendSms(msg, twilioClient, dryRun) {
   const toNumber = formatPhoneNumber(msg.contact_uri);
+  const country = (msg.country_code || '').toUpperCase();
+
+  // Country-level SMS block (DR-121 — only AU/NZ have legal basis for cold SMS)
+  if (OUTREACH_BLOCKED_SMS_COUNTRIES.has(country)) {
+    await run(
+      `UPDATE msgs.messages
+       SET delivery_status = 'failed', error_message = $1,
+           updated_at = NOW()
+       WHERE id = $2`,
+      [`sms_blocked:${country}`, msg.id]
+    );
+    console.log(`  [${msg.id}] Blocked: SMS not permitted for ${country} (DR-121)`);
+    return { success: false, skipped: true, reason: `sms_blocked:${country}` };
+  }
 
   // Cross-project suppression check (shared with 333Method)
   try {
@@ -376,10 +400,12 @@ async function sendSms(msg, twilioClient, dryRun) {
  * @param {number} [options.limit]            - Max messages to send per method
  * @param {boolean} [options.dryRun=false]    - Preview without sending
  * @param {string[]} [options.methods]        - Channels to send (['email','sms'])
+ * @param {string} [options.testEmail]        - Override recipient (test mode — skips DB update)
+ * @param {string} [options.testCc]           - CC address for test sends
  * @returns {Promise<{ sent: number, failed: number, skipped: number }>}
  */
 export async function runOutreachStage(options = {}) {
-  const { limit, dryRun = false, methods = ['email', 'sms'] } = options;
+  const { limit, dryRun = false, methods = ['email', 'sms'], testEmail, testCc } = options;
 
   console.log(
     `[outreach] Starting 2Step outreach stage` +
@@ -470,6 +496,13 @@ export async function runOutreachStage(options = {}) {
       const twilioClient = twilio(accountSid, authToken);
 
       const smsLimitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
+      const smsBlockedCountries = [...OUTREACH_BLOCKED_SMS_COUNTRIES];
+      let smsBlockedClause = '';
+      const smsParams = [];
+      if (smsBlockedCountries.length > 0) {
+        smsBlockedClause = `AND s.country_code != ALL($1::text[])`;
+        smsParams.push(smsBlockedCountries);
+      }
       const smsList = await getAll(
         `SELECT m.id, m.site_id, m.contact_uri, m.message_body,
                 m.sequence_step, m.scheduled_send_at,
@@ -483,6 +516,8 @@ export async function runOutreachStage(options = {}) {
            AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
            -- Respect cadence: only send if schedule time has passed (or no schedule set)
            AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= NOW())
+           -- Block SMS for countries without legal basis (DR-121)
+           ${smsBlockedClause}
            -- Stop sequence if prospect has replied (inbound message exists for this site)
            AND NOT EXISTS (
              SELECT 1 FROM msgs.messages reply
@@ -491,7 +526,8 @@ export async function runOutreachStage(options = {}) {
                AND reply.direction = 'inbound'
            )
          ORDER BY m.sequence_step ASC, m.created_at ASC
-         ${smsLimitClause}`
+         ${smsLimitClause}`,
+        smsParams.length ? smsParams : undefined
       );
 
       console.log(`[outreach] ${smsList.length} pending SMS message(s)`);
