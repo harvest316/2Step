@@ -82,7 +82,7 @@ body, #bodyTable{background-color:rgb(244, 244, 244);}
 .mceInput[type="radio"], .mceInput[type="checkbox"]{float:left;margin-right:12px;display:inline;width:auto!important;}
 .mceLabel > .mceInput{margin-bottom:0;margin-top:2px;}
 .mceLabel{display:block;}
-.mceText p, .mcnTextContent p{color:rgb(0, 0, 0);font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;font-size:16px;font-weight:normal;line-height:1.5;mso-line-height-alt:150%;text-align:left;letter-spacing:0;direction:ltr;margin:0;}
+.mceText p, .mcnTextContent p{color:rgb(0, 0, 0);font-family:"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif;font-size:16px;font-weight:normal;line-height:1.5;mso-line-height-alt:150%;text-align:left;letter-spacing:0;direction:ltr;margin:0 0 16px 0;}
 .mceText a, .mcnTextContent a{color:rgb(0, 0, 0);font-style:normal;font-weight:normal;text-decoration:underline;direction:ltr;}
 #d13 p, #d13 h1, #d13 h2, #d13 h3, #d13 h4, #d13 ul{text-align:left;}
 @media only screen and (max-width: 480px) {
@@ -105,7 +105,7 @@ colgroup{display:none;}
 .mceImage, .mceLogo{width:100%!important;height:auto!important;}
 .mceText img{max-width:100%!important;}
 .mceFooterSection .mceText, .mceFooterSection .mceText p{font-size:16px!important;line-height:140%!important;}
-.mceText p{margin:0;font-size:16px!important;line-height:1.5!important;mso-line-height-alt:150%;}
+.mceText p{margin:0 0 16px 0;font-size:16px!important;line-height:1.5!important;mso-line-height-alt:150%;}
 .bodyCell{padding-left:16px!important;padding-right:16px!important;}
 .mceButtonContainer{width:fit-content!important;max-width:fit-content!important;}
 .mceButtonLink{padding:18px 28px!important;font-size:16px!important;}
