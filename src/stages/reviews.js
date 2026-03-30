@@ -621,7 +621,7 @@ export async function runReviewsStage(options = {}) {
 
 // ── Test-visible exports for pure helper functions ───────────────────────
 
-export { buildQueryFromCriteria, makeSemaphore, extractSocials, scoreReview, loadReviewCriteria, detectGoogleGuaranteed };
+export { buildQueryFromCriteria, makeSemaphore, extractSocials, scoreReview, loadReviewCriteria };
 
 // ─── CLI entry point ──────────────────────────────────────────────────────────
 
