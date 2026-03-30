@@ -412,10 +412,11 @@ async function sendSms(msg, twilioClient, dryRun) {
  * @param {string[]} [options.methods]        - Channels to send (['email','sms'])
  * @param {string} [options.testEmail]        - Override recipient (test mode — skips DB update)
  * @param {string} [options.testCc]           - CC address for test sends
+ * @param {number} [options.messageId]        - Send a specific message by ID
  * @returns {Promise<{ sent: number, failed: number, skipped: number }>}
  */
 export async function runOutreachStage(options = {}) {
-  const { limit, dryRun = false, methods = ['email', 'sms'], testEmail, testCc } = options;
+  const { limit, dryRun = false, methods = ['email', 'sms'], testEmail, testCc, messageId } = options;
 
   console.log(
     `[outreach] Starting 2Step outreach stage` +
@@ -433,6 +434,7 @@ export async function runOutreachStage(options = {}) {
       const resend = new Resend(RESEND_API_KEY);
 
       const limitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
+      const messageIdClause = messageId ? `AND m.id = ${parseInt(messageId, 10)}` : '';
       const emails = await getAll(
         `SELECT m.id, m.site_id, m.contact_uri, m.message_body, m.subject_line,
                 m.sequence_step, m.scheduled_send_at,
@@ -447,6 +449,7 @@ export async function runOutreachStage(options = {}) {
            AND m.contact_method = 'email'
            AND m.approval_status = 'approved'
            AND (m.delivery_status IS NULL OR m.delivery_status = 'queued')
+           ${messageIdClause}
            -- Respect cadence: only send if schedule time has passed (or no schedule set)
            AND (m.scheduled_send_at IS NULL OR m.scheduled_send_at <= NOW())
            -- Stop sequence if prospect has replied (inbound message exists for this site)
@@ -597,6 +600,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
       method:       { type: 'string' },
       'test-email': { type: 'string' },
       'test-cc':    { type: 'string' },
+      'message-id': { type: 'string' },
     },
     strict: false,
   });
@@ -611,6 +615,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
     methods,
     testEmail: args['test-email'],
     testCc:    args['test-cc'],
+    messageId: args['message-id'] ? parseInt(args['message-id'], 10) : undefined,
   })
     .then(stats => {
       console.log('\nDone:', stats);
