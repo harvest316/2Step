@@ -291,6 +291,40 @@ async function fetchMatchingReview(api, placeId, businessName, niche, reviewsQue
   return result;
 }
 
+// ─── Google Guaranteed detection ─────────────────────────────────────────────
+
+/**
+ * Detect the Google Guaranteed badge from Outscraper Maps result data.
+ *
+ * Google Guaranteed (Local Services Ads verified badge) appears in Outscraper
+ * Maps search results as `is_google_guaranteed` (boolean/integer) or
+ * `google_guaranteed` on the result object. Some versions of the API also
+ * surface it in a `subtypes` or `type` array as "google_guaranteed".
+ *
+ * @param {Object} result - Raw Outscraper Maps result object for one business
+ * @returns {number} 1 if Google Guaranteed, 0 otherwise
+ */
+export function detectGoogleGuaranteed(result) {
+  if (!result || typeof result !== 'object') return 0;
+
+  // Primary fields returned by Outscraper Maps search v3
+  if (result.is_google_guaranteed) return 1;
+  if (result.google_guaranteed)    return 1;
+
+  // Some API versions embed it in type/subtypes arrays
+  const subtypes = result.subtypes ?? result.type ?? [];
+  if (Array.isArray(subtypes)) {
+    const lower = subtypes.map(s => (typeof s === 'string' ? s.toLowerCase() : ''));
+    if (lower.some(s => s.includes('google_guaranteed') || s.includes('google guaranteed'))) return 1;
+  }
+
+  // Check badge/label fields that some scraper variants include
+  const badge = result.badge ?? result.google_badge ?? '';
+  if (typeof badge === 'string' && badge.toLowerCase().includes('guaranteed')) return 1;
+
+  return 0;
+}
+
 // ─── Social extraction ────────────────────────────────────────────────────────
 
 function extractSocials(result) {
@@ -439,10 +473,12 @@ async function processKeyword(api, kwRow, limit, dryRun) {
           rating: review.rating,
         }),
         problem_category:     review.category,
+        is_google_guaranteed: detectGoogleGuaranteed(result),
       };
 
       if (dryRun) {
-        console.log(`[reviews]   [DRY RUN] Would insert: ${businessName} — category: ${review.category}`);
+        const gg = site.is_google_guaranteed ? ' [Google Guaranteed]' : '';
+        console.log(`[reviews]   [DRY RUN] Would insert: ${businessName} — category: ${review.category}${gg}`);
         stats.inserted++;
         return;
       }
@@ -454,22 +490,24 @@ async function processKeyword(api, kwRow, limit, dryRun) {
             instagram_handle, facebook_page_url, city, state, country_code,
             google_rating, review_count, niche, keyword,
             google_place_id, selected_review_json, problem_category,
-            status
+            is_google_guaranteed, status
           ) VALUES (
             $1, $2, $3, $4, $5,
             $6, $7, $8, $9, $10,
             $11, $12, $13, $14,
             $15, $16, $17,
-            'reviews_downloaded'
+            $18, 'reviews_downloaded'
           )`,
           [
             site.business_name, site.google_maps_url, site.website_url, site.phone, site.email,
             site.instagram_handle, site.facebook_page_url, site.city, site.state, site.country_code,
             site.google_rating, site.review_count, site.niche, site.keyword,
             site.google_place_id, site.selected_review_json, site.problem_category,
+            site.is_google_guaranteed,
           ]
         );
-        console.log(`[reviews]   Inserted: ${businessName} — category: ${review.category}`);
+        const gg = site.is_google_guaranteed ? ' [Google Guaranteed]' : '';
+        console.log(`[reviews]   Inserted: ${businessName} — category: ${review.category}${gg}`);
         stats.inserted++;
       } catch (err) {
         console.error(`[reviews]   Insert failed for "${businessName}": ${err.message}`);
@@ -583,7 +621,7 @@ export async function runReviewsStage(options = {}) {
 
 // ── Test-visible exports for pure helper functions ───────────────────────
 
-export { buildQueryFromCriteria, makeSemaphore, extractSocials, scoreReview, loadReviewCriteria };
+export { buildQueryFromCriteria, makeSemaphore, extractSocials, scoreReview, loadReviewCriteria, detectGoogleGuaranteed };
 
 // ─── CLI entry point ──────────────────────────────────────────────────────────
 
