@@ -38,6 +38,17 @@ jobs:
         #                        openssl rand -hex 32
         #                      Store the same value in all repos.
         #   RAD_RID          — Repository ID from `rad .` on k7
+        #   RAD_COB_BUNDLE   — base64-encoded git bundle of identity refs (~4KB)
+        #                      Generated on k7 with:
+        #                        K7_DID=$(rad self --nid | sed 's/^/did:key:/')
+        #                        RID=$(rad . --rid)
+        #                        git -C ~/.radicle/storage/${RID} bundle create /tmp/cob.bundle \
+        #                          $(git -C ~/.radicle/storage/${RID} for-each-ref \
+        #                            --format="%(refname)" \
+        #                            "refs/namespaces/${K7_DID}/refs/rad/" \
+        #                            "refs/namespaces/${K7_DID}/refs/cobs/" \
+        #                            "refs/rad/")
+        #                        base64 -w0 /tmp/cob.bundle | gh secret set RAD_COB_BUNDLE
         #
         # One-time k7 setup (run once after generating RAD_KEYGEN_SEED):
         #   RAD_KEYGEN_SEED=<seed> RAD_PASSPHRASE="" rad auth --alias github-ci
@@ -52,8 +63,16 @@ jobs:
       - name: Push to Radicle seed
         env:
           RAD_RID: ${{ secrets.RAD_RID }}
+          RAD_COB_BUNDLE: ${{ secrets.RAD_COB_BUNDLE }}
         run: |
           trap 'kill $NODE_PID 2>/dev/null || true' EXIT
+
+          # Restore COB bundle — provides identity data git-remote-rad needs before push
+          # Must happen before radicle-node starts so node sees storage on init
+          mkdir -p "${HOME}/.radicle/storage/${RAD_RID}"
+          git -C "${HOME}/.radicle/storage/${RAD_RID}" init --bare --quiet
+          echo "${RAD_COB_BUNDLE}" | base64 -d | \
+            git -C "${HOME}/.radicle/storage/${RAD_RID}" bundle unbundle /dev/stdin
 
           git remote add rad "rad://${RAD_RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RAD_RID}"
@@ -72,11 +91,10 @@ jobs:
           done
           nc -z 0.0.0.0 8776 2>/dev/null || { echo "radicle-node failed to start"; exit 1; }
 
-          # Give bootstrap peers time to populate routing table (iris NID must be reachable)
-          sleep 3
-
-          # Fetch repo into local storage — required before git push rad can work
-          rad sync --fetch "rad:${RAD_RID}" --seed "${SEED_NID}"
+          # Give bootstrap peers time to connect (iris must be in routing table for announce)
+          sleep 5
 
           git push rad main --force || exit 1
-          rad sync --seed seed.radicle.garden
+
+          # Announce to iris — CI runner has a public IP so iris can inbound-fetch
+          rad sync --announce --seed "${SEED_NID}"
