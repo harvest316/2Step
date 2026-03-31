@@ -463,7 +463,7 @@ export async function runProposalsStage(options = {}) {
         problem_category: site.problem_category || contacts?.problem_category || '',
         video_url: videoUrl,
         star_rating: site.google_rating ? String(site.google_rating) : '5',
-        review_count: site.review_count ? String(site.review_count) : '',
+        review_count: site.review_count ? String(site.review_count) : 'many',
         poster: `[poster]`,  // placeholder — resolved to HTML at send time by email-template.js
         outreach_day: new Date().toLocaleDateString('en-AU', { weekday: 'long' }),
       };
