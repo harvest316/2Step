@@ -56,6 +56,9 @@ jobs:
             "+refs/rad/*:refs/rad/*" || exit 1
           rm /tmp/cob.bundle
 
+          echo "=== Profile check ==="
+          rad self --nid 2>&1 || echo "rad self failed"
+
           git remote add rad "rad://${RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RID}"
 
@@ -76,7 +79,19 @@ jobs:
           # Give bootstrap peers time to connect (iris must be in routing table for announce)
           sleep 5
 
-          git push rad main --force || exit 1
+          echo "=== Node state ==="
+          rad node status 2>&1 || true
+          rad ls 2>&1 || true
+
+          # Seed the repo to register it with the node (allows git-remote-rad to push)
+          rad seed "rad:${RID}" 2>&1 || true
+
+          echo "=== Attempting git push ==="
+          GIT_TRACE2_EVENT=/tmp/git-trace.json git push rad main --force 2>&1 || {
+            echo "=== git push failed, trying rad push ==="
+            rad push 2>&1 || true
+            exit 1
+          }
 
           # Announce to iris — CI runner has a public IP so iris can inbound-fetch
           rad sync --announce --seed "${SEED_NID}"
