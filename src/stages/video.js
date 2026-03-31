@@ -503,11 +503,13 @@ export async function processSite(site, { dryRun, localOnly = false }) {
   process.stdout.write(' done\n');
 
   // 9. Extract poster frame, build poster image with play button, upload to R2
-  // Pick midpoint of scene 1 (first review quote) to avoid scene transitions
+  // Target midpoint of scene 0, backed off by the outgoing transition duration so
+  // we always land in the clean portion of the first slide before the xfade begins.
   const scene0Duration = scenes[0]?.duration ?? 4;
-  const scene1Duration = scenes[1]?.duration ?? 4;
-  const posterTime = Math.round(scene0Duration + scene1Duration / 2);
-  process.stdout.write(`  Building poster image (t=${posterTime}s)...`);
+  const td = variant.transitionDuration ?? 0;
+  const safeWindow = scene0Duration - td;          // time before xfade starts
+  const posterTime = Math.max(0.5, safeWindow / 2); // midpoint of safe window, min 0.5s
+  process.stdout.write(`  Building poster image (t=${posterTime.toFixed(2)}s)...`);
   const posterFrame = await extractPosterFrame(outputPath, posterTime);
   const posterBuf = await buildPosterFromBuffer(posterFrame);
   const posterKey = `poster-s${siteId}-${Date.now()}.jpg`;
