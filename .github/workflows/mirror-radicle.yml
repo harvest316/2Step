@@ -43,15 +43,18 @@ jobs:
         run: |
           trap 'kill $NODE_PID 2>/dev/null || true' EXIT
 
-          # RAD_RID may be stored as "rad:z2x1..." or just "z2x1..." — strip prefix
+          # RAD_RID may include "rad:" prefix; storage dirs use just the hash
           RID="${RAD_RID#rad:}"
 
-          # Restore COB bundle — provides identity data git-remote-rad needs before push
-          # Storage dir name is the bare hash, no "rad:" prefix
+          # Restore COB bundle into local storage.
+          # git bundle unbundle drops refs/namespaces/* silently; use git fetch instead.
           mkdir -p "${HOME}/.radicle/storage/${RID}"
           git -C "${HOME}/.radicle/storage/${RID}" init --bare --quiet
-          echo "${RAD_COB_BUNDLE}" | base64 -d | \
-            git -C "${HOME}/.radicle/storage/${RID}" bundle unbundle /dev/stdin || exit 1
+          echo "${RAD_COB_BUNDLE}" | base64 -d > /tmp/cob.bundle
+          git -C "${HOME}/.radicle/storage/${RID}" fetch /tmp/cob.bundle \
+            "+refs/namespaces/*:refs/namespaces/*" \
+            "+refs/rad/*:refs/rad/*" || exit 1
+          rm /tmp/cob.bundle
 
           git remote add rad "rad://${RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RID}"
@@ -77,4 +80,3 @@ jobs:
 
           # Announce to iris — CI runner has a public IP so iris can inbound-fetch
           rad sync --announce --seed "${SEED_NID}"
-
