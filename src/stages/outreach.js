@@ -40,7 +40,7 @@ const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || 'Audit&Fix Video Reviews'
 // Sending subdomains — rotated by site_id to spread domain reputation risk.
 // Add new subdomains here as they're verified in Resend.
 // test.auditandfix.com is excluded — reserved for test sends only.
-const SENDER_SUBDOMAINS = (process.env.TWOSTEP_SENDER_SUBDOMAINS || 'send,mail,email,outreach')
+const SENDER_SUBDOMAINS = (process.env.TWOSTEP_SENDER_SUBDOMAINS || 'send,mail,email,outreach,outbound,eu,sa')
   .split(',').map(s => s.trim()).filter(Boolean);
 const SENDER_LOCAL = process.env.TWOSTEP_SENDER_LOCAL || 'videos';
 
@@ -197,10 +197,15 @@ function assembleEmail(msg) {
       ? PHYSICAL_ADDRESS
       : '';
 
+  // Use /p/{hash} as poster src — logs email open on image load, then redirects to CDN
+  const posterTrackingUrl = msg.video_hash
+    ? `https://auditandfix.com/p/${msg.video_hash}`
+    : msg.thumbnail_url;
+
   const html = buildEmailHtml({
     previewText,
     hookHtml: textToHtml(hook),
-    posterUrl: msg.thumbnail_url,
+    posterUrl: posterTrackingUrl,
     videoUrl: msg.video_url,
     remainingBodyHtml: textToHtml(remaining),
     ctaHtml: '', // CTA is now embedded in body_spintax, not separate
@@ -455,11 +460,11 @@ export async function runOutreachStage(options = {}) {
         `SELECT m.id, m.site_id, m.contact_uri, m.message_body, m.subject_line,
                 m.sequence_step, m.scheduled_send_at,
                 s.business_name, s.country_code, s.city, s.niche,
-                s.best_review_author, s.google_rating, s.review_count,
+                s.best_review_author, s.google_rating, s.review_count, s.video_hash,
                 COALESCE(m.video_url, v.video_url) AS video_url, v.thumbnail_url
          FROM msgs.messages m
-         JOIN sites s ON s.id = m.site_id
-         LEFT JOIN videos v ON v.id = s.video_id
+         JOIN twostep.sites s ON s.id = m.site_id
+         LEFT JOIN twostep.videos v ON v.id = s.video_id
          WHERE m.project = '2step'
            AND m.direction = 'outbound'
            AND m.contact_method = 'email'

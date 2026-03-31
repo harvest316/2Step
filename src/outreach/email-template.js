@@ -52,7 +52,7 @@ a { color: #1a1a1a; text-decoration: underline; }
 </style>
 </head>
 <body>
-<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:#f4f4f4;">${previewText}&#847; &#847; &#847; &#847; &#847; &#847; &#847; &#847;</div>
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;">${previewText}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4;">
 <tr><td align="center" style="padding:24px 0;">
 
