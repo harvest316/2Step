@@ -83,7 +83,6 @@ export async function runSyncOptOutsStage({ dryRun = false } = {}) {
     }
   }
 
-  await pool.end();
   console.log(`[sync-opt-outs] done: ${inserted} inserted, ${skipped} already present, ${errors} errors`);
   return { inserted, skipped, errors };
 }
@@ -94,8 +93,10 @@ const isMain = process.argv[1] && fileURLToPath(import.meta.url) === resolve(pro
 
 if (isMain) {
   const { values: args } = parseArgs({ options: { 'dry-run': { type: 'boolean', default: false } } });
-  runSyncOptOutsStage({ dryRun: args['dry-run'] }).catch(err => {
-    console.error(`Fatal: ${err.message}`);
-    process.exit(1);
-  });
+  runSyncOptOutsStage({ dryRun: args['dry-run'] })
+    .then(() => pool.end())
+    .catch(err => {
+      console.error(`Fatal: ${err.message}`);
+      pool.end().finally(() => process.exit(1));
+    });
 }

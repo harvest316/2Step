@@ -17,6 +17,7 @@
  * to avoid mutating the production opt-out list during normal test runs.
  */
 
+import '../../../src/utils/load-env.js';
 import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 
