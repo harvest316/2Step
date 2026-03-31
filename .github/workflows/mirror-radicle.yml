@@ -50,17 +50,16 @@ jobs:
           # git bundle unbundle drops refs/namespaces/* silently; use git fetch instead.
           mkdir -p "${HOME}/.radicle/storage/${RID}"
           git -C "${HOME}/.radicle/storage/${RID}" init --bare --quiet
+
+          git -C "${HOME}/.radicle/storage/${RID}" fetch "${GITHUB_WORKSPACE}" \
+            "+refs/heads/main:refs/tmp/bootstrap"
+          git -C "${HOME}/.radicle/storage/${RID}" update-ref -d refs/tmp/bootstrap 2>/dev/null || true
+
           echo "${RAD_COB_BUNDLE}" | base64 -d > /tmp/cob.bundle
           git -C "${HOME}/.radicle/storage/${RID}" fetch /tmp/cob.bundle \
             "+refs/namespaces/*:refs/namespaces/*" \
             "+refs/rad/*:refs/rad/*" || exit 1
           rm /tmp/cob.bundle
-
-          # Populate storage with git objects from the checkout so the node can verify
-          # delegate sigrefs (sigrefs → commit SHA → threshold check needs the object to exist)
-          git -C "${HOME}/.radicle/storage/${RID}" fetch "${GITHUB_WORKSPACE}" \
-            "+refs/heads/main:refs/tmp/bootstrap"
-          git -C "${HOME}/.radicle/storage/${RID}" update-ref -d refs/tmp/bootstrap 2>/dev/null || true
 
           echo "=== Profile check ==="
           CI_NID=$(rad self --nid 2>/dev/null)
