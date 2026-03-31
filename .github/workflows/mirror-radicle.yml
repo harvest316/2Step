@@ -7,6 +7,9 @@ on:
 jobs:
   mirror:
     runs-on: ubuntu-latest
+    env:
+      RAD_PASSPHRASE: ""
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,45 +33,41 @@ jobs:
       - name: Set up Radicle identity
         # Secrets required in GitHub repo Settings → Secrets → Actions:
         #
-        #   RAD_PASSPHRASE    — passphrase (leave unset if key has no passphrase)
-        #   RAD_KEY_PRIVATE   — base64-encoded private key from ~/.radicle/keys/<alias>
-        #   RAD_KEY_PUBLIC    — base64-encoded public key from ~/.radicle/keys/<alias>.pub
-        #   RAD_RID           — Repository ID from `rad .` on k7 (e.g. rad:z2x1vb...)
+        #   RAD_KEYGEN_SEED  — 64-char hex string; generates a deterministic keypair
+        #                      so the same DID is used every run. Generate once:
+        #                        openssl rand -hex 32
+        #                      Store the same value in all repos.
+        #   RAD_RID          — Repository ID from `rad .` on k7
         #
-        # Export keys on k7:
-        #   KEY=$(ls ~/.radicle/keys/ | grep -v '\.pub' | head -1)
-        #   cat ~/.radicle/keys/$KEY | base64 -w0     → RAD_KEY_PRIVATE
-        #   cat ~/.radicle/keys/$KEY.pub | base64 -w0 → RAD_KEY_PUBLIC
+        # One-time k7 setup (run once after generating RAD_KEYGEN_SEED):
+        #   RAD_KEYGEN_SEED=<seed> RAD_PASSPHRASE="" rad auth --alias github-ci
+        #   rad self   # note the DID
+        #   # In each repo dir:
+        #   SKIP_SIMPLE_GIT_HOOKS=1 rad id update --title "Add CI delegate" --delegate <DID>
         env:
-          RAD_PASSPHRASE: ${{ secrets.RAD_PASSPHRASE }}
-          RAD_KEY_PRIVATE: ${{ secrets.RAD_KEY_PRIVATE }}
-          RAD_KEY_PUBLIC: ${{ secrets.RAD_KEY_PUBLIC }}
+          RAD_KEYGEN_SEED: ${{ secrets.RAD_KEYGEN_SEED }}
         run: |
-          mkdir -p ~/.radicle/keys
-          echo "$RAD_KEY_PRIVATE" | base64 -d > ~/.radicle/keys/github-mirror
-          echo "$RAD_KEY_PUBLIC"  | base64 -d > ~/.radicle/keys/github-mirror.pub
-          chmod 600 ~/.radicle/keys/github-mirror
-          rad auth --alias github-mirror \
-            --key ~/.radicle/keys/github-mirror <<< "$RAD_PASSPHRASE"
-          rad config init --alias github-mirror 2>/dev/null || true
+          rad auth --alias github-ci
 
       - name: Push to Radicle seed
         env:
           RAD_RID: ${{ secrets.RAD_RID }}
         run: |
-          # Configure the rad remote so git push rad knows which repo this is
+          trap 'kill $NODE_PID 2>/dev/null || true' EXIT
+
           git remote add rad "rad://${RAD_RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RAD_RID}"
           git config rad.seed seed.radicle.garden
 
-          # Start node in background (required for git push rad transport)
           radicle-node --listen 0.0.0.0:8776 &
           NODE_PID=$!
-          sleep 3
 
-          # Push and sync to seed
-          git push rad main --force
+          # Wait for node to bind its port (up to 10s)
+          for i in $(seq 1 20); do
+            nc -z 0.0.0.0 8776 2>/dev/null && break
+            sleep 0.5
+          done
+          nc -z 0.0.0.0 8776 2>/dev/null || { echo "radicle-node failed to start"; exit 1; }
+
+          git push rad main --force || exit 1
           rad sync --seed seed.radicle.garden
-
-          # Clean up
-          kill $NODE_PID 2>/dev/null || true
