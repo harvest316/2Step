@@ -72,7 +72,7 @@ jobs:
           mkdir -p "${HOME}/.radicle/storage/${RAD_RID}"
           git -C "${HOME}/.radicle/storage/${RAD_RID}" init --bare --quiet
           echo "${RAD_COB_BUNDLE}" | base64 -d | \
-            git -C "${HOME}/.radicle/storage/${RAD_RID}" bundle unbundle /dev/stdin
+            git -C "${HOME}/.radicle/storage/${RAD_RID}" bundle unbundle /dev/stdin || exit 1
 
           git remote add rad "rad://${RAD_RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RAD_RID}"
