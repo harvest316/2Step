@@ -23,17 +23,19 @@ jobs:
           echo "${RAD_SHA256}  radicle.tar.xz" | sha256sum -c
           tar -xJf radicle.tar.xz
           sudo mv radicle-*/bin/rad /usr/local/bin/rad
+          sudo mv radicle-*/bin/git-remote-rad /usr/local/bin/git-remote-rad
           rad --version
 
       - name: Set up Radicle identity
-        # Secrets to create in GitHub repo settings (Settings → Secrets → Actions):
+        # Secrets required in GitHub repo Settings → Secrets → Actions:
         #
-        #   RAD_PASSPHRASE    — passphrase used when running `rad auth` on k7
-        #   RAD_KEY_PRIVATE   — base64-encoded private key file from ~/.radicle/keys/<alias>
-        #   RAD_KEY_PUBLIC    — base64-encoded public key file from ~/.radicle/keys/<alias>.pub
+        #   RAD_PASSPHRASE    — passphrase (empty string if key has no passphrase)
+        #   RAD_KEY_PRIVATE   — base64-encoded private key from ~/.radicle/keys/<alias>
+        #   RAD_KEY_PUBLIC    — base64-encoded public key from ~/.radicle/keys/<alias>.pub
+        #   RAD_RID           — Repository ID from `rad .` on k7 (e.g. rad:z2x1vb...)
         #
-        # To export keys on k7 (run from host terminal):
-        #   KEY=$(ls ~/.radicle/keys/ | grep -v '.pub' | head -1)
+        # Export keys on k7:
+        #   KEY=$(ls ~/.radicle/keys/ | grep -v '\.pub' | head -1)
         #   cat ~/.radicle/keys/$KEY | base64 -w0     → RAD_KEY_PRIVATE
         #   cat ~/.radicle/keys/$KEY.pub | base64 -w0 → RAD_KEY_PUBLIC
         env:
@@ -45,12 +47,15 @@ jobs:
           echo "$RAD_KEY_PRIVATE" | base64 -d > ~/.radicle/keys/github-mirror
           echo "$RAD_KEY_PUBLIC"  | base64 -d > ~/.radicle/keys/github-mirror.pub
           chmod 600 ~/.radicle/keys/github-mirror
-          echo "$RAD_PASSPHRASE" | rad auth --stdin --alias github-mirror \
-            --key ~/.radicle/keys/github-mirror 2>/dev/null || true
+          rad auth --alias github-mirror \
+            --key ~/.radicle/keys/github-mirror <<< "$RAD_PASSPHRASE" 2>/dev/null || true
 
       - name: Push to Radicle seed
-        # RAD_RID — the Repository ID from `rad .` (run in this repo on k7 after `rad init`)
         env:
           RAD_RID: ${{ secrets.RAD_RID }}
         run: |
-          rad push --seed seed.radicle.garden --rid "$RAD_RID" --force
+          # Configure the rad remote so rad push knows which repo this is
+          git remote add rad "rad://${RAD_RID}" 2>/dev/null || \
+            git remote set-url rad "rad://${RAD_RID}"
+          git config rad.seed seed.radicle.garden
+          rad push --seed seed.radicle.garden --force
