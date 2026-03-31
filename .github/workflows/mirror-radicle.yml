@@ -23,13 +23,14 @@ jobs:
           echo "${RAD_SHA256}  radicle.tar.xz" | sha256sum -c
           tar -xJf radicle.tar.xz
           sudo mv radicle-*/bin/rad /usr/local/bin/rad
+          sudo mv radicle-*/bin/radicle-node /usr/local/bin/radicle-node
           sudo mv radicle-*/bin/git-remote-rad /usr/local/bin/git-remote-rad
           rad --version
 
       - name: Set up Radicle identity
         # Secrets required in GitHub repo Settings → Secrets → Actions:
         #
-        #   RAD_PASSPHRASE    — passphrase (empty string if key has no passphrase)
+        #   RAD_PASSPHRASE    — passphrase (leave unset if key has no passphrase)
         #   RAD_KEY_PRIVATE   — base64-encoded private key from ~/.radicle/keys/<alias>
         #   RAD_KEY_PUBLIC    — base64-encoded public key from ~/.radicle/keys/<alias>.pub
         #   RAD_RID           — Repository ID from `rad .` on k7 (e.g. rad:z2x1vb...)
@@ -54,8 +55,19 @@ jobs:
         env:
           RAD_RID: ${{ secrets.RAD_RID }}
         run: |
-          # Configure the rad remote so rad push knows which repo this is
+          # Configure the rad remote so git push rad knows which repo this is
           git remote add rad "rad://${RAD_RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RAD_RID}"
           git config rad.seed seed.radicle.garden
-          rad push --seed seed.radicle.garden --force
+
+          # Start node in background (required for git push rad transport)
+          radicle-node --listen 0.0.0.0:8776 &
+          NODE_PID=$!
+          sleep 3
+
+          # Push and sync to seed
+          git push rad main --force
+          rad sync --seed seed.radicle.garden
+
+          # Clean up
+          kill $NODE_PID 2>/dev/null || true
