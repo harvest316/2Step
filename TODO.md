@@ -49,6 +49,11 @@ Still at `found` status — no logos, no videos queued. When ready to expand:
 2. Generate Kling clips for any missing plumber/cleaning sub-niches
 3. Queue video renders
 
+### Email infrastructure: migrate to SES at scale (DR-126)
+Revisit when sustained volume hits 5k emails/month or production bounce/complaint rate >2%.
+SES advantages: cleaner shared IP pool, dedicated IPs at $24.95/mo (vs Resend $40/mo), ~4x cheaper per email.
+Migration work: AWS sandbox approval, SNS bounce/complaint webhooks, SDK swap.
+
 ### Video quality fixes
 - Quote selection: sentences starting with subordinate clauses still pass occasionally
 - CTA slide subtitle: remove business name when logo is present on that scene
