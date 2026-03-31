@@ -35,8 +35,19 @@ const ROOT = resolve(__dirname, '../..');
 // ── Config ──────────────────────────────────────────────────────────────────
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const SENDER_EMAIL = process.env.TWOSTEP_SENDER_EMAIL || 'videos@auditandfix.com';
 const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || 'Audit&Fix Video Reviews';
+
+// Sending subdomains — rotated by site_id to spread domain reputation risk.
+// Add new subdomains here as they're verified in Resend.
+// test.auditandfix.com is excluded — reserved for test sends only.
+const SENDER_SUBDOMAINS = (process.env.TWOSTEP_SENDER_SUBDOMAINS || 'send,mail,email,outreach')
+  .split(',').map(s => s.trim()).filter(Boolean);
+const SENDER_LOCAL = process.env.TWOSTEP_SENDER_LOCAL || 'videos';
+
+function getSenderForSite(siteId) {
+  const subdomain = SENDER_SUBDOMAINS[siteId % SENDER_SUBDOMAINS.length];
+  return `${SENDER_LOCAL}@${subdomain}.auditandfix.com`;
+}
 const UNSUBSCRIBE_URL =
   process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev';
 const LOGO_URL = process.env.TWOSTEP_LOGO_URL || 'https://auditandfix.com/assets/img/logo-light.svg';
@@ -258,8 +269,12 @@ async function sendEmail(msg, resend, dryRun, testOpts) {
     return { success: true, dryRun: true };
   }
 
+  const senderEmail = isTest
+    ? (process.env.TWOSTEP_SENDER_EMAIL || getSenderForSite(0))
+    : getSenderForSite(msg.site_id);
+
   const sendPayload = {
-    from: `${SENDER_NAME} <${SENDER_EMAIL}>`,
+    from: `${SENDER_NAME} <${senderEmail}>`,
     to: toAddress,
     subject: isTest ? `[TEST] ${subject}` : subject,
     html,
