@@ -31,30 +31,6 @@ jobs:
           rad --version
 
       - name: Set up Radicle identity
-        # Secrets required in GitHub repo Settings → Secrets → Actions:
-        #
-        #   RAD_KEYGEN_SEED  — 64-char hex string; generates a deterministic keypair
-        #                      so the same DID is used every run. Generate once:
-        #                        openssl rand -hex 32
-        #                      Store the same value in all repos.
-        #   RAD_RID          — Repository ID from `rad .` on k7
-        #   RAD_COB_BUNDLE   — base64-encoded git bundle of identity refs (~4KB)
-        #                      Generated on k7 with:
-        #                        K7_DID=$(rad self --nid | sed 's/^/did:key:/')
-        #                        RID=$(rad . --rid)
-        #                        git -C ~/.radicle/storage/${RID} bundle create /tmp/cob.bundle \
-        #                          $(git -C ~/.radicle/storage/${RID} for-each-ref \
-        #                            --format="%(refname)" \
-        #                            "refs/namespaces/${K7_DID}/refs/rad/" \
-        #                            "refs/namespaces/${K7_DID}/refs/cobs/" \
-        #                            "refs/rad/")
-        #                        base64 -w0 /tmp/cob.bundle | gh secret set RAD_COB_BUNDLE
-        #
-        # One-time k7 setup (run once after generating RAD_KEYGEN_SEED):
-        #   RAD_KEYGEN_SEED=<seed> RAD_PASSPHRASE="" rad auth --alias github-ci
-        #   rad self   # note the DID
-        #   # In each repo dir:
-        #   SKIP_SIMPLE_GIT_HOOKS=1 rad id update --title "Add CI delegate" --delegate <DID>
         env:
           RAD_KEYGEN_SEED: ${{ secrets.RAD_KEYGEN_SEED }}
         run: |
@@ -67,15 +43,18 @@ jobs:
         run: |
           trap 'kill $NODE_PID 2>/dev/null || true' EXIT
 
-          # Restore COB bundle — provides identity data git-remote-rad needs before push
-          # Must happen before radicle-node starts so node sees storage on init
-          mkdir -p "${HOME}/.radicle/storage/${RAD_RID}"
-          git -C "${HOME}/.radicle/storage/${RAD_RID}" init --bare --quiet
-          echo "${RAD_COB_BUNDLE}" | base64 -d | \
-            git -C "${HOME}/.radicle/storage/${RAD_RID}" bundle unbundle /dev/stdin || exit 1
+          # RAD_RID may be stored as "rad:z2x1..." or just "z2x1..." — strip prefix
+          RID="${RAD_RID#rad:}"
 
-          git remote add rad "rad://${RAD_RID}" 2>/dev/null || \
-            git remote set-url rad "rad://${RAD_RID}"
+          # Restore COB bundle — provides identity data git-remote-rad needs before push
+          # Storage dir name is the bare hash, no "rad:" prefix
+          mkdir -p "${HOME}/.radicle/storage/${RID}"
+          git -C "${HOME}/.radicle/storage/${RID}" init --bare --quiet
+          echo "${RAD_COB_BUNDLE}" | base64 -d | \
+            git -C "${HOME}/.radicle/storage/${RID}" bundle unbundle /dev/stdin || exit 1
+
+          git remote add rad "rad://${RID}" 2>/dev/null || \
+            git remote set-url rad "rad://${RID}"
 
           # seed.radicle.garden = iris.radicle.xyz (NID from https://seed.radicle.garden/api/v1/node)
           SEED_NID="z6MkrLMMsiPWUcNPHcRajuMi9mDfYckSoJyPwwnknocNYPm7"
@@ -98,3 +77,4 @@ jobs:
 
           # Announce to iris — CI runner has a public IP so iris can inbound-fetch
           rad sync --announce --seed "${SEED_NID}"
+
