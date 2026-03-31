@@ -13,18 +13,16 @@ jobs:
           fetch-depth: 0
 
       - name: Install rad CLI
-        # Pin to a specific release — update RAD_VERSION + SHA256 when upgrading.
-        # To get the sha256: curl -sL <url> | sha256sum
+        # To upgrade: update RAD_VERSION + RAD_SHA256 from https://files.radicle.xyz/releases/
         env:
-          RAD_VERSION: 1.1.0
-          RAD_SHA256: ""  # TODO: fill in after confirming release URL on https://radicle.xyz/download
+          RAD_VERSION: 1.7.1
+          RAD_SHA256: 37980a3b7660704007c3fa100bb6aa452ffb3cd13426fbf0f4f824f8f49bca95
         run: |
-          curl -fsSL "https://github.com/radicle-dev/radicle-node/releases/download/v${RAD_VERSION}/radicle-${RAD_VERSION}-x86_64-unknown-linux-musl.tar.gz" \
-            -o radicle.tar.gz
-          # Uncomment once SHA256 is filled in above:
-          # echo "${RAD_SHA256}  radicle.tar.gz" | sha256sum -c
-          tar -xzf radicle.tar.gz
-          sudo mv radicle-*/rad /usr/local/bin/rad
+          curl -fsSL "https://files.radicle.xyz/releases/${RAD_VERSION}/radicle-${RAD_VERSION}-x86_64-unknown-linux-musl.tar.xz" \
+            -o radicle.tar.xz
+          echo "${RAD_SHA256}  radicle.tar.xz" | sha256sum -c
+          tar -xJf radicle.tar.xz
+          sudo mv radicle-*/bin/rad /usr/local/bin/rad
           rad --version
 
       - name: Set up Radicle identity
@@ -36,7 +34,7 @@ jobs:
         #
         # To export keys on k7 (run from host terminal):
         #   KEY=$(ls ~/.radicle/keys/ | grep -v '.pub' | head -1)
-        #   cat ~/.radicle/keys/$KEY | base64 -w0   → RAD_KEY_PRIVATE
+        #   cat ~/.radicle/keys/$KEY | base64 -w0     → RAD_KEY_PRIVATE
         #   cat ~/.radicle/keys/$KEY.pub | base64 -w0 → RAD_KEY_PUBLIC
         env:
           RAD_PASSPHRASE: ${{ secrets.RAD_PASSPHRASE }}
@@ -52,7 +50,6 @@ jobs:
 
       - name: Push to Radicle seed
         # RAD_RID — the Repository ID from `rad .` (run in this repo on k7 after `rad init`)
-        # e.g. rad:z4GNHCKzGRFZHPSqK2gPSLJxMVe9N
         env:
           RAD_RID: ${{ secrets.RAD_RID }}
         run: |
