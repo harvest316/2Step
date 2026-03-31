@@ -58,7 +58,8 @@ jobs:
           git remote add rad "rad://${RAD_RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RAD_RID}"
 
-          SEED="z6MkrLMMsiPWUcNPHcRajuMi9mDfYckSoJyPwwnknocNYPm7@seed.radicle.garden:8776"
+          # seed.radicle.garden = iris.radicle.xyz (NID from https://seed.radicle.garden/api/v1/node)
+          SEED_NID="z6MkrLMMsiPWUcNPHcRajuMi9mDfYckSoJyPwwnknocNYPm7"
           git config rad.seed seed.radicle.garden
 
           radicle-node --listen 0.0.0.0:8776 &
@@ -71,8 +72,11 @@ jobs:
           done
           nc -z 0.0.0.0 8776 2>/dev/null || { echo "radicle-node failed to start"; exit 1; }
 
+          # Give bootstrap peers time to populate routing table (iris NID must be reachable)
+          sleep 3
+
           # Fetch repo into local storage — required before git push rad can work
-          rad sync --fetch "rad:${RAD_RID}" --seed "${SEED}"
+          rad sync --fetch "rad:${RAD_RID}" --seed "${SEED_NID}"
 
           git push rad main --force || exit 1
-          rad sync --seed "${SEED}"
+          rad sync --seed seed.radicle.garden
