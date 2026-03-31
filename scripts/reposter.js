@@ -67,14 +67,18 @@ async function downloadVideo(url, destPath) {
 
 async function pushToApi(site, posterUrl) {
   const payload = {
-    hash:          site.video_hash,
-    video_url:     site.video_url,
-    poster_url:    posterUrl,
-    business_name: site.business_name,
-    domain:        site.domain,
-    review_count:  site.review_count,
-    niche:         site.niche,
-    country_code:  site.country_code,
+    hash:           site.video_hash,
+    video_url:      site.video_url,
+    poster_url:     posterUrl,
+    business_name:  site.business_name,
+    domain:         site.domain,
+    review_count:   site.review_count,
+    google_rating:  site.google_rating,
+    niche:          site.niche,
+    niche_display:  site.niche_display ?? site.niche,
+    country_code:   site.country_code,
+    contact_email:  site.email,
+    city:           site.city,
   };
   const res = await fetch(`${AUDITANDFIX_URL}/api.php?action=store-video`, {
     method: 'POST',
@@ -88,7 +92,8 @@ async function main() {
   let query = `
     SELECT DISTINCT ON (s.id)
       s.id, s.video_hash, s.business_name, s.domain,
-      s.video_url, s.niche, s.country_code, s.review_count
+      s.video_url, s.niche, s.country_code, s.review_count,
+      s.google_rating, s.email, s.city
     FROM twostep.sites s
     JOIN twostep.videos v ON v.site_id = s.id
     WHERE s.video_hash IS NOT NULL AND s.video_url IS NOT NULL
