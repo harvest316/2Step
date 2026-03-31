@@ -56,6 +56,12 @@ jobs:
             "+refs/rad/*:refs/rad/*" || exit 1
           rm /tmp/cob.bundle
 
+          # Populate storage with git objects from the checkout so the node can verify
+          # delegate sigrefs (sigrefs → commit SHA → threshold check needs the object to exist)
+          git -C "${HOME}/.radicle/storage/${RID}" fetch "${GITHUB_WORKSPACE}" \
+            "+refs/heads/main:refs/tmp/bootstrap"
+          git -C "${HOME}/.radicle/storage/${RID}" update-ref -d refs/tmp/bootstrap 2>/dev/null || true
+
           echo "=== Profile check ==="
           CI_NID=$(rad self --nid 2>/dev/null)
           echo "CI NID: ${CI_NID}"
