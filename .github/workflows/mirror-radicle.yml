@@ -56,13 +56,19 @@ jobs:
             "+refs/rad/*:refs/rad/*" || exit 1
           rm /tmp/cob.bundle
 
-          # Capture CI NID — used in remote URL so git-remote-rad doesn't need to
-          # look up the key from disk (avoids "no public key" namespace error).
+          echo "=== Profile check ==="
           CI_NID=$(rad self --nid 2>/dev/null)
-          echo "=== Profile check: CI NID = ${CI_NID} ==="
+          echo "CI NID: ${CI_NID}"
+          echo "=== Radicle home ==="
+          ls -la "${HOME}/.radicle/" 2>&1 || true
+          ls -la "${HOME}/.radicle/keys/" 2>&1 || true
 
-          git remote add rad "rad://${CI_NID}@${RID}" 2>/dev/null || \
-            git remote set-url rad "rad://${CI_NID}@${RID}"
+          echo "=== git-remote-rad ==="
+          which git-remote-rad 2>&1 || true
+          ls -la "$(which git-remote-rad 2>/dev/null)" 2>&1 || true
+
+          git remote add rad "rad://${RID}" 2>/dev/null || \
+            git remote set-url rad "rad://${RID}"
 
           # seed.radicle.garden = iris.radicle.xyz (NID from https://seed.radicle.garden/api/v1/node)
           SEED_NID="z6MkrLMMsiPWUcNPHcRajuMi9mDfYckSoJyPwwnknocNYPm7"
@@ -88,10 +94,14 @@ jobs:
           # Seed the repo to register it with the node (allows git-remote-rad to push)
           rad seed "rad:${RID}" 2>&1 || true
 
+          echo "=== Node socket ==="
+          ls -la "${HOME}/.radicle/node/" 2>&1 || true
+
           echo "=== Attempting git push ==="
-          GIT_TRACE2_EVENT=/tmp/git-trace.json git push rad main --force 2>&1 || {
-            echo "=== git push failed, trying rad push ==="
-            rad push 2>&1 || true
+          RAD_HOME="${HOME}/.radicle" GIT_TRACE2_EVENT=/tmp/git-trace.json \
+            git push rad main --force 2>&1 || {
+            echo "=== git push failed, trace tail ==="
+            tail -20 /tmp/git-trace.json 2>/dev/null || true
             exit 1
           }
 
