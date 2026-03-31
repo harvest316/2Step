@@ -56,11 +56,13 @@ jobs:
             "+refs/rad/*:refs/rad/*" || exit 1
           rm /tmp/cob.bundle
 
-          echo "=== Profile check ==="
-          rad self --nid 2>&1 || echo "rad self failed"
+          # Capture CI NID — used in remote URL so git-remote-rad doesn't need to
+          # look up the key from disk (avoids "no public key" namespace error).
+          CI_NID=$(rad self --nid 2>/dev/null)
+          echo "=== Profile check: CI NID = ${CI_NID} ==="
 
-          git remote add rad "rad://${RID}" 2>/dev/null || \
-            git remote set-url rad "rad://${RID}"
+          git remote add rad "rad://${CI_NID}@${RID}" 2>/dev/null || \
+            git remote set-url rad "rad://${CI_NID}@${RID}"
 
           # seed.radicle.garden = iris.radicle.xyz (NID from https://seed.radicle.garden/api/v1/node)
           SEED_NID="z6MkrLMMsiPWUcNPHcRajuMi9mDfYckSoJyPwwnknocNYPm7"
