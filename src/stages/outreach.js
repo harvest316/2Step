@@ -283,7 +283,8 @@ async function sendEmail(msg, resend, dryRun, testOpts) {
       'List-Unsubscribe': `<${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}>`,
       'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
     },
-    tracking: { open: true },
+    // Click tracking disabled — Resend's resend-clicks-a.com domain triggers URIBL_INVALUEMENT
+    // Open tracking also disabled to avoid third-party pixel domains in headers
   };
 
   if (isTest && testOpts.cc) {
