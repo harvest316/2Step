@@ -43,61 +43,92 @@ if (!ELEVENLABS_KEY) { console.error('ERROR: ELEVENLABS_API_KEY must be set'); p
 // alias = lowercase phonetic respelling, spaces between syllables.
 // DO NOT use ALL CAPS or hyphens — ElevenLabs may spell out short caps tokens.
 //
-// How to derive aliases:
-//   1. Run: node src/video/test-pronunciation.js <SuburbName>
-//      This generates Google TTS en-AU audio to /tmp/<SuburbName>.mp3
-//   2. Listen and write what you hear as lowercase syllables with spaces
-//   3. Add the entry here, then run: node src/video/pronunciation-dict.js create
+// ── How to derive aliases for new suburbs ────────────────────────────────────
 //
-// Verified against Google TTS en-AU-Neural2-D unless noted.
+// RULE: Never rely solely on Google TTS or personal guessing, especially for
+// Aboriginal-origin names. Google TTS often gets these wrong too, and guessing
+// produces errors like Woollahra "wool ara" → EL says "wulera" (wrong).
+//
+// Preferred source order:
+//   1. Wiktionary — https://en.wiktionary.org/wiki/<SuburbName>
+//      Look for "Pronunciation" → IPA (en-AU) e.g. /wʊˈlɑːrə/
+//   2. Wikipedia intro — often has phonetic note in plain English
+//   3. Council/tourism sites — e.g. Manly & Northern Beaches, Dictionary of Sydney
+//   4. Forvo — https://forvo.com/search/<SuburbName>/au/ (native speaker audio)
+//
+// Convert IPA → ElevenLabs alias with Claude:
+//   Ask Claude (Opus): "Convert IPA /wʊˈlɑːrə/ to an ElevenLabs phonetic alias:
+//   lowercase, space-separated syllables, no hyphens, standard English spelling only."
+//   e.g. /wʊˈlɑːrə/ → "wull ah ruh"
+//
+// Verify with test-pronunciation.js:
+//   node src/video/test-pronunciation.js Woollahra
+//   → generates /tmp/pronunciation/Woollahra-raw.mp3  (no alias)
+//   → generates /tmp/pronunciation/Woollahra-alias.mp3 (with dict)
+//   Compare both. If alias sounds wrong, adjust and re-run:
+//   node src/video/pronunciation-dict.js create
+//   node src/video/test-pronunciation.js Woollahra
 //
 export const SUBURB_ALIASES = [
   // ── North Shore / Upper North Shore ───────────────────────────────────────
-  { suburb: 'Wahroonga',     alias: 'wah roonga' },
+  // Wahroonga: Dharug "our home". /wɒˈruːŋɡə/ Wikipedia
+  { suburb: 'Wahroonga',     alias: 'wah roong uh' },
   { suburb: 'Artarmon',      alias: 'ar tar mon' },
-  { suburb: 'Turramurra',    alias: 'turra murra' },
+  // Turramurra: Dharug "big hill". 4 syllables — previous alias 'turra murra' dropped one.
+  { suburb: 'Turramurra',    alias: 'tur uh mur uh' },
   { suburb: 'Pymble',        alias: 'pim bul' },
-  { suburb: 'Killara',       alias: 'ki lara' },
-  { suburb: 'Pennant Hills', alias: 'pennant hills' },      // standard, may not need alias
+  // Killara: Dharug "permanent". /kɪˈlɑːrə/ Wikipedia
+  { suburb: 'Killara',       alias: 'kil ah ruh' },
+  { suburb: 'Pennant Hills', alias: 'pennant hills' },
   { suburb: 'Beecroft',      alias: 'bee croft' },
   { suburb: 'Cherrybrook',   alias: 'cherry brook' },
-  { suburb: 'Epping',        alias: 'epping' },             // standard
+  { suburb: 'Epping',        alias: 'epping' },
   { suburb: 'Chatswood',     alias: 'chats wood' },
-  { suburb: 'Naremburn',     alias: 'nare burn' },
-  { suburb: 'Willoughby',    alias: 'willo bee' },
+  { suburb: 'Naremburn',     alias: 'nair bern' },
+  // Willoughby: English surname. 'willo' has wrong vowel — 'wil uh' is correct.
+  { suburb: 'Willoughby',    alias: 'wil uh bee' },
   { suburb: 'Castlecrag',    alias: 'castle krag' },
 
   // ── Northern Beaches ──────────────────────────────────────────────────────
-  { suburb: 'Balgowlah',     alias: 'bal gowla' },
+  // Balgowlah: Aboriginal "North Harbour". Stress on middle syllable, not 'gowla'.
+  { suburb: 'Balgowlah',     alias: 'bal go lah' },
   { suburb: 'Manly Vale',    alias: 'manly vale' },
-  { suburb: 'Narrabeen',     alias: 'narra been' },
+  // Narrabeen: Aboriginal origin, 3 syllables. /ˌnærəˈbiːn/ Dictionary of Sydney
+  { suburb: 'Narrabeen',     alias: 'nar uh been' },
   { suburb: 'Mona Vale',     alias: 'mona vale' },
   { suburb: 'Avalon Beach',  alias: 'avalon beach' },
   { suburb: 'Terrey Hills',  alias: 'terry hills' },
   { suburb: 'Seaforth',      alias: 'sea forth' },
 
   // ── Inner West / Hills ────────────────────────────────────────────────────
-  { suburb: 'Parramatta',    alias: 'para matta' },
-  { suburb: 'Dural',         alias: 'dyoo ral' },
+  // Parramatta: Dharug /ˌpærəˈmætə/ — 4 syllables, stress on 3rd. Wikipedia.
+  { suburb: 'Parramatta',    alias: 'par uh mat uh' },
+  // Dural: Aboriginal "hollow tree". Rhymes with "rural", NOT "dual". Dictionary of Sydney.
+  { suburb: 'Dural',         alias: 'dur ul' },
   { suburb: 'Galston',       alias: 'gawl ston' },
   { suburb: 'Glenhaven',     alias: 'glen hay ven' },
   { suburb: 'Kenthurst',     alias: 'kent hurst' },
   { suburb: 'Annangrove',    alias: 'anna grove' },
   { suburb: 'Glenorie',      alias: 'glen or ee' },
-  { suburb: 'Cammeray',      alias: 'kam er ay' },
+  // Cammeray: Cammeraygal people. /ˌkæməˈreɪ/ — 3 syllables, stress on last. Wikipedia.
+  { suburb: 'Cammeray',      alias: 'kam uh ray' },
 
   // ── Eastern Suburbs ───────────────────────────────────────────────────────
-  { suburb: 'Woollahra',     alias: 'wool ara' },
-  { suburb: 'Woolloomooloo', alias: 'wool oo moo loo' },
-  { suburb: 'Point Piper',   alias: 'point piper' },        // verify — may be fine
-  { suburb: 'Kirribilli',    alias: 'kirri billy' },
+  // Woollahra: Dharug "lookout/camp". /wʊˈlɑːrə/ Wikipedia. Locals: "wul-AHH-ra".
+  // Previous alias 'wool ara' → EL said "wulera" (wrong vowel, merged syllables).
+  { suburb: 'Woollahra',     alias: 'wull ah ruh' },
+  // Woolloomooloo: /ˌwʊləməˈluː/ — stress on final syllable. Wikipedia.
+  { suburb: 'Woolloomooloo', alias: 'wul uh muh loo' },
+  { suburb: 'Point Piper',   alias: 'point piper' },
+  // Kirribilli: Aboriginal "good fishing spot". /ˌkɪrəˈbɪli/ Dictionary of Sydney.
+  { suburb: 'Kirribilli',    alias: 'kir uh bil ee' },
   { suburb: 'Cremorne',      alias: 'cre morn' },
-  { suburb: 'Mosman',        alias: 'mozman' },
-  { suburb: 'Neutral Bay',   alias: 'noo tral bay' },
+  { suburb: 'Mosman',        alias: 'moz mun' },
+  { suburb: 'Neutral Bay',   alias: 'noo trul bay' },
 
   // ── Other ─────────────────────────────────────────────────────────────────
-  { suburb: 'Ryde',          alias: 'ryde' },               // standard
-  { suburb: 'Manly',         alias: 'manly' },              // standard
+  { suburb: 'Ryde',          alias: 'ryde' },
+  { suburb: 'Manly',         alias: 'manly' },
 ];
 
 // ─── API helpers ───────────────────────────────────────────────────────────────
