@@ -204,3 +204,25 @@ INSERT OR IGNORE INTO niche_tiers (niche, tier) VALUES
 -- Seed rows for 2step are inserted by mmo-platform/scripts/init-messages-db.js.
 -- Never INSERT or UPDATE msgs.pricing directly — use append-only versioning:
 --   set superseded_at = date('now') on old row, INSERT new row with effective_from = date('now').
+
+-- =============================================================================
+-- countries: country-specific configuration (added migration 016)
+-- state_abbreviations: JSON array of codes commonly appended to Google Maps
+-- business names, e.g. ["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"] for AU.
+-- Empty array for countries where this doesn't occur.
+-- =============================================================================
+CREATE TABLE IF NOT EXISTS countries (
+  country_code        TEXT PRIMARY KEY,
+  country_name        TEXT NOT NULL,
+  language_code       TEXT NOT NULL,
+  timezone            TEXT NOT NULL,
+  currency_code       TEXT NOT NULL,
+  currency_symbol     TEXT NOT NULL,
+  requires_gdpr_check INTEGER DEFAULT 0,
+  state_abbreviations TEXT DEFAULT '[]',  -- JSON array
+  is_active           INTEGER DEFAULT 1,
+  created_at          TEXT DEFAULT (datetime('now')),
+  updated_at          TEXT DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_countries_active ON countries(is_active);

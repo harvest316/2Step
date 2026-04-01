@@ -73,6 +73,63 @@ describe('businessName', () => {
   it('handles undefined gracefully', () => {
     assert.equal(businessName(undefined), '');
   });
+
+  // Legal suffix stripping
+  it('strips PTY LTD suffix', () => {
+    assert.equal(businessName('Angelic Cleaning PTY LTD'), 'Angelic Cleaning');
+  });
+
+  it('strips PTY. LTD. with dots', () => {
+    assert.equal(businessName('Acme Services PTY. LTD.'), 'Acme Services');
+  });
+
+  it('strips LLC suffix', () => {
+    assert.equal(businessName('Fast Plumbing LLC'), 'Fast Plumbing');
+  });
+
+  it('strips Ltd suffix', () => {
+    assert.equal(businessName('City Cleaners Ltd'), 'City Cleaners');
+  });
+
+  it('strips Inc suffix', () => {
+    assert.equal(businessName('Top Pest Inc'), 'Top Pest');
+  });
+
+  it('strips GmbH suffix', () => {
+    assert.equal(businessName('Schnell GmbH'), 'Schnell');
+  });
+
+  // State abbreviation stripping — caller provides country-specific list
+  const AU_STATES = ['ACT', 'NSW', 'NT', 'QLD', 'SA', 'TAS', 'VIC', 'WA'];
+
+  it('strips trailing NSW state abbreviation with dash', () => {
+    assert.equal(businessName('Angelic Cleaning - NSW', AU_STATES), 'Angelic Cleaning');
+  });
+
+  it('strips trailing state abbreviation in parens', () => {
+    assert.equal(businessName('Angelic Cleaning (NSW)', AU_STATES), 'Angelic Cleaning');
+  });
+
+  it('strips PTY LTD and state together', () => {
+    assert.equal(businessName('Angelic Cleaning PTY LTD - NSW', AU_STATES), 'Angelic Cleaning');
+  });
+
+  it('does NOT strip state when no list provided (no country context)', () => {
+    assert.equal(businessName('Angelic Cleaning - NSW'), 'Angelic Cleaning - NSW');
+  });
+
+  // ALL CAPS → title case
+  it('converts ALL CAPS name to title case', () => {
+    assert.equal(businessName('APEX PLUMBING SOLUTIONS'), 'Apex Plumbing Solutions');
+  });
+
+  it('leaves mixed-case name unchanged', () => {
+    assert.equal(businessName('Apex Plumbing Solutions'), 'Apex Plumbing Solutions');
+  });
+
+  it('strips ALL CAPS PTY LTD then title-cases', () => {
+    assert.equal(businessName('APEX PLUMBING PTY LTD'), 'Apex Plumbing');
+  });
 });
 
 // ─── extractSentence ──────────────────────────────────────────────────────────
