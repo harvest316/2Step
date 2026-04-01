@@ -129,6 +129,7 @@ export const SUBURB_ALIASES = [
   // ── Other ─────────────────────────────────────────────────────────────────
   { suburb: 'Ryde',          alias: 'ryde' },
   { suburb: 'Manly',         alias: 'manly' },
+  { suburb: 'Brookvale',     alias: 'brook vale' },
 ];
 
 // ─── API helpers ───────────────────────────────────────────────────────────────
