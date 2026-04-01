@@ -297,7 +297,10 @@ async function processLogoPill(site, dryRun) {
     return null;
   }
 
-  const key = `logos/${site.id}-grey.png`;
+  // Include a timestamp in the key so each re-treatment gets a unique URL.
+  // Overwriting the same key hits CDN cache and the old version is baked into
+  // any video rendered against it — always use a fresh key.
+  const key = `logos/${site.id}-grey-${Date.now()}.png`;
 
   if (dryRun) {
     console.log(`  [${site.id}] DRY RUN — would upload to R2: ${key} (${treatedBuf.length} bytes)`);
