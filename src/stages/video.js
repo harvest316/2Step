@@ -30,7 +30,6 @@ import {
   buildScenes,
   pickClipsFromPool,
   timingsToSceneDurations,
-  applyPhonetics,
   extractQuotes,
   smoothGrammar,
 } from '../video/scene-builder.js';
@@ -143,10 +142,7 @@ async function generateSceneAudio(scenes, suburb = null) {
   const durations = [];
 
   for (const scene of scenes) {
-    // Apply phonetic substitution as fallback when no pronunciation dict is loaded
-    const voiceover = pronunciationDictLocators.length
-      ? scene.voiceover
-      : applyPhonetics(scene.voiceover, suburb);
+    const voiceover = scene.voiceover;
 
     const { audioBuf, alignment } = await generateVoiceover(voiceover);
     audioBufs.push(audioBuf);
