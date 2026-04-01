@@ -124,10 +124,20 @@ async function detectLogoBg(imgBuf) {
     if (data[i + 3] < 32) transparentCount++;
   }
   if (transparentCount / samples.length > 0.7) {
-    // Logo has a transparent background — analyse content colour
-    const stats = await sharp(imgBuf).stats();
-    const avg = (stats.channels[0].mean + stats.channels[1].mean + stats.channels[2].mean) / 3;
-    return { hasSolidBg: false, isLight: avg > 160, hasAlpha: true, bgColor: { r: 0, g: 0, b: 0 } };
+    // Logo has a transparent background — analyse content colour using OPAQUE pixels only.
+    // Do NOT use sharp.stats() here: transparent pixels are often stored with their original
+    // background colour (commonly white), which wildly inflates the mean and causes incorrect
+    // isLight detection. We must only average pixels where alpha > 32.
+    let lightPx = 0, darkPx = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3] > 32) {
+        const lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+        lum > 160 ? lightPx++ : darkPx++;
+      }
+    }
+    // If no opaque pixels at all, fall back to light (treat as light content on transparent)
+    const isLight = (lightPx + darkPx) === 0 ? true : lightPx > darkPx;
+    return { hasSolidBg: false, isLight, hasAlpha: true, bgColor: { r: 0, g: 0, b: 0 } };
   }
 
   // Check colour consistency of border pixels
@@ -139,10 +149,18 @@ async function detectLogoBg(imgBuf) {
     }
   }
   if (count < samples.length * 0.5) {
-    // Not enough opaque border pixels — treat as transparent
-    const stats = await sharp(imgBuf).stats();
-    const avg = (stats.channels[0].mean + stats.channels[1].mean + stats.channels[2].mean) / 3;
-    return { hasSolidBg: false, isLight: avg > 160, hasAlpha, bgColor: { r: 0, g: 0, b: 0 } };
+    // Not enough opaque border pixels — treat as transparent.
+    // Use opaque-pixel-only luminance (same reason as above: stats() includes transparent
+    // pixels whose stored colour pollutes the mean).
+    let lightPx = 0, darkPx = 0;
+    for (let i = 0; i < data.length; i += 4) {
+      if (data[i + 3] > 32) {
+        const lum = 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2];
+        lum > 160 ? lightPx++ : darkPx++;
+      }
+    }
+    const isLight2 = (lightPx + darkPx) === 0 ? true : lightPx > darkPx;
+    return { hasSolidBg: false, isLight: isLight2, hasAlpha, bgColor: { r: 0, g: 0, b: 0 } };
   }
 
   const avgR = Math.round(sumR / count);

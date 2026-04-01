@@ -48,6 +48,24 @@ async function makeTransparentDarkLogo(w = 200, h = 100) {
   return sharp(canvas).composite([{ input: inner, gravity: 'centre' }]).png().toBuffer();
 }
 
+/**
+ * Transparent-background logo with dark content AND white stored in transparent pixels.
+ * This simulates logos exported from design tools (Illustrator, Canva, etc.) that store
+ * the original canvas colour (white) in fully-transparent pixels. sharp.stats() would see
+ * a high mean (~255) and incorrectly classify the logo as "light content", triggering a
+ * dark/navy background. detectLogoBg must use opaque-pixel-only luminance.
+ */
+async function makeTransparentDarkLogoWhiteTransparentPixels(w = 200, h = 100) {
+  // Canvas with white stored in transparent pixels (alpha: 0 but RGB = white)
+  const canvas = await sharp({
+    create: { width: w, height: h, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 0 } },
+  }).png().toBuffer();
+  const inner = await sharp({
+    create: { width: w - 60, height: h - 40, channels: 4, background: { r: 30, g: 60, b: 30, alpha: 255 } },
+  }).png().toBuffer();
+  return sharp(canvas).composite([{ input: inner, gravity: 'centre' }]).png().toBuffer();
+}
+
 /** Transparent-background logo with light content */
 async function makeTransparentLightLogo(w = 200, h = 100) {
   const canvas = await sharp({ create: { width: w, height: h, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } }).png().toBuffer();
@@ -86,6 +104,17 @@ describe('detectLogoBg', () => {
     const result = await detectLogoBg(img);
     assert.equal(result.hasSolidBg, false);
     assert.equal(result.hasAlpha, true);
+    assert.equal(result.isLight, false);
+  });
+
+  it('detects dark content correctly when transparent pixels store white (design tool export)', async () => {
+    // Regression: sharp.stats() sees mean ≈255 on these logos → incorrectly isLight=true.
+    // detectLogoBg must use opaque-pixel-only luminance.
+    const img = await makeTransparentDarkLogoWhiteTransparentPixels();
+    const result = await detectLogoBg(img);
+    assert.equal(result.hasSolidBg, false);
+    assert.equal(result.hasAlpha, true);
+    assert.equal(result.isLight, false, 'dark-content logo must not be classified as light just because transparent pixels store white');
   });
 
   it('detects transparent background with light content', async () => {
@@ -196,6 +225,27 @@ describe('applyGreyPill', () => {
     const meta = await sharp(result).metadata();
     assert.equal(meta.format, 'png');
     assert.equal(meta.channels, 4);
+  });
+
+  it('transparent dark logo with white-stored transparent pixels gets white (not navy) background', async () => {
+    // Regression: design-tool exports store white in transparent pixels; stats()-based isLight
+    // check was returning true → navy background applied instead of white. Must be white.
+    const input = await makeTransparentDarkLogoWhiteTransparentPixels(300, 150);
+    const result = await applyGreyPill(input);
+    // Sample a corner pixel of the output — it should be white-ish (not navy 26,54,93)
+    const meta2 = await sharp(result).metadata();
+    const { data } = await sharp(result).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    // Sample the centre of the top padding row (well inside the pill, above the logo).
+    // PILL_PADDING=24, so row 12 (y=12) and the horizontal centre is in the middle of the rect.
+    const cx = Math.floor(meta2.width / 2);
+    const cy = 12; // inside top padding band, well past corner rounding (PILL_RADIUS=12)
+    const offset = (cy * meta2.width + cx) * 4;
+    const [r, g, b, a] = [data[offset], data[offset + 1], data[offset + 2], data[offset + 3]];
+    // White pill: r≈255,g≈255,b≈255,a≈230. Navy pill: r≈26,g≈54,b≈93,a≈200.
+    assert.ok(a > 100, `Sampled pixel is transparent (a=${a}) — sample point is outside pill`);
+    assert.ok(r > 200, `Expected white background (r=${r}), got navy-like colour`);
+    assert.ok(g > 200, `Expected white background (g=${g}), got navy-like colour`);
+    assert.ok(b > 200, `Expected white background (b=${b}), got navy-like colour`);
   });
 
   it('transparent light logo gets dark background', async () => {
