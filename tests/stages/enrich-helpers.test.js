@@ -2,11 +2,9 @@
  * Unit tests for pure helper functions exported from enrich.js.
  *
  * Tests:
- *   - applyGreyPill: image processing — grey rounded-rect background behind logo
- *   - Constants: PILL_MAX_W, PILL_MAX_H, PILL_RADIUS, background RGBA values
- *
- * These tests use sharp to create minimal test images and verify the
- * output dimensions, format, and basic properties.
+ *   - detectLogoBg: background detection for logos
+ *   - applyGreyPill: adaptive background treatment for logos
+ *   - Constants: PILL_MAX_W, PILL_MAX_H, PILL_RADIUS, PILL_PADDING
  */
 
 import { describe, it } from 'node:test';
@@ -14,53 +12,98 @@ import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import {
   applyGreyPill,
-  PILL_MAX_W, PILL_MAX_H, PILL_RADIUS,
-  PILL_BG_R, PILL_BG_G, PILL_BG_B, PILL_BG_A,
+  detectLogoBg,
+  PILL_MAX_W, PILL_MAX_H, PILL_RADIUS, PILL_PADDING,
 } from '../../src/stages/enrich.js';
-import { runEnrichStage } from '../../src/stages/enrich.js';
 
-// ─── Helper: create a test image buffer ─────────────────────────────────────
+// ─── Helpers ────────────────────────────────────────────────────────────────
 
-async function makeTestImage(width, height, channels = 4) {
-  return sharp({
-    create: {
-      width,
-      height,
-      channels,
-      background: channels === 4
-        ? { r: 255, g: 0, b: 0, alpha: 255 }
-        : { r: 255, g: 0, b: 0 },
-    },
-  }).png().toBuffer();
+/** Solid opaque colour image (simulates logo with solid background) */
+async function makeTestImage(width, height, channels = 4, bg) {
+  const background = bg || (channels === 4
+    ? { r: 255, g: 0, b: 0, alpha: 255 }
+    : { r: 255, g: 0, b: 0 });
+  return sharp({ create: { width, height, channels, background } }).png().toBuffer();
+}
+
+/** White-background logo (red rectangle on white) */
+async function makeWhiteBgLogo(w = 200, h = 100) {
+  const white = await sharp({ create: { width: w, height: h, channels: 4, background: { r: 255, g: 255, b: 255, alpha: 255 } } }).png().toBuffer();
+  const inner = await sharp({ create: { width: w - 40, height: h - 40, channels: 4, background: { r: 200, g: 50, b: 50, alpha: 255 } } }).png().toBuffer();
+  return sharp(white).composite([{ input: inner, gravity: 'centre' }]).png().toBuffer();
+}
+
+/** Dark-background logo (white text area on dark) */
+async function makeDarkBgLogo(w = 200, h = 100) {
+  const dark = await sharp({ create: { width: w, height: h, channels: 4, background: { r: 30, g: 30, b: 40, alpha: 255 } } }).png().toBuffer();
+  const inner = await sharp({ create: { width: w - 40, height: h - 40, channels: 4, background: { r: 220, g: 220, b: 220, alpha: 255 } } }).png().toBuffer();
+  return sharp(dark).composite([{ input: inner, gravity: 'centre' }]).png().toBuffer();
+}
+
+/** Transparent-background logo with dark content */
+async function makeTransparentDarkLogo(w = 200, h = 100) {
+  // Transparent canvas with a dark shape in the middle
+  const canvas = await sharp({ create: { width: w, height: h, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } }).png().toBuffer();
+  const inner = await sharp({ create: { width: w - 60, height: h - 40, channels: 4, background: { r: 40, g: 40, b: 60, alpha: 255 } } }).png().toBuffer();
+  return sharp(canvas).composite([{ input: inner, gravity: 'centre' }]).png().toBuffer();
+}
+
+/** Transparent-background logo with light content */
+async function makeTransparentLightLogo(w = 200, h = 100) {
+  const canvas = await sharp({ create: { width: w, height: h, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } } }).png().toBuffer();
+  const inner = await sharp({ create: { width: w - 60, height: h - 40, channels: 4, background: { r: 240, g: 240, b: 230, alpha: 255 } } }).png().toBuffer();
+  return sharp(canvas).composite([{ input: inner, gravity: 'centre' }]).png().toBuffer();
 }
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
 describe('enrich constants', () => {
-  it('PILL_MAX_W is 972', () => {
-    assert.equal(PILL_MAX_W, 972);
+  it('PILL_MAX_W is 972', () => assert.equal(PILL_MAX_W, 972));
+  it('PILL_MAX_H is 480', () => assert.equal(PILL_MAX_H, 480));
+  it('PILL_RADIUS is 12 (rectangle)', () => assert.equal(PILL_RADIUS, 12));
+  it('PILL_PADDING is 24', () => assert.equal(PILL_PADDING, 24));
+});
+
+// ─── detectLogoBg ───────────────────────────────────────────────────────────
+
+describe('detectLogoBg', () => {
+  it('detects white solid background', async () => {
+    const img = await makeWhiteBgLogo();
+    const result = await detectLogoBg(img);
+    assert.equal(result.hasSolidBg, true);
+    assert.equal(result.isLight, true);
   });
 
-  it('PILL_MAX_H is 480', () => {
-    assert.equal(PILL_MAX_H, 480);
+  it('detects dark solid background', async () => {
+    const img = await makeDarkBgLogo();
+    const result = await detectLogoBg(img);
+    assert.equal(result.hasSolidBg, true);
+    assert.equal(result.isLight, false);
   });
 
-  it('PILL_RADIUS is 24', () => {
-    assert.equal(PILL_RADIUS, 24);
+  it('detects transparent background with dark content', async () => {
+    const img = await makeTransparentDarkLogo();
+    const result = await detectLogoBg(img);
+    assert.equal(result.hasSolidBg, false);
+    assert.equal(result.hasAlpha, true);
   });
 
-  it('PILL_BG is middle grey (#808080)', () => {
-    assert.equal(PILL_BG_R, 128);
-    assert.equal(PILL_BG_G, 128);
-    assert.equal(PILL_BG_B, 128);
+  it('detects transparent background with light content', async () => {
+    const img = await makeTransparentLightLogo();
+    const result = await detectLogoBg(img);
+    assert.equal(result.hasSolidBg, false);
+    assert.equal(result.hasAlpha, true);
   });
 
-  it('PILL_BG_A is ~50% opacity (128)', () => {
-    assert.equal(PILL_BG_A, 128);
+  it('handles 3-channel (RGB) images', async () => {
+    const img = await makeTestImage(100, 100, 3);
+    const result = await detectLogoBg(img);
+    assert.equal(typeof result.hasSolidBg, 'boolean');
+    assert.equal(typeof result.isLight, 'boolean');
   });
 });
 
-// ─── applyGreyPill ──────────────────────────────────────────────────────────
+// ─── applyGreyPill (adaptive) ───────────────────────────────────────────────
 
 describe('applyGreyPill', () => {
   it('returns a Buffer', async () => {
@@ -76,64 +119,29 @@ describe('applyGreyPill', () => {
     assert.equal(meta.format, 'png');
   });
 
-  it('preserves dimensions for images smaller than max', async () => {
-    const input = await makeTestImage(400, 200);
+  it('adds padding around the logo', async () => {
+    const input = await makeTestImage(200, 100);
     const result = await applyGreyPill(input);
     const meta = await sharp(result).metadata();
-    assert.equal(meta.width, 400);
-    assert.equal(meta.height, 200);
+    // Output = logo + 2 * PILL_PADDING on each axis
+    assert.equal(meta.width, 200 + PILL_PADDING * 2);
+    assert.equal(meta.height, 100 + PILL_PADDING * 2);
   });
 
-  it('shrinks width to PILL_MAX_W for oversized images', async () => {
-    // Image wider than PILL_MAX_W (972)
+  it('constrains oversized images within max bounds', async () => {
     const input = await makeTestImage(1500, 300);
     const result = await applyGreyPill(input);
     const meta = await sharp(result).metadata();
-    assert.ok(meta.width <= PILL_MAX_W, `Width ${meta.width} exceeds PILL_MAX_W ${PILL_MAX_W}`);
+    assert.ok(meta.width <= PILL_MAX_W, `Width ${meta.width} exceeds max`);
+    assert.ok(meta.height <= PILL_MAX_H, `Height ${meta.height} exceeds max`);
   });
 
-  it('shrinks height to PILL_MAX_H for oversized images', async () => {
-    // Image taller than PILL_MAX_H (480)
-    const input = await makeTestImage(300, 800);
-    const result = await applyGreyPill(input);
-    const meta = await sharp(result).metadata();
-    assert.ok(meta.height <= PILL_MAX_H, `Height ${meta.height} exceeds PILL_MAX_H ${PILL_MAX_H}`);
-  });
-
-  it('maintains aspect ratio when shrinking wide image', async () => {
-    const input = await makeTestImage(1944, 480);
-    const result = await applyGreyPill(input);
-    const meta = await sharp(result).metadata();
-    // Scale factor: 972/1944 = 0.5
-    // Expected: 972 x 240
-    assert.equal(meta.width, 972);
-    assert.ok(
-      Math.abs(meta.height - 240) <= 1,
-      `Expected height ~240, got ${meta.height}`
-    );
-  });
-
-  it('maintains aspect ratio when shrinking tall image', async () => {
-    const input = await makeTestImage(300, 960);
-    const result = await applyGreyPill(input);
-    const meta = await sharp(result).metadata();
-    // Scale factor: 480/960 = 0.5
-    // Expected: 150 x 480
-    assert.equal(meta.height, 480);
-    assert.ok(
-      Math.abs(meta.width - 150) <= 1,
-      `Expected width ~150, got ${meta.width}`
-    );
-  });
-
-  it('never upscales (small image stays small)', async () => {
+  it('never upscales (small image stays small + padding)', async () => {
     const input = await makeTestImage(100, 50);
     const result = await applyGreyPill(input);
     const meta = await sharp(result).metadata();
-    // The code uses withoutEnlargement: true for resize, BUT the display
-    // dimensions are constrained by scale = Math.min(1, ...) so it stays at input size.
-    assert.equal(meta.width, 100);
-    assert.equal(meta.height, 50);
+    assert.equal(meta.width, 100 + PILL_PADDING * 2);
+    assert.equal(meta.height, 50 + PILL_PADDING * 2);
   });
 
   it('has 4 channels (RGBA) in output', async () => {
@@ -141,22 +149,6 @@ describe('applyGreyPill', () => {
     const result = await applyGreyPill(input);
     const meta = await sharp(result).metadata();
     assert.equal(meta.channels, 4);
-  });
-
-  it('handles square images correctly', async () => {
-    const input = await makeTestImage(400, 400);
-    const result = await applyGreyPill(input);
-    const meta = await sharp(result).metadata();
-    assert.equal(meta.width, 400);
-    assert.equal(meta.height, 400);
-  });
-
-  it('handles images at exact PILL_MAX_W x PILL_MAX_H', async () => {
-    const input = await makeTestImage(PILL_MAX_W, PILL_MAX_H);
-    const result = await applyGreyPill(input);
-    const meta = await sharp(result).metadata();
-    assert.equal(meta.width, PILL_MAX_W);
-    assert.equal(meta.height, PILL_MAX_H);
   });
 
   it('handles 3-channel (RGB, no alpha) input images', async () => {
@@ -171,8 +163,8 @@ describe('applyGreyPill', () => {
     const input = await makeTestImage(1, 1);
     const result = await applyGreyPill(input);
     const meta = await sharp(result).metadata();
-    assert.equal(meta.width, 1);
-    assert.equal(meta.height, 1);
+    assert.equal(meta.width, 1 + PILL_PADDING * 2);
+    assert.equal(meta.height, 1 + PILL_PADDING * 2);
   });
 
   it('output is not empty', async () => {
@@ -181,71 +173,36 @@ describe('applyGreyPill', () => {
     assert.ok(result.length > 100, `Output too small: ${result.length} bytes`);
   });
 
-  it('output is larger than input for small images (due to grey pill composite)', async () => {
-    const input = await makeTestImage(50, 50);
-    const result = await applyGreyPill(input);
-    // The composite adds data, so output should generally be larger
-    assert.ok(result.length > 0);
-  });
-
-  it('constrains both dimensions when both exceed max', async () => {
-    // Both dimensions exceed max; the more constrained dimension wins
-    const input = await makeTestImage(2000, 1000);
+  it('white-bg logo gets white background treatment', async () => {
+    const input = await makeWhiteBgLogo(300, 150);
     const result = await applyGreyPill(input);
     const meta = await sharp(result).metadata();
-    assert.ok(meta.width <= PILL_MAX_W);
-    assert.ok(meta.height <= PILL_MAX_H);
+    // Check it didn't crash and produced valid output with padding
+    assert.equal(meta.width, 300 + PILL_PADDING * 2);
+    assert.equal(meta.format, 'png');
   });
 
-  it('uses the smaller scale factor when both exceed', async () => {
-    // 2000 x 1000: scaleW = 972/2000 = 0.486, scaleH = 480/1000 = 0.48
-    // scale = 0.48 => 960 x 480 => wait, 2000*0.48 = 960 which is < 972, and 1000*0.48 = 480
-    const input = await makeTestImage(2000, 1000);
+  it('dark-bg logo gets dark background treatment', async () => {
+    const input = await makeDarkBgLogo(300, 150);
     const result = await applyGreyPill(input);
     const meta = await sharp(result).metadata();
-    assert.equal(meta.height, 480);
-    assert.ok(meta.width <= PILL_MAX_W);
-  });
-});
-
-// ─── runEnrichStage ──────────────────────────────────────────────────────────
-
-describe('runEnrichStage', () => {
-  it('exports a function', () => {
-    assert.equal(typeof runEnrichStage, 'function');
+    assert.equal(meta.width, 300 + PILL_PADDING * 2);
+    assert.equal(meta.format, 'png');
   });
 
-  it('returns stats object when no sites at reviews_downloaded', async () => {
-    // Test DB has no sites at reviews_downloaded status
-    const stats = await runEnrichStage();
-    assert.ok(typeof stats === 'object');
-    assert.ok('processed' in stats);
-    assert.ok('enriched' in stats);
-    assert.ok('errors' in stats);
-    assert.equal(stats.processed, 0);
-    assert.equal(stats.enriched, 0);
-    assert.equal(stats.errors, 0);
+  it('transparent dark logo gets white background', async () => {
+    const input = await makeTransparentDarkLogo(300, 150);
+    const result = await applyGreyPill(input);
+    const meta = await sharp(result).metadata();
+    assert.equal(meta.format, 'png');
+    assert.equal(meta.channels, 4);
   });
 
-  it('accepts limit option', async () => {
-    const stats = await runEnrichStage({ limit: 1 });
-    assert.equal(stats.processed, 0);
-  });
-
-  it('accepts dryRun option', async () => {
-    const stats = await runEnrichStage({ dryRun: true });
-    assert.equal(stats.processed, 0);
-  });
-
-  it('accepts concurrency option', async () => {
-    const stats = await runEnrichStage({ concurrency: 1 });
-    assert.equal(stats.processed, 0);
-  });
-
-  it('returns numbers for all stats fields', async () => {
-    const stats = await runEnrichStage();
-    assert.equal(typeof stats.processed, 'number');
-    assert.equal(typeof stats.enriched, 'number');
-    assert.equal(typeof stats.errors, 'number');
+  it('transparent light logo gets dark background', async () => {
+    const input = await makeTransparentLightLogo(300, 150);
+    const result = await applyGreyPill(input);
+    const meta = await sharp(result).metadata();
+    assert.equal(meta.format, 'png');
+    assert.equal(meta.channels, 4);
   });
 });

@@ -208,8 +208,8 @@ export function buildScenes(prospect) {
     ? (phone ? `Call ${phone}` : `Free Inspection`)
     : (phone ? `${name}\nCall ${phone}` : `${name}\nFree Inspection`);
   const ctaVoiceover = phone
-    ? `${name}. Call ${phoneTTS} or reply YES to schedule your free inspection.`
-    : `Reply YES or visit ${name} to schedule your free inspection.`;
+    ? `${name}. Call ${phoneTTS}, or reply yes to schedule your free inspection.`
+    : `Reply yes, or visit ${name} to schedule your free inspection.`;
 
   return [
     {

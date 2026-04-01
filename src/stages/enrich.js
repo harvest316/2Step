@@ -35,15 +35,11 @@ const API_TOKEN  = process.env.CLOUDFLARE_API_TOKEN;
 const BUCKET     = process.env.R2_BUCKET_NAME;
 const PUBLIC_URL = process.env.R2_PUBLIC_URL;
 
-// Grey-pill treatment constants
+// Logo treatment constants
 const PILL_MAX_W = 972;
 const PILL_MAX_H = 480;
-const PILL_RADIUS = 24;
-// #808080 at ~50% opacity = rgba(128,128,128,128)
-const PILL_BG_R = 128;
-const PILL_BG_G = 128;
-const PILL_BG_B = 128;
-const PILL_BG_A = 128;
+const PILL_RADIUS = 12;   // rounded rectangle (was 24 for lozenge)
+const PILL_PADDING = 24;  // padding around logo inside the pill
 
 /**
  * Upload a Buffer to R2 and return the public URL.
@@ -96,56 +92,153 @@ async function fetchLogo(logoUrl) {
 /* c8 ignore stop */
 
 /**
- * Apply grey-pill treatment to a logo image.
+ * Detect whether a logo has a solid-colour background by sampling border pixels.
+ * Returns { hasSolidBg, isLight, bgColor } where bgColor is {r,g,b}.
  *
- * - Constrains to PILL_MAX_W x PILL_MAX_H (never upscales)
- * - Composites a semi-transparent middle-grey (#808080 @ ~50%) rounded rectangle behind the logo
- * - Returns a PNG Buffer
+ * @param {Buffer} imgBuf - PNG/JPEG bytes
+ * @returns {Promise<{ hasSolidBg: boolean, isLight: boolean, hasAlpha: boolean, bgColor: {r:number,g:number,b:number} }>}
+ */
+async function detectLogoBg(imgBuf) {
+  const meta = await sharp(imgBuf).metadata();
+  const w = meta.width || 100;
+  const h = meta.height || 100;
+  const hasAlpha = meta.channels === 4 || meta.hasAlpha;
+
+  // Extract raw RGBA pixels
+  const { data } = await sharp(imgBuf).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+
+  // Sample border pixels (top row, bottom row, left col, right col)
+  const samples = [];
+  for (let x = 0; x < w; x++) {
+    samples.push((0 * w + x) * 4);         // top row
+    samples.push(((h - 1) * w + x) * 4);   // bottom row
+  }
+  for (let y = 1; y < h - 1; y++) {
+    samples.push((y * w + 0) * 4);         // left col
+    samples.push((y * w + (w - 1)) * 4);   // right col
+  }
+
+  // Check if most border pixels are transparent
+  let transparentCount = 0;
+  for (const i of samples) {
+    if (data[i + 3] < 32) transparentCount++;
+  }
+  if (transparentCount / samples.length > 0.7) {
+    // Logo has a transparent background — analyse content colour
+    const stats = await sharp(imgBuf).stats();
+    const avg = (stats.channels[0].mean + stats.channels[1].mean + stats.channels[2].mean) / 3;
+    return { hasSolidBg: false, isLight: avg > 160, hasAlpha: true, bgColor: { r: 0, g: 0, b: 0 } };
+  }
+
+  // Check colour consistency of border pixels
+  let sumR = 0, sumG = 0, sumB = 0, count = 0;
+  for (const i of samples) {
+    if (data[i + 3] > 200) { // only opaque pixels
+      sumR += data[i]; sumG += data[i + 1]; sumB += data[i + 2];
+      count++;
+    }
+  }
+  if (count < samples.length * 0.5) {
+    // Not enough opaque border pixels — treat as transparent
+    const stats = await sharp(imgBuf).stats();
+    const avg = (stats.channels[0].mean + stats.channels[1].mean + stats.channels[2].mean) / 3;
+    return { hasSolidBg: false, isLight: avg > 160, hasAlpha, bgColor: { r: 0, g: 0, b: 0 } };
+  }
+
+  const avgR = Math.round(sumR / count);
+  const avgG = Math.round(sumG / count);
+  const avgB = Math.round(sumB / count);
+
+  // Check if border pixels are consistent (low variance = solid background)
+  let variance = 0;
+  for (const i of samples) {
+    if (data[i + 3] > 200) {
+      variance += (data[i] - avgR) ** 2 + (data[i + 1] - avgG) ** 2 + (data[i + 2] - avgB) ** 2;
+    }
+  }
+  variance /= (count * 3);
+  const hasSolidBg = variance < 400; // low variance = consistent colour
+
+  const luminance = 0.299 * avgR + 0.587 * avgG + 0.114 * avgB;
+  return { hasSolidBg, isLight: luminance > 160, hasAlpha, bgColor: { r: avgR, g: avgG, b: avgB } };
+}
+
+/**
+ * Apply adaptive background treatment to a logo image.
+ *
+ * Detection logic:
+ *   - Solid white/light background → extend into a white padded rectangle
+ *   - Solid dark background → extend into a dark padded rectangle
+ *   - Transparent + light logo → dark (navy) rectangle background
+ *   - Transparent + dark logo → white rectangle background
+ *   - Unknown/mixed → semi-transparent white rectangle (neutral fallback)
  *
  * @param {Buffer} imgBuf - Original logo image bytes
  * @returns {Promise<Buffer>} Treated PNG bytes
  */
 async function applyGreyPill(imgBuf) {
-  // Load and get metadata
-  const image = sharp(imgBuf);
-  const meta = await image.metadata();
+  const bg = await detectLogoBg(imgBuf);
 
-  // Compute display dimensions — shrink to fit, never upscale
-  const srcW = meta.width || PILL_MAX_W;
-  const srcH = meta.height || PILL_MAX_H;
-  const scaleW = Math.min(1, PILL_MAX_W / srcW);
-  const scaleH = Math.min(1, PILL_MAX_H / srcH);
-  const scale = Math.min(scaleW, scaleH);
-  const dispW = Math.round(srcW * scale);
-  const dispH = Math.round(srcH * scale);
+  // Decide background colour
+  let pillR, pillG, pillB, pillA;
+  if (bg.hasSolidBg) {
+    if (bg.isLight) {
+      // White/light solid background — extend with white
+      pillR = 255; pillG = 255; pillB = 255; pillA = 230;
+    } else {
+      // Dark solid background — extend with dark
+      pillR = bg.bgColor.r; pillG = bg.bgColor.g; pillB = bg.bgColor.b; pillA = 230;
+    }
+  } else if (bg.hasAlpha) {
+    if (bg.isLight) {
+      // Transparent logo with light content → dark background for contrast
+      pillR = 26; pillG = 54; pillB = 93; pillA = 200; // navy
+    } else {
+      // Transparent logo with dark content → white background
+      pillR = 255; pillG = 255; pillB = 255; pillA = 230;
+    }
+  } else {
+    // Fallback: semi-transparent white
+    pillR = 255; pillG = 255; pillB = 255; pillA = 180;
+  }
 
-  // Resize logo (never upscale)
+  // Resize logo to fit within max bounds (with room for padding)
+  const innerMaxW = PILL_MAX_W - PILL_PADDING * 2;
+  const innerMaxH = PILL_MAX_H - PILL_PADDING * 2;
+
   const resizedLogo = await sharp(imgBuf)
-    .resize(dispW, dispH, { fit: 'inside', withoutEnlargement: true })
+    .resize(innerMaxW, innerMaxH, { fit: 'inside', withoutEnlargement: true })
     .png()
     .toBuffer();
 
-  // Build rounded-rectangle SVG for the pill background
-  // Pill fills the entire display size — logo is composited on top
+  const logoMeta = await sharp(resizedLogo).metadata();
+  const logoW = logoMeta.width;
+  const logoH = logoMeta.height;
+
+  // Pill dimensions = logo + padding
+  const pillW = logoW + PILL_PADDING * 2;
+  const pillH = logoH + PILL_PADDING * 2;
+
+  // Build rounded-rectangle SVG background
   const pillSvg = Buffer.from(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${dispW}" height="${dispH}">` +
-    `<rect width="${dispW}" height="${dispH}" rx="${PILL_RADIUS}" ry="${PILL_RADIUS}" ` +
-    `fill="rgba(${PILL_BG_R},${PILL_BG_G},${PILL_BG_B},${(PILL_BG_A / 255).toFixed(3)})"/>` +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${pillW}" height="${pillH}">` +
+    `<rect width="${pillW}" height="${pillH}" rx="${PILL_RADIUS}" ry="${PILL_RADIUS}" ` +
+    `fill="rgba(${pillR},${pillG},${pillB},${(pillA / 255).toFixed(3)})"/>` +
     `</svg>`
   );
 
-  // Composite: grey pill background, then logo on top (both centred, same size)
+  // Composite: background rect, then logo centred with padding
   const result = await sharp({
     create: {
-      width: dispW,
-      height: dispH,
+      width: pillW,
+      height: pillH,
       channels: 4,
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     },
   })
     .composite([
-      { input: pillSvg,     top: 0, left: 0 },
-      { input: resizedLogo, top: 0, left: 0 },
+      { input: pillSvg,     top: 0,            left: 0 },
+      { input: resizedLogo, top: PILL_PADDING, left: PILL_PADDING },
     ])
     .png()
     .toBuffer();
@@ -369,8 +462,8 @@ export async function runEnrichStage(options = {}) {
 
 export {
   applyGreyPill,
-  PILL_MAX_W, PILL_MAX_H, PILL_RADIUS,
-  PILL_BG_R, PILL_BG_G, PILL_BG_B, PILL_BG_A,
+  detectLogoBg,
+  PILL_MAX_W, PILL_MAX_H, PILL_RADIUS, PILL_PADDING,
 };
 
 // ── CLI entry point ──────────────────────────────────────────────────────────
