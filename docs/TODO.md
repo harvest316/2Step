@@ -43,6 +43,8 @@
 
 ## Phase 4: Future
 
+- [ ] Additional review sources: Trustpilot, Yelp, Facebook Reviews, Tripadvisor — currently Google-only
+
 - [ ] Semi-automated DM sending via Playwright (after 2+ weeks manual patterns)
 - [ ] InVideo/Holo automation via playwright-stealth
 - [ ] Rotate Creatomate subtitle themes / template variants to avoid samey-looking videos at scale (post first paying customer)
