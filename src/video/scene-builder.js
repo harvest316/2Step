@@ -49,10 +49,11 @@ const FOCUS_OVERRIDES = (() => {
  *   7. CTA     — business name + call/book prompt
  *
  * @param {{ business_name, city, best_review_author, best_review_text, phone }} prospect
+ * @param {{ stateAbbreviations?: string[] }} opts
  * @returns {Array<{ text: string, voiceover: string, duration: number }>}
  */
-export function buildScenes(prospect) {
-  const name      = businessName(prospect.business_name);
+export function buildScenes(prospect, { stateAbbreviations = [] } = {}) {
+  const name      = businessName(prospect.business_name, stateAbbreviations);
   const cityRaw   = prospect.city || 'Sydney';  // display text (subtitle)
   const city      = cityRaw; // pronunciation handled by ElevenLabs dictionary (pronunciation-dict.js)
   const niche     = (prospect.niche || '').toLowerCase();
@@ -1017,15 +1018,45 @@ export function clipsBySource(source) {
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
-/** Extract the first part of a business name (before any | separator). */
-export function businessName(raw) {
-  return (raw || '').split('|')[0].trim();
-}
-
 export function toTitleCase(str) {
   return (str || '')
     .toLowerCase()
     .replace(/(?:^|\s)\w/g, c => c.toUpperCase());  // uppercase after whitespace only (not after ')
+}
+
+/**
+ * Extract and clean a business name for use in voiceovers:
+ * - Takes the first part before any | separator
+ * - Strips legal suffixes (PTY LTD, LLC, GmbH, Inc, Ltd, Co, Corp, etc.)
+ * - Strips state/territory abbreviations appended to the name (country-specific list)
+ * - Converts ALL CAPS names to title case
+ *
+ * @param {string} raw              — raw business_name from DB
+ * @param {string[]} stateAbbreviations — country-specific list from countries.state_abbreviations
+ */
+export function businessName(raw, stateAbbreviations = []) {
+  let name = (raw || '').split('|')[0].trim();
+
+  // Strip trailing state abbreviations — handles "- NSW", "(NSW)"
+  if (stateAbbreviations.length > 0) {
+    const stateList = stateAbbreviations.map(s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
+    name = name
+      .replace(new RegExp(`\\s*\\((?:${stateList})\\)\\s*$`, 'i'), '')  // "(NSW)"
+      .replace(new RegExp(`\\s*[-–]\\s*(?:${stateList})\\s*$`, 'i'), '') // "- NSW"
+      .trim();
+  }
+
+  // Strip legal entity suffixes (order matters: longer phrases first)
+  name = name.replace(/[,\s]+(?:PTY\.?\s*LTD\.?|PROPRIETARY\s+LIMITED|PROPRIETARY\s+LTD\.?|P\/L|LLC\.?|LLP\.?|PLLC\.?|GmbH\.?|PLC\.?|N\.?V\.?|B\.?V\.?|S\.?A\.?|SARL\.?|S\.?R\.?L\.?|AG\.?|INC\.?|INCORPORATED|LIMITED|LTD\.?|CORP\.?|CORPORATION|CO\.?|COMPANY)$/i, '').trim();
+
+  // If the name is ALL CAPS (or near all-caps), convert to title case
+  const letters = name.replace(/[^a-zA-Z]/g, '');
+  const upperRatio = letters.length > 0 ? (letters.replace(/[^A-Z]/g, '').length / letters.length) : 0;
+  if (upperRatio > 0.7) {
+    name = toTitleCase(name);
+  }
+
+  return name;
 }
 
 /**

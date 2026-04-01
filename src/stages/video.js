@@ -97,7 +97,7 @@ const pronunciationDictLocators = (() => {
 async function generateVoiceover(text) {
   const body = {
     text,
-    model_id: 'eleven_turbo_v2_5',
+    model_id: process.env.ELEVENLABS_MODEL || 'eleven_turbo_v2_5',
     voice_settings: { stability: 0.6, similarity_boost: 0.8 },
     ...(pronunciationDictLocators.length
       ? { pronunciation_dictionary_locators: pronunciationDictLocators }
@@ -375,6 +375,33 @@ async function fetchLogoBuf(url) {
 
 /* c8 ignore stop */
 
+// ─── Countries helpers ────────────────────────────────────────────────────────
+
+/**
+ * Load a map of country_code → state_abbreviations[] from the countries table.
+ * Returns {} gracefully if the table doesn't exist yet (pre-migration).
+ * @returns {Promise<Record<string, string[]>>}
+ */
+async function loadCountriesMap() {
+  try {
+    const rows = await getAll(
+      `SELECT country_code, state_abbreviations FROM countries WHERE is_active = 1`
+    );
+    const map = {};
+    for (const row of rows) {
+      try {
+        map[row.country_code] = JSON.parse(row.state_abbreviations || '[]');
+      } catch {
+        map[row.country_code] = [];
+      }
+    }
+    return map;
+  } catch {
+    // countries table not yet migrated — degrade gracefully
+    return {};
+  }
+}
+
 // ─── Main per-site processing ─────────────────────────────────────────────────
 
 /**
@@ -383,7 +410,7 @@ async function fetchLogoBuf(url) {
  * @param {object} opts  — { dryRun: boolean }
  * @returns {Promise<{ videoUrl: string, posterUrl: string, videoHash: string, videoId: number, durationSeconds: number, costUsd: number }>}
  */
-export async function processSite(site, { dryRun, localOnly = false }) {
+export async function processSite(site, { dryRun, localOnly = false, stateAbbreviations = [] }) {
   const siteId = site.id;
 
   // 1. Parse selected_review_json
@@ -414,7 +441,7 @@ export async function processSite(site, { dryRun, localOnly = false }) {
   }
 
   // 2. Build scene script (7 scenes: hook, Q1-Q4, stars, cta)
-  let scenes = buildScenes(prospect);
+  let scenes = buildScenes(prospect, { stateAbbreviations });
 
   // 2b. LLM proofreading — fix VO grammar, flag bad quotes
   scenes = await proofreadScript(scenes, prospect.best_review_text);
@@ -571,7 +598,7 @@ export async function runVideoStage(options = {}) {
 
   const sites = siteId
     ? await getAll(
-        `SELECT id, business_name, city, niche, phone,
+        `SELECT id, business_name, city, niche, phone, country_code,
                 best_review_text, best_review_author, google_rating,
                 logo_url, selected_review_json, problem_category,
                 status, video_url
@@ -579,7 +606,7 @@ export async function runVideoStage(options = {}) {
         [siteId]
       )
     : await getAll(
-        `SELECT id, business_name, city, niche, phone,
+        `SELECT id, business_name, city, niche, phone, country_code,
                 best_review_text, best_review_author, google_rating,
                 logo_url, selected_review_json, problem_category,
                 status, video_url
@@ -591,6 +618,9 @@ export async function runVideoStage(options = {}) {
          LIMIT $1`,
         [limit]
       );
+
+  // Load country state abbreviations once for the whole batch
+  const countriesMap = await loadCountriesMap();
 
   if (sites.length === 0) {
     console.log('No enriched sites with logo_url. Nothing to do.');
@@ -607,7 +637,8 @@ export async function runVideoStage(options = {}) {
     process.stdout.write(`[${site.id}] ${site.business_name} (${site.city || 'unknown'})...\n`);
 
     try {
-      const result = await processSite(site, { dryRun, localOnly });
+      const stateAbbreviations = countriesMap[site.country_code] ?? [];
+      const result = await processSite(site, { dryRun, localOnly, stateAbbreviations });
 
       if (result) {
         console.log(
