@@ -1,4 +1,5 @@
 name: Mirror to Radicle
+# Mirrors every push to main → Radicle seed.radicle.garden
 
 on:
   push:
@@ -51,10 +52,15 @@ jobs:
           mkdir -p "${HOME}/.radicle/storage/${RID}"
           git -C "${HOME}/.radicle/storage/${RID}" init --bare --quiet
 
+          # Seed storage with git objects first — the COB bundle uses the current HEAD
+          # as a prerequisite for refs/heads/main (so no history objects in the bundle),
+          # but git fetch will reject the bundle unless those objects already exist here.
           git -C "${HOME}/.radicle/storage/${RID}" fetch "${GITHUB_WORKSPACE}" \
             "+refs/heads/main:refs/tmp/bootstrap"
           git -C "${HOME}/.radicle/storage/${RID}" update-ref -d refs/tmp/bootstrap 2>/dev/null || true
 
+          # Restore COB bundle — includes k7's refs/namespaces/.../refs/heads/main
+          # (with prerequisite satisfied by the checkout objects above)
           echo "${RAD_COB_BUNDLE}" | base64 -d > /tmp/cob.bundle
           git -C "${HOME}/.radicle/storage/${RID}" fetch /tmp/cob.bundle \
             "+refs/namespaces/*:refs/namespaces/*" \
@@ -64,6 +70,7 @@ jobs:
           echo "=== Profile check ==="
           CI_NID=$(rad self --nid 2>/dev/null)
           echo "CI NID: ${CI_NID}"
+
           echo "=== Radicle home ==="
           ls -la "${HOME}/.radicle/" 2>&1 || true
           ls -la "${HOME}/.radicle/keys/" 2>&1 || true
@@ -72,8 +79,12 @@ jobs:
           which git-remote-rad 2>&1 || true
           ls -la "$(which git-remote-rad 2>/dev/null)" 2>&1 || true
 
+          git config --global user.name "github-ci"
+          git config --global user.email "ci@harvest316.github.com"
+
           git remote add rad "rad://${RID}" 2>/dev/null || \
             git remote set-url rad "rad://${RID}"
+          git remote set-url --push rad "rad://${RID}/${CI_NID}"
 
           # seed.radicle.garden = iris.radicle.xyz (NID from https://seed.radicle.garden/api/v1/node)
           SEED_NID="z6MkrLMMsiPWUcNPHcRajuMi9mDfYckSoJyPwwnknocNYPm7"
