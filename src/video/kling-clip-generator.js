@@ -40,7 +40,7 @@ function klingJwt() {
 // Duration in seconds — 5s clips keep render costs low
 const CLIP_DURATION    = 5;
 const CLIP_ASPECT      = '9:16';
-const KLING_MODEL      = 'kling-v3';
+const KLING_MODEL      = process.env.KLING_MODEL || 'kling-v3';
 
 const { values: args } = parseArgs({
   options: {
