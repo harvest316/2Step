@@ -57,6 +57,7 @@ const BUCKET     = process.env.R2_BUCKET_NAME;
 const PUBLIC_URL = process.env.R2_PUBLIC_URL;
 
 const DICT_CACHE_PATH = resolve(ROOT, '.pronunciation-dict.json');
+const PLS_DICT_IDS_PATH = resolve(ROOT, 'data/pronunciation/.pls-dict-ids.json');
 
 // ─── Base62 hash ──────────────────────────────────────────────────────────────
 
@@ -75,7 +76,14 @@ function toBase62(num) {
 
 // ─── ElevenLabs pronunciation dictionary ─────────────────────────────────────
 
-const pronunciationDictLocators = (() => {
+// New: per-country PLS phoneme dicts (CMU ARPAbet on eleven_turbo_v2)
+const plsDictIds = (() => {
+  if (!existsSync(PLS_DICT_IDS_PATH)) return {};
+  try { return JSON.parse(readFileSync(PLS_DICT_IDS_PATH)); } catch { return {}; }
+})();
+
+// Legacy: single alias dict (fallback if no PLS dict for country)
+const legacyDictLocators = (() => {
   if (!existsSync(DICT_CACHE_PATH)) return [];
   try {
     const { id, version_id } = JSON.parse(readFileSync(DICT_CACHE_PATH));
@@ -83,6 +91,15 @@ const pronunciationDictLocators = (() => {
     return [{ pronunciation_dictionary_id: id, version_id }];
   } catch { return []; }
 })();
+
+function getDictLocators(countryCode) {
+  const cc = (countryCode || 'AU').toUpperCase();
+  const entry = plsDictIds[cc];
+  if (entry?.id) {
+    return [{ pronunciation_dictionary_id: entry.id, version_id: entry.version_id }];
+  }
+  return legacyDictLocators; // fallback to alias dict
+}
 
 // ─── ElevenLabs voiceover generation ─────────────────────────────────────────
 
@@ -94,13 +111,14 @@ const pronunciationDictLocators = (() => {
  * @param {string} text  — the voiceover string to synthesise
  * @returns {Promise<{ audioBuf: Buffer, alignment: object }>}
  */
-async function generateVoiceover(text) {
+async function generateVoiceover(text, countryCode) {
+  const dictLocators = getDictLocators(countryCode);
   const body = {
     text,
-    model_id: process.env.ELEVENLABS_MODEL || 'eleven_turbo_v2_5',
+    model_id: process.env.ELEVENLABS_MODEL || 'eleven_turbo_v2',
     voice_settings: { stability: 0.6, similarity_boost: 0.8 },
-    ...(pronunciationDictLocators.length
-      ? { pronunciation_dictionary_locators: pronunciationDictLocators }
+    ...(dictLocators.length
+      ? { pronunciation_dictionary_locators: dictLocators }
       : {}),
   };
 
@@ -137,14 +155,14 @@ async function generateVoiceover(text) {
  * @param {string|null} suburb  — for phonetic substitution fallback
  * @returns {Promise<{ audioBufs: Buffer[], durations: number[] }>}
  */
-async function generateSceneAudio(scenes, suburb = null) {
+async function generateSceneAudio(scenes, suburb = null, countryCode = 'AU') {
   const audioBufs = [];
   const durations = [];
 
   for (const scene of scenes) {
     const voiceover = scene.voiceover;
 
-    const { audioBuf, alignment } = await generateVoiceover(voiceover);
+    const { audioBuf, alignment } = await generateVoiceover(voiceover, countryCode);
     audioBufs.push(audioBuf);
 
     // Derive duration from alignment end time + 0.5s tail
@@ -476,7 +494,7 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
   // 5. Generate ElevenLabs voiceover per scene
   if (!ELEVENLABS_KEY) throw new Error('ELEVENLABS_API_KEY must be set');
   process.stdout.write('  Generating voiceovers');
-  const { audioBufs, durations } = await generateSceneAudio(scenes, prospect.city);
+  const { audioBufs, durations } = await generateSceneAudio(scenes, prospect.city, prospect.country_code || 'AU');
   process.stdout.write(` (${durations.length} scenes)\n`);
 
   // Attach measured durations back to scenes
