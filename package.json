@@ -31,12 +31,13 @@
     "node": ">=22.0.0"
   },
   "dependencies": {
+    "@echogarden/espeak-ng-emscripten": "^0.3.5",
     "333method": "file:../333Method",
     "axios": "^1.13.4",
-    "pg": "^8.13.3",
     "dotenv": "^17.2.3",
     "googleapis": "^171.4.0",
     "music-metadata": "^11.12.3",
+    "pg": "^8.13.3",
     "resend": "^6.8.0",
     "sharp": "^0.34.5",
     "twilio": "^5.13.0"

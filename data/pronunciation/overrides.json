@@ -1,0 +1,163 @@
+[
+  {
+    "name": "Artarmon",
+    "country": "AU",
+    "cmu": "AA0 R T AA0 R M AH0 N",
+    "source": "wikipedia:Artarmon",
+    "note": "Wikipedia IPA: ɑːrtɑːrmən"
+  },
+  {
+    "name": "Balgowlah",
+    "country": "AU",
+    "cmu": "B AE0 L G AW1 L AH0",
+    "source": "manual:ipa:bælˈɡaʊlə",
+    "note": "Converted from IPA /bælˈɡaʊlə/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Beecroft",
+    "country": "AU",
+    "cmu": "B IY1 K R AO2 F T",
+    "source": "cmu",
+    "note": "Regular English name — CMU dict"
+  },
+  {
+    "name": "Cammeray",
+    "country": "AU",
+    "cmu": "K AE2 M AH0 R EY1",
+    "source": "manual:ipa:ˌkæməˈreɪ",
+    "note": "Converted from IPA /ˌkæməˈreɪ/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Chatswood",
+    "country": "AU",
+    "cmu": "CH AE1 T S W UH2 D",
+    "source": "cmu",
+    "note": "Regular English name — CMU dict"
+  },
+  {
+    "name": "Dural",
+    "country": "AU",
+    "cmu": "D Y UH1 R AH0 L",
+    "source": "manual:ipa:ˈdjʊərəl",
+    "note": "Converted from IPA /ˈdjʊərəl/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Epping",
+    "country": "AU",
+    "cmu": "EH1 P IH0 NG",
+    "source": "cmu",
+    "note": "Regular English name — CMU dict"
+  },
+  {
+    "name": "Galston",
+    "country": "AU",
+    "cmu": "G AO1 L S T AH0 N",
+    "source": "manual:ipa:ˈɡɔːlstən",
+    "note": "Converted from IPA /ˈɡɔːlstən/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Geelong",
+    "country": "AU",
+    "cmu": "JH AH0 L AA1 NG",
+    "source": "manual:ipa:dʒəˈlɒŋ",
+    "note": "Converted from IPA /dʒəˈlɒŋ/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Killara",
+    "country": "AU",
+    "cmu": "K IH0 L AA1 R AH0",
+    "source": "manual:ipa:kɪˈlɑːrə",
+    "note": "Converted from IPA /kɪˈlɑːrə/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Kirribilli",
+    "country": "AU",
+    "cmu": "K IH2 R AH0 B IH1 L IY0",
+    "source": "manual:ipa:ˌkɪrəˈbɪli",
+    "note": "Converted from IPA /ˌkɪrəˈbɪli/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Manly",
+    "country": "AU",
+    "cmu": "M AE1 N L IY0",
+    "source": "cmu",
+    "note": "Regular English name — CMU dict"
+  },
+  {
+    "name": "Mosman",
+    "country": "AU",
+    "cmu": "M AA1 Z M AH0 N",
+    "source": "manual:ipa:ˈmɒzmən",
+    "note": "Converted from IPA /ˈmɒzmən/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Naremburn",
+    "country": "AU",
+    "cmu": "N EH1 B ER0 N",
+    "source": "manual:ipa:ˈnɛəbɜːn",
+    "note": "Converted from IPA /ˈnɛəbɜːn/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Narrabeen",
+    "country": "AU",
+    "cmu": "N AE2 R AH0 B IY1 N",
+    "source": "manual:ipa:ˌnærəˈbiːn",
+    "note": "Converted from IPA /ˌnærəˈbiːn/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Parramatta",
+    "country": "AU",
+    "cmu": "P AE2 R AH0 M AE1 T AH0",
+    "source": "manual:ipa:ˌpærəˈmætə",
+    "note": "Converted from IPA /ˌpærəˈmætə/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Prahran",
+    "country": "AU",
+    "cmu": "P R AH0 R AE1 N",
+    "source": "manual:ipa:prəˈræn",
+    "note": "Converted from IPA /prəˈræn/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Pymble",
+    "country": "AU",
+    "cmu": "P IH0 M B AH0 L",
+    "source": "manual:ipa:pɪmbəl",
+    "note": "Converted from IPA /pɪmbəl/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Turramurra",
+    "country": "AU",
+    "cmu": "T AH0 R AH0 M AH1 R AH0",
+    "source": "manual:ipa:tʌɹəˈmʌɹə",
+    "note": "Converted from IPA /tʌɹəˈmʌɹə/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Wahroonga",
+    "country": "AU",
+    "cmu": "W AA0 R UW1 NG G AH0",
+    "source": "manual:ipa:wɒˈruːŋɡə",
+    "note": "Converted from IPA /wɒˈruːŋɡə/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Willoughby",
+    "country": "AU",
+    "cmu": "W IH1 L AH0 B IY0",
+    "source": "manual:ipa:ˈwɪləbi",
+    "note": "Converted from IPA /ˈwɪləbi/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Woollahra",
+    "country": "AU",
+    "cmu": "W UH0 L AA1 R AH0",
+    "source": "manual:ipa:wʊˈlɑːrə",
+    "note": "Converted from IPA /wʊˈlɑːrə/ documented in pronunciation-dict.js"
+  },
+  {
+    "name": "Woolloomooloo",
+    "country": "AU",
+    "cmu": "W UH2 L AH0 M AH0 L UW1",
+    "source": "manual:ipa:ˌwʊləməˈluː",
+    "note": "Converted from IPA /ˌwʊləməˈluː/ documented in pronunciation-dict.js"
+  }
+]
