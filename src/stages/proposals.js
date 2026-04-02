@@ -438,8 +438,9 @@ export async function runProposalsStage(options = {}) {
       if (phones.length === 0 && site.phone) phones.push(site.phone);
       const firstName = inferFirstName(site, contacts);
 
+      const brandUrl = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
       const videoUrl = site.video_hash
-        ? `https://auditandfix.com/v/${site.video_hash}`
+        ? `${brandUrl}/v/${site.video_hash}`
         : site.video_url;
 
       if (!videoUrl) {

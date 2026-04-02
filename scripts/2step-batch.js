@@ -29,6 +29,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
+const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
 const dbPath = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 const messagesDbPath = process.env.MESSAGES_DB_PATH
   || resolve(root, '../mmo-platform/db/messages.db');
@@ -102,7 +103,7 @@ function fetchProposalsBatch(channel) {
       country_code: site.country_code,
       niche: site.niche,
       problem_category: site.problem_category,
-      video_url: `https://auditandfix.com/v/${site.video_hash}`,
+      video_url: `${BRAND_URL}/v/${site.video_hash}`,
       review_author: review.author || 'a customer',
       review_snippet: (review.text || '').slice(0, 200),
       owner_first_name: site.owner_first_name || null,
@@ -247,7 +248,7 @@ function fetchReplyResponses() {
       city: site?.city,
       country_code: site?.country_code,
       niche: site?.niche,
-      video_url: site?.video_hash ? `https://auditandfix.com/v/${site.video_hash}` : site?.video_url,
+      video_url: site?.video_hash ? `${BRAND_URL}/v/${site.video_hash}` : site?.video_url,
       pricing: pricing.map(p => ({
         tier: p.niche_tier,
         setup: p.setup_local,

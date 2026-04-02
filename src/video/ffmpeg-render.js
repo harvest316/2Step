@@ -202,7 +202,7 @@ function buildVideoFilterChain({ clips, scenes, clipInputStart, variant, starts 
  * @param {number[]} opts.logoSceneIndices                      - Which scene indices show the logo (e.g. [0, 6])
  * @param {string} opts.outputPath                              - Where to write the final MP4
  * @param {Object} [opts.variant]                               - Style variant from style-variants.js
- * @param {boolean} [opts.watermark=false]                       - Add semi-transparent "auditandfix.com" watermark (bottom-right)
+ * @param {boolean} [opts.watermark=false]                       - Add semi-transparent brand domain watermark (bottom-right)
  * @returns {Promise<{path: string, duration: number}>}
  */
 /* c8 ignore start — ffmpeg subprocess + network/filesystem I/O */
@@ -338,7 +338,7 @@ export async function renderVideo({
 
     // Add watermark overlay (if enabled) — semi-transparent text, bottom-right, entire duration
     if (watermark) {
-      const wmText = escapeDrawtext('auditandfix.com');
+      const wmText = escapeDrawtext(process.env.BRAND_DOMAIN || 'auditandfix.com');
       const nextLabel = 'vwm';
       filterParts.push(
         `[${prevLabel}]drawtext=` +

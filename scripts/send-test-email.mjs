@@ -22,9 +22,11 @@ const ROOT = resolve(__dirname, '..');
 // ── Config ──────────────────────────────────────────────────────────────────
 
 const RESEND_API_KEY = process.env.RESEND_TEST_API_KEY || process.env.RESEND_API_KEY;
-const SENDER_EMAIL = process.env.TWOSTEP_SENDER_EMAIL || 'videos@auditandfix.com';
+const BRAND_DOMAIN = process.env.BRAND_DOMAIN || 'auditandfix.com';
+const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const SENDER_EMAIL = process.env.TWOSTEP_SENDER_EMAIL || `videos@${BRAND_DOMAIN}`;
 const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || 'Audit&Fix Video Reviews';
-const LOGO_URL = process.env.TWOSTEP_LOGO_URL || 'https://auditandfix.com/assets/img/logo-light.svg';
+const LOGO_URL = process.env.TWOSTEP_LOGO_URL || `${BRAND_URL}/assets/img/logo-light.svg`;
 const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev';
 const PHYSICAL_ADDRESS = process.env.CAN_SPAM_PHYSICAL_ADDRESS || '';
 
@@ -37,7 +39,7 @@ const SAMPLE = {
   review_author: 'Sarah Mitchell',
   star_rating: '4.9',
   review_count: '492',
-  video_url: 'https://auditandfix.com/demo/pest-control',
+  video_url: `${BRAND_URL}/demo/pest-control`,
   // TODO: replace with R2-hosted demo poster once demo videos are rendered
   thumbnail_url: 'https://placehold.co/400x711/1a1a2e/ffffff?text=ACME+Pest+Control%0A4.9+stars+%C2%B7+492+reviews%0A%E2%96%B6',
 };
