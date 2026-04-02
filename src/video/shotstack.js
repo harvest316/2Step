@@ -137,7 +137,7 @@ async function generateVoiceover(script) {
     `https://api.elevenlabs.io/v1/text-to-speech/${ELEVENLABS_VOICE_ID}/with-timestamps`,
     {
       text: script,
-      model_id: 'eleven_turbo_v2_5',
+      model_id: process.env.ELEVENLABS_MODEL || 'eleven_turbo_v2_5',
       voice_settings: {
         stability: 0.4,
         similarity_boost: 0.8,

@@ -231,7 +231,7 @@ async function testAudio() {
         headers: { 'xi-api-key': ELEVENLABS_KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           text: script,
-          model_id: 'eleven_turbo_v2_5',
+          model_id: process.env.ELEVENLABS_MODEL || 'eleven_turbo_v2_5',
           voice_settings: { stability: 0.4, similarity_boost: 0.8 },
           ...(locators.length ? { pronunciation_dictionary_locators: locators } : {}),
         }),
