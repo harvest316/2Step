@@ -46,9 +46,11 @@ mkdirSync(DATA_DIR, { recursive: true });
 
 const { values: args } = parseArgs({
   options: {
-    places:         { type: 'string' },
-    'from-db':      { type: 'boolean', default: false },
-    'test-set':     { type: 'boolean', default: false },
+    places:           { type: 'string' },
+    'from-db':        { type: 'boolean', default: false },
+    'from-gazetteer': { type: 'string' },  // country code, e.g. "AU"
+    'min-pop':        { type: 'string', default: '0' },
+    'test-set':       { type: 'boolean', default: false },
     'conflicts-only': { type: 'boolean', default: false },
   },
   strict: false,
@@ -122,6 +124,53 @@ async function getPlacesFromDb() {
   });
 }
 
+// ─── Gazetteer loader ────────────────────────────────────────────────────────
+
+function loadGazetteer(country) {
+  const cc = country.toUpperCase();
+  const path = resolve(ROOT, `data/gazetteers/${cc.toLowerCase()}.json`);
+  if (!existsSync(path)) {
+    console.error(`Gazetteer not found: ${path}`);
+    console.error(`Run: node scripts/fetch-gazetteer.js --country ${cc}`);
+    process.exit(1);
+  }
+  const data = JSON.parse(readFileSync(path, 'utf8'));
+  const minPop = parseInt(args['min-pop']) || 0;
+  const filtered = minPop > 0 ? data.filter(p => p.population >= minPop) : data;
+
+  // Deduplicate by name (keep highest population entry)
+  const seen = new Map();
+  for (const p of filtered) {
+    const key = p.name.toLowerCase();
+    if (!seen.has(key) || p.population > seen.get(key).population) {
+      seen.set(key, p);
+    }
+  }
+
+  return [...seen.values()].map(p => ({
+    name: p.name,
+    country: cc,
+    disambiguation: p.state || undefined,
+  }));
+}
+
+// ─── Checkpoint/resume ───────────────────────────────────────────────────────
+
+function loadCheckpoint(country) {
+  const path = resolve(DATA_DIR, `results/${country.toLowerCase()}.json`);
+  if (!existsSync(path)) return new Map();
+  try {
+    const data = JSON.parse(readFileSync(path, 'utf8'));
+    return new Map(data.map(r => [r.name, r]));
+  } catch { return new Map(); }
+}
+
+function saveCheckpoint(country, results) {
+  mkdirSync(resolve(DATA_DIR, 'results'), { recursive: true });
+  const path = resolve(DATA_DIR, `results/${country.toLowerCase()}.json`);
+  writeFileSync(path, JSON.stringify(results, null, 2));
+}
+
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
@@ -133,40 +182,63 @@ async function main() {
     places = parsePlaces(args.places);
   } else if (args['from-db']) {
     places = await getPlacesFromDb();
+  } else if (args['from-gazetteer']) {
+    places = loadGazetteer(args['from-gazetteer']);
   } else {
     console.log('Usage:');
     console.log('  node scripts/gather-pronunciations.js --test-set');
     console.log('  node scripts/gather-pronunciations.js --places "Woollahra:AU,Edinburgh:UK"');
     console.log('  node scripts/gather-pronunciations.js --from-db');
+    console.log('  node scripts/gather-pronunciations.js --from-gazetteer AU');
+    console.log('  node scripts/gather-pronunciations.js --from-gazetteer AU --min-pop 200');
     return;
   }
 
   console.log(`Gathering pronunciations for ${places.length} place(s)...\n`);
 
-  const results = [];
+  // Load checkpoint for resume support (gazetteer mode only)
+  const country = args['from-gazetteer']?.toUpperCase();
+  const checkpoint = country ? loadCheckpoint(country) : new Map();
+  if (checkpoint.size > 0) {
+    console.log(`Resuming: ${checkpoint.size} already gathered, ${places.length - checkpoint.size} remaining\n`);
+  }
+
+  const results = [...checkpoint.values()]; // start with already-gathered
+  let newCount = 0;
 
   for (const place of places) {
+    // Skip if already in checkpoint
+    if (checkpoint.has(place.name)) continue;
+
     process.stdout.write(`  ${place.country} ${place.name}... `);
     const result = await gatherPronunciation(place.name, place.country, place.disambiguation);
     results.push(result);
+    newCount++;
 
     if (args['conflicts-only'] && result.conflicts.length === 0) {
       process.stdout.write('ok\n');
-      continue;
-    }
-
-    // Status line
-    const sources = Object.keys(result.sources).join('+') || 'none';
-    if (result.cmu) {
-      console.log(`${result.cmu}  [${result.confidence}, ${sources}]`);
     } else {
-      console.log(`NOT FOUND  [${sources}]`);
+      const sources = Object.keys(result.sources).join('+') || 'none';
+      if (result.cmu) {
+        console.log(`${result.cmu}  [${result.confidence}, ${sources}]`);
+      } else {
+        console.log(`NOT FOUND  [${sources}]`);
+      }
+      for (const conflict of result.conflicts) {
+        console.log(`    ⚠ ${conflict}`);
+      }
     }
 
-    // Show conflicts
-    for (const conflict of result.conflicts) {
-      console.log(`    ⚠ ${conflict}`);
+    // Checkpoint every 50 entries (gazetteer mode)
+    if (country && newCount % 50 === 0) {
+      saveCheckpoint(country, results);
+      process.stdout.write(`  [checkpoint: ${results.length} saved]\n`);
     }
+  }
+
+  // Final save of results (gazetteer mode)
+  if (country) {
+    saveCheckpoint(country, results);
   }
 
   // ── Summary ──────────────────────────────────────────────────────────────
