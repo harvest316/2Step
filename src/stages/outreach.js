@@ -46,11 +46,13 @@ const SENDER_LOCAL = process.env.TWOSTEP_SENDER_LOCAL || 'videos';
 
 function getSenderForSite(siteId) {
   const subdomain = SENDER_SUBDOMAINS[siteId % SENDER_SUBDOMAINS.length];
-  return `${SENDER_LOCAL}@${subdomain}.auditandfix.com`;
+  const brandDomain = process.env.BRAND_DOMAIN || 'auditandfix.com';
+  return `${SENDER_LOCAL}@${subdomain}.${brandDomain}`;
 }
 const UNSUBSCRIBE_URL =
   process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev';
-const LOGO_URL = process.env.TWOSTEP_LOGO_URL || 'https://auditandfix.com/assets/img/logo-light.svg';
+const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const LOGO_URL = process.env.TWOSTEP_LOGO_URL || `${BRAND_URL}/assets/img/logo-light.svg`;
 const PHYSICAL_ADDRESS = process.env.CAN_SPAM_PHYSICAL_ADDRESS || '';
 
 // CAN-SPAM countries — require physical address in footer
@@ -199,7 +201,7 @@ function assembleEmail(msg) {
 
   // Use /p/{hash} as poster src — logs email open on image load, then redirects to CDN
   const posterTrackingUrl = msg.video_hash
-    ? `https://auditandfix.com/p/${msg.video_hash}`
+    ? `${BRAND_URL}/p/${msg.video_hash}`
     : msg.thumbnail_url;
 
   const html = buildEmailHtml({
