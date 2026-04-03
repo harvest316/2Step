@@ -28,9 +28,10 @@
 export function buildEmailHtml({
   previewText, hookHtml, posterUrl, videoUrl, remainingBodyHtml,
   ctaHtml, businessName, logoUrl, unsubscribeUrl, physicalAddressHtml,
-  finePrintHtml = '', year, subject = '',
+  finePrintHtml = '', year, subject = '', brandName = '',
 }) {
-  const titleText = subject ? subject.replace(/</g, '&lt;') : 'Audit&amp;Fix Video Review';
+  const brandNameHtml = brandName ? brandName.replace(/&/g, '&amp;').replace(/</g, '&lt;') : '';
+  const titleText = subject ? subject.replace(/</g, '&lt;') : (brandNameHtml ? `${brandNameHtml} Video Review` : 'Video Review');
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +61,7 @@ a { color: #1a1a1a; text-decoration: underline; }
 
 <!-- Logo -->
 <tr><td align="center" style="padding:28px 24px 12px;">
-  <img src="${logoUrl}" alt="Audit&amp;Fix" width="120" height="auto" style="max-width:120px;height:auto;">
+  <img src="${logoUrl}" alt="${brandNameHtml}" width="120" height="auto" style="max-width:120px;height:auto;">
 </td></tr>
 
 <!-- Hook -->
@@ -87,9 +88,9 @@ a { color: #1a1a1a; text-decoration: underline; }
 
 <!-- Footer -->
 <tr><td align="center" style="padding:20px 32px;">
-  <img src="${logoUrl}" alt="Audit&amp;Fix" width="90" height="auto" style="max-width:90px;height:auto;margin-bottom:12px;">
+  <img src="${logoUrl}" alt="${brandNameHtml}" width="90" height="auto" style="max-width:90px;height:auto;margin-bottom:12px;">
   <p style="font-size:12px;color:#999;line-height:1.5;text-align:center;margin:0 0 8px 0;">
-    ${finePrintHtml ? `${finePrintHtml} ` : ''}Copyright &copy; ${year} Audit&amp;Fix.${physicalAddressHtml ? ` ${physicalAddressHtml}` : ''}
+    ${finePrintHtml ? `${finePrintHtml} ` : ''}Copyright &copy; ${year} ${brandNameHtml}.${physicalAddressHtml ? ` ${physicalAddressHtml}` : ''}
   </p>
   <p style="font-size:12px;margin:0;text-align:center;">
     <a href="${unsubscribeUrl}" style="color:#666;text-decoration:underline;font-size:12px;">unsubscribe</a>

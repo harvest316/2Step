@@ -25,10 +25,11 @@ function makeParams(overrides = {}) {
     remainingBodyHtml: '<p class="last-child">We noticed your great reviews.</p>',
     ctaHtml: '<p class="last-child">Click above to watch!</p>',
     businessName: 'Acme Pest Control',
-    logoUrl: 'https://auditandfix.com/assets/img/logo-light.svg',
+    logoUrl: 'https://example.com/assets/img/logo-light.svg',
     unsubscribeUrl: 'https://unsub.example.com/?email=test%40example.com',
     physicalAddressHtml: '123 Main St, Sydney NSW 2000',
     year: '2026',
+    brandName: 'Audit&Fix',
     ...overrides,
   };
 }
@@ -166,9 +167,9 @@ describe('buildEmailHtml — parameter interpolation', () => {
     assert.ok(html.includes('Copyright'));
   });
 
-  it('includes Audit&Fix in copyright text', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('Audit&amp;Fix'));
+  it('includes brandName in copyright text', () => {
+    const html = buildEmailHtml(makeParams({ brandName: 'TestBrand' }));
+    assert.ok(html.includes('TestBrand'));
   });
 });
 
@@ -180,16 +181,16 @@ describe('buildEmailHtml — optional parameters', () => {
     assert.ok(html.includes('<title>Your Free Video Review</title>'));
   });
 
-  it('uses default title when subject is empty', () => {
-    const html = buildEmailHtml(makeParams({ subject: '' }));
-    assert.ok(html.includes('<title>Audit&amp;Fix Video Review</title>'));
+  it('uses brandName in default title when subject is empty', () => {
+    const html = buildEmailHtml(makeParams({ subject: '', brandName: 'TestBrand' }));
+    assert.ok(html.includes('<title>TestBrand Video Review</title>'));
   });
 
-  it('uses default title when subject is not provided', () => {
-    const params = makeParams();
+  it('uses brandName in default title when subject is not provided', () => {
+    const params = makeParams({ brandName: 'TestBrand' });
     delete params.subject;
     const html = buildEmailHtml(params);
-    assert.ok(html.includes('<title>Audit&amp;Fix Video Review</title>'));
+    assert.ok(html.includes('<title>TestBrand Video Review</title>'));
   });
 
   it('includes finePrintHtml when provided', () => {
@@ -212,9 +213,9 @@ describe('buildEmailHtml — optional parameters', () => {
   });
 
   it('omits physical address HTML when empty string', () => {
-    const html = buildEmailHtml(makeParams({ physicalAddressHtml: '' }));
+    const html = buildEmailHtml(makeParams({ physicalAddressHtml: '', brandName: 'TestBrand' }));
     // Copyright line should not have a trailing address
-    assert.ok(html.includes('Audit&amp;Fix.'));
+    assert.ok(html.includes('TestBrand.'));
   });
 });
 
@@ -246,14 +247,14 @@ describe('buildEmailHtml — footer', () => {
     assert.ok(html.includes('>unsubscribe</a>'));
   });
 
-  it('has copyright with year and Audit&Fix', () => {
-    const html = buildEmailHtml(makeParams({ year: '2026' }));
+  it('has copyright with year and brandName', () => {
+    const html = buildEmailHtml(makeParams({ year: '2026', brandName: 'Audit&Fix' }));
     assert.ok(html.includes('Copyright &copy; 2026 Audit&amp;Fix.'));
   });
 
   it('includes physical address after copyright when provided', () => {
-    const html = buildEmailHtml(makeParams({ physicalAddressHtml: 'PO Box 123' }));
-    // Copyright ... Audit&Fix. PO Box 123
+    const html = buildEmailHtml(makeParams({ physicalAddressHtml: 'PO Box 123', brandName: 'Audit&Fix' }));
+    // Copyright ... brandName. PO Box 123
     assert.ok(html.includes('Audit&amp;Fix. PO Box 123'));
   });
 
@@ -265,9 +266,9 @@ describe('buildEmailHtml — footer', () => {
     assert.ok(finePrintIdx < copyrightIdx, 'finePrint should come before Copyright');
   });
 
-  it('footer logo has alt text', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('alt="Audit&amp;Fix Footer Logo"'));
+  it('footer logo has alt text matching brandName', () => {
+    const html = buildEmailHtml(makeParams({ brandName: 'Audit&Fix' }));
+    assert.ok(html.includes('alt="Audit&amp;Fix"'));
   });
 });
 
@@ -415,8 +416,8 @@ describe('buildEmailHtml — email client compatibility', () => {
 // ─── Header logo ────────────────────────────────────────────────────────
 
 describe('buildEmailHtml — header logo', () => {
-  it('header logo has alt="Audit&Fix"', () => {
-    const html = buildEmailHtml(makeParams());
+  it('header logo has alt matching brandName', () => {
+    const html = buildEmailHtml(makeParams({ brandName: 'Audit&Fix' }));
     assert.ok(html.includes('alt="Audit&amp;Fix"'));
   });
 

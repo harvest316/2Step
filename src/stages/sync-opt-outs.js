@@ -27,9 +27,7 @@ import pg from 'pg';
 const { Pool } = pg;
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
-const UNSUBSCRIBE_WORKER_URL = (
-  process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev'
-).replace(/\/$/, '');
+const UNSUBSCRIBE_WORKER_URL = (process.env.UNSUBSCRIBE_WORKER_URL || '').replace(/\/$/, '');
 
 export async function runSyncOptOutsStage({ dryRun = false } = {}) {
   // Fetch unsubscribes.json from the worker's R2

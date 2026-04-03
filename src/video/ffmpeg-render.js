@@ -338,7 +338,7 @@ export async function renderVideo({
 
     // Add watermark overlay (if enabled) — semi-transparent text, bottom-right, entire duration
     if (watermark) {
-      const wmText = escapeDrawtext(process.env.BRAND_DOMAIN || 'auditandfix.com');
+      const wmText = escapeDrawtext(process.env.BRAND_DOMAIN || '');
       const nextLabel = 'vwm';
       filterParts.push(
         `[${prevLabel}]drawtext=` +

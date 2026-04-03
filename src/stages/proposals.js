@@ -438,7 +438,7 @@ export async function runProposalsStage(options = {}) {
       if (phones.length === 0 && site.phone) phones.push(site.phone);
       const firstName = inferFirstName(site, contacts);
 
-      const brandUrl = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+      const brandUrl = (process.env.BRAND_URL || '').replace(/\/$/, '');
       const videoUrl = site.video_hash
         ? `${brandUrl}/v/${site.video_hash}`
         : site.video_url;
@@ -467,6 +467,7 @@ export async function runProposalsStage(options = {}) {
         review_count: site.review_count ? String(site.review_count) : 'many',
         poster: `[poster]`,  // placeholder — resolved to HTML at send time by email-template.js
         outreach_day: new Date().toLocaleDateString('en-AU', { weekday: 'long' }),
+        brand_name: process.env.BRAND_NAME || '',
       };
 
       const countryCode = site.country_code || 'AU';

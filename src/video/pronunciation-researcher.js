@@ -77,7 +77,7 @@ Rules:
       headers: {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://auditandfix.com',
+        'HTTP-Referer': process.env.BRAND_URL || '',
       },
       body: JSON.stringify({
         model: 'anthropic/claude-sonnet-4',

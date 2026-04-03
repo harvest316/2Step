@@ -10,7 +10,7 @@
  *   6. runOutreachStage skips the opted-out contact
  *
  * Requires live network access to:
- *   - https://unsubscribe-worker.auditandfix.workers.dev (Cloudflare Worker)
+ *   - UNSUBSCRIBE_WORKER_URL (Cloudflare Worker)
  *   - PostgreSQL at DATABASE_URL
  *
  * These tests are skipped automatically if E2E_ENABLED=true is not set,
@@ -22,9 +22,7 @@ import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 
 const E2E = process.env.E2E_ENABLED === 'true';
-const WORKER_URL = (
-  process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev'
-).replace(/\/$/, '');
+const WORKER_URL = (process.env.UNSUBSCRIBE_WORKER_URL || '').replace(/\/$/, '');
 
 const TEST_EMAIL = `e2e-unsub-test-${Date.now()}@2step-test.invalid`;
 

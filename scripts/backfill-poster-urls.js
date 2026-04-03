@@ -17,7 +17,7 @@ import pg from 'pg';
 const { Pool } = pg;
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const BRAND_URL = (process.env.BRAND_URL || '').replace(/\/$/, '');
 const WORKER_SECRET = process.env.API_WORKER_SECRET || '';
 const dryRun = process.argv.includes('--dry-run');
 

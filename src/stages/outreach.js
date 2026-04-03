@@ -35,24 +35,23 @@ const ROOT = resolve(__dirname, '../..');
 // ── Config ──────────────────────────────────────────────────────────────────
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || 'Audit&Fix Video Reviews';
+const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME;
 
 // Sending subdomains — rotated by site_id to spread domain reputation risk.
 // Add new subdomains here as they're verified in Resend.
-// test.auditandfix.com is excluded — reserved for test sends only.
+// test.{BRAND_DOMAIN} is excluded — reserved for test sends only.
 const SENDER_SUBDOMAINS = (process.env.TWOSTEP_SENDER_SUBDOMAINS || 'send,mail,email,outreach,outbound,eu,sa')
   .split(',').map(s => s.trim()).filter(Boolean);
 const SENDER_LOCAL = process.env.TWOSTEP_SENDER_LOCAL || 'videos';
 
 function getSenderForSite(siteId) {
   const subdomain = SENDER_SUBDOMAINS[siteId % SENDER_SUBDOMAINS.length];
-  const brandDomain = process.env.BRAND_DOMAIN || 'auditandfix.com';
+  const brandDomain = process.env.BRAND_DOMAIN;
   return `${SENDER_LOCAL}@${subdomain}.${brandDomain}`;
 }
-const UNSUBSCRIBE_URL =
-  process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev';
-const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
-const LOGO_URL = process.env.TWOSTEP_LOGO_URL || `${BRAND_URL}/assets/img/logo-light.svg`;
+const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_WORKER_URL;
+const BRAND_URL = (process.env.BRAND_URL || '').replace(/\/$/, '');
+const LOGO_URL = process.env.TWOSTEP_LOGO_URL;
 const PHYSICAL_ADDRESS = process.env.CAN_SPAM_PHYSICAL_ADDRESS || '';
 
 // CAN-SPAM countries — require physical address in footer
@@ -218,6 +217,7 @@ function assembleEmail(msg) {
     finePrintHtml: finePrint || '',
     year: String(new Date().getFullYear()),
     subject,
+    brandName: process.env.BRAND_NAME || '',
   });
 
   const text = buildPlainText(msg, msg.video_url, subject);

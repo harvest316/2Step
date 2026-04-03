@@ -29,8 +29,8 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
 const API_TOKEN  = process.env.CLOUDFLARE_API_TOKEN;
 const BUCKET     = process.env.R2_BUCKET_NAME;
-const PUBLIC_URL = (process.env.R2_PUBLIC_URL || 'https://cdn.auditandfix.com').replace(/\/$/, '');
-const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const PUBLIC_URL = (process.env.R2_PUBLIC_URL || '').replace(/\/$/, '');
+const BRAND_URL = (process.env.BRAND_URL || '').replace(/\/$/, '');
 const WORKER_SECRET = process.env.API_WORKER_SECRET || '';
 
 const { values: args } = parseArgs({

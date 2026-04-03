@@ -22,12 +22,12 @@ const ROOT = resolve(__dirname, '..');
 // ── Config ──────────────────────────────────────────────────────────────────
 
 const RESEND_API_KEY = process.env.RESEND_TEST_API_KEY || process.env.RESEND_API_KEY;
-const BRAND_DOMAIN = process.env.BRAND_DOMAIN || 'auditandfix.com';
-const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
-const SENDER_EMAIL = process.env.TWOSTEP_SENDER_EMAIL || `videos@${BRAND_DOMAIN}`;
-const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME || 'Audit&Fix Video Reviews';
-const LOGO_URL = process.env.TWOSTEP_LOGO_URL || `${BRAND_URL}/assets/img/logo-light.svg`;
-const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev';
+const BRAND_DOMAIN = process.env.BRAND_DOMAIN;
+const BRAND_URL = (process.env.BRAND_URL || '').replace(/\/$/, '');
+const SENDER_EMAIL = process.env.TWOSTEP_SENDER_EMAIL;
+const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME;
+const LOGO_URL = process.env.TWOSTEP_LOGO_URL;
+const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_WORKER_URL;
 const PHYSICAL_ADDRESS = process.env.CAN_SPAM_PHYSICAL_ADDRESS || '';
 
 // ── Sample data ─────────────────────────────────────────────────────────────
@@ -60,7 +60,7 @@ ACME Pest Control — 4.9 stars across 492 reviews. That's seriously impressive 
 Just hit reply if you'd like any changes — or if you want to chat about getting more of these made.
 
 Cheers,
-The Audit&Fix Team`;
+The ${process.env.BRAND_NAME || ''} Team`;
 
 // ── Build email ─────────────────────────────────────────────────────────────
 
@@ -102,6 +102,7 @@ const html = buildEmailHtml({
   finePrintHtml: finePrint || '',
   year: String(new Date().getFullYear()),
   subject: SUBJECT,
+  brandName: process.env.BRAND_NAME || '',
 });
 
 // Plain text: hook + video link only (no blurb, no fine_print)

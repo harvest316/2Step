@@ -3,7 +3,7 @@
 /**
  * sync-video-views — 2Step pipeline stage.
  *
- * Polls auditandfix.com/api.php?action=get-video-views to fetch view data for
+ * Polls BRAND_URL/api.php?action=get-video-views to fetch view data for
  * all video pages, then writes video_viewed_at back to the local 2Step DB for
  * any site whose video has been viewed.
  *
@@ -13,7 +13,7 @@
  * them.
  *
  * Architecture:
- *   - auditandfix.com/api.php stores views in data/videos/{hash}.json (per
+ *   - BRAND_URL/api.php stores views in data/videos/{hash}.json (per
  *     page load by the prospect's browser via the beacon in v.php)
  *   - get-video-views returns { videos: [{ hash, view_count, last_view }] }
  *   - We match by video_hash in the sites table
@@ -23,7 +23,7 @@
  *   node src/stages/sync-video-views.js --dry-run  # Print changes, no DB writes
  *
  * Environment (loaded from 333Method/.env via load-env.js):
- *   BRAND_URL            — e.g. https://auditandfix.com
+ *   BRAND_URL            — e.g. https://example.com
  *   API_WORKER_SECRET    — shared secret for X-Auth-Secret header
  */
 
@@ -37,7 +37,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
-const BRAND_URL          = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const BRAND_URL          = (process.env.BRAND_URL || '').replace(/\/$/, '');
 const WORKER_SECRET      = process.env.API_WORKER_SECRET || '';
 
 // Priority follow-up window: flag sites viewed within this many minutes
@@ -46,7 +46,7 @@ const PRIORITY_WINDOW_MINUTES = 30;
 // ── Fetch view data from Hostinger ───────────────────────────────────────────
 
 /**
- * Fetch all video view records from the auditandfix.com API.
+ * Fetch all video view records from the brand website API.
  * Returns an array of { hash, view_count, last_view } objects.
  *
  * @returns {Promise<Array<{ hash: string, view_count: number, last_view: string|null }>>}

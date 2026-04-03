@@ -29,7 +29,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '..');
 
-const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const BRAND_URL = (process.env.BRAND_URL || '').replace(/\/$/, '');
 const dbPath = process.env.DATABASE_PATH || resolve(root, 'db/2step.db');
 const messagesDbPath = process.env.MESSAGES_DB_PATH
   || resolve(root, '../mmo-platform/db/messages.db');

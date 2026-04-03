@@ -5,22 +5,22 @@
       "channel": "sms",
       "subject_spintax": null,
       "preheader_spintax": null,
-      "body_spintax": "Hi {[first_name]|there}, we made a free 30-sec video for [business_name] using your best Google review. {Check it out|Watch it here|Have a look}: [video_url] — {The Audit&Fix Team|AuditFix Team}",
+      "body_spintax": "Hi {[first_name]|there}, we made a free 30-sec video for [business_name] using your best Google review. {Check it out|Watch it here|Have a look}: [video_url] — The [brand_name] Team",
       "followup1_subject_spintax": null,
-      "followup1_body_spintax": "Hi {[first_name]|there}, just following up on the free video we made for [business_name]: [video_url] — happy to {chat|talk} if you're interested in more. {Thanks|Best} — {Audit&Fix|AuditFix}",
+      "followup1_body_spintax": "Hi {[first_name]|there}, just following up on the free video we made for [business_name]: [video_url] — happy to {chat|talk} if you're interested in more. {Thanks|Best} — [brand_name]",
       "followup2_subject_spintax": null,
-      "followup2_body_spintax": "Hi {[first_name]|there}, last message re: the free video for [business_name]: [video_url] — {no worries if not for you|all good if timing's not right}. {Thanks|Best} — {Audit&Fix|AuditFix}"
+      "followup2_body_spintax": "Hi {[first_name]|there}, last message re: the free video for [business_name]: [video_url] — {no worries if not for you|all good if timing's not right}. {Thanks|Best} — [brand_name]"
     },
     {
       "id": "sms_video_02_ca",
       "channel": "sms",
       "subject_spintax": null,
       "preheader_spintax": null,
-      "body_spintax": "Hey {[first_name]|there}! {Saw|Noticed} [business_name] has {great|fantastic} Google reviews — we turned one from [review_author] into a free video: [video_url] 🎬 {The Audit&Fix Team|AuditFix Team}",
+      "body_spintax": "Hey {[first_name]|there}! {Saw|Noticed} [business_name] has {great|fantastic} Google reviews — we turned one from [review_author] into a free video: [video_url] 🎬 The [brand_name] Team",
       "followup1_subject_spintax": null,
-      "followup1_body_spintax": "Hey {[first_name]|there}, did you get a chance to see the video we made for [business_name]? [video_url] — {totally free to keep|yours to use however you like}. {Thanks|Best} — {Audit&Fix|AuditFix}",
+      "followup1_body_spintax": "Hey {[first_name]|there}, did you get a chance to see the video we made for [business_name]? [video_url] — {totally free to keep|yours to use however you like}. {Thanks|Best} — [brand_name]",
       "followup2_subject_spintax": null,
-      "followup2_body_spintax": "Hey {[first_name]|there}, {last one from me|one last message} — free video for [business_name]: [video_url] — {no hard feelings if not interested|all good if timing isn't right}. {Cheers|Best} — {Audit&Fix|AuditFix}"
+      "followup2_body_spintax": "Hey {[first_name]|there}, {last one from me|one last message} — free video for [business_name]: [video_url] — {no hard feelings if not interested|all good if timing isn't right}. {Cheers|Best} — [brand_name]"
     }
   ]
 }
