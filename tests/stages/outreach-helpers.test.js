@@ -578,7 +578,7 @@ describe('assembleEmail', () => {
     assert.ok(typeof result.text === 'string');
   });
 
-  it('defaults country_code to AU when not provided', () => {
+  it('throws when country_code is not provided', () => {
     const msg = {
       id: 99,
       message_body: 'Hook[poster]Rest',
@@ -588,9 +588,7 @@ describe('assembleEmail', () => {
       contact_uri: 'test@example.com',
       subject_line: 'Test',
     };
-    // Should not throw even without country_code
-    const result = assembleEmail(msg);
-    assert.ok(typeof result.html === 'string');
+    assert.throws(() => assembleEmail(msg), /No country_code/);
   });
 });
 
@@ -641,35 +639,35 @@ describe('loadSequenceTemplate', () => {
 // ─── isOptedOut ─────────────────────────────────────────────────────────────
 
 describe('isOptedOut', () => {
-  it('returns false when both phone and email are null', () => {
-    const result = isOptedOut(null, null, 'email');
+  it('returns false when both phone and email are null', async () => {
+    const result = await isOptedOut(null, null, 'email');
     assert.equal(result, false);
   });
 
-  it('returns false for a non-opted-out email', () => {
+  it('returns false for a non-opted-out email', async () => {
     // Unless this email is actually in the opt_outs table, it should be false
-    const result = isOptedOut(null, 'never-opted-out-test-1234@example.com', 'email');
+    const result = await isOptedOut(null, 'never-opted-out-test-1234@example.com', 'email');
     assert.equal(result, false);
   });
 
-  it('returns false for a non-opted-out phone', () => {
-    const result = isOptedOut('+61400000999', null, 'sms');
+  it('returns false for a non-opted-out phone', async () => {
+    const result = await isOptedOut('+61400000999', null, 'sms');
     assert.equal(result, false);
   });
 
-  it('returns a boolean', () => {
-    const result = isOptedOut(null, 'test@example.com', 'email');
+  it('returns a boolean', async () => {
+    const result = await isOptedOut(null, 'test@example.com', 'email');
     assert.equal(typeof result, 'boolean');
   });
 
-  it('handles empty string email', () => {
+  it('handles empty string email', async () => {
     // Empty string is falsy, so should return false (no contact to check)
-    const result = isOptedOut(null, '', 'email');
+    const result = await isOptedOut(null, '', 'email');
     assert.equal(result, false);
   });
 
-  it('handles empty string phone', () => {
-    const result = isOptedOut('', null, 'sms');
+  it('handles empty string phone', async () => {
+    const result = await isOptedOut('', null, 'sms');
     assert.equal(result, false);
   });
 });
