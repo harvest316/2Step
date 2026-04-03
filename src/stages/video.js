@@ -35,6 +35,7 @@ import {
   businessName,
 } from '../video/scene-builder.js';
 import { gatherPronunciation, generatePLS } from '../video/pronunciation-sources.js';
+import { getVoiceId } from '../video/elevenlabs-voices.js';
 import { pickMusicTrack } from '../video/music-tracks.js';
 import { pickVariant } from '../video/style-variants.js';
 import sharp from 'sharp';
@@ -50,7 +51,6 @@ const ROOT = resolve(__dirname, '../..');
 // ─── Config ───────────────────────────────────────────────────────────────────
 
 const ELEVENLABS_KEY      = process.env.ELEVENLABS_API_KEY;
-const ELEVENLABS_VOICE_ID = process.env.ELEVENLABS_VOICE_ID || 'IKne3meq5aSn9XLyUdCD';
 const EL_BASE             = 'https://api.elevenlabs.io/v1';
 
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -202,8 +202,9 @@ async function generateVoiceover(text, countryCode) {
       : {}),
   };
 
+  const voiceId = getVoiceId(countryCode);
   const res = await fetch(
-    `${EL_BASE}/text-to-speech/${ELEVENLABS_VOICE_ID}/with-timestamps`,
+    `${EL_BASE}/text-to-speech/${voiceId}/with-timestamps`,
     {
       method: 'POST',
       headers: {
