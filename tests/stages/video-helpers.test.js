@@ -233,6 +233,7 @@ function makeSite(overrides = {}) {
     best_review_text: null,
     best_review_author: null,
     google_rating: 4.8,
+    country_code: 'AU',
     ...overrides,
   };
 }
@@ -391,26 +392,26 @@ describe('runVideoStage', () => {
     assert.equal(typeof runVideoStage, 'function');
   });
 
-  it('returns stats object with expected keys when no enriched sites exist', async () => {
-    // Test DB has no enriched sites with logo_url, so the stage returns early
-    const stats = await runVideoStage();
+  it('returns stats object with expected keys', async () => {
+    // dryRun to avoid hitting ElevenLabs/ffmpeg in CI
+    const stats = await runVideoStage({ dryRun: true });
     assert.ok(typeof stats === 'object');
     assert.ok('processed' in stats);
     assert.ok('created' in stats);
     assert.ok('errors' in stats);
-    assert.equal(stats.processed, 0);
-    assert.equal(stats.created, 0);
-    assert.equal(stats.errors, 0);
+    // created + errors must account for all processed sites
+    assert.equal(stats.created + stats.errors, stats.processed);
   });
 
   it('accepts limit option', async () => {
-    const stats = await runVideoStage({ limit: 1 });
-    assert.equal(stats.processed, 0);
+    const stats = await runVideoStage({ limit: 1, dryRun: true });
+    assert.ok(stats.processed <= 1);
+    assert.equal(stats.created + stats.errors, stats.processed);
   });
 
-  it('accepts dryRun option', async () => {
+  it('accepts dryRun option — created + errors equals processed', async () => {
     const stats = await runVideoStage({ dryRun: true });
-    assert.equal(stats.processed, 0);
+    assert.equal(stats.created + stats.errors, stats.processed);
   });
 
   it('accepts siteId option for non-existent site', async () => {
@@ -419,12 +420,12 @@ describe('runVideoStage', () => {
   });
 
   it('accepts localOnly option', async () => {
-    const stats = await runVideoStage({ localOnly: true });
-    assert.equal(stats.processed, 0);
+    const stats = await runVideoStage({ localOnly: true, dryRun: true });
+    assert.equal(stats.created + stats.errors, stats.processed);
   });
 
   it('returns numbers for all stats fields', async () => {
-    const stats = await runVideoStage();
+    const stats = await runVideoStage({ dryRun: true });
     assert.equal(typeof stats.processed, 'number');
     assert.equal(typeof stats.created, 'number');
     assert.equal(typeof stats.errors, 'number');

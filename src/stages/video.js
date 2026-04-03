@@ -586,6 +586,7 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
     google_rating:      review?.rating ?? site.google_rating ?? 5,
     phone:              site.phone || null,
     logo_url:           site.logo_url || null,
+    country_code:       site.country_code || null,
   };
 
   if (!prospect.best_review_text) {
