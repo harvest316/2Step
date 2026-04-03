@@ -18,7 +18,9 @@
  *      keyed by stage name with `{ ok, result, elapsed }` per stage.
  */
 
-import { describe, it } from 'node:test';
+import { describe, it, after } from 'node:test';
+import { closePool } from '../../src/utils/db.js';
+after(async () => { await closePool(); });
 import assert from 'node:assert/strict';
 
 // ─── Stage export verification ────────────────────────────────────────────────
