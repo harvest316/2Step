@@ -69,7 +69,7 @@ async function getTwoStepPricing(countryCode) {
     UK: { amount: 497, currency: 'GBP', symbol: '\u00a3' },
     GB: { amount: 497, currency: 'GBP', symbol: '\u00a3' },
   };
-  return defaults[countryCode] || null;
+  return defaults[countryCode] || { amount: 625, currency: 'AUD', symbol: '$' };
 }
 
 // ── Stage runner ─────────────────────────────────────────────────────────────

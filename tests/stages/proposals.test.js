@@ -140,25 +140,24 @@ describe('proposals direct column fallback', () => {
 // ─── DATABASE_PATH isolation ────────────────────────────────────────────────
 
 describe('2Step DATABASE_PATH isolation', () => {
-  it('2Step db.js uses TWOSTEP_DATABASE_PATH, not DATABASE_PATH', async () => {
-    // Read the db.js source and verify it uses the correct env var
+  it('2Step db.js uses PostgreSQL (pg.Pool), not SQLite', async () => {
+    // 2Step migrated from SQLite to PG — verify db.js imports pg and uses
+    // DATABASE_URL / PG connection vars, not a SQLite file path.
     const { readFileSync } = await import('fs');
     const dbSource = readFileSync(resolve(ROOT, 'src/utils/db.js'), 'utf8');
 
-    // Must use TWOSTEP_DATABASE_PATH as primary env var
     assert.ok(
-      dbSource.includes('TWOSTEP_DATABASE_PATH'),
-      'db.js should check TWOSTEP_DATABASE_PATH env var'
+      dbSource.includes("from 'pg'") || dbSource.includes("require('pg')"),
+      'db.js should import the pg driver'
     );
-
-    // Must NOT use DATABASE_PATH directly (which would conflict with 333Method)
-    const lines = dbSource.split('\n');
-    const dbPathLine = lines.find(l => l.includes('const dbPath'));
-    assert.ok(dbPathLine, 'should have a dbPath const declaration');
     assert.ok(
-      !dbPathLine.includes("process.env.DATABASE_PATH'") &&
-      !dbPathLine.includes('process.env.DATABASE_PATH '),
-      'dbPath should not read generic DATABASE_PATH (conflicts with 333Method .env)'
+      dbSource.includes('pg.Pool') || dbSource.includes('new Pool'),
+      'db.js should create a pg.Pool'
+    );
+    // Must NOT import better-sqlite3 (would use 333Method's SQLite path)
+    assert.ok(
+      !dbSource.includes('better-sqlite3'),
+      'db.js must not use SQLite (would conflict with DATABASE_PATH env var)'
     );
   });
 });

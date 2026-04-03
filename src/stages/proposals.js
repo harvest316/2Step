@@ -247,7 +247,7 @@ function formatPrice(amount, currency) {
   if (!amount) return '';
   const symbols = { AUD: '$', USD: '$', GBP: '\u00a3', CAD: 'C$', NZD: 'NZ$' };
   const sym = symbols[currency];
-  if (!sym) return `${currency || '?'}${Math.round(amount)}`;
+  if (!sym) return `$${Math.round(amount)}`;
   return `${sym}${Math.round(amount)}`;
 }
 
@@ -266,7 +266,7 @@ function computeScheduledAt(dayOffset) {
   // Round to 9am in the sending timezone — the outreach stage will apply
   // business-hours logic at send time, so we just set the date here.
   now.setHours(9, 0, 0, 0);
-  return now.toISOString();
+  return now.toISOString().replace('T', ' ').slice(0, 19);
 }
 
 /**
