@@ -385,7 +385,8 @@ async function processKeyword(api, kwRow, limit, dryRun) {
   const resolvedNiche = (niche || keyword).toLowerCase();
 
   // Load review-criteria config for this country + niche
-  const criteria = loadReviewCriteria(countryCode || 'AU', resolvedNiche);
+  if (!countryCode) throw new Error(`country_code is required for keyword "${keyword}"`);
+  const criteria = loadReviewCriteria(countryCode, resolvedNiche);
   const reviewsQuery = criteria
     ? buildQueryFromCriteria(criteria)
     : resolvedNiche;  // fallback to niche name if no config file

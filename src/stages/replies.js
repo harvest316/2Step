@@ -55,7 +55,7 @@ async function getTwoStepPricing(countryCode) {
       return {
         amount: row.setup_local || row.monthly_8 || 625,
         currency: row.currency,
-        symbol: symbols[row.currency] || '$',
+        symbol: symbols[row.currency],
       };
     }
   } catch (_) {
@@ -69,7 +69,7 @@ async function getTwoStepPricing(countryCode) {
     UK: { amount: 497, currency: 'GBP', symbol: '\u00a3' },
     GB: { amount: 497, currency: 'GBP', symbol: '\u00a3' },
   };
-  return defaults[countryCode] || defaults.AU;
+  return defaults[countryCode] || null;
 }
 
 // ── Stage runner ─────────────────────────────────────────────────────────────

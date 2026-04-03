@@ -55,7 +55,11 @@ async function readStdin() {
 // ─── Store Handlers ──────────────────────────────────────────────────────────
 
 function storeProposal(item) {
-  const contactMethod = item.contact_method || 'email';
+  if (!item.contact_method) {
+    console.error(`[store] Missing contact_method for site ${item.site_id} — skipping`);
+    return;
+  }
+  const contactMethod = item.contact_method;
   let contactUri = item.contact_uri || '';
 
   // Normalize phone numbers
@@ -70,7 +74,7 @@ function storeProposal(item) {
     SELECT id FROM msgs.pricing
     WHERE project = '2step' AND country_code = ? AND superseded_at IS NULL
     LIMIT 1
-  `).get(item.country_code || 'AU');
+  `).get(item.country_code);
 
   const pricingId = pricing?.id || null;
   const videoUrl = item.video_url || null;

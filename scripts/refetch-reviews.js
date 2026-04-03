@@ -126,7 +126,8 @@ function loadCriteria(niche, countryCode) {
     'cleaner': 'house-cleaning',
   };
   const nicheKey = nicheMap[niche.toLowerCase()] || niche.toLowerCase();
-  const country = (countryCode || 'AU').toUpperCase();
+  if (!countryCode) throw new Error('country_code is required for review criteria lookup');
+  const country = countryCode.toUpperCase();
   const path = resolve(root, `data/review-criteria/${country}/${nicheKey}.json`);
 
   let criteria;

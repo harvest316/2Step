@@ -170,7 +170,10 @@ function assembleEmail(msg) {
   }
 
   const businessName = msg.business_name || 'your business';
-  const countryCode = msg.country_code || 'AU';
+  if (!msg.country_code) {
+    throw new Error(`No country_code for message #${msg.id} — cannot assemble email`);
+  }
+  const countryCode = msg.country_code;
 
   // Use stored subject/preheader from proposal generation
   const subject = msg.subject_line || `Your free video review is ready, ${businessName}`;

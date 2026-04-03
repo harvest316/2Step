@@ -94,7 +94,8 @@ const legacyDictLocators = (() => {
 })();
 
 function getDictLocators(countryCode) {
-  const cc = (countryCode || 'AU').toUpperCase();
+  if (!countryCode) throw new Error('country_code is required for dictionary lookup');
+  const cc = countryCode.toUpperCase();
   const entry = plsDictIds[cc];
   if (entry?.id) {
     return [{ pronunciation_dictionary_id: entry.id, version_id: entry.version_id }];
@@ -121,7 +122,8 @@ for (const cc of Object.keys(plsDictIds)) {
  */
 async function ensurePronunciation(city, countryCode, state) {
   if (!city) return;
-  const cc = (countryCode || 'AU').toUpperCase();
+  if (!countryCode) throw new Error('country_code is required for pronunciation lookup');
+  const cc = countryCode.toUpperCase();
   const key = `${cc}:${city.toLowerCase()}`;
 
   if (_plsGraphemes.has(key)) return; // already in PLS
@@ -232,7 +234,8 @@ async function generateVoiceover(text, countryCode) {
  * @param {string|null} suburb  — for phonetic substitution fallback
  * @returns {Promise<{ audioBufs: Buffer[], durations: number[] }>}
  */
-async function generateSceneAudio(scenes, suburb = null, countryCode = 'AU') {
+async function generateSceneAudio(scenes, suburb = null, countryCode) {
+  if (!countryCode) throw new Error('country_code is required for audio generation');
   const audioBufs = [];
   const durations = [];
 
@@ -570,12 +573,12 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
   /* c8 ignore start — live render path: ElevenLabs + ffmpeg + R2 I/O */
 
   // 4b. On-the-fly pronunciation check — ensure city is in PLS before rendering
-  await ensurePronunciation(prospect.city, prospect.country_code || 'AU', site.state);
+  await ensurePronunciation(prospect.city, prospect.country_code, site.state);
 
   // 5. Generate ElevenLabs voiceover per scene
   if (!ELEVENLABS_KEY) throw new Error('ELEVENLABS_API_KEY must be set');
   process.stdout.write('  Generating voiceovers');
-  const { audioBufs, durations } = await generateSceneAudio(scenes, prospect.city, prospect.country_code || 'AU');
+  const { audioBufs, durations } = await generateSceneAudio(scenes, prospect.city, prospect.country_code);
   process.stdout.write(` (${durations.length} scenes)\n`);
 
   // Attach measured durations back to scenes

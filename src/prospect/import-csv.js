@@ -48,7 +48,7 @@ for (const row of rows) {
       row.business_name || row.name,
       row.city || null,
       row.state || null,
-      row.country_code || row.country || 'AU',
+      row.country_code || row.country || null,
       row.phone || null,
       row.email || null,
       row.website_url || row.website || null,

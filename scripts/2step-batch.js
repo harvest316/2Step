@@ -234,7 +234,7 @@ function fetchReplyResponses() {
       SELECT * FROM msgs.pricing
       WHERE project = '2step' AND country_code = ? AND superseded_at IS NULL
       LIMIT 3
-    `).all(site?.country_code || 'AU');
+    `).all(site?.country_code);
 
     return {
       message_id: msg.id,

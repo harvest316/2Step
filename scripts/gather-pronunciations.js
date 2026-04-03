@@ -101,7 +101,8 @@ const TEST_SET = [
 function parsePlaces(placesStr) {
   return placesStr.split(',').map(entry => {
     const [name, country] = entry.trim().split(':');
-    return { name: name.trim(), country: (country || 'AU').trim().toUpperCase() };
+    if (!country) throw new Error(`Missing country code for place "${name.trim()}" — use format "name:CC"`);
+    return { name: name.trim(), country: country.trim().toUpperCase() };
   });
 }
 
@@ -120,7 +121,8 @@ async function getPlacesFromDb() {
 
   return rows.map(row => {
     const [name, country] = row.split('|');
-    return { name, country: country || 'AU' };
+    if (!country) throw new Error(`Missing country_code in DB for city "${name}"`);
+    return { name, country };
   });
 }
 

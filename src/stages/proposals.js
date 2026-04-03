@@ -246,7 +246,8 @@ async function lookupPricing(countryCode, niche) {
 function formatPrice(amount, currency) {
   if (!amount) return '';
   const symbols = { AUD: '$', USD: '$', GBP: '\u00a3', CAD: 'C$', NZD: 'NZ$' };
-  const sym = symbols[currency] || '$';
+  const sym = symbols[currency];
+  if (!sym) return `${currency || '?'}${Math.round(amount)}`;
   return `${sym}${Math.round(amount)}`;
 }
 
@@ -278,7 +279,8 @@ function computeScheduledAt(dayOffset) {
  */
 /* c8 ignore start — internal stage function: requires populated DB + sequence templates */
 async function generateSequenceForContact(site, primaryEmail, primaryPhone, vars, pricing, dryRun) {
-  const countryCode = site.country_code || 'AU';
+  if (!site.country_code) throw new Error(`country_code is required for site ${site.id}`);
+  const countryCode = site.country_code;
 
   let sequence;
   try {
@@ -470,7 +472,12 @@ export async function runProposalsStage(options = {}) {
         brand_name: process.env.BRAND_NAME || '',
       };
 
-      const countryCode = site.country_code || 'AU';
+      if (!site.country_code) {
+        console.warn(`  [skip] ${site.business_name}: missing country_code`);
+        errors++;
+        continue;
+      }
+      const countryCode = site.country_code;
       const pricing = await lookupPricing(countryCode, site.niche);
 
       let siteMessages = 0;
