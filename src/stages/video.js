@@ -33,11 +33,12 @@ import {
   extractQuotes,
   smoothGrammar,
 } from '../video/scene-builder.js';
+import { gatherPronunciation, generatePLS } from '../video/pronunciation-sources.js';
 import { pickMusicTrack } from '../video/music-tracks.js';
 import { pickVariant } from '../video/style-variants.js';
 import sharp from 'sharp';
 import { mkdir, rm, readFile } from 'fs/promises';
-import { existsSync, readFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
@@ -99,6 +100,82 @@ function getDictLocators(countryCode) {
     return [{ pronunciation_dictionary_id: entry.id, version_id: entry.version_id }];
   }
   return legacyDictLocators; // fallback to alias dict
+}
+
+// Track which place names are in the current PLS (loaded at startup)
+const _plsGraphemes = new Set();
+for (const cc of Object.keys(plsDictIds)) {
+  const plsPath = resolve(ROOT, `data/pronunciation/${cc.toLowerCase()}.pls`);
+  if (existsSync(plsPath)) {
+    const pls = readFileSync(plsPath, 'utf8');
+    for (const match of pls.matchAll(/<grapheme>([^<]+)<\/grapheme>/g)) {
+      _plsGraphemes.add(`${cc}:${match[1].toLowerCase()}`);
+    }
+  }
+}
+
+/**
+ * Ensure a place name has a pronunciation in the PLS before rendering.
+ * If not found, gathers pronunciation from all sources (including Opus researcher)
+ * and re-uploads the PLS to ElevenLabs.
+ */
+async function ensurePronunciation(city, countryCode, state) {
+  if (!city) return;
+  const cc = (countryCode || 'AU').toUpperCase();
+  const key = `${cc}:${city.toLowerCase()}`;
+
+  if (_plsGraphemes.has(key)) return; // already in PLS
+
+  process.stdout.write(`  Pronunciation lookup: ${city} (${cc})... `);
+
+  const result = await gatherPronunciation(city, cc, state, { skipResearch: false });
+
+  if (!result.cmu) {
+    console.log('not found — using ElevenLabs default');
+    return;
+  }
+
+  console.log(`${result.cmu} [${result.confidence}, ${result.agreementCount} sources]`);
+
+  // Append to PLS file and re-upload
+  const plsPath = resolve(ROOT, `data/pronunciation/${cc.toLowerCase()}.pls`);
+  const resultsPath = resolve(ROOT, `data/pronunciation/results/${cc.toLowerCase()}.json`);
+
+  // Append to results JSON
+  let results = [];
+  if (existsSync(resultsPath)) {
+    try { results = JSON.parse(readFileSync(resultsPath, 'utf8')); } catch { /* */ }
+  }
+  results.push(result);
+  const { mkdirSync } = await import('fs');
+  mkdirSync(dirname(resultsPath), { recursive: true });
+  writeFileSync(resultsPath, JSON.stringify(results, null, 2));
+
+  // Regenerate PLS
+  const pls = generatePLS(results);
+  writeFileSync(plsPath, pls);
+
+  // Re-upload to ElevenLabs
+  try {
+    const form = new FormData();
+    form.append('name', `2step-${cc.toLowerCase()}-${Date.now()}`);
+    form.append('file', new Blob([pls], { type: 'text/xml' }), `${cc.toLowerCase()}.pls`);
+    const res = await fetch(`${EL_BASE}/pronunciation-dictionaries/add-from-file`, {
+      method: 'POST',
+      headers: { 'xi-api-key': ELEVENLABS_KEY },
+      body: form,
+    });
+    if (res.ok) {
+      const dict = await res.json();
+      plsDictIds[cc] = { id: dict.id, version_id: dict.version_id, uploaded_at: new Date().toISOString(), entry_count: dict.version_rules_num };
+      writeFileSync(PLS_DICT_IDS_PATH, JSON.stringify(plsDictIds, null, 2));
+      console.log(`  PLS re-uploaded: ${dict.version_rules_num} rules`);
+    }
+  } catch (e) {
+    console.warn(`  PLS upload failed: ${e.message}`);
+  }
+
+  _plsGraphemes.add(key);
 }
 
 // ─── ElevenLabs voiceover generation ─────────────────────────────────────────
@@ -491,6 +568,10 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
   }
 
   /* c8 ignore start — live render path: ElevenLabs + ffmpeg + R2 I/O */
+
+  // 4b. On-the-fly pronunciation check — ensure city is in PLS before rendering
+  await ensurePronunciation(prospect.city, prospect.country_code || 'AU', site.state);
+
   // 5. Generate ElevenLabs voiceover per scene
   if (!ELEVENLABS_KEY) throw new Error('ELEVENLABS_API_KEY must be set');
   process.stdout.write('  Generating voiceovers');

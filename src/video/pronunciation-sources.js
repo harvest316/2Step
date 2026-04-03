@@ -1,24 +1,25 @@
 /**
- * Multi-source pronunciation gatherer.
+ * Multi-source pronunciation gatherer with 3-source agreement.
  *
- * Queries multiple authoritative sources for place name pronunciations,
- * cross-references them, and flags conflicts.
+ * Independent sources (for agreement counting):
+ *   1. Manual overrides (always wins, bypasses agreement)
+ *   2. Wikimedia (Wikipedia + Wiktionary + Wikidata — ONE source, same editorial pool)
+ *   3. CMU Pronunciation Dictionary (134K US English entries)
+ *   4. OpenStreetMap (name:pronunciation tag, ~735 places, mostly UK)
+ *   5. Opus web researcher (on-demand, searches council/govt/tourism sites)
  *
- * Sources:
- *   1. CMU Pronunciation Dictionary (local file, American English)
- *   2. Wikipedia MediaWiki API (IPA from article text)
- *   3. Manual overrides (data/pronunciation/overrides.json)
- *   4. Future: eSpeak-NG, BBC Pronunciation, ABC Pron Guide, Te Taura Whiri
- *
- * Output: CMU ARPAbet for each place name, with source attribution and
- * confidence level (single-source vs multi-source agreement).
+ * Confidence levels:
+ *   'override'       — human-verified in overrides.json
+ *   'verified'       — 3+ independent sources agree
+ *   'likely'         — 2 sources agree
+ *   'single-source'  — only 1 authoritative source
+ *   'unverified'     — no agreement, needs review
  */
 
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { ipaToCmu, parseWikipediaIPA } from './ipa-to-cmu.js';
-import { espeakToCmu } from './espeak-to-cmu.js';
+import { ipaToCmu, parseWikipediaIPA, cmuToIpa } from './ipa-to-cmu.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -26,235 +27,7 @@ const DATA_DIR = resolve(ROOT, 'data/pronunciation');
 const CMU_DICT_PATH = resolve(DATA_DIR, 'cmudict.dict');
 const OVERRIDES_PATH = resolve(DATA_DIR, 'overrides.json');
 
-// ─── Source 1: CMU Pronunciation Dictionary ──────────────────────────────────
-
-let _cmuIndex = null;
-
-function loadCmuDict() {
-  if (_cmuIndex) return _cmuIndex;
-  _cmuIndex = new Map();
-
-  if (!existsSync(CMU_DICT_PATH)) {
-    console.warn('CMU dict not found at', CMU_DICT_PATH);
-    return _cmuIndex;
-  }
-
-  const lines = readFileSync(CMU_DICT_PATH, 'utf8').split('\n');
-  for (const line of lines) {
-    if (line.startsWith(';;;') || !line.trim()) continue;
-    const spaceIdx = line.indexOf(' ');
-    if (spaceIdx === -1) continue;
-    const word = line.substring(0, spaceIdx).toLowerCase();
-    const phonemes = line.substring(spaceIdx).trim();
-    // CMU dict has variants like WORD(2) — store all, primary first
-    const baseWord = word.replace(/\(\d+\)$/, '');
-    if (!_cmuIndex.has(baseWord)) _cmuIndex.set(baseWord, []);
-    _cmuIndex.get(baseWord).push(phonemes);
-  }
-
-  return _cmuIndex;
-}
-
-/**
- * Look up a place name in the CMU dictionary.
- * @returns {{ cmu: string, variant: number }[] | null }
- */
-export function lookupCmu(placeName) {
-  const dict = loadCmuDict();
-  const key = placeName.toLowerCase().replace(/[^a-z]/g, '');
-  const entries = dict.get(key);
-  if (!entries) return null;
-  return entries.map((cmu, i) => ({ cmu, variant: i + 1 }));
-}
-
-// ─── Source 2: Wikipedia MediaWiki API ───────────────────────────────────────
-
-const WIKI_API = 'https://en.wikipedia.org/w/api.php';
-const WIKI_RPM = 200; // rate limit
-let _lastWikiCall = 0;
-
-async function wikiRateLimit() {
-  const minInterval = 60000 / WIKI_RPM; // 300ms at 200rpm
-  const elapsed = Date.now() - _lastWikiCall;
-  if (elapsed < minInterval) {
-    await new Promise(r => setTimeout(r, minInterval - elapsed));
-  }
-  _lastWikiCall = Date.now();
-}
-
-/**
- * Extract IPA pronunciation from a Wikipedia article.
- * Handles both {{IPAc-en|...}} templates and /IPA/ in plain text.
- *
- * @param {string} placeName - e.g. "Woollahra"
- * @param {string} [disambiguation] - e.g. "New South Wales" to disambiguate
- * @returns {Promise<{ ipa: string, cmu: string, source: string } | null>}
- */
-export async function lookupWikipedia(placeName, disambiguation) {
-  await wikiRateLimit();
-
-  // Try exact title first, then with disambiguation
-  const titles = [placeName];
-  if (disambiguation) {
-    titles.push(`${placeName}, ${disambiguation}`);
-    titles.push(`${placeName} (${disambiguation})`);
-  }
-
-  for (const title of titles) {
-    try {
-      const params = new URLSearchParams({
-        action: 'query',
-        titles: title,
-        prop: 'revisions',
-        rvprop: 'content',
-        format: 'json',
-        rvslots: 'main',
-        redirects: '1',
-      });
-
-      const res = await fetch(`${WIKI_API}?${params}`);
-      if (!res.ok) continue;
-
-      const data = await res.json();
-      const pages = data.query?.pages;
-      if (!pages) continue;
-
-      for (const page of Object.values(pages)) {
-        if (page.missing !== undefined) continue;
-        const wikitext = page.revisions?.[0]?.slots?.main?.['*'];
-        if (!wikitext) continue;
-
-        const ipa = extractIPA(wikitext, placeName);
-        if (ipa) {
-          const cmu = ipaToCmu(ipa);
-          return { ipa, cmu, source: `wikipedia:${page.title}`, title: page.title };
-        }
-      }
-    } catch (e) {
-      // Network error — skip this title variant
-    }
-  }
-
-  return null;
-}
-
-/**
- * Batch lookup multiple place names via Wikipedia API (up to 50 per request).
- * @param {Array<{name: string, disambiguation?: string}>} places
- * @returns {Promise<Map<string, { ipa: string, cmu: string, source: string }>>}
- */
-export async function batchLookupWikipedia(places) {
-  const results = new Map();
-
-  // Wikipedia API allows up to 50 titles per request
-  const BATCH_SIZE = 50;
-  for (let i = 0; i < places.length; i += BATCH_SIZE) {
-    const batch = places.slice(i, i + BATCH_SIZE);
-    await wikiRateLimit();
-
-    // Build title list — try with disambiguation suffix first
-    const titleMap = new Map(); // title → place
-    for (const p of batch) {
-      const titles = [p.name];
-      if (p.disambiguation) {
-        titles.unshift(`${p.name}, ${p.disambiguation}`);
-      }
-      for (const t of titles) {
-        titleMap.set(t, p);
-      }
-    }
-
-    const params = new URLSearchParams({
-      action: 'query',
-      titles: [...titleMap.keys()].join('|'),
-      prop: 'revisions',
-      rvprop: 'content',
-      format: 'json',
-      rvslots: 'main',
-      redirects: '1',
-    });
-
-    try {
-      const res = await fetch(`${WIKI_API}?${params}`);
-      if (!res.ok) continue;
-      const data = await res.json();
-      const pages = data.query?.pages;
-      if (!pages) continue;
-
-      for (const page of Object.values(pages)) {
-        if (page.missing !== undefined) continue;
-        const wikitext = page.revisions?.[0]?.slots?.main?.['*'];
-        if (!wikitext) continue;
-
-        // Match this page back to a place name
-        const place = titleMap.get(page.title);
-        const name = place?.name || page.title.split(',')[0].split('(')[0].trim();
-
-        if (results.has(name)) continue; // already found
-
-        const ipa = extractIPA(wikitext, name);
-        if (ipa) {
-          results.set(name, {
-            ipa,
-            cmu: ipaToCmu(ipa),
-            source: `wikipedia:${page.title}`,
-          });
-        }
-      }
-    } catch (e) {
-      // Network error — skip this batch
-    }
-  }
-
-  return results;
-}
-
-/**
- * Extract IPA from wikitext.
- * Handles: {{IPAc-en|...}}, {{IPA-en|...}}, /IPA text/
- *
- * Wikipedia quirks handled:
- *   - audio=filename.ogg params inside templates
- *   - HTML comments inside templates (e.g. Melbourne's MOS:DIAPHONEMIC note)
- *   - ᵻ (U+1D7B) "free vowel" — maps to ə in our converter
- *   - Optional phonemes in parentheses: |(|l|ə|)|
- *   - Multiple variants — takes the first (primary pronunciation)
- */
-function extractIPA(wikitext, placeName) {
-  // Strip HTML comments from wikitext
-  const clean = wikitext.replace(/<!--[\s\S]*?-->/g, '');
-
-  // 1. {{IPAc-en|...}} — pipe-separated components
-  const ipacMatch = clean.match(/\{\{IPAc-en\|([^}]+)\}\}/);
-  if (ipacMatch) {
-    let parts = ipacMatch[1];
-    // Strip audio=... parameter
-    parts = parts.replace(/audio=[^|]+\|?/g, '');
-    // Strip parenthetical optional markers
-    parts = parts.replace(/\|?\(|\)/g, '');
-    // Strip leading/trailing pipes
-    parts = parts.replace(/^\|+|\|+$/g, '');
-    return parseWikipediaIPA(parts);
-  }
-
-  // 2. {{IPA-en|/..../}} or {{IPA-en|[....]}}
-  const ipaEnMatch = clean.match(/\{\{IPA-en\|[\/\[]([^\/\]]+)[\/\]]/);
-  if (ipaEnMatch) {
-    return ipaEnMatch[1];
-  }
-
-  // 3. Plain IPA in slashes in the first paragraph
-  //    Match /.../ containing at least one IPA-specific character
-  const intro = clean.substring(0, 800);
-  const slashMatch = intro.match(/\/([\u0250-\u02FF\u0300-\u036Fɑæɒʌəɛɜɪʊiueoaɔˈˌːbdfɡhɹɾjklmnŋprsʃtθðvwzʒ.]+)\//);
-  if (slashMatch && slashMatch[1].length >= 3) {
-    return slashMatch[1];
-  }
-
-  return null;
-}
-
-// ─── Source 3: Manual overrides ──────────────────────────────────────────────
+// ─── Source 1: Manual overrides ──────────────────────────────────────────────
 
 let _overrides = null;
 
@@ -277,10 +50,6 @@ function loadOverrides() {
   return _overrides;
 }
 
-/**
- * Look up a manual override.
- * @returns {{ cmu: string, source: string, note?: string } | null}
- */
 export function lookupOverride(placeName, country) {
   const overrides = loadOverrides();
   const key = `${placeName.toLowerCase()}|${country.toUpperCase()}`;
@@ -289,218 +58,512 @@ export function lookupOverride(placeName, country) {
   return { cmu: entry.cmu, source: `override:${entry.source || 'manual'}`, note: entry.note };
 }
 
-// ─── Source 4: eSpeak-NG (WASM, fallback) ────────────────────────────────────
+// ─── Source 2: Wikimedia (Wikipedia + Wiktionary + Wikidata as ONE source) ───
 
-let _espeakWorker = null;
-let _espeakModule = null;
+const WIKI_API = 'https://en.wikipedia.org/w/api.php';
+const WIKT_API = 'https://en.wiktionary.org/w/api.php';
+const WIKIDATA_SPARQL = 'https://query.wikidata.org/sparql';
+let _lastWikiCall = 0;
 
-async function getEspeakWorker() {
-  if (_espeakWorker) return _espeakWorker;
-  const espeakInit = (await import('@echogarden/espeak-ng-emscripten')).default;
-  _espeakModule = await espeakInit();
-  _espeakWorker = new _espeakModule.eSpeakNGWorker();
-  return _espeakWorker;
+async function wikiRateLimit() {
+  const minInterval = 300; // 200 RPM
+  const elapsed = Date.now() - _lastWikiCall;
+  if (elapsed < minInterval) {
+    await new Promise(r => setTimeout(r, minInterval - elapsed));
+  }
+  _lastWikiCall = Date.now();
 }
 
-function readEspeakPtr(ptr) {
-  const p0 = ptr?.ptr || ptr;
-  if (typeof p0 !== 'number') return '';
-  let end = p0;
-  while (_espeakModule.HEAPU8[end] !== 0 && end < p0 + 500) end++;
-  return new TextDecoder('utf-8').decode(_espeakModule.HEAPU8.slice(p0, end));
+/**
+ * Combined Wikimedia lookup — queries Wikipedia, Wiktionary, and Wikidata.
+ * Returns ONE result (best of three). This counts as ONE independent source.
+ */
+export async function lookupWikimedia(placeName, country, disambiguation) {
+  // Try all three in parallel
+  const [wiki, wikt, wikidata] = await Promise.all([
+    lookupWikipedia(placeName, disambiguation || countryToDisambiguation(country)),
+    lookupWiktionary(placeName, country),
+    lookupWikidata(placeName),
+  ]);
+
+  // Prefer Wiktionary (dialect-specific), then Wikipedia (widest coverage), then Wikidata
+  const best = wikt || wiki || wikidata;
+  if (!best) return null;
+
+  // Tag which Wikimedia project provided it
+  return {
+    ...best,
+    source: best.source || 'wikimedia',
+    // Store all for debugging
+    _wikiSources: { wikipedia: wiki, wiktionary: wikt, wikidata },
+  };
 }
 
-// Map country code to eSpeak voice
-const ESPEAK_VOICES = {
-  AU: 'en',       // No specific AU voice — use default English
-  UK: 'en-gb',
-  US: 'en-us',
-  CA: 'en-us',
-  NZ: 'en',
-  IE: 'en',
-  ZA: 'en',
+async function lookupWikipedia(placeName, disambiguation) {
+  await wikiRateLimit();
+
+  const titles = [placeName];
+  if (disambiguation) {
+    titles.push(`${placeName}, ${disambiguation}`);
+    titles.push(`${placeName} (${disambiguation})`);
+  }
+
+  for (const title of titles) {
+    try {
+      const params = new URLSearchParams({
+        action: 'query', titles: title, prop: 'revisions',
+        rvprop: 'content', format: 'json', rvslots: 'main', redirects: '1',
+      });
+      const res = await fetch(`${WIKI_API}?${params}`);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const pages = data.query?.pages;
+      if (!pages) continue;
+
+      for (const page of Object.values(pages)) {
+        if (page.missing !== undefined) continue;
+        const wikitext = page.revisions?.[0]?.slots?.main?.['*'];
+        if (!wikitext) continue;
+        const ipa = extractIPA(wikitext);
+        if (ipa) {
+          return { ipa, cmu: ipaToCmu(ipa), source: `wikimedia:wikipedia:${page.title}` };
+        }
+      }
+    } catch { /* skip */ }
+  }
+  return null;
+}
+
+async function lookupWiktionary(placeName, country) {
+  await wikiRateLimit();
+
+  try {
+    const params = new URLSearchParams({
+      action: 'parse', page: placeName, prop: 'wikitext', format: 'json',
+    });
+    const res = await fetch(`${WIKT_API}?${params}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const wikitext = data.parse?.wikitext?.['*'];
+    if (!wikitext) return null;
+
+    // Wiktionary has dialect-specific IPA: {{IPA|en|/ˈmɛlbən/|a=AusE}}
+    // Try to find the dialect matching the country first
+    const dialectMap = { AU: 'AusE', UK: 'RP', US: 'GenAm', NZ: 'NZE', CA: 'GenAm', IE: 'IE', ZA: 'SAE' };
+    const targetDialect = dialectMap[country];
+
+    // Extract all IPA entries with their dialect tags
+    const ipaEntries = [];
+    const ipaPattern = /\{\{IPA\|en\|\/([^\/]+)\/(?:\|a=([^}|]+))?\}\}/g;
+    let match;
+    while ((match = ipaPattern.exec(wikitext)) !== null) {
+      ipaEntries.push({ ipa: match[1], dialect: match[2] || 'generic' });
+    }
+
+    // Also check {{enPR|...}} and {{a|...}} {{IPA|en|...}} patterns
+    const altPattern = /\{\{a\|([^}]+)\}\}\s*\{\{IPA\|en\|\/([^\/]+)\//g;
+    while ((match = altPattern.exec(wikitext)) !== null) {
+      ipaEntries.push({ ipa: match[2], dialect: match[1] });
+    }
+
+    if (!ipaEntries.length) return null;
+
+    // Pick dialect-specific if available, otherwise first
+    const dialectMatch = ipaEntries.find(e => e.dialect === targetDialect);
+    const best = dialectMatch || ipaEntries[0];
+
+    return {
+      ipa: best.ipa,
+      cmu: ipaToCmu(best.ipa),
+      source: `wikimedia:wiktionary:${placeName}:${best.dialect}`,
+      dialect: best.dialect,
+    };
+  } catch { return null; }
+}
+
+async function lookupWikidata(placeName) {
+  try {
+    // First find the Wikidata entity ID for this place
+    await wikiRateLimit();
+    const searchParams = new URLSearchParams({
+      action: 'wbsearchentities', search: placeName, language: 'en',
+      type: 'item', format: 'json', limit: '3',
+    });
+    const searchRes = await fetch(`https://www.wikidata.org/w/api.php?${searchParams}`);
+    if (!searchRes.ok) return null;
+    const searchData = await searchRes.json();
+    const entities = searchData.search || [];
+
+    for (const entity of entities) {
+      // Check P898 (IPA transcription)
+      const query = `SELECT ?ipa WHERE { wd:${entity.id} wdt:P898 ?ipa }`;
+      const sparqlRes = await fetch(
+        `${WIKIDATA_SPARQL}?query=${encodeURIComponent(query)}&format=json`,
+        { headers: { Accept: 'application/sparql-results+json' } }
+      );
+      if (!sparqlRes.ok) continue;
+      const sparqlData = await sparqlRes.json();
+      const bindings = sparqlData.results?.bindings;
+      if (bindings?.length) {
+        const ipa = bindings[0].ipa.value;
+        return { ipa, cmu: ipaToCmu(ipa), source: `wikimedia:wikidata:${entity.id}` };
+      }
+    }
+  } catch { /* skip */ }
+  return null;
+}
+
+function extractIPA(wikitext) {
+  const clean = wikitext.replace(/<!--[\s\S]*?-->/g, '');
+
+  const ipacMatch = clean.match(/\{\{IPAc-en\|([^}]+)\}\}/);
+  if (ipacMatch) {
+    let parts = ipacMatch[1];
+    parts = parts.replace(/audio=[^|]+\|?/g, '');
+    parts = parts.replace(/\|?\(|\)/g, '');
+    parts = parts.replace(/^\|+|\|+$/g, '');
+    return parseWikipediaIPA(parts);
+  }
+
+  const ipaEnMatch = clean.match(/\{\{IPA-en\|[\/\[]([^\/\]]+)[\/\]]/);
+  if (ipaEnMatch) return ipaEnMatch[1];
+
+  const intro = clean.substring(0, 800);
+  const slashMatch = intro.match(/\/([\u0250-\u02FF\u0300-\u036Fɑæɒʌəɛɜɪʊiueoaɔˈˌːbdfɡhɹɾjklmnŋprsʃtθðvwzʒ.]+)\//);
+  if (slashMatch && slashMatch[1].length >= 3) return slashMatch[1];
+
+  return null;
+}
+
+// ─── Source 3: CMU Pronunciation Dictionary ──────────────────────────────────
+
+let _cmuIndex = null;
+
+function loadCmuDict() {
+  if (_cmuIndex) return _cmuIndex;
+  _cmuIndex = new Map();
+
+  if (!existsSync(CMU_DICT_PATH)) {
+    console.warn('CMU dict not found at', CMU_DICT_PATH);
+    return _cmuIndex;
+  }
+
+  const lines = readFileSync(CMU_DICT_PATH, 'utf8').split('\n');
+  for (const line of lines) {
+    if (line.startsWith(';;;') || !line.trim()) continue;
+    const spaceIdx = line.indexOf(' ');
+    if (spaceIdx === -1) continue;
+    const word = line.substring(0, spaceIdx).toLowerCase();
+    const phonemes = line.substring(spaceIdx).trim();
+    const baseWord = word.replace(/\(\d+\)$/, '');
+    if (!_cmuIndex.has(baseWord)) _cmuIndex.set(baseWord, []);
+    _cmuIndex.get(baseWord).push(phonemes);
+  }
+
+  return _cmuIndex;
+}
+
+export function lookupCmu(placeName) {
+  const dict = loadCmuDict();
+  const key = placeName.toLowerCase().replace(/[^a-z]/g, '');
+  const entries = dict.get(key);
+  if (!entries) return null;
+  return { cmu: entries[0], source: 'cmu' };
+}
+
+// ─── Source 4: OpenStreetMap (Overpass API) ──────────────────────────────────
+
+const OVERPASS_API = 'https://overpass-api.de/api/interpreter';
+
+const OSM_COUNTRY_CODES = {
+  AU: '3600080500', // Australia relation ID
+  UK: '3600062149', // United Kingdom
+  US: '3600148838', // USA
+  CA: '3600001428', // Canada
+  NZ: '3600556706', // New Zealand
+  IE: '3600062273', // Ireland
+  ZA: '3600087565', // South Africa
+};
+
+export async function lookupOSM(placeName, country) {
+  const areaId = OSM_COUNTRY_CODES[country];
+  if (!areaId) return null;
+
+  try {
+    const query = `[out:json][timeout:10];
+area(${areaId})->.country;
+(node["name"="${placeName}"]["name:pronunciation"](area.country);
+ way["name"="${placeName}"]["name:pronunciation"](area.country););
+out tags 1;`;
+
+    const res = await fetch(OVERPASS_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `data=${encodeURIComponent(query)}`,
+    });
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    const elements = data.elements || [];
+    if (!elements.length) return null;
+
+    const pronunciation = elements[0].tags?.['name:pronunciation'];
+    if (!pronunciation) return null;
+
+    const cmu = ipaToCmu(pronunciation);
+    return { ipa: pronunciation, cmu, source: `osm:${elements[0].id}` };
+  } catch { return null; }
+}
+
+// ─── Source 5: Opus web researcher ──────────────────────────────────────────
+
+// Country names for search queries
+const COUNTRY_NAMES = {
+  AU: 'Australia', UK: 'United Kingdom', US: 'United States',
+  CA: 'Canada', NZ: 'New Zealand', IE: 'Ireland', ZA: 'South Africa',
 };
 
 /**
- * Generate pronunciation using eSpeak-NG rule-based synthesis.
- * 100% coverage but unreliable for irregular/indigenous names.
+ * Research pronunciation via Opus web search agent.
+ * Called when automated sources give < 3 agreeing results.
  *
- * @returns {Promise<{ cmu: string, espeak: string, source: string } | null>}
+ * @param {string} name - Place name
+ * @param {string} country - Country code
+ * @param {string} state - State/region for disambiguation
+ * @param {Array<{cmu: string, source: string}>} existingSources - Already gathered
+ * @param {Function} spawnAgent - Agent spawner function (injected to avoid circular dep)
+ * @returns {Promise<Array<{cmu: string, ipa?: string, source: string, note?: string}>>}
  */
-export async function lookupEspeak(placeName, country = 'AU') {
+export async function researchPronunciation(name, country, state, existingSources, spawnAgent) {
+  if (!spawnAgent) return [];
+
+  const countryName = COUNTRY_NAMES[country] || country;
+  const existingIPA = existingSources
+    .filter(s => s?.cmu)
+    .map(s => `${s.source}: ${cmuToIpa(s.cmu) || s.cmu}`)
+    .join('\n  ');
+
+  const prompt = `Research the correct local pronunciation of the place name "${name}" in ${state || ''}, ${countryName}.
+
+I already have these pronunciations from automated sources:
+  ${existingIPA || '(none found)'}
+
+Search for the pronunciation using country-restricted searches (${countryName} only):
+- "${name} pronunciation"
+- "${name} pronunciation ${state || ''}"
+- "${name}" on local council, government, or tourism websites
+
+For each source you find, return:
+- The IPA pronunciation (e.g. /wʊˈlɑːrə/)
+- The source URL
+- Whether this is an authoritative source (government, council, university) or informal (forum, blog)
+
+IMPORTANT: Return your findings as a JSON array:
+[{"ipa": "/wʊˈlɑːrə/", "source": "https://example.com/...", "authoritative": true, "note": "City council pronunciation guide"}]
+
+If you cannot find any pronunciation data, return: []`;
+
   try {
-    const worker = await getEspeakWorker();
-    const voice = ESPEAK_VOICES[country] || 'en';
-    worker.set_voice(voice, '', 0);
-    const ptr = worker.convert_to_phonemes(placeName);
-    const espeakPhonemes = readEspeakPtr(ptr);
-    if (!espeakPhonemes) return null;
-    const cmu = espeakToCmu(espeakPhonemes);
-    return { cmu, espeak: espeakPhonemes, source: `espeak:${voice}` };
-  } catch (e) {
-    return null;
-  }
+    const response = await spawnAgent(prompt);
+    // Parse JSON from agent response
+    const jsonMatch = response.match(/\[[\s\S]*?\]/);
+    if (!jsonMatch) return [];
+
+    const findings = JSON.parse(jsonMatch[0]);
+    return findings
+      .filter(f => f.ipa)
+      .map(f => {
+        const ipa = f.ipa.replace(/^\/|\/$/g, ''); // strip slashes
+        return {
+          cmu: ipaToCmu(ipa),
+          ipa,
+          source: `research:${f.source || 'web'}`,
+          note: f.note,
+          authoritative: f.authoritative,
+        };
+      })
+      .filter(f => f.cmu); // only keep if conversion succeeded
+  } catch { return []; }
 }
 
-// ─── Cross-reference ─────────────────────────────────────────────────────────
+// ─── Agreement counting ─────────────────────────────────────────────────────
+
+function normaliseCmu(cmu) {
+  return cmu.replace(/[012]/g, '').trim().toLowerCase();
+}
+
+/**
+ * Group sources by normalised CMU pronunciation.
+ * Returns array of groups sorted by size (largest first).
+ */
+function groupByAgreement(sources) {
+  const groups = new Map();
+  for (const src of sources) {
+    if (!src?.cmu) continue;
+    const norm = normaliseCmu(src.cmu);
+    if (!groups.has(norm)) groups.set(norm, { cmu: src.cmu, norm, sources: [] });
+    groups.get(norm).sources.push(src);
+  }
+  return [...groups.values()].sort((a, b) => b.sources.length - a.sources.length);
+}
+
+// ─── Cross-reference with agreement ─────────────────────────────────────────
+
+function countryToDisambiguation(country) {
+  const map = {
+    AU: 'New South Wales', UK: 'England', US: null, CA: 'Canada',
+    NZ: 'New Zealand', IE: 'Ireland', ZA: 'South Africa',
+  };
+  return map[country] || null;
+}
 
 /**
  * @typedef {Object} PronunciationResult
- * @property {string} name - Place name
- * @property {string} country - Country code
- * @property {string} cmu - Best CMU ARPAbet pronunciation
- * @property {string} source - Which source provided the chosen pronunciation
- * @property {string} confidence - 'override' | 'multi-source' | 'single-source' | 'none'
+ * @property {string} name
+ * @property {string} country
+ * @property {string} cmu - Best pronunciation
+ * @property {string} source - Winning source(s)
+ * @property {string} confidence - 'override'|'verified'|'likely'|'single-source'|'unverified'
+ * @property {number} agreementCount - How many independent sources agree
  * @property {Object} sources - All source results
- * @property {string[]} conflicts - Description of any conflicts between sources
+ * @property {string[]} conflicts
  */
 
 /**
- * Gather pronunciation from all sources and cross-reference.
+ * Gather pronunciation from all sources with 3-source agreement target.
  *
- * Priority: override > multi-source agreement > Wikipedia > CMU dict
- *
- * @param {string} name - Place name
- * @param {string} country - Country code (AU, UK, US, CA, NZ, etc.)
- * @param {string} [disambiguation] - Wikipedia disambiguation (e.g. "New South Wales")
+ * @param {string} name
+ * @param {string} country
+ * @param {string} [disambiguation]
+ * @param {Object} [options]
+ * @param {Function} [options.spawnAgent] - Agent spawner for Opus researcher
+ * @param {boolean} [options.skipResearch=false] - Skip Opus researcher (for quick lookups)
  * @returns {Promise<PronunciationResult>}
  */
-export async function gatherPronunciation(name, country, disambiguation) {
+export async function gatherPronunciation(name, country, disambiguation, options = {}) {
+  const { spawnAgent, skipResearch = false } = options;
+
   const result = {
-    name,
-    country,
-    cmu: null,
-    source: null,
-    confidence: 'none',
-    sources: {},
-    conflicts: [],
+    name, country,
+    cmu: null, source: null, confidence: 'unverified',
+    agreementCount: 0, sources: {}, conflicts: [],
   };
 
-  // 1. Manual override (highest priority)
+  // 1. Override always wins
   const override = lookupOverride(name, country);
   if (override) {
     result.sources.override = override;
-  }
-
-  // 2. CMU dictionary
-  const cmuEntries = lookupCmu(name);
-  if (cmuEntries) {
-    result.sources.cmu = cmuEntries[0]; // primary variant
-  }
-
-  // 3. Wikipedia
-  const wiki = await lookupWikipedia(name, disambiguation || countryToDisambiguation(country));
-  if (wiki) {
-    result.sources.wikipedia = wiki;
-  }
-
-  // 4. eSpeak-NG (fallback — rule-based, 100% coverage)
-  const espeak = await lookupEspeak(name, country);
-  if (espeak) {
-    result.sources.espeak = espeak;
-  }
-
-  // ── Choose best pronunciation ──────────────────────────────────────────
-
-  // Override always wins
-  if (override) {
     result.cmu = override.cmu;
     result.source = override.source;
     result.confidence = 'override';
     return result;
   }
 
-  // If both CMU and Wikipedia agree (normalised), high confidence
-  if (cmuEntries && wiki) {
-    const cmuNorm = normaliseCmu(cmuEntries[0].cmu);
-    const wikiNorm = normaliseCmu(wiki.cmu);
-    if (cmuNorm === wikiNorm) {
-      result.cmu = cmuEntries[0].cmu;
-      result.source = 'cmu+wikipedia';
-      result.confidence = 'multi-source';
-      return result;
-    }
-    // Sources disagree — flag conflict
-    result.conflicts.push(
-      `CMU: ${cmuEntries[0].cmu} vs Wikipedia (${wiki.ipa}): ${wiki.cmu}`
+  // 2. Gather all automated independent sources
+  const [wikimedia, osm] = await Promise.all([
+    lookupWikimedia(name, country, disambiguation),
+    lookupOSM(name, country),
+  ]);
+  const cmuEntry = lookupCmu(name);
+
+  if (wikimedia) result.sources.wikimedia = wikimedia;
+  if (cmuEntry) result.sources.cmu = cmuEntry;
+  if (osm) result.sources.osm = osm;
+
+  // 3. Count agreement
+  const independentSources = [wikimedia, cmuEntry, osm].filter(Boolean);
+  let groups = groupByAgreement(independentSources);
+
+  // 4. If < 3 agreement, trigger Opus researcher
+  if (groups[0]?.sources.length < 3 && !skipResearch && spawnAgent) {
+    const researched = await researchPronunciation(
+      name, country, disambiguation, independentSources, spawnAgent
     );
+    if (researched.length) {
+      result.sources.research = researched;
+      const allSources = [...independentSources, ...researched];
+      groups = groupByAgreement(allSources);
+    }
   }
 
-  // For non-US countries, prefer Wikipedia over CMU (CMU is American English)
-  if (country !== 'US' && wiki) {
-    result.cmu = wiki.cmu;
-    result.source = wiki.source;
+  // 5. Pick winner
+  if (!groups.length) return result;
+
+  const best = groups[0];
+  result.cmu = best.cmu;
+  result.agreementCount = best.sources.length;
+  result.source = best.sources.map(s => s.source).join(' + ');
+
+  if (best.sources.length >= 3) {
+    result.confidence = 'verified';
+  } else if (best.sources.length >= 2) {
+    result.confidence = 'likely';
+  } else {
     result.confidence = 'single-source';
-    if (cmuEntries) {
+  }
+
+  // Log conflicts between groups
+  if (groups.length > 1) {
+    for (const g of groups.slice(1)) {
       result.conflicts.push(
-        `Using Wikipedia for ${country} (CMU is American English): CMU=${cmuEntries[0].cmu}, Wiki=${wiki.cmu}`
+        `Disagreement: ${g.sources.map(s => s.source).join('+')} say ${g.cmu} (${cmuToIpa(g.cmu) || '?'}) ` +
+        `vs winner ${best.cmu} (${cmuToIpa(best.cmu) || '?'})`
       );
     }
-    return result;
-  }
-
-  // For US, prefer CMU dict (it's authoritative for American English)
-  if (country === 'US' && cmuEntries) {
-    result.cmu = cmuEntries[0].cmu;
-    result.source = 'cmu';
-    result.confidence = 'single-source';
-    if (wiki) {
-      result.conflicts.push(
-        `Using CMU for US: CMU=${cmuEntries[0].cmu}, Wiki=${wiki.cmu}`
-      );
-    }
-    return result;
-  }
-
-  // Fall back to whatever we have
-  if (wiki) {
-    result.cmu = wiki.cmu;
-    result.source = wiki.source;
-    result.confidence = 'single-source';
-  } else if (cmuEntries) {
-    result.cmu = cmuEntries[0].cmu;
-    result.source = 'cmu';
-    result.confidence = 'single-source';
-  } else if (espeak) {
-    result.cmu = espeak.cmu;
-    result.source = espeak.source;
-    result.confidence = 'espeak'; // flagged for review — rule-based, may be wrong
   }
 
   return result;
 }
 
-/**
- * Normalise CMU for comparison — strip stress numbers, lowercase.
- */
-function normaliseCmu(cmu) {
-  return cmu.replace(/[012]/g, '').trim().toLowerCase();
-}
+// ─── Batch lookup (Wikipedia only, for gazetteer pre-population) ────────────
 
-/**
- * Map country code to Wikipedia disambiguation suffix.
- */
-function countryToDisambiguation(country) {
-  const map = {
-    AU: 'New South Wales',  // most of our AU suburbs are NSW — caller can override
-    UK: 'England',
-    US: null,               // US place names usually don't need disambiguation
-    CA: 'Canada',
-    NZ: 'New Zealand',
-    IE: 'Ireland',
-    ZA: 'South Africa',
-  };
-  return map[country] || null;
+export async function batchLookupWikipedia(places) {
+  const results = new Map();
+  const BATCH_SIZE = 50;
+
+  for (let i = 0; i < places.length; i += BATCH_SIZE) {
+    const batch = places.slice(i, i + BATCH_SIZE);
+    await wikiRateLimit();
+
+    const titleMap = new Map();
+    for (const p of batch) {
+      const titles = [p.name];
+      if (p.disambiguation) titles.unshift(`${p.name}, ${p.disambiguation}`);
+      for (const t of titles) titleMap.set(t, p);
+    }
+
+    const params = new URLSearchParams({
+      action: 'query', titles: [...titleMap.keys()].join('|'),
+      prop: 'revisions', rvprop: 'content', format: 'json', rvslots: 'main', redirects: '1',
+    });
+
+    try {
+      const res = await fetch(`${WIKI_API}?${params}`);
+      if (!res.ok) continue;
+      const data = await res.json();
+      const pages = data.query?.pages;
+      if (!pages) continue;
+
+      for (const page of Object.values(pages)) {
+        if (page.missing !== undefined) continue;
+        const wikitext = page.revisions?.[0]?.slots?.main?.['*'];
+        if (!wikitext) continue;
+        const place = titleMap.get(page.title);
+        const name = place?.name || page.title.split(',')[0].split('(')[0].trim();
+        if (results.has(name)) continue;
+        const ipa = extractIPA(wikitext);
+        if (ipa) {
+          results.set(name, { ipa, cmu: ipaToCmu(ipa), source: `wikimedia:wikipedia:${page.title}` });
+        }
+      }
+    } catch { /* skip */ }
+  }
+
+  return results;
 }
 
 // ─── PLS generation ──────────────────────────────────────────────────────────
 
-/**
- * Generate a PLS XML string from an array of pronunciation results.
- *
- * @param {PronunciationResult[]} results
- * @returns {string} PLS XML
- */
 export function generatePLS(results) {
   const lexemes = results
     .filter(r => r.cmu)
