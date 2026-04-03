@@ -7496,5 +7496,4162 @@
     "agreementCount": 0,
     "sources": {},
     "conflicts": []
+  },
+  {
+    "name": "Broadview North",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Toronto",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Glenwood",
+    "country": "CA",
+    "cmu": "G L EH1 N W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G L EH1 N W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Murrayville",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shellmont",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Surrey Centre",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sainte-Marthe-sur-le-Lac",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Beddington Heights",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Estevan",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Farnham",
+    "country": "CA",
+    "cmu": "F AA1 R N AH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F AA1 R N AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pincourt",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coldstream",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bécancour",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Weston-Pellam Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Saanich",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Whitehorn",
+    "country": "CA",
+    "cmu": "W AY1 T HH AO2 R N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AY1 T HH AO2 R N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Keelesdale-Eglinton West",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Princess-Rosethorn",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blackfalds",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Eagle Ridge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "La Tuque",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Queensborough",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Kamloops",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Casa Loma",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Warman",
+    "country": "CA",
+    "cmu": "W AO1 R M AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 R M AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Milton-Parc",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Humber Heights-Westmount",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cowansville",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Weyburn",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Regent Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dover",
+    "country": "CA",
+    "cmu": "D OW1 V ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D OW1 V ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Elmira",
+    "country": "CA",
+    "cmu": "EH0 L M AY1 R AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH0 L M AY1 R AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "East Cambie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bowness",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Forest Hill South",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pelmo Park-Humberlea",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Silverwood Heights",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Westsyde",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sainte-Anne-des-Plaines",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Nelson",
+    "country": "CA",
+    "cmu": "N EH1 L S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N EH1 L S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Canut",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sainte-Adèle",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lambton Shores",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Brow of the Hill",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Laurentian Hills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Markland Wood",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rundle",
+    "country": "CA",
+    "cmu": "R AH1 N D AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AH1 N D AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Victoria Hills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rexdale-Kipling",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Temple",
+    "country": "CA",
+    "cmu": "T EH1 M P AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T EH1 M P AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Brentwood Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Monterey Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Temiskaming Shores",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coal Harbour",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Preston Centre",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Centreville Chicopee",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cantley",
+    "country": "CA",
+    "cmu": "K AE1 N T L IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AE1 N T L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hockaday",
+    "country": "CA",
+    "cmu": "HH AA1 K AH0 D EY2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AA1 K AH0 D EY2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Thistletown-Beaumond Heights",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Arbour Lake",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Falconridge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Félicien",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Selkirk",
+    "country": "CA",
+    "cmu": "S EH1 L K ER0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S EH1 L K ER0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Whatcom",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Angus",
+    "country": "CA",
+    "cmu": "AE1 NG G AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 NG G AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hawkesbury",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Douglas-Gilpin",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Roberval",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sainte-Agathe-des-Monts",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fernwood",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Gastown",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Citadel",
+    "country": "CA",
+    "cmu": "S IH1 T AH0 D EH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S IH1 T AH0 D EH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lake Bonavista",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Prévost",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mercier",
+    "country": "CA",
+    "cmu": "M ER1 S IY2 ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M ER1 S IY2 ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Clearbrook",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Spryfield",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shuniah",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Maple Leaf",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Garden Village",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Long Branch",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tillicum",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rockingham",
+    "country": "CA",
+    "cmu": "R AA1 K IH0 NG HH AE2 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AA1 K IH0 NG HH AE2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Penetanguishene",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Runnymede-Bloor West Village",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Marshall-McCallum",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sardis",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hanceville",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Petite-Bourgogne",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Huron",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Caledonia-Fairbank",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rustic",
+    "country": "CA",
+    "cmu": "R AH1 S T IH0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AH1 S T IH0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "L'Île-Perrot",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Guildwood",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Acadia",
+    "country": "CA",
+    "cmu": "AH0 K EY1 D IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AH0 K EY1 D IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Historic Downtown",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sunshine Hills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hinton",
+    "country": "CA",
+    "cmu": "HH IH1 N T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH IH1 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Notre-Dame-de-l'Île-Perrot",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Quesnel",
+    "country": "CA",
+    "cmu": "K W EY0 S N EH1 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K W EY0 S N EH1 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pineridge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Morinville",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Springbank Hill",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Nashwaaksis",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Plantagenet",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Danforth",
+    "country": "CA",
+    "cmu": "D AE1 N F ER0 TH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AE1 N F ER0 TH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Grand River South",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Martensville",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lorraine",
+    "country": "CA",
+    "cmu": "L ER0 EY1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L ER0 EY1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sundance",
+    "country": "CA",
+    "cmu": "S AH1 N D AE2 N S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 N D AE2 N S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lachute",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Port Perry",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Maple Hills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Val-des-Monts",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Amable",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Garneau",
+    "country": "CA",
+    "cmu": "G AA0 R N OW1",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G AA0 R N OW1",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Gunningsville",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Elms-Old Rexdale",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Aspen Woods",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Downtown St. John's",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Olympic Village",
+    "country": "CA",
+    "cmu": "W EH0 B",
+    "source": "wikimedia:wikipedia:Olympic Village",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "web",
+        "cmu": "W EH0 B",
+        "source": "wikimedia:wikipedia:Olympic Village",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "web",
+            "cmu": "W EH0 B",
+            "source": "wikimedia:wikipedia:Olympic Village"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Little's Corners",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "The Hamptons",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Amherst",
+    "country": "CA",
+    "cmu": "AE1 M S T",
+    "source": "wikimedia:wiktionary:Amherst:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈæm.ɝst",
+        "cmu": "AE1 M S T",
+        "source": "wikimedia:wiktionary:Amherst:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈæmɜːrst",
+            "cmu": "AE1 M ER0 R S T",
+            "source": "wikimedia:wikipedia:Amherst, Nova Scotia"
+          },
+          "wiktionary": {
+            "ipa": "ˈæm.ɝst",
+            "cmu": "AE1 M S T",
+            "source": "wikimedia:wiktionary:Amherst:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE1 M ER0 S T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say AE1 M ER0 S T (ˈæmɜːst) vs winner AE1 M S T (ˈæmst)"
+    ]
+  },
+  {
+    "name": "Acton",
+    "country": "CA",
+    "cmu": "AE1 K T AH0 N",
+    "source": "wikimedia:wiktionary:Acton:UK,US + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈæktən",
+        "cmu": "AE1 K T AH0 N",
+        "source": "wikimedia:wiktionary:Acton:UK,US",
+        "dialect": "UK,US",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈæktən",
+            "cmu": "AE1 K T AH0 N",
+            "source": "wikimedia:wiktionary:Acton:UK,US",
+            "dialect": "UK,US"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE1 K T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sage Hill",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dorchester",
+    "country": "CA",
+    "cmu": "D AO1 R CH EH2 S T",
+    "source": "wikimedia:wiktionary:Dorchester:US",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdɔɹˌtʃɛstɚ",
+        "cmu": "D AO1 R CH EH2 S T",
+        "source": "wikimedia:wiktionary:Dorchester:US",
+        "dialect": "US",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈdɔɹˌtʃɛstɚ",
+            "cmu": "D AO1 R CH EH2 S T",
+            "source": "wikimedia:wiktionary:Dorchester:US",
+            "dialect": "US"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D AO1 R CH EH2 S T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say D AO1 R CH EH2 S T ER0 (dˈɔːrtʃˌɛstɜː) vs winner D AO1 R CH EH2 S T (dˈɔːrtʃˌɛst)"
+    ]
+  },
+  {
+    "name": "Qualicum Beach",
+    "country": "CA",
+    "cmu": "K W AA1 L IH0 K AH0 M",
+    "source": "wikimedia:wikipedia:Qualicum Beach",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkwɒlɪkəm",
+        "cmu": "K W AA1 L IH0 K AH0 M",
+        "source": "wikimedia:wikipedia:Qualicum Beach",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈkwɒlɪkəm",
+            "cmu": "K W AA1 L IH0 K AH0 M",
+            "source": "wikimedia:wikipedia:Qualicum Beach"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Blair Road",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hampton Village",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Uptown",
+    "country": "CA",
+    "cmu": "AH1 P T AW1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AH1 P T AW1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bells Corners",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kingsway South",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bridle Path-Sunnybrook-York Mills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Huron East",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blairmore",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "McMillan",
+    "country": "CA",
+    "cmu": "M AH0 K M IH1 L AH0 N",
+    "source": "wikimedia:wiktionary:McMillan:UK,US + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "məkˈmɪlən",
+        "cmu": "M AH0 K M IH1 L AH0 N",
+        "source": "wikimedia:wiktionary:McMillan:UK,US",
+        "dialect": "UK,US",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "məkˈmɪlən",
+            "cmu": "M AH0 K M IH1 L AH0 N",
+            "source": "wikimedia:wiktionary:McMillan:UK,US",
+            "dialect": "UK,US"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M AH0 K M IH1 L AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Old East York",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Olds",
+    "country": "CA",
+    "cmu": "OW0 L D Z",
+    "source": "wikimedia:wikipedia:Olds, Alberta + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "oʊldz",
+        "cmu": "OW0 L D Z",
+        "source": "wikimedia:wikipedia:Olds, Alberta",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "oʊldz",
+            "cmu": "OW0 L D Z",
+            "source": "wikimedia:wikipedia:Olds, Alberta"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "OW1 L D Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Riverbend",
+    "country": "CA",
+    "cmu": "R IH1 V ER0 B EH2 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IH1 V ER0 B EH2 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Sauveur",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Millview",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carleton North",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cap-Acadie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hawkwood",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pioneer Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Central",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lewisville",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shawnessy",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Redstone",
+    "country": "CA",
+    "cmu": "R EH1 D S T OW2 N",
+    "source": "wikimedia:wiktionary:Redstone:GA + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɹɛdˌstoʊn",
+        "cmu": "R EH1 D S T OW2 N",
+        "source": "wikimedia:wiktionary:Redstone:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈɹɛdˌstoʊn",
+            "cmu": "R EH1 D S T OW2 N",
+            "source": "wikimedia:wiktionary:Redstone:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "R EH1 D S T OW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Greely",
+    "country": "CA",
+    "cmu": "G R IY1 L IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G R IY1 L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Riverwood",
+    "country": "CA",
+    "cmu": "R IH1 V ER0 W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IH1 V ER0 W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Willowgrove",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kitimat",
+    "country": "CA",
+    "cmu": "IY0 N F R AE0",
+    "source": "wikimedia:wikipedia:Kitimat",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "infra",
+        "cmu": "IY0 N F R AE0",
+        "source": "wikimedia:wikipedia:Kitimat",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "infra",
+            "cmu": "IY0 N F R AE0",
+            "source": "wikimedia:wikipedia:Kitimat"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K IH1 T IH0 M AE0 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say K IH1 T IH0 M AE0 T (kˈɪtɪmæt) vs winner IY0 N F R AE0 (iːnfræ)"
+    ]
+  },
+  {
+    "name": "Glen Cairn",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "La Malbaie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Beechwood",
+    "country": "CA",
+    "cmu": "B IY1 CH W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B IY1 CH W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Mont-Tremblant",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Smiths Falls",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sechelt",
+    "country": "CA",
+    "cmu": "S IY1 SH EH0 L T",
+    "source": "wikimedia:wikipedia:Sechelt",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈsiːʃɛlt",
+        "cmu": "S IY1 SH EH0 L T",
+        "source": "wikimedia:wikipedia:Sechelt",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈsiːʃɛlt",
+            "cmu": "S IY1 SH EH0 L T",
+            "source": "wikimedia:wikipedia:Sechelt"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Forest Hills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Oromocto",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Binbrook",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Arnprior",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bridgewater",
+    "country": "CA",
+    "cmu": "B R IH1 D ZH W AA0 T AH0 R",
+    "source": "wikimedia:wiktionary:Bridgewater:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbɹɪd͡ʒ.wɑ.təɹ",
+        "cmu": "B R IH1 D ZH W AA0 T AH0 R",
+        "source": "wikimedia:wiktionary:Bridgewater:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈbɹɪd͡ʒ.wɑ.təɹ",
+            "cmu": "B R IH1 D ZH W AA0 T AH0 R",
+            "source": "wikimedia:wiktionary:Bridgewater:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B R IH1 JH W AO2 T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say B R IH1 JH W AO2 T ER0 (brˈɪdʒwˌɔːtɜː) vs winner B R IH1 D ZH W AA0 T AH0 R (brˈɪdʒwɑːtər)"
+    ]
+  },
+  {
+    "name": "Harewood",
+    "country": "CA",
+    "cmu": "HH EH1 W UH0 D",
+    "source": "wikimedia:wiktionary:Harewood:UK",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈhɛːwʊd",
+        "cmu": "HH EH1 W UH0 D",
+        "source": "wikimedia:wiktionary:Harewood:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈhɛːwʊd",
+            "cmu": "HH EH1 W UH0 D",
+            "source": "wikimedia:wiktionary:Harewood:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "HH EH1 R W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say HH EH1 R W UH2 D (hˈɛrwˌʊd) vs winner HH EH1 W UH0 D (hˈɛwʊd)"
+    ]
+  },
+  {
+    "name": "Lincoln",
+    "country": "CA",
+    "cmu": "L IH1 NG K AH0 N",
+    "source": "wikimedia:wiktionary:Lincoln:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈlɪŋ.kən",
+        "cmu": "L IH1 NG K AH0 N",
+        "source": "wikimedia:wiktionary:Lincoln:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈlɪŋ.kən",
+            "cmu": "L IH1 NG K AH0 N",
+            "source": "wikimedia:wiktionary:Lincoln:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L IH1 NG K AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Whitecourt",
+    "country": "CA",
+    "cmu": "HH W AY1 T K OW0 R T",
+    "source": "wikimedia:wiktionary:Whitecourt:non-wine-whine",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈhwaɪtkoɹt",
+        "cmu": "HH W AY1 T K OW0 R T",
+        "source": "wikimedia:wiktionary:Whitecourt:non-wine-whine",
+        "dialect": "non-wine-whine",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈhwaɪtkoɹt",
+            "cmu": "HH W AY1 T K OW0 R T",
+            "source": "wikimedia:wiktionary:Whitecourt:non-wine-whine",
+            "dialect": "non-wine-whine"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lavaltrie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rosemont-Mount Royal",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Nolan Hill",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woodbine",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pont-Rouge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Whistler",
+    "country": "CA",
+    "cmu": "W IH1 S L ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W IH1 S L ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Thorncliffe",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Embrun",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Morden",
+    "country": "CA",
+    "cmu": "M AO1 R D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AO1 R D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Beausoleil",
+    "country": "CA",
+    "cmu": "B OW1 S AH0 L EY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B OW1 S AH0 L EY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Silver Springs",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ladysmith",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lochdale",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dalhousie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Albro Lake",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Horizons",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Holmwood",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Prairie View",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Otterburn Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dauphin",
+    "country": "CA",
+    "cmu": "D AW1 F IH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AW1 F IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Drumheller",
+    "country": "CA",
+    "cmu": "D R AH1 M HH EH2 L ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D R AH1 M HH EH2 L ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Shaughnessy",
+    "country": "CA",
+    "cmu": "SH AO1 N IH0 S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH AO1 N IH0 S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Clinton-Glenwood",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rutherford",
+    "country": "CA",
+    "cmu": "R AH1 TH ER0 F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AH1 TH ER0 F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "King City",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bois-des-Filion",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Victoria West",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woodside",
+    "country": "CA",
+    "cmu": "W UH1 D S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W UH1 D S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Castlegar",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wildwood",
+    "country": "CA",
+    "cmu": "W AY1 L D W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AY1 L D W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Somerset",
+    "country": "CA",
+    "cmu": "S AH1 M ER0 S EH2 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 M ER0 S EH2 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ogden",
+    "country": "CA",
+    "cmu": "AA1 G D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AA1 G D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Banff",
+    "country": "CA",
+    "cmu": "B AE1 N F",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B AE1 N F",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kapuskasing",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Marlborough Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Burnaby Heights",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Westfort",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Concord",
+    "country": "CA",
+    "cmu": "K AA1 N K AO2 R D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AA1 N K AO2 R D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Penbrooke Meadows",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Silver Heights",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Notre-Dame-des-Prairies",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Downtown Commercial Core",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Renfrew",
+    "country": "CA",
+    "cmu": "R EH1 N F R UW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R EH1 N F R UW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Uptown Saint John",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coaldale",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dryden",
+    "country": "CA",
+    "cmu": "D R AY1 D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D R AY1 D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Humphrey",
+    "country": "CA",
+    "cmu": "HH AH1 M F R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AH1 M F R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rocky Ridge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blackburn Hamlet",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Taber",
+    "country": "CA",
+    "cmu": "T EY1 B ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T EY1 B ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Colonial Acres",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shelburne",
+    "country": "CA",
+    "cmu": "SH EH1 L B ER0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH EH1 L B ER0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cordova Bay",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Silver Berry",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Hippolyte",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cedar Valley",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woodwards",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wild Rose",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Central Moncton",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Chelsea",
+    "country": "CA",
+    "cmu": "CH EH1 L S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH EH1 L S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Legacy",
+    "country": "CA",
+    "cmu": "L EH1 G AH0 S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L EH1 G AH0 S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lakeview",
+    "country": "CA",
+    "cmu": "L EY1 K V Y UW2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L EY1 K V Y UW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lambton Baby Point",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Edson",
+    "country": "CA",
+    "cmu": "EH1 D S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 D S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Silverado",
+    "country": "CA",
+    "cmu": "S IH2 L V ER0 AA1 D OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S IH2 L V ER0 AA1 D OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Cambie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Apollinaire",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kahnawake",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ranch Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Trail",
+    "country": "CA",
+    "cmu": "T R EY1 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T R EY1 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Chandler",
+    "country": "CA",
+    "cmu": "CH AE1 N D L ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH AE1 N D L ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Al Ritchie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Popcorn House",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Three Rivers",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Newton South",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Douglas",
+    "country": "CA",
+    "cmu": "D AH1 G L AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AH1 G L AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Woodbine-Lumsden",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Port Elgin",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hillside-Quadra",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Membertou",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Torbay",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Scenic Acres",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Sauveur-des-Monts",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hintonburg",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Downtown Moncton",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Harvest Hills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Playter Estates-Danforth",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Elora",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kirkland Lake",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fort Frances",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blake-Jones",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "La Sarre",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Manor Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Centennial Place",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hanover",
+    "country": "CA",
+    "cmu": "HH AE1 N OW0 V ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AE1 N OW0 V ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Innisfail",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Acton Vale",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Walden",
+    "country": "CA",
+    "cmu": "W AO1 L D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 L D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Goderich",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "University",
+    "country": "CA",
+    "cmu": "Y UW2 N AH0 V ER1 S AH0 T IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "Y UW2 N AH0 V ER1 S AH0 T IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Philippe",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Oaklands",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Brentwood Bay",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rosewood",
+    "country": "CA",
+    "cmu": "R OW1 Z W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R OW1 Z W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Happy Valley-Goose Bay",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Confederation Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Chibougamau",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ct 0014",
+    "country": "CA",
+    "cmu": "K AO1 R T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AO1 R T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Revelstoke",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shediac",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Terwillegar",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Listowel",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Canyon Springs",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pont Rouge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Burnside",
+    "country": "CA",
+    "cmu": "B ER1 N S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B ER1 N S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Camlachie",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Arm",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ranchlands",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sunbury-York South",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cascade Heights",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Essex",
+    "country": "CA",
+    "cmu": "EH1 S IH0 K S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 S IH0 K S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Napanee",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Canyon Meadows",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Iqaluit",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carignan",
+    "country": "CA",
+    "cmu": "K AE1 R IH0 G N AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AE1 R IH0 G N AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kimberley",
+    "country": "CA",
+    "cmu": "K IH1 M B ER0 L IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K IH1 M B ER0 L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Brentwood",
+    "country": "CA",
+    "cmu": "B R EH1 N T W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R EH1 N T W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sherwood",
+    "country": "CA",
+    "cmu": "SH ER1 W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH ER1 W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "College Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "St. Marys",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kingsway-Beresford",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Beaumont",
+    "country": "CA",
+    "cmu": "B OW1 M AO0 N T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B OW1 M AO0 N T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Queen Mary Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hamptons",
+    "country": "CA",
+    "cmu": "HH AE1 M P T AH0 N Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AE1 M P T AH0 N Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "East Newton North",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lexington",
+    "country": "CA",
+    "cmu": "L EH1 K S IH0 NG T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L EH1 K S IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Eastern Charlotte",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Delson",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Hespeler",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Altadore",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Twin Lakes",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Heritage Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Northeast Regina",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Grand Centre",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cathedral",
+    "country": "CA",
+    "cmu": "K AH0 TH IY1 D R AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AH0 TH IY1 D R AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Glenbrook",
+    "country": "CA",
+    "cmu": "G L EH1 N B R UH2 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G L EH1 N B R UH2 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Coronation Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Inlet Centre",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Forest Lawn",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Quinpool District",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Labrador City",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mill Bay",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Donnacona",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Stanley Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cougar Ridge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Marpole South",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Baie-Saint-Paul",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Merritt",
+    "country": "CA",
+    "cmu": "M EH1 R IH0 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M EH1 R IH0 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Columbia Hills",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Yennadon",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pointe-du-Lac",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Val-des-Sources",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bluewater",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coteau-du-Lac",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kincora",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coaticook",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hampstead",
+    "country": "CA",
+    "cmu": "HH AE1 M P S T EH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AE1 M P S T EH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Beechwood West",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "King",
+    "country": "CA",
+    "cmu": "K IH1 NG",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K IH1 NG",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Port Wallace",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Haysboro",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Boyle Street",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sturgeon Falls",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Central York",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint-Rémi",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Campbellton",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Burnside-Gorge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Allard",
+    "country": "CA",
+    "cmu": "AE1 L ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 L ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Peace River",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Eastbridge",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Slave Lake",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Applewood Park",
+    "country": "CA",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
   }
 ]

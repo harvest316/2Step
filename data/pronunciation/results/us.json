@@ -4904,5 +4904,5511 @@
       }
     },
     "conflicts": []
+  },
+  {
+    "name": "Centennial",
+    "country": "US",
+    "cmu": "S EH0 N T EH1 N IY0 AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S EH0 N T EH1 N IY0 AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pueblo",
+    "country": "US",
+    "cmu": "P W EH1 B L OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P W EH1 B L OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pearland",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waterbury",
+    "country": "US",
+    "cmu": "W AO1 T ER0 B EH2 R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 T ER0 B EH2 R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Greeley",
+    "country": "US",
+    "cmu": "G R IY1 L IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G R IY1 L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Covina",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Enterprise",
+    "country": "US",
+    "cmu": "EH1 N T ER0 P R AY2 Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 N T ER0 P R AY2 Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Charleston",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Everett",
+    "country": "US",
+    "cmu": "EH1 V ER0 AH0 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 V ER0 AH0 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "College Station",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pompano Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Fulton",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Norwalk",
+    "country": "US",
+    "cmu": "N AO1 R W AO2 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AO1 R W AO2 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Boulder",
+    "country": "US",
+    "cmu": "B OW1 L D ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B OW1 L D ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Broken Arrow",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Daly City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sandy Springs",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Burbank",
+    "country": "US",
+    "cmu": "B ER1 B AE2 NG K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B ER1 B AE2 NG K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Green Bay",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Santa Maria",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Universal City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wichita Falls",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lakeland",
+    "country": "US",
+    "cmu": "L EY1 K L AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L EY1 K L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Clovis",
+    "country": "US",
+    "cmu": "K L OW1 V IH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K L OW1 V IH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lewisville",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tyler",
+    "country": "US",
+    "cmu": "T AY1 L ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T AY1 L ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "El Cajon",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "San Mateo",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Brandon",
+    "country": "US",
+    "cmu": "B R AE1 N D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R AE1 N D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rialto",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Davenport",
+    "country": "US",
+    "cmu": "D AE1 V AH0 N P AO2 R T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AE1 V AH0 N P AO2 R T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Edison",
+    "country": "US",
+    "cmu": "EH1 D IH0 S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 D IH0 S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hillsboro",
+    "country": "US",
+    "cmu": "HH IH1 L Z B ER0 OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH IH1 L Z B ER0 OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Las Cruces",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Bend",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Albany",
+    "country": "US",
+    "cmu": "AO1 L B AH0 N IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AO1 L B AH0 N IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "New Bedford",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Vista",
+    "country": "US",
+    "cmu": "V IH1 S T AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "V IH1 S T AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Davie",
+    "country": "US",
+    "cmu": "D EY1 V IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D EY1 V IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Chinatown",
+    "country": "US",
+    "cmu": "CH AY1 N AH0 T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH AY1 N AH0 T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Renton",
+    "country": "US",
+    "cmu": "R EH1 N T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R EH1 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Roanoke",
+    "country": "US",
+    "cmu": "R OW1 AH0 N OW2 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R OW1 AH0 N OW2 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Angelo",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kenosha",
+    "country": "US",
+    "cmu": "K IH0 N OW1 SH AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K IH0 N OW1 SH AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Clinton Township",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Erie",
+    "country": "US",
+    "cmu": "IH1 R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "IH1 R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Portsmouth Heights",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Richmond Hill",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Alief",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Spring Hill",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Compton",
+    "country": "US",
+    "cmu": "K AA1 M P T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AA1 M P T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "League City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Flint",
+    "country": "US",
+    "cmu": "F L IH1 N T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F L IH1 N T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Allen",
+    "country": "US",
+    "cmu": "AE1 L AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 L AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dorchester",
+    "country": "US",
+    "cmu": "D AO1 R CH EH2 S T ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AO1 R CH EH2 S T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Mission Viejo",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Vacaville",
+    "country": "US",
+    "cmu": "V AE1 K AH0 V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "V AE1 K AH0 V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ventura",
+    "country": "US",
+    "cmu": "V EH0 N CH ER1 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "V EH0 N CH ER1 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Highlands Ranch",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lawton",
+    "country": "US",
+    "cmu": "L AO1 T AH0 N",
+    "source": "wikimedia:wiktionary:Lawton:UK + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈlɔːtən",
+        "cmu": "L AO1 T AH0 N",
+        "source": "wikimedia:wiktionary:Lawton:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈlɔːtən",
+            "cmu": "L AO1 T AH0 N",
+            "source": "wikimedia:wiktionary:Lawton:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L AO1 T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Beaverton",
+    "country": "US",
+    "cmu": "B IY1 V AH0 T AH2 N",
+    "source": "wikimedia:wiktionary:Beaverton:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbiːvəˌtən",
+        "cmu": "B IY1 V AH0 T AH2 N",
+        "source": "wikimedia:wiktionary:Beaverton:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈbiːvəˌtən",
+            "cmu": "B IY1 V AH0 T AH2 N",
+            "source": "wikimedia:wiktionary:Beaverton:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B IY1 V ER0 T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say B IY1 V ER0 T AH0 N (bˈiːvɜːtən) vs winner B IY1 V AH0 T AH2 N (bˈiːvətˌən)"
+    ]
+  },
+  {
+    "name": "South Gate",
+    "country": "US",
+    "cmu": "S AW1 TH G EY2 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AW1 TH G EY2 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Portsmouth",
+    "country": "US",
+    "cmu": "P AO1 R T S M AH0 TH",
+    "source": "wikimedia:wikipedia:Portsmouth + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈpɔrtsməθ",
+        "cmu": "P AO1 R T S M AH0 TH",
+        "source": "wikimedia:wikipedia:Portsmouth",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈpɔrtsməθ",
+            "cmu": "P AO1 R T S M AH0 TH",
+            "source": "wikimedia:wikipedia:Portsmouth"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "P AO1 R T S M AH0 TH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sparks",
+    "country": "US",
+    "cmu": "N EH0 W S",
+    "source": "wikimedia:wikipedia:Sparks, Nevada",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "news",
+        "cmu": "N EH0 W S",
+        "source": "wikimedia:wikipedia:Sparks, Nevada",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "news",
+            "cmu": "N EH0 W S",
+            "source": "wikimedia:wikipedia:Sparks, Nevada"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "S P AA1 R K S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say S P AA1 R K S (spˈɑːrks) vs winner N EH0 W S (nɛws)"
+    ]
+  },
+  {
+    "name": "Yuma",
+    "country": "US",
+    "cmu": "Y UW1 M AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "Y UW1 M AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Brockton",
+    "country": "US",
+    "cmu": "B R AA1 K T AH0 N",
+    "source": "wikimedia:wiktionary:Brockton:RP + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbɹɒk.tən",
+        "cmu": "B R AA1 K T AH0 N",
+        "source": "wikimedia:wiktionary:Brockton:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈbɹɒk.tən",
+            "cmu": "B R AA1 K T AH0 N",
+            "source": "wikimedia:wiktionary:Brockton:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B R AA1 K T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dearborn",
+    "country": "US",
+    "cmu": "D IH1 B AO0 N",
+    "source": "wikimedia:wiktionary:Dearborn:RP",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdɪəbɔːn",
+        "cmu": "D IH1 B AO0 N",
+        "source": "wikimedia:wiktionary:Dearborn:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "web",
+            "cmu": "W EH0 B",
+            "source": "wikimedia:wikipedia:Dearborn, Michigan"
+          },
+          "wiktionary": {
+            "ipa": "ˈdɪəbɔːn",
+            "cmu": "D IH1 B AO0 N",
+            "source": "wikimedia:wiktionary:Dearborn:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D IH1 R B AO2 R N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say D IH1 R B AO2 R N (dˈɪrbˌɔːrn) vs winner D IH1 B AO0 N (dˈɪbɔːn)"
+    ]
+  },
+  {
+    "name": "Federal Way",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lee's Summit",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Asheville",
+    "country": "US",
+    "cmu": "AE1 SH V IH0 L",
+    "source": "wikimedia:wikipedia:Asheville, North Carolina + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈæʃ.vɪl",
+        "cmu": "AE1 SH V IH0 L",
+        "source": "wikimedia:wikipedia:Asheville, North Carolina",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈæʃ.vɪl",
+            "cmu": "AE1 SH V IH0 L",
+            "source": "wikimedia:wikipedia:Asheville, North Carolina"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE1 SH V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Spokane Valley",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fordham",
+    "country": "US",
+    "cmu": "F AO1 R D HH AH0 M",
+    "source": "wikimedia:wiktionary:Fordham:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈfɔː(ɹ)d(h)əm",
+        "cmu": "F AO1 R D HH AH0 M",
+        "source": "wikimedia:wiktionary:Fordham:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈfɔː(ɹ)d(h)əm",
+            "cmu": "F AO1 R D HH AH0 M",
+            "source": "wikimedia:wiktionary:Fordham:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "F AO1 R D AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say F AO1 R D AH0 M (fˈɔːrdəm) vs winner F AO1 R D HH AH0 M (fˈɔːrdhəm)"
+    ]
+  },
+  {
+    "name": "Livonia",
+    "country": "US",
+    "cmu": "L IH0 V AH1 UH0 N IY0 AH0",
+    "source": "wikimedia:wiktionary:Livonia:RP",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "lɪˈvəʊ.ni.ə",
+        "cmu": "L IH0 V AH1 UH0 N IY0 AH0",
+        "source": "wikimedia:wiktionary:Livonia:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "lɪˈvoʊniə",
+            "cmu": "L IH0 V OW1 N IY0 AH0",
+            "source": "wikimedia:wikipedia:Livonia"
+          },
+          "wiktionary": {
+            "ipa": "lɪˈvəʊ.ni.ə",
+            "cmu": "L IH0 V AH1 UH0 N IY0 AH0",
+            "source": "wikimedia:wiktionary:Livonia:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L IH0 V OW1 N Y AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say L IH0 V OW1 N Y AH0 (lɪvˈoʊnjə) vs winner L IH0 V AH1 UH0 N IY0 AH0 (lɪvˈəʊniːə)"
+    ]
+  },
+  {
+    "name": "Roswell",
+    "country": "US",
+    "cmu": "R AA1 Z W EH2 L",
+    "source": "wikimedia:wiktionary:Roswell:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɹɒzˌwɛl",
+        "cmu": "R AA1 Z W EH2 L",
+        "source": "wikimedia:wiktionary:Roswell:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈɹɒzˌwɛl",
+            "cmu": "R AA1 Z W EH2 L",
+            "source": "wikimedia:wiktionary:Roswell:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "R AA1 S W EH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say R AA1 S W EH0 L (rˈɑːswɛl) vs winner R AA1 Z W EH2 L (rˈɑːzwˌɛl)"
+    ]
+  },
+  {
+    "name": "Orem",
+    "country": "US",
+    "cmu": "AO1 R IH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AO1 R IH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fall River",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lawrence",
+    "country": "US",
+    "cmu": "L AA1 R AH0 N S",
+    "source": "wikimedia:wiktionary:Lawrence:RP",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈlɒ.ɹəns",
+        "cmu": "L AA1 R AH0 N S",
+        "source": "wikimedia:wiktionary:Lawrence:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈlɒ.ɹəns",
+            "cmu": "L AA1 R AH0 N S",
+            "source": "wikimedia:wiktionary:Lawrence:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L AO1 R AH0 N S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say L AO1 R AH0 N S (lˈɔːrəns) vs winner L AA1 R AH0 N S (lˈɑːrəns)"
+    ]
+  },
+  {
+    "name": "The Woodlands",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West Albany",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Yakima",
+    "country": "US",
+    "cmu": "Y AE1 K IH0 M AA0",
+    "source": "wikimedia:wiktionary:Yakima:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈjæ.kɪ.mɑ",
+        "cmu": "Y AE1 K IH0 M AA0",
+        "source": "wikimedia:wiktionary:Yakima:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈjækᵻmɑː",
+            "cmu": "Y AE1 K AH0 M AA0",
+            "source": "wikimedia:wikipedia:Yakima, Washington"
+          },
+          "wiktionary": {
+            "ipa": "ˈjæ.kɪ.mɑ",
+            "cmu": "Y AE1 K IH0 M AA0",
+            "source": "wikimedia:wiktionary:Yakima:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "Y AE1 K IH0 M AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say Y AE1 K IH0 M AH0 (jˈækɪmə) vs winner Y AE1 K IH0 M AA0 (jˈækɪmɑː)"
+    ]
+  },
+  {
+    "name": "Quincy",
+    "country": "US",
+    "cmu": "K W IH1 N S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K W IH1 N S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Flatbush",
+    "country": "US",
+    "cmu": "F L AE1 T B UH2 SH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F L AE1 T B UH2 SH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hesperia",
+    "country": "US",
+    "cmu": "HH EH0 S P IH1 R IY0 AH0",
+    "source": "wikimedia:wiktionary:Hesperia:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "hɛˈspɪəɹi.ə",
+        "cmu": "HH EH0 S P IH1 R IY0 AH0",
+        "source": "wikimedia:wiktionary:Hesperia:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "hɛˈspɪəiə",
+            "cmu": "HH EH0 S P IH1 IY0 AH0",
+            "source": "wikimedia:wikipedia:Hesperia, California"
+          },
+          "wiktionary": {
+            "ipa": "hɛˈspɪəɹi.ə",
+            "cmu": "HH EH0 S P IH1 R IY0 AH0",
+            "source": "wikimedia:wiktionary:Hesperia:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Carson",
+    "country": "US",
+    "cmu": "K AA1 S AH0 N",
+    "source": "wikimedia:wiktionary:Carson:RP",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkɑː.sən",
+        "cmu": "K AA1 S AH0 N",
+        "source": "wikimedia:wiktionary:Carson:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈkɑː.sən",
+            "cmu": "K AA1 S AH0 N",
+            "source": "wikimedia:wiktionary:Carson:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K AA1 R S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say K AA1 R S AH0 N (kˈɑːrsən) vs winner K AA1 S AH0 N (kˈɑːsən)"
+    ]
+  },
+  {
+    "name": "Boca Raton",
+    "country": "US",
+    "cmu": "B OW2 K AH0 R AH0 T OW1 N",
+    "source": "wikimedia:wikipedia:Boca Raton, Florida",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌboʊkə_rəˈtoʊn",
+        "cmu": "B OW2 K AH0 R AH0 T OW1 N",
+        "source": "wikimedia:wikipedia:Boca Raton, Florida",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌboʊkə_rəˈtoʊn",
+            "cmu": "B OW2 K AH0 R AH0 T OW1 N",
+            "source": "wikimedia:wikipedia:Boca Raton, Florida"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Santa Monica",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "San Marcos",
+    "country": "US",
+    "cmu": "S AE2 N M AA1 R K OW0 S",
+    "source": "wikimedia:wikipedia:San Marcos, California",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌsæn_ˈmɑːrkoʊs",
+        "cmu": "S AE2 N M AA1 R K OW0 S",
+        "source": "wikimedia:wikipedia:San Marcos, California",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌsæn_ˈmɑːrkoʊs",
+            "cmu": "S AE2 N M AA1 R K OW0 S",
+            "source": "wikimedia:wikipedia:San Marcos, California"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Boyle Heights",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Plantation",
+    "country": "US",
+    "cmu": "N EH0 W S",
+    "source": "wikimedia:wikipedia:Plantation, Florida",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "news",
+        "cmu": "N EH0 W S",
+        "source": "wikimedia:wikipedia:Plantation, Florida",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "news",
+            "cmu": "N EH0 W S",
+            "source": "wikimedia:wikipedia:Plantation, Florida"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "P L AE2 N T EY1 SH AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say P L AE2 N T EY1 SH AH0 N (plˌæntˈeɪʃən) vs winner N EH0 W S (nɛws)"
+    ]
+  },
+  {
+    "name": "Lynn",
+    "country": "US",
+    "cmu": "L IH0 N",
+    "source": "wikimedia:wiktionary:Lynn:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "lɪn",
+        "cmu": "L IH0 N",
+        "source": "wikimedia:wiktionary:Lynn:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "lɪn",
+            "cmu": "L IH0 N",
+            "source": "wikimedia:wiktionary:Lynn:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L IH1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Miami Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Arden-Arcade",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Longmont",
+    "country": "US",
+    "cmu": "L AO1 NG M AA2 N T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AO1 NG M AA2 N T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Santa Barbara",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Redding",
+    "country": "US",
+    "cmu": "R EH1 D IH0 NG",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R EH1 D IH0 NG",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Macon",
+    "country": "US",
+    "cmu": "M AA0 K AO1 N",
+    "source": "wikimedia:wiktionary:Macon:GA",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "mɑˈkɔn",
+        "cmu": "M AA0 K AO1 N",
+        "source": "wikimedia:wiktionary:Macon:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈmeɪkən",
+            "cmu": "M EY1 K AH0 N",
+            "source": "wikimedia:wikipedia:Macon, Georgia"
+          },
+          "wiktionary": {
+            "ipa": "mɑˈkɔn",
+            "cmu": "M AA0 K AO1 N",
+            "source": "wikimedia:wiktionary:Macon:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M EY1 K AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say M EY1 K AH0 N (mˈeɪkən) vs winner M AA0 K AO1 N (mɑːkˈɔːn)"
+    ]
+  },
+  {
+    "name": "Meridian",
+    "country": "US",
+    "cmu": "M ER0 IH1 D IY0 AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M ER0 IH1 D IY0 AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Leandro",
+    "country": "US",
+    "cmu": "P R EH0 S S",
+    "source": "wikimedia:wikipedia:San Leandro, California",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "press",
+        "cmu": "P R EH0 S S",
+        "source": "wikimedia:wikipedia:San Leandro, California",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "press",
+            "cmu": "P R EH0 S S",
+            "source": "wikimedia:wikipedia:San Leandro, California"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Greenville",
+    "country": "US",
+    "cmu": "G R IY1 N V IH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G R IY1 N V IH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Edmond",
+    "country": "US",
+    "cmu": "EH1 D M AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 D M AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Nampa",
+    "country": "US",
+    "cmu": "N AE1 M P AH0",
+    "source": "wikimedia:wiktionary:Nampa:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈnæmpə",
+        "cmu": "N AE1 M P AH0",
+        "source": "wikimedia:wiktionary:Nampa:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈnæmpə",
+            "cmu": "N AE1 M P AH0",
+            "source": "wikimedia:wikipedia:Nampa, Idaho"
+          },
+          "wiktionary": {
+            "ipa": "ˈnæmpə",
+            "cmu": "N AE1 M P AH0",
+            "source": "wikimedia:wiktionary:Nampa:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Trenton",
+    "country": "US",
+    "cmu": "T R EH1 N T AH0 N",
+    "source": "wikimedia:wiktionary:Trenton:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtɹɛn.tən",
+        "cmu": "T R EH1 N T AH0 N",
+        "source": "wikimedia:wiktionary:Trenton:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "entertainment",
+            "cmu": "EH0 N T EH0 R T AE0 IY0 N M EH0 N T",
+            "source": "wikimedia:wikipedia:Trenton, New Jersey"
+          },
+          "wiktionary": {
+            "ipa": "ˈtɹɛn.tən",
+            "cmu": "T R EH1 N T AH0 N",
+            "source": "wikimedia:wiktionary:Trenton:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "T R EH1 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sandy Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Newton",
+    "country": "US",
+    "cmu": "N Y UW1 T AH0 N",
+    "source": "wikimedia:wiktionary:Newton:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈn(j)uːtən",
+        "cmu": "N Y UW1 T AH0 N",
+        "source": "wikimedia:wiktionary:Newton:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈn(j)uːtən",
+            "cmu": "N Y UW1 T AH0 N",
+            "source": "wikimedia:wiktionary:Newton:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "N UW1 T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say N UW1 T AH0 N (nˈuːtən) vs winner N Y UW1 T AH0 N (njˈuːtən)"
+    ]
+  },
+  {
+    "name": "Toms River",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carmel",
+    "country": "US",
+    "cmu": "K AA1 R M AH0 L",
+    "source": "wikimedia:wiktionary:Carmel:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkɑɹ.məl",
+        "cmu": "K AA1 R M AH0 L",
+        "source": "wikimedia:wiktionary:Carmel:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈkɑɹ.məl",
+            "cmu": "K AA1 R M AH0 L",
+            "source": "wikimedia:wiktionary:Carmel:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K AA0 R M EH1 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say K AA0 R M EH1 L (kɑːrmˈɛl) vs winner K AA1 R M AH0 L (kˈɑːrməl)"
+    ]
+  },
+  {
+    "name": "Waukegan",
+    "country": "US",
+    "cmu": "W AO0 K IY1 G AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO0 K IY1 G AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Deltona",
+    "country": "US",
+    "cmu": "D EH2 L T OW1 N AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D EH2 L T OW1 N AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hawthorne",
+    "country": "US",
+    "cmu": "HH AO1 TH AO0 R N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AO1 TH AO0 R N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fort Smith",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Suffolk",
+    "country": "US",
+    "cmu": "S AH1 F AH0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 F AH0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sugar Land",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Livermore",
+    "country": "US",
+    "cmu": "L IH0 V ER0 M AO1 R",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L IH0 V ER0 M AO1 R",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Nashua",
+    "country": "US",
+    "cmu": "N AE1 SH UW0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AE1 SH UW0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Reading",
+    "country": "US",
+    "cmu": "R IY1 D IH0 NG",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IY1 D IH0 NG",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Indio",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rio Rancho",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Enchanted Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Santa Fe",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sandy",
+    "country": "US",
+    "cmu": "S AE1 N D IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AE1 N D IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Whittier",
+    "country": "US",
+    "cmu": "W IH1 T IY0 ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W IH1 T IY0 ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Canarsie",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kirkland",
+    "country": "US",
+    "cmu": "K ER1 K L AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K ER1 K L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Menifee",
+    "country": "US",
+    "cmu": "M EH1 N IH0 F IY2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M EH1 N IH0 F IY2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Newport Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tracy",
+    "country": "US",
+    "cmu": "T R EY1 S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T R EY1 S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Citrus Heights",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bend",
+    "country": "US",
+    "cmu": "B EH1 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EH1 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Canton",
+    "country": "US",
+    "cmu": "K AE1 N T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AE1 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lehigh Acres",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Greenburgh",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bloomington",
+    "country": "US",
+    "cmu": "B L UW1 M IH0 NG T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B L UW1 M IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Town",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Germantown",
+    "country": "US",
+    "cmu": "JH ER1 M AH0 N T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH ER1 M AH0 N T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Clifton",
+    "country": "US",
+    "cmu": "K L IH1 F T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K L IH1 F T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Duluth",
+    "country": "US",
+    "cmu": "D AH0 L UW1 TH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AH0 L UW1 TH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Champaign",
+    "country": "US",
+    "cmu": "CH AE0 M P EY1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH AE0 M P EY1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Near North Side",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Chino",
+    "country": "US",
+    "cmu": "CH IY1 N OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH IY1 N OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ogden",
+    "country": "US",
+    "cmu": "AA1 G D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AA1 G D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Redwood City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bellingham",
+    "country": "US",
+    "cmu": "B EH1 L IH0 NG HH AE2 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EH1 L IH0 NG HH AE2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "O'Fallon",
+    "country": "US",
+    "cmu": "OW0 F AE1 L AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "OW0 F AE1 L AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hoover",
+    "country": "US",
+    "cmu": "HH UW1 V ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH UW1 V ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Melbourne",
+    "country": "US",
+    "cmu": "M EH1 L B ER0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M EH1 L B ER0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Danbury",
+    "country": "US",
+    "cmu": "D AE1 N B ER0 IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AE1 N B ER0 IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "East Norwalk",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Edinburg",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sunrise",
+    "country": "US",
+    "cmu": "S AH1 N R AY2 Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 N R AY2 Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cicero",
+    "country": "US",
+    "cmu": "S IH1 S ER0 OW2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S IH1 S ER0 OW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hemet",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "San Pedro",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ahwatukee Foothills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Johns Creek",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mission",
+    "country": "US",
+    "cmu": "M IH1 SH AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M IH1 SH AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Troy",
+    "country": "US",
+    "cmu": "T R OY1",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T R OY1",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Buena Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mid-City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Palm Coast",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sioux City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lake Forest",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Merced",
+    "country": "US",
+    "cmu": "M ER1 S T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M ER1 S T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Longview",
+    "country": "US",
+    "cmu": "L AO1 NG V Y UW2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AO1 NG V Y UW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bryan",
+    "country": "US",
+    "cmu": "B R AY1 AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R AY1 AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Westland",
+    "country": "US",
+    "cmu": "W EH1 S T L AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W EH1 S T L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Warwick",
+    "country": "US",
+    "cmu": "W AO1 R W IH0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 R W IH0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Farmington Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "San Tan Valley",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mount Pleasant",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cranston",
+    "country": "US",
+    "cmu": "K R AE1 N S T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K R AE1 N S T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Largo",
+    "country": "US",
+    "cmu": "L AA1 R G OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AA1 R G OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Homestead",
+    "country": "US",
+    "cmu": "HH OW1 M S T EH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH OW1 M S T EH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Suffolk",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Avondale",
+    "country": "US",
+    "cmu": "AE1 V AH0 N D EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 V AH0 N D EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tustin",
+    "country": "US",
+    "cmu": "T AH1 S T IH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T AH1 S T IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Mountain View",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Napa",
+    "country": "US",
+    "cmu": "N AE1 P AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AE1 P AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Somerville",
+    "country": "US",
+    "cmu": "S AH1 M ER0 V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 M ER0 V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kendall",
+    "country": "US",
+    "cmu": "K EH1 N D AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K EH1 N D AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Parma",
+    "country": "US",
+    "cmu": "P AA1 R M AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AA1 R M AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "New Rochelle",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lynchburg",
+    "country": "US",
+    "cmu": "L IH1 N CH B ER0 G",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L IH1 N CH B ER0 G",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Medford",
+    "country": "US",
+    "cmu": "M EH1 D F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M EH1 D F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Deerfield Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sylmar",
+    "country": "US",
+    "cmu": "S IH1 L M AA0 R",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S IH1 L M AA0 R",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pleasanton",
+    "country": "US",
+    "cmu": "P L EH1 Z AH0 N T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P L EH1 Z AH0 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Belmont Cragin",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Brooklyn Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Goodyear",
+    "country": "US",
+    "cmu": "G UH1 D Y IH0 R",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G UH1 D Y IH0 R",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kennewick",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Alameda",
+    "country": "US",
+    "cmu": "AE2 L AH0 M IY1 D AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE2 L AH0 M IY1 D AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Town 'n' Country",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bellflower",
+    "country": "US",
+    "cmu": "B EH1 L F L AW2 ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EH1 L F L AW2 ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Chino Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Alafaya",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Springdale",
+    "country": "US",
+    "cmu": "S P R IH1 NG D EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S P R IH1 NG D EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Racine",
+    "country": "US",
+    "cmu": "R AH0 S IY1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AH0 S IY1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hammond",
+    "country": "US",
+    "cmu": "HH AE1 M AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AE1 M AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Milpitas",
+    "country": "US",
+    "cmu": "M IH0 L P IY1 T AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M IH0 L P IY1 T AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Gary",
+    "country": "US",
+    "cmu": "G EH1 R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G EH1 R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Scranton",
+    "country": "US",
+    "cmu": "S K R AE1 N T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S K R AE1 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Baldwin Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Auburn",
+    "country": "US",
+    "cmu": "AA1 B ER0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AA1 B ER0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fishers",
+    "country": "US",
+    "cmu": "F IH1 SH ER0 Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F IH1 SH ER0 Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Saint Joseph",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pharr",
+    "country": "US",
+    "cmu": "F AA1 R",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F AA1 R",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Upland",
+    "country": "US",
+    "cmu": "AH1 P L AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AH1 P L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Folsom",
+    "country": "US",
+    "cmu": "F OW1 L S AH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F OW1 L S AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Baytown",
+    "country": "US",
+    "cmu": "B EY1 T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EY1 T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Ramon",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Camden",
+    "country": "US",
+    "cmu": "K AE1 M D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AE1 M D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lake Charles",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kalamazoo",
+    "country": "US",
+    "cmu": "K AE2 L AH0 M AH0 Z UW1",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AE2 L AH0 M AH0 Z UW1",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Brick",
+    "country": "US",
+    "cmu": "B R IH1 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R IH1 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Arlington Heights",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Plymouth",
+    "country": "US",
+    "cmu": "P L IH1 M AH0 TH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P L IH1 M AH0 TH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Ozone Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Doral",
+    "country": "US",
+    "cmu": "D AO0 R AE1 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AO0 R AE1 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Waterford",
+    "country": "US",
+    "cmu": "W AO1 T ER0 F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 T ER0 F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Evanston",
+    "country": "US",
+    "cmu": "EH1 V AH0 N S T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 V AH0 N S T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Manteca",
+    "country": "US",
+    "cmu": "M AA0 N T EH1 K AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AA0 N T EH1 K AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Wyoming",
+    "country": "US",
+    "cmu": "W AY2 OW1 M IH0 NG",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AY2 OW1 M IH0 NG",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Loveland",
+    "country": "US",
+    "cmu": "L AH1 V L AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AH1 V L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cheektowaga",
+    "country": "US",
+    "cmu": "CH IY2 K T AH0 W AA1 G AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH IY2 K T AH0 W AA1 G AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kings Bridge",
+    "country": "US",
+    "cmu": "K IH1 NG Z B R IH2 JH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K IH1 NG Z B R IH2 JH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bismarck",
+    "country": "US",
+    "cmu": "B IH1 Z M AA2 R K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B IH1 Z M AA2 R K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Perris",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bethlehem",
+    "country": "US",
+    "cmu": "B EH1 TH L IH0 HH EH2 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EH1 TH L IH0 HH EH2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Schaumburg",
+    "country": "US",
+    "cmu": "SH AW1 M B ER0 G",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH AW1 M B ER0 G",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Gastonia",
+    "country": "US",
+    "cmu": "G AH0 S T OW1 N IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G AH0 S T OW1 N IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Union City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bolingbrook",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Iowa City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Layton",
+    "country": "US",
+    "cmu": "L EY1 T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L EY1 T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Missouri City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Appleton",
+    "country": "US",
+    "cmu": "AE1 P AH0 L T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 P AH0 L T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Shelby",
+    "country": "US",
+    "cmu": "SH EH1 L B IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH EH1 L B IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fort Myers",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Boynton Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Jonesboro",
+    "country": "US",
+    "cmu": "JH OW1 N Z B AH0 R OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH OW1 N Z B AH0 R OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Lawndale",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Logan Square",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rapid City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Warner Robins",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rochester Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Decatur",
+    "country": "US",
+    "cmu": "D IH0 K EY1 T ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D IH0 K EY1 T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Southfield",
+    "country": "US",
+    "cmu": "S AW1 TH F IY2 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AW1 TH F IY2 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Saint George",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Britain",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Daytona Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Franklin",
+    "country": "US",
+    "cmu": "F R AE1 NG K L IH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F R AE1 NG K L IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Turlock",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Temple",
+    "country": "US",
+    "cmu": "T EH1 M P AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T EH1 M P AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Ridge",
+    "country": "US",
+    "cmu": "W EH1 S T R IH2 JH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W EH1 S T R IH2 JH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Apple Valley",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lynwood",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waukesha",
+    "country": "US",
+    "cmu": "W AO0 K IY1 SH AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO0 K IY1 SH AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Gulfport",
+    "country": "US",
+    "cmu": "G AH1 L F P AO0 R T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G AH1 L F P AO0 R T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pawtucket",
+    "country": "US",
+    "cmu": "P AO2 T AH1 K IH0 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AO2 T AH1 K IH0 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lauderhill",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rock Hill",
+    "country": "US",
+    "cmu": "R AA1 K HH IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AA1 K HH IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Silver Spring",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West Gulfport",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Flower Mound",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Centreville",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Passaic",
+    "country": "US",
+    "cmu": "P AH0 S EY1 IH0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AH0 S EY1 IH0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Riverview",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Redlands",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Missoula",
+    "country": "US",
+    "cmu": "M IH0 Z UW1 L AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M IH0 Z UW1 L AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rancho Cordova",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Braunfels",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cherry Hill",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Flagstaff",
+    "country": "US",
+    "cmu": "F L AE1 G S T AE2 F",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F L AE1 G S T AE2 F",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Muncie",
+    "country": "US",
+    "cmu": "M AH1 N S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AH1 N S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Mira Mesa",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woodland Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Weston",
+    "country": "US",
+    "cmu": "W EH1 S T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W EH1 S T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Frederick",
+    "country": "US",
+    "cmu": "F R EH1 D R IH0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F R EH1 D R IH0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pasco",
+    "country": "US",
+    "cmu": "P AA1 S K OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AA1 S K OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pittsburg",
+    "country": "US",
+    "cmu": "P IH1 T S B ER0 G",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P IH1 T S B ER0 G",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ridgewood",
+    "country": "US",
+    "cmu": "R IH1 JH W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IH1 JH W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Palatine",
+    "country": "US",
+    "cmu": "P AE1 L AH0 T AY2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AE1 L AH0 T AY2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Richland Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kissimmee",
+    "country": "US",
+    "cmu": "K IH0 S IH1 M IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K IH0 S IH1 M IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Walnut Creek",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cordova",
+    "country": "US",
+    "cmu": "K AO2 R D OW1 V AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AO2 R D OW1 V AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Mount Vernon",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Conroe",
+    "country": "US",
+    "cmu": "K AA1 N R OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AA1 N R OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dothan",
+    "country": "US",
+    "cmu": "D AA1 TH AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AA1 TH AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Northridge",
+    "country": "US",
+    "cmu": "N AO1 R TH R IH2 JH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AO1 R TH R IH2 JH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Waterloo",
+    "country": "US",
+    "cmu": "W AO1 T ER0 L UW2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 T ER0 L UW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Maple Grove",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Framingham",
+    "country": "US",
+    "cmu": "F R EY1 M IH0 NG HH AE2 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F R EY1 M IH0 NG HH AE2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Redondo Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bossier City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Yorba Linda",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woodbury",
+    "country": "US",
+    "cmu": "W UH1 D B EH2 R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W UH1 D B EH2 R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Eau Claire",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waldorf",
+    "country": "US",
+    "cmu": "W AO1 L D AO0 R F",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 L D AO0 R F",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Forest Hills",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Davis",
+    "country": "US",
+    "cmu": "D EY1 V AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D EY1 V AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Glen Burnie",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Camarillo",
+    "country": "US",
+    "cmu": "K AA0 M AA0 R IH1 L OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AA0 M AA0 R IH1 L OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Victoria",
+    "country": "US",
+    "cmu": "V IH0 K T AO1 R IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "V IH0 K T AO1 R IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Gaithersburg",
+    "country": "US",
+    "cmu": "G EY1 TH ER0 Z B ER0 G",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G EY1 TH ER0 Z B ER0 G",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South San Francisco",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kenner",
+    "country": "US",
+    "cmu": "K EH1 N ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K EH1 N ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Jackson Heights",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rockville",
+    "country": "US",
+    "cmu": "R AA1 K V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AA1 K V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lincoln Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Yuba City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Palo Alto",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Casas Adobes",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Marysville",
+    "country": "US",
+    "cmu": "M EH1 R IY0 Z V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M EH1 R IY0 Z V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Jordan",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Oshkosh",
+    "country": "US",
+    "cmu": "AO1 SH K AO2 SH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AO1 SH K AO2 SH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Little Rock",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bayside",
+    "country": "US",
+    "cmu": "B EY1 S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EY1 S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bayonne",
+    "country": "US",
+    "cmu": "B EY2 Y OW1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EY2 Y OW1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Eagan",
+    "country": "US",
+    "cmu": "IY1 G AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "IY1 G AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Delray Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Johnson City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dale City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cedar Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Parkchester",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Atascocita",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint Cloud",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ellicott City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Laguna Niguel",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint Charles",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Harlingen",
+    "country": "US",
+    "cmu": "HH AA1 R L IH0 NG AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AA1 R L IH0 NG AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Clemente",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West Lynchburg",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Middletown",
+    "country": "US",
+    "cmu": "M IH1 D AH0 L T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M IH1 D AH0 L T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Framingham Center",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Schenectady",
+    "country": "US",
+    "cmu": "S K AH0 N EH1 K T AH0 D IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S K AH0 N EH1 K T AH0 D IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cheyenne",
+    "country": "US",
+    "cmu": "SH AY0 EH1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH AY0 EH1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Broomfield",
+    "country": "US",
+    "cmu": "B R UW1 M F IY2 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R UW1 M F IY2 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ames",
+    "country": "US",
+    "cmu": "EY1 M Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EY1 M Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Park Slope",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shawnee",
+    "country": "US",
+    "cmu": "SH AO1 N IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH AO1 N IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Reseda",
+    "country": "US",
+    "cmu": "R EH0 S EY1 D AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R EH0 S EY1 D AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Conway",
+    "country": "US",
+    "cmu": "K AA1 N W EY2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AA1 N W EY2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "East Orange",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Portage Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Skokie",
+    "country": "US",
+    "cmu": "S K OW1 K IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S K OW1 K IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Bloomfield Township",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tamarac",
+    "country": "US",
+    "cmu": "T AE1 M ER0 AE0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T AE1 M ER0 AE0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Youngstown",
+    "country": "US",
+    "cmu": "Y AH1 NG Z T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "Y AH1 NG Z T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lodi",
+    "country": "US",
+    "cmu": "L OW1 D AY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L OW1 D AY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Hollywood",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mansfield",
+    "country": "US",
+    "cmu": "M AE1 N Z F IY2 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AE1 N Z F IY2 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Santa Cruz",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pico Rivera",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Madera",
+    "country": "US",
+    "cmu": "M AA0 D EH1 R AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AA0 D EH1 R AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Janesville",
+    "country": "US",
+    "cmu": "JH EY1 N Z V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH EY1 N Z V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Des Moines",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Montebello",
+    "country": "US",
+    "cmu": "M AA2 N T IH0 B EH1 L OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AA2 N T IH0 B EH1 L OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Georgetown",
+    "country": "US",
+    "cmu": "JH AO1 R JH T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH AO1 R JH T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Alpharetta",
+    "country": "US",
+    "cmu": "AE2 L F ER0 EH1 T AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE2 L F ER0 EH1 T AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lorain",
+    "country": "US",
+    "cmu": "L ER0 EY1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L ER0 EY1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bowling Green",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Flatlands",
+    "country": "US",
+    "cmu": "F L AE1 T L AE0 N D Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F L AE1 T L AE0 N D Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dundalk",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Eden Prairie",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Bergen",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Florence-Graham",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waltham",
+    "country": "US",
+    "cmu": "W AO1 L TH AH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 L TH AH0 M",
+        "source": "cmu"
+      },
+      "osm": {
+        "ipa": "ˈwɔːlθæ̃m",
+        "cmu": "W AO1 L TH AE0 M",
+        "source": "osm:158844369"
+      }
+    },
+    "conflicts": [
+      "Disagreement: osm:158844369 say W AO1 L TH AE0 M (wˈɔːlθæm) vs winner W AO1 L TH AH0 M (wˈɔːlθəm)"
+    ]
+  },
+  {
+    "name": "West Hartford",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rogers",
+    "country": "US",
+    "cmu": "R AA1 JH ER0 Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AA1 JH ER0 Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Carol City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Encinitas",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Village",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Haverhill",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Jupiter",
+    "country": "US",
+    "cmu": "JH UW1 P AH0 T ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH UW1 P AH0 T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Council Bluffs",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wellington",
+    "country": "US",
+    "cmu": "W EH1 L IH0 NG T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W EH1 L IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Coon Rapids",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Miami",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hamilton",
+    "country": "US",
+    "cmu": "HH AE1 M AH0 L T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AE1 M AH0 L T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Port",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tulare",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coon Rapids",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Millcreek",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "La Habra",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blaine",
+    "country": "US",
+    "cmu": "B L EY1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B L EY1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lake Elsinore",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carmichael",
+    "country": "US",
+    "cmu": "K AA1 R M AY2 K AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AA1 R M AY2 K AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Taylor",
+    "country": "US",
+    "cmu": "T EY1 L ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T EY1 L ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Burnsville",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Monterey Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Castro Valley",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Irvington",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rocklin",
+    "country": "US",
+    "cmu": "R AA1 K L IH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AA1 K L IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Utica",
+    "country": "US",
+    "cmu": "Y UW1 T AH0 K AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "Y UW1 T AH0 K AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Malden",
+    "country": "US",
+    "cmu": "M AO1 L D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AO1 L D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "National City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Financial District",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bethesda",
+    "country": "US",
+    "cmu": "B AH0 TH EH1 Z D AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B AH0 TH EH1 Z D AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Terre Haute",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
   }
 ]
