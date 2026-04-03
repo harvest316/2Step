@@ -1,0 +1,3214 @@
+[
+  {
+    "name": "Auckland",
+    "country": "NZ",
+    "cmu": "OW1 K L AH0 N D",
+    "source": "wikimedia:wiktionary:Auckland:NZ",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈoːklənd",
+        "cmu": "OW1 K L AH0 N D",
+        "source": "wikimedia:wiktionary:Auckland:NZ",
+        "dialect": "NZ",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈɔːk.lənd",
+            "cmu": "AO1 K L AH0 N D",
+            "source": "wikimedia:wikipedia:Auckland"
+          },
+          "wiktionary": {
+            "ipa": "ˈoːklənd",
+            "cmu": "OW1 K L AH0 N D",
+            "source": "wikimedia:wiktionary:Auckland:NZ",
+            "dialect": "NZ"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AA1 K L AH0 N D",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "AO1 K L AH0 N D",
+          "ipa": "ˈɔːklənd",
+          "source": "research:https://oxfordlearnersdictionaries.com/definition/english/auckland",
+          "note": "Oxford Advanced Learner's Dictionary",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: cmu say AA1 K L AH0 N D (ˈɑːklənd) vs winner OW1 K L AH0 N D (ˈoʊklənd)",
+      "Disagreement: research:https://oxfordlearnersdictionaries.com/definition/english/auckland say AO1 K L AH0 N D (ˈɔːklənd) vs winner OW1 K L AH0 N D (ˈoʊklənd)"
+    ]
+  },
+  {
+    "name": "Christchurch",
+    "country": "NZ",
+    "cmu": "K R AY1 S T CH ER0 CH",
+    "source": "wikimedia:wiktionary:Christchurch:RP + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkɹaɪst.tʃɜːtʃ",
+        "cmu": "K R AY1 S T CH ER0 CH",
+        "source": "wikimedia:wiktionary:Christchurch:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈkraɪs.tʃɜːrtʃ",
+            "cmu": "K R AY1 S CH ER0 R CH",
+            "source": "wikimedia:wikipedia:Christchurch"
+          },
+          "wiktionary": {
+            "ipa": "ˈkɹaɪst.tʃɜːtʃ",
+            "cmu": "K R AY1 S T CH ER0 CH",
+            "source": "wikimedia:wiktionary:Christchurch:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K R AY1 S T CH ER0 CH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Wellington",
+    "country": "NZ",
+    "cmu": "W EH1 L AH0 NG T AH0 N",
+    "source": "wikimedia:wiktionary:Wellington:NZ",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈweləŋtən",
+        "cmu": "W EH1 L AH0 NG T AH0 N",
+        "source": "wikimedia:wiktionary:Wellington:NZ",
+        "dialect": "NZ",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈwɛlɪŋtən",
+            "cmu": "W EH1 L IH0 NG T AH0 N",
+            "source": "wikimedia:wikipedia:Wellington"
+          },
+          "wiktionary": {
+            "ipa": "ˈweləŋtən",
+            "cmu": "W EH1 L AH0 NG T AH0 N",
+            "source": "wikimedia:wiktionary:Wellington:NZ",
+            "dialect": "NZ"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "W EH1 L IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say W EH1 L IH0 NG T AH0 N (wˈɛlɪŋtən) vs winner W EH1 L AH0 NG T AH0 N (wˈɛləŋtən)"
+    ]
+  },
+  {
+    "name": "Manukau City",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Shore",
+    "country": "NZ",
+    "cmu": "N AO1 R TH SH AO1 R",
+    "source": "wikimedia:wiktionary:North Shore:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈnɔɹθ ˈʃɔɹ",
+        "cmu": "N AO1 R TH SH AO1 R",
+        "source": "wikimedia:wiktionary:North Shore:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈnɔɹθ ˈʃɔɹ",
+            "cmu": "N AO1 R TH SH AO1 R",
+            "source": "wikimedia:wiktionary:North Shore:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hamilton",
+    "country": "NZ",
+    "cmu": "HH AE1 M IH0 L T AH0 N",
+    "source": "wikimedia:wiktionary:Hamilton:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈhæmɪltən",
+        "cmu": "HH AE1 M IH0 L T AH0 N",
+        "source": "wikimedia:wiktionary:Hamilton:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈhæmɪltən",
+            "cmu": "HH AE1 M IH0 L T AH0 N",
+            "source": "wikimedia:wiktionary:Hamilton:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "HH AE1 M AH0 L T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say HH AE1 M AH0 L T AH0 N (hˈæməltən) vs winner HH AE1 M IH0 L T AH0 N (hˈæmɪltən)"
+    ]
+  },
+  {
+    "name": "Tauranga",
+    "country": "NZ",
+    "cmu": "T AE1 R AE0 NG AE0",
+    "source": "wikimedia:wiktionary:Tauranga:NZ,standard + research:https://en.wiktionary.org/wiki/Tauranga",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtaʉ.ra.ŋa",
+        "cmu": "T AE1 R AE0 NG AE0",
+        "source": "wikimedia:wiktionary:Tauranga:NZ,standard",
+        "dialect": "NZ,standard",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈtaʉ.ra.ŋa",
+            "cmu": "T AE1 R AE0 NG AE0",
+            "source": "wikimedia:wiktionary:Tauranga:NZ,standard",
+            "dialect": "NZ,standard"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "T AE1 R AE0 NG AE0",
+          "ipa": "ˈtaʉ.ra.ŋa",
+          "source": "research:https://en.wiktionary.org/wiki/Tauranga",
+          "note": "New Zealand standard pronunciation",
+          "authoritative": false
+        },
+        {
+          "cmu": "T AE1 UH0 R AA0 NG AE0",
+          "ipa": "ˈtæʊ.ɹɒŋ.a",
+          "source": "research:https://en.wiktionary.org/wiki/Tauranga",
+          "note": "New Zealand Anglicised pronunciation",
+          "authoritative": false
+        },
+        {
+          "cmu": "T AE1 UW0 R AE0 NG AE0",
+          "ipa": "ˈtau.ra.ŋa",
+          "source": "research:https://en.wiktionary.org/wiki/Tauranga",
+          "note": "Māori pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wiktionary.org/wiki/Tauranga say T AE1 UH0 R AA0 NG AE0 (tˈæʊrɑːŋæ) vs winner T AE1 R AE0 NG AE0 (tˈæræŋæ)",
+      "Disagreement: research:https://en.wiktionary.org/wiki/Tauranga say T AE1 UW0 R AE0 NG AE0 (tˈæuːræŋæ) vs winner T AE1 R AE0 NG AE0 (tˈæræŋæ)"
+    ]
+  },
+  {
+    "name": "Dunedin",
+    "country": "NZ",
+    "cmu": "D N IY1 D N",
+    "source": "wikimedia:wiktionary:Dunedin:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "dɐˈniːdɘn",
+        "cmu": "D N IY1 D N",
+        "source": "wikimedia:wiktionary:Dunedin:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "dʌˈniːdᵻn",
+            "cmu": "D AH0 N IY1 D AH0 N",
+            "source": "wikimedia:wikipedia:Dunedin"
+          },
+          "wiktionary": {
+            "ipa": "dɐˈniːdɘn",
+            "cmu": "D N IY1 D N",
+            "source": "wikimedia:wiktionary:Dunedin:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D UW1 N AH0 D IH0 N",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "D AH0 N IY1 D AH0 N",
+          "ipa": "dʌˈniːdən",
+          "source": "research:https://www.oxfordreference.com/display/10.1093/acref/9780195584516.001.0001/m-en_nz-msdict-00001-0015803",
+          "note": "The New Zealand Oxford Dictionary",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: cmu say D UW1 N AH0 D IH0 N (dˈuːnədɪn) vs winner D N IY1 D N (dnˈiːdn)",
+      "Disagreement: research:https://www.oxfordreference.com/display/10.1093/acref/9780195584516.001.0001/m-en_nz-msdict-00001-0015803 say D AH0 N IY1 D AH0 N (dənˈiːdən) vs winner D N IY1 D N (dnˈiːdn)"
+    ]
+  },
+  {
+    "name": "Lower Hutt",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Palmerston North",
+    "country": "NZ",
+    "cmu": "P AA1 M AH0 R S T AH0 N",
+    "source": "wikimedia:wikipedia:Palmerston North",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈpɑːmərstən",
+        "cmu": "P AA1 M AH0 R S T AH0 N",
+        "source": "wikimedia:wikipedia:Palmerston North",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈpɑːmərstən",
+            "cmu": "P AA1 M AH0 R S T AH0 N",
+            "source": "wikimedia:wikipedia:Palmerston North"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "New Plymouth",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hastings",
+    "country": "NZ",
+    "cmu": "HH EY1 S T IH0 NG Z",
+    "source": "wikimedia:wiktionary:Hastings:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈheɪ.stɪŋz",
+        "cmu": "HH EY1 S T IH0 NG Z",
+        "source": "wikimedia:wiktionary:Hastings:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈheɪstɪŋz",
+            "cmu": "HH EY1 S T IH0 NG Z",
+            "source": "wikimedia:wikipedia:Hastings"
+          },
+          "wiktionary": {
+            "ipa": "ˈheɪ.stɪŋz",
+            "cmu": "HH EY1 S T IH0 NG Z",
+            "source": "wikimedia:wiktionary:Hastings:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "HH EY1 S T IH0 NG Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Napier",
+    "country": "NZ",
+    "cmu": "N EY1 P IY0 ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N EY1 P IY0 ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rotorua",
+    "country": "NZ",
+    "cmu": "R OW2 T AH0 R UW1 AH0",
+    "source": "research:https://dictionary.cambridge.org/pronunciation/english/rotorua",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "R OW2 T AH0 R UW1 AH0",
+          "ipa": "ˌroʊ.t̬əˈruː.ə",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/rotorua",
+          "note": "Cambridge Dictionary US pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Porirua",
+    "country": "NZ",
+    "cmu": "P AA0 R IH0 R UW0 AH0",
+    "source": "wikimedia:wiktionary:Porirua:NZ",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "pɒɹɪɹuə",
+        "cmu": "P AA0 R IH0 R UW0 AH0",
+        "source": "wikimedia:wiktionary:Porirua:NZ",
+        "dialect": "NZ",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "pɒɹɪɹuə",
+            "cmu": "P AA0 R IH0 R UW0 AH0",
+            "source": "wikimedia:wiktionary:Porirua:NZ",
+            "dialect": "NZ"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Invercargill",
+    "country": "NZ",
+    "cmu": "AH2 N V AH0 K AE1 G AH0 L",
+    "source": "wikimedia:wiktionary:Invercargill:NZ",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌən.vəˈkaː.ɡəl",
+        "cmu": "AH2 N V AH0 K AE1 G AH0 L",
+        "source": "wikimedia:wiktionary:Invercargill:NZ",
+        "dialect": "NZ",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌɪnvərˈkɑːrɡᵻl",
+            "cmu": "IH2 N V AH0 R K AA1 R G AH0 L",
+            "source": "wikimedia:wikipedia:Invercargill"
+          },
+          "wiktionary": {
+            "ipa": "ˌən.vəˈkaː.ɡəl",
+            "cmu": "AH2 N V AH0 K AE1 G AH0 L",
+            "source": "wikimedia:wiktionary:Invercargill:NZ",
+            "dialect": "NZ"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Papatoetoe",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Nelson",
+    "country": "NZ",
+    "cmu": "N EH1 L S AH0 N",
+    "source": "wikimedia:wiktionary:Nelson:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈnɛlsən",
+        "cmu": "N EH1 L S AH0 N",
+        "source": "wikimedia:wiktionary:Nelson:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈnɛlsən",
+            "cmu": "N EH1 L S AH0 N",
+            "source": "wikimedia:wiktionary:Nelson:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "N EH1 L S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Whangarei",
+    "country": "NZ",
+    "cmu": "F AE0 NG AE0 R EH1 IY0",
+    "source": "wikimedia:wiktionary:Whangarei:AU,NZ",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "faŋaˈɾɛi",
+        "cmu": "F AE0 NG AE0 R EH1 IY0",
+        "source": "wikimedia:wiktionary:Whangarei:AU,NZ",
+        "dialect": "AU,NZ",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "faŋaˈɾɛi",
+            "cmu": "F AE0 NG AE0 R EH1 IY0",
+            "source": "wikimedia:wiktionary:Whangarei:AU,NZ",
+            "dialect": "AU,NZ"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Whanganui",
+    "country": "NZ",
+    "cmu": "W AA1 NG AH0 N UW0 IY0",
+    "source": "wikimedia:wikipedia:Whanganui",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈwɒŋənu.i",
+        "cmu": "W AA1 NG AH0 N UW0 IY0",
+        "source": "wikimedia:wikipedia:Whanganui",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈwɒŋənu.i",
+            "cmu": "W AA1 NG AH0 N UW0 IY0",
+            "source": "wikimedia:wikipedia:Whanganui"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Upper Hutt",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Manurewa",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Gisborne",
+    "country": "NZ",
+    "cmu": "G IH1 Z B AH0 N",
+    "source": "wikimedia:wiktionary:Gisborne:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɡɪzbən",
+        "cmu": "G IH1 Z B AH0 N",
+        "source": "wikimedia:wiktionary:Gisborne:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈɡɪzbən",
+            "cmu": "G IH1 Z B AH0 N",
+            "source": "wikimedia:wiktionary:Gisborne:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Papakura",
+    "country": "NZ",
+    "cmu": "P AA0 P AH0 K UW1 R AH0",
+    "source": "wikimedia:wiktionary:Papakura:generic + research:https://en.wiktionary.org/wiki/Papakura",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "pɑːpəˈkuːɹə",
+        "cmu": "P AA0 P AH0 K UW1 R AH0",
+        "source": "wikimedia:wiktionary:Papakura:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "pɑːpəˈkuːɹə",
+            "cmu": "P AA0 P AH0 K UW1 R AH0",
+            "source": "wikimedia:wiktionary:Papakura:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "P AA0 P AH0 K UW1 R AH0",
+          "ipa": "pɑːpəˈkuːɹə",
+          "source": "research:https://en.wiktionary.org/wiki/Papakura",
+          "note": "Wiktionary dictionary entry",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rolleston",
+    "country": "NZ",
+    "cmu": "R AA1 L AH0 S T AH0 N",
+    "source": "wikimedia:wiktionary:Rolleston:UK",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɹɒləstən",
+        "cmu": "R AA1 L AH0 S T AH0 N",
+        "source": "wikimedia:wiktionary:Rolleston:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈrɒləstən",
+            "cmu": "R AA1 L AH0 S T AH0 N",
+            "source": "wikimedia:wikipedia:Rolleston, New Zealand"
+          },
+          "wiktionary": {
+            "ipa": "ˈɹɒləstən",
+            "cmu": "R AA1 L AH0 S T AH0 N",
+            "source": "wikimedia:wiktionary:Rolleston:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Blenheim",
+    "country": "NZ",
+    "cmu": "B L EH1 N AH0 M",
+    "source": "wikimedia:wiktionary:Blenheim:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈblɛnəm",
+        "cmu": "B L EH1 N AH0 M",
+        "source": "wikimedia:wiktionary:Blenheim:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈblɛnɪm",
+            "cmu": "B L EH1 N IH0 M",
+            "source": "wikimedia:wikipedia:Blenheim"
+          },
+          "wiktionary": {
+            "ipa": "ˈblɛnəm",
+            "cmu": "B L EH1 N AH0 M",
+            "source": "wikimedia:wiktionary:Blenheim:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B L EH1 N HH AY2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say B L EH1 N HH AY2 M (blˈɛnhˌaɪm) vs winner B L EH1 N AH0 M (blˈɛnəm)"
+    ]
+  },
+  {
+    "name": "Paraparaumu",
+    "country": "NZ",
+    "cmu": "P AE0 R AH0 P AE1 R AH0 UW1 M UW0",
+    "source": "wikimedia:wiktionary:Paraparaumu:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "paɹəˈpaɹəˈuːmuː",
+        "cmu": "P AE0 R AH0 P AE1 R AH0 UW1 M UW0",
+        "source": "wikimedia:wiktionary:Paraparaumu:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌpærəpəˈraʊmuː",
+            "cmu": "P AE2 R AH0 P AH0 R AW1 M UW0",
+            "source": "wikimedia:wikipedia:Paraparaumu"
+          },
+          "wiktionary": {
+            "ipa": "paɹəˈpaɹəˈuːmuː",
+            "cmu": "P AE0 R AH0 P AE1 R AH0 UW1 M UW0",
+            "source": "wikimedia:wiktionary:Paraparaumu:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Timaru",
+    "country": "NZ",
+    "cmu": "T IH1 M AH0 R UW0",
+    "source": "wikimedia:wiktionary:Timaru:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtɪməɹu",
+        "cmu": "T IH1 M AH0 R UW0",
+        "source": "wikimedia:wiktionary:Timaru:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "langpronˈtɪməruː",
+            "cmu": "L AE0 N G P R OW0 N T IH1 M AH0 R UW0",
+            "source": "wikimedia:wikipedia:Timaru"
+          },
+          "wiktionary": {
+            "ipa": "ˈtɪməɹu",
+            "cmu": "T IH1 M AH0 R UW0",
+            "source": "wikimedia:wiktionary:Timaru:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Masterton",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mangere East",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Remuera",
+    "country": "NZ",
+    "cmu": "R EH0 M UW0 IH0 R AH0",
+    "source": "wikimedia:wiktionary:Remuera:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ɹɛmuːɪəɹə",
+        "cmu": "R EH0 M UW0 IH0 R AH0",
+        "source": "wikimedia:wiktionary:Remuera:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ɹɛmuːɪəɹə",
+            "cmu": "R EH0 M UW0 IH0 R AH0",
+            "source": "wikimedia:wiktionary:Remuera:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Avondale",
+    "country": "NZ",
+    "cmu": "EY1 V AH0 N D EY0 L",
+    "source": "wikimedia:wiktionary:Avondale:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈeɪv.ən.deɪl",
+        "cmu": "EY1 V AH0 N D EY0 L",
+        "source": "wikimedia:wiktionary:Avondale:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈævənˌdeɪl",
+            "cmu": "AE1 V AH0 N D EY2 L",
+            "source": "wikimedia:wikipedia:Avondale, Auckland"
+          },
+          "wiktionary": {
+            "ipa": "ˈeɪv.ən.deɪl",
+            "cmu": "EY1 V AH0 N D EY0 L",
+            "source": "wikimedia:wiktionary:Avondale:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE1 V AH0 N D EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say AE1 V AH0 N D EY2 L (ˈævəndˌeɪl) vs winner EY1 V AH0 N D EY0 L (ˈeɪvəndeɪl)"
+    ]
+  },
+  {
+    "name": "Taupo",
+    "country": "NZ",
+    "cmu": "T AW1 P AH0 UH0",
+    "source": "wikimedia:wiktionary:Taupo:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtaʊpəʊ",
+        "cmu": "T AW1 P AH0 UH0",
+        "source": "wikimedia:wiktionary:Taupo:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈtaʊpoʊ",
+            "cmu": "T AW1 P OW0",
+            "source": "wikimedia:wikipedia:Taupō"
+          },
+          "wiktionary": {
+            "ipa": "ˈtaʊpəʊ",
+            "cmu": "T AW1 P AH0 UH0",
+            "source": "wikimedia:wiktionary:Taupo:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "T AE1 OW0 P",
+          "ipa": "ˈtæopɐʉ",
+          "source": "research:https://en.wiktionary.org/wiki/Taupo",
+          "note": "New Zealand pronunciation variant",
+          "authoritative": false
+        },
+        {
+          "cmu": "T P OW1",
+          "ipa": "ˈtɐʉpoː",
+          "source": "research:https://en.wiktionary.org/wiki/Taupo",
+          "note": "New Zealand pronunciation variant",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wiktionary.org/wiki/Taupo say T AE1 OW0 P (tˈæoʊp) vs winner T AW1 P AH0 UH0 (tˈaʊpəʊ)",
+      "Disagreement: research:https://en.wiktionary.org/wiki/Taupo say T P OW1 (tpˈoʊ) vs winner T AW1 P AH0 UH0 (tˈaʊpəʊ)"
+    ]
+  },
+  {
+    "name": "Otara",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Lynn",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mangere",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Massey East",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Massey",
+    "country": "NZ",
+    "cmu": "M AE1 S IY0",
+    "source": "wikimedia:wiktionary:Massey:US + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈmæsi",
+        "cmu": "M AE1 S IY0",
+        "source": "wikimedia:wiktionary:Massey:US",
+        "dialect": "US",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈmæsi",
+            "cmu": "M AE1 S IY0",
+            "source": "wikimedia:wiktionary:Massey:US",
+            "dialect": "US"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M AE1 S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pukekohe East",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ashburton",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wainuiomata",
+    "country": "NZ",
+    "cmu": "W AY2 N UW0 IY0 AO1 M AA0 T AH0",
+    "source": "wikimedia:wikipedia:Wainuiomata + research:https://en.wikipedia.org/wiki/Wainuiomata",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌwaɪnuːiˈɔːmɑːtə",
+        "cmu": "W AY2 N UW0 IY0 AO1 M AA0 T AH0",
+        "source": "wikimedia:wikipedia:Wainuiomata",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌwaɪnuːiˈɔːmɑːtə",
+            "cmu": "W AY2 N UW0 IY0 AO1 M AA0 T AH0",
+            "source": "wikimedia:wikipedia:Wainuiomata"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "W AY2 N UW0 IY0 AO1 M AA0 T AH0",
+          "ipa": "ˌwaɪnuːiˈɔːmɑːtə",
+          "source": "research:https://en.wikipedia.org/wiki/Wainuiomata",
+          "note": "Wikipedia pronunciation guide",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Epsom",
+    "country": "NZ",
+    "cmu": "EH1 P S AH0 M",
+    "source": "wikimedia:wiktionary:Epsom:UK + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɛpsəm",
+        "cmu": "EH1 P S AH0 M",
+        "source": "wikimedia:wiktionary:Epsom:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈɛpsəm",
+            "cmu": "EH1 P S AH0 M",
+            "source": "wikimedia:wiktionary:Epsom:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "EH1 P S AH0 M",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "EH1 P S AH0 M N AO1 R M AH0 L P R AY1 M EH2 R IY0 S K UW0 L",
+          "ipa": "ˈɛpsəm ˈnɔrməl ˈpraɪˌmɛri skul",
+          "source": "research:https://toipa.org/item/Q5384003/Epsom%20Normal%20Primary%20School",
+          "note": "Phonetic transcription website showing Epsom pronunciation as part of school name",
+          "authoritative": false
+        },
+        {
+          "cmu": "EH1 P S AH0 M N AO1 M AH0 L P R AH1 IH0 M AH0 R IY0 S K UW0 L",
+          "ipa": "ˈɛpsəm ˈnɔːməl ˈprʌɪməri skuːl",
+          "source": "research:https://toipa.org/item/Q5384003/Epsom%20Normal%20Primary%20School",
+          "note": "Alternative phonetic transcription showing Epsom pronunciation as part of school name",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://toipa.org/item/Q5384003/Epsom%20Normal%20Primary%20School say EH1 P S AH0 M N AO1 R M AH0 L P R AY1 M EH2 R IY0 S K UW0 L (ˈɛpsəmnˈɔːrməlprˈaɪmˌɛriːskuːl) vs winner EH1 P S AH0 M (ˈɛpsəm)",
+      "Disagreement: research:https://toipa.org/item/Q5384003/Epsom%20Normal%20Primary%20School say EH1 P S AH0 M N AO1 M AH0 L P R AH1 IH0 M AH0 R IY0 S K UW0 L (ˈɛpsəmnˈɔːməlprˈəɪməriːskuːl) vs winner EH1 P S AH0 M (ˈɛpsəm)"
+    ]
+  },
+  {
+    "name": "Stoke",
+    "country": "NZ",
+    "cmu": "S T OW1 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S T OW1 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Levin",
+    "country": "NZ",
+    "cmu": "L EH1 V IH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L EH1 V IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Richmond",
+    "country": "NZ",
+    "cmu": "R IH1 CH M AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IH1 CH M AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rangiora",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Henderson",
+    "country": "NZ",
+    "cmu": "HH EH1 N D ER0 S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH EH1 N D ER0 S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Whakatane",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Otahuhu",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Te Atatu South",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lincoln",
+    "country": "NZ",
+    "cmu": "L IH1 NG K AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L IH1 NG K AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Takanini",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mount Eden",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Titirangi",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Karori",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hamilton East",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Te Atatu Peninsula",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cambridge",
+    "country": "NZ",
+    "cmu": "K EY1 M B R IH0 JH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K EY1 M B R IH0 JH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Homai",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Havelock North",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mosgiel",
+    "country": "NZ",
+    "cmu": "M AA0 Z G IY0 L",
+    "source": "research:https://en.wiktionary.org/wiki/Mosgiel",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "M AA0 Z G IY0 L",
+          "ipa": "mɒzɡiːl",
+          "source": "research:https://en.wiktionary.org/wiki/Mosgiel",
+          "note": "Wiktionary dictionary entry",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Te Aro",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tokoroa",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blockhouse Bay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Te Awamutu",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kaiapoi",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waikanae",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hillsborough",
+    "country": "NZ",
+    "cmu": "HH IH1 L Z B ER0 OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH IH1 L Z B ER0 OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Halswell",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wanaka",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Gore",
+    "country": "NZ",
+    "cmu": "G AO1 R",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G AO1 R",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Oamaru",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Taradale",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sandringham",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Onehunga",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Orewa",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Takapuna",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Albany",
+    "country": "NZ",
+    "cmu": "AO1 L B AH0 N IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AO1 L B AH0 N IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Whitby",
+    "country": "NZ",
+    "cmu": "W IH1 T B IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W IH1 T B IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Johnsonville",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West Harbour",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Howick",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wigram",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Grey Lynn",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hokowhitu",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Riccarton",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hillcrest",
+    "country": "NZ",
+    "cmu": "HH IH1 L K R EH0 S T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH IH1 L K R EH0 S T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Redwoodtown",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Flaxmere",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Favona",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Beach Haven",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Stokes Valley",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Parklands",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Browns Bay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Forrest Hill",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Birkenhead",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Te Puke",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Queenstown",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Balmoral",
+    "country": "NZ",
+    "cmu": "B AE0 L M AO1 R AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B AE0 L M AO1 R AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hawera",
+    "country": "NZ",
+    "cmu": "HH AA0 W AH0 R AH0",
+    "source": "research:https://en.wiktionary.org/wiki/Hawera",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "HH AA0 W AH0 R AH0",
+          "ipa": "hɑːwəɹə",
+          "source": "research:https://en.wiktionary.org/wiki/Hawera",
+          "note": "Wiktionary dictionary entry",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Carterton",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Avonhead",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Spreydon",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Newtown",
+    "country": "NZ",
+    "cmu": "N UW1 T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N UW1 T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ilam",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pakuranga",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Western Heights",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pakuranga Heights",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waiuku",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bishopdale",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wattle Downs",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North East Valley",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ellerslie",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Burnside",
+    "country": "NZ",
+    "cmu": "B ER1 N S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B ER1 N S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bryndwr",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Glen Innes",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Naenae",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Birkdale",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Morrinsville",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tawa",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hoon Hay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bucklands Beach",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Greymouth",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bethlehem",
+    "country": "NZ",
+    "cmu": "B EH1 TH L IH0 HH EH2 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EH1 TH L IH0 HH EH2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cannons Creek",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lynfield",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mahora",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Awapuni",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Glendowie",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Point Chevalier",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Newlands",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Huntly",
+    "country": "NZ",
+    "cmu": "HH AH1 N T L IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AH1 N T L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Greenhithe",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hornby",
+    "country": "NZ",
+    "cmu": "HH AO1 R N B IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AO1 R N B IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "New Windsor",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kaiti",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Frankton Junction",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Te Hapara",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Khandallah",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Otumoetai",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kumeu",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Redwood",
+    "country": "NZ",
+    "cmu": "R EH1 D W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R EH1 D W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ngaruawahia",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tikipunga",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Petone",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Glendene",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Beachlands",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Gore",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Half Moon Bay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Churton Park",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kerikeri",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bell Block",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Upper Riccarton",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kelvin Grove",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Papanui",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waitara",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Parnell",
+    "country": "NZ",
+    "cmu": "P AA1 R N AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AA1 R N AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kawerau",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rosedale",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mount Cook",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Motueka",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Solway",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Onekawa",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mount Maunganui",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Claudelands",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Island Bay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Thames",
+    "country": "NZ",
+    "cmu": "T EH1 M Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T EH1 M Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Mairehau",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Somerfield",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shirley",
+    "country": "NZ",
+    "cmu": "SH ER1 L IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH ER1 L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Warkworth",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Taita",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cashmere",
+    "country": "NZ",
+    "cmu": "K AE1 ZH M IH0 R",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AE1 ZH M IH0 R",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Epuni",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Onerahi",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Titahi Bay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Allenton",
+    "country": "NZ",
+    "cmu": "AE1 L AH0 N T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 L AH0 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Wiri",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Terrace End",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Milson",
+    "country": "NZ",
+    "cmu": "M IH1 L S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M IH1 L S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sunnyvale",
+    "country": "NZ",
+    "cmu": "S AH1 N IY0 V EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 N IY0 V EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Unsworth Heights",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Papatowai",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Brighton",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Stratford",
+    "country": "NZ",
+    "cmu": "S T R AE1 T F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S T R AE1 T F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Matamata",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint Johns",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Homedale",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sydenham",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Whitianga",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Springlands",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tuakau",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Vogeltown",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Royal Oak",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Otaki",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Takaro",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Witherlea",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Katikati",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Owairaka",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Omokoroa",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Raumanga",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waterloo",
+    "country": "NZ",
+    "cmu": "W AO1 T ER0 L UW2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 T ER0 L UW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sunnyhills",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Oteha Valley",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Alexandra",
+    "country": "NZ",
+    "cmu": "AE2 L EH0 G Z AE1 N D R AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE2 L EH0 G Z AE1 N D R AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Botany Downs",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kelston",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Marton",
+    "country": "NZ",
+    "cmu": "M AA1 R T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AA1 R T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Raureka",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Saint Kilda",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dannevirke",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Burwood",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ngaio",
+    "country": "NZ",
+    "cmu": "N AY1 AH0 UH0",
+    "source": "research:https://dictionary.cambridge.org/pronunciation/english/ngaio",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "N AY1 AH0 UH0",
+          "ipa": "ˈnaɪ.əʊ",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/ngaio",
+          "note": "Cambridge Dictionary pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hataitai",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Avalon",
+    "country": "NZ",
+    "cmu": "AE1 V AH0 L AA2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 V AH0 L AA2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ponsonby",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Meadowbank",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waikowhai",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West End",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woodend",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Raumati Beach",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Merivale",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Addington",
+    "country": "NZ",
+    "cmu": "AE1 D IH0 NG T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 D IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Milford",
+    "country": "NZ",
+    "cmu": "M IH1 L F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M IH1 L F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Casebrook",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Prebbleton",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ngongotaha",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Akina",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cromwell",
+    "country": "NZ",
+    "cmu": "K R AA1 M W AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K R AA1 M W AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tamaki",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mangapapa",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dargaville",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dairy Flat",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pokeno",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Green Bay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Murrays Bay",
+    "country": "NZ",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  }
+]

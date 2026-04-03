@@ -1,0 +1,2573 @@
+[
+  {
+    "name": "Dublin",
+    "country": "IE",
+    "cmu": "D UH1 B L AH0 N",
+    "source": "wikimedia:wiktionary:Dublin:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdʊbᵊlən",
+        "cmu": "D UH1 B L AH0 N",
+        "source": "wikimedia:wiktionary:Dublin:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈdʌblᵻn",
+            "cmu": "D AH1 B L AH0 N",
+            "source": "wikimedia:wikipedia:Dublin"
+          },
+          "wiktionary": {
+            "ipa": "ˈdʊbᵊlən",
+            "cmu": "D UH1 B L AH0 N",
+            "source": "wikimedia:wiktionary:Dublin:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D AH1 B L IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say D AH1 B L IH0 N (dˈəblɪn) vs winner D UH1 B L AH0 N (dˈʊblən)"
+    ]
+  },
+  {
+    "name": "South Dublin",
+    "country": "IE",
+    "cmu": "S AW0 TH D AH1 B L AH0 N",
+    "source": "wikimedia:wiktionary:South Dublin:generic + research:https://en.wiktionary.org/wiki/South_Dublin",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "saʊθ ˈdʌblən",
+        "cmu": "S AW0 TH D AH1 B L AH0 N",
+        "source": "wikimedia:wiktionary:South Dublin:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "saʊθ ˈdʌblən",
+            "cmu": "S AW0 TH D AH1 B L AH0 N",
+            "source": "wikimedia:wiktionary:South Dublin:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "S AW2 TH D AH1 B L IH0 N",
+          "ipa": "ˌsaʊθ ˈdʌb.lɪn",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/south-dublin",
+          "note": "Cambridge Dictionary UK pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "S AW2 TH D AH1 B L IH0 N",
+          "ipa": "ˌsaʊθ ˈdʌb.lɪn",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/south-dublin",
+          "note": "Cambridge Dictionary US pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "S AW0 TH D AH1 B L AH0 N",
+          "ipa": "saʊθ ˈdʌblən",
+          "source": "research:https://en.wiktionary.org/wiki/South_Dublin",
+          "note": "Wiktionary pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://dictionary.cambridge.org/pronunciation/english/south-dublin+research:https://dictionary.cambridge.org/pronunciation/english/south-dublin say S AW2 TH D AH1 B L IH0 N (sˌaʊθdˈəblɪn) vs winner S AW0 TH D AH1 B L AH0 N (saʊθdˈəblən)"
+    ]
+  },
+  {
+    "name": "Cork",
+    "country": "IE",
+    "cmu": "K AO1 R K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AO1 R K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Limerick",
+    "country": "IE",
+    "cmu": "L IH1 M AH0 R IH0 K",
+    "source": "wikimedia:wiktionary:Limerick:generic + research:https://dictionary.cambridge.org/us/pronunciation/english/limerick",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈlɪm(ə)ɹɪk",
+        "cmu": "L IH1 M AH0 R IH0 K",
+        "source": "wikimedia:wiktionary:Limerick:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈlɪmərɪk",
+            "cmu": "L IH1 M AH0 R IH0 K",
+            "source": "wikimedia:wikipedia:Limerick"
+          },
+          "wiktionary": {
+            "ipa": "ˈlɪm(ə)ɹɪk",
+            "cmu": "L IH1 M AH0 R IH0 K",
+            "source": "wikimedia:wiktionary:Limerick:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L IH1 M ER0 IH0 K",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "L IH1 M AH0 R IH0 K",
+          "ipa": "ˈlɪm.ər.ɪk",
+          "source": "research:https://dictionary.cambridge.org/us/pronunciation/english/limerick",
+          "note": "Cambridge Dictionary UK pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "L IH1 M IH0 K",
+          "ipa": "ˈlɪm.ɚ.ɪk",
+          "source": "research:https://dictionary.cambridge.org/us/pronunciation/english/limerick",
+          "note": "Cambridge Dictionary US pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "K AW2 N T IY0 L IH1 M AH0 R IH0 K",
+          "ipa": "ˌkaʊn.ti ˈlɪm.ər.ɪk",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/county-limerick",
+          "note": "Cambridge Dictionary UK pronunciation for County Limerick",
+          "authoritative": true
+        },
+        {
+          "cmu": "K AW2 N T IY0 L IH1 M IH0 K",
+          "ipa": "ˌkaʊn.t̬i ˈlɪm.ɚ.ɪk",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/county-limerick",
+          "note": "Cambridge Dictionary US pronunciation for County Limerick",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: cmu say L IH1 M ER0 IH0 K (lˈɪmɜːɪk) vs winner L IH1 M AH0 R IH0 K (lˈɪmərɪk)",
+      "Disagreement: research:https://dictionary.cambridge.org/us/pronunciation/english/limerick say L IH1 M IH0 K (lˈɪmɪk) vs winner L IH1 M AH0 R IH0 K (lˈɪmərɪk)",
+      "Disagreement: research:https://dictionary.cambridge.org/pronunciation/english/county-limerick say K AW2 N T IY0 L IH1 M AH0 R IH0 K (kˌaʊntiːlˈɪmərɪk) vs winner L IH1 M AH0 R IH0 K (lˈɪmərɪk)",
+      "Disagreement: research:https://dictionary.cambridge.org/pronunciation/english/county-limerick say K AW2 N T IY0 L IH1 M IH0 K (kˌaʊntiːlˈɪmɪk) vs winner L IH1 M AH0 R IH0 K (lˈɪmərɪk)"
+    ]
+  },
+  {
+    "name": "Galway",
+    "country": "IE",
+    "cmu": "G AA1 L W EH0",
+    "source": "wikimedia:wiktionary:Galway:Ireland",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɡɒːlweː",
+        "cmu": "G AA1 L W EH0",
+        "source": "wikimedia:wiktionary:Galway:Ireland",
+        "dialect": "Ireland",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈɡɔːlweɪ",
+            "cmu": "G AO1 L W EY0",
+            "source": "wikimedia:wikipedia:Galway"
+          },
+          "wiktionary": {
+            "ipa": "ˈɡɒːlweː",
+            "cmu": "G AA1 L W EH0",
+            "source": "wikimedia:wiktionary:Galway:Ireland",
+            "dialect": "Ireland"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "G AA1 L W EY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say G AA1 L W EY0 (ɡˈɑːlweɪ) vs winner G AA1 L W EH0 (ɡˈɑːlwɛ)"
+    ]
+  },
+  {
+    "name": "Tallaght",
+    "country": "IE",
+    "cmu": "T AE1 L AH0",
+    "source": "wikimedia:wiktionary:Tallaght:generic + osm:1420913325 + research:https://en.wiktionary.org/wiki/Tallaght",
+    "confidence": "verified",
+    "agreementCount": 3,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtælə",
+        "cmu": "T AE1 L AH0",
+        "source": "wikimedia:wiktionary:Tallaght:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈtælə",
+            "cmu": "T AE1 L AH0",
+            "source": "wikimedia:wikipedia:Tallaght"
+          },
+          "wiktionary": {
+            "ipa": "ˈtælə",
+            "cmu": "T AE1 L AH0",
+            "source": "wikimedia:wiktionary:Tallaght:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "osm": {
+        "ipa": "ˈtælə",
+        "cmu": "T AE1 L AH0",
+        "source": "osm:1420913325"
+      },
+      "research": [
+        {
+          "cmu": "T AE1 L AH0",
+          "ipa": "ˈtælə",
+          "source": "research:https://en.wiktionary.org/wiki/Tallaght",
+          "note": "Wiktionary entry with IPA pronunciation",
+          "authoritative": false
+        },
+        {
+          "cmu": "T AH1 UW0 L AH0 T",
+          "ipa": "[ˈt̪ˠəul̪ˠəxt̪ˠ]",
+          "source": "research:https://en.wikipedia.org/wiki/Tallaght",
+          "note": "Wikipedia entry showing Irish pronunciation in IPA",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wikipedia.org/wiki/Tallaght say T AH1 UW0 L AH0 T (tˈəuːlət) vs winner T AE1 L AH0 (tˈælə)"
+    ]
+  },
+  {
+    "name": "Waterford",
+    "country": "IE",
+    "cmu": "W AO1 T ER0 F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AO1 T ER0 F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Swords",
+    "country": "IE",
+    "cmu": "S AO0 R D Z",
+    "source": "wikimedia:wiktionary:Swords:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "sɔː(ɹ)dz",
+        "cmu": "S AO0 R D Z",
+        "source": "wikimedia:wiktionary:Swords:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "fəˈrɪŋɡiː",
+            "cmu": "F AH0 R IH1 NG G IY0",
+            "source": "wikimedia:wikipedia:Sword"
+          },
+          "wiktionary": {
+            "ipa": "sɔː(ɹ)dz",
+            "cmu": "S AO0 R D Z",
+            "source": "wikimedia:wiktionary:Swords:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "S AO1 R D Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Drogheda",
+    "country": "IE",
+    "cmu": "D R AA1 HH AH0 D AH0 D R AO1 D AH0",
+    "source": "wikimedia:wikipedia:Drogheda",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdrɒhədə,_ˈdrɔːdə",
+        "cmu": "D R AA1 HH AH0 D AH0 D R AO1 D AH0",
+        "source": "wikimedia:wikipedia:Drogheda",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈdrɒhədə,_ˈdrɔːdə",
+            "cmu": "D R AA1 HH AH0 D AH0 D R AO1 D AH0",
+            "source": "wikimedia:wikipedia:Drogheda"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dundalk",
+    "country": "IE",
+    "cmu": "D AH0 N D AO1 L K",
+    "source": "wikimedia:wikipedia:Dundalk",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "dʌnˈdɔːlk",
+        "cmu": "D AH0 N D AO1 L K",
+        "source": "wikimedia:wikipedia:Dundalk",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "dʌnˈdɔːlk",
+            "cmu": "D AH0 N D AO1 L K",
+            "source": "wikimedia:wikipedia:Dundalk"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "D AH0 N D AO1 K",
+          "ipa": "dʌnˈdɔːk",
+          "source": "research:https://youglish.com/pronounce/dundalk/english/uk",
+          "note": "British English pronunciation guide",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://youglish.com/pronounce/dundalk/english/uk say D AH0 N D AO1 K (dəndˈɔːk) vs winner D AH0 N D AO1 L K (dəndˈɔːlk)"
+    ]
+  },
+  {
+    "name": "Bray",
+    "country": "IE",
+    "cmu": "B R EY0",
+    "source": "wikimedia:wiktionary:Bray:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "bɹeɪ",
+        "cmu": "B R EY0",
+        "source": "wikimedia:wiktionary:Bray:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "bɹeɪ",
+            "cmu": "B R EY0",
+            "source": "wikimedia:wiktionary:Bray:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B R EY1",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Douglas",
+    "country": "IE",
+    "cmu": "D AH1 G L AH0 S",
+    "source": "wikimedia:wiktionary:Douglas:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdʌɡləs",
+        "cmu": "D AH1 G L AH0 S",
+        "source": "wikimedia:wiktionary:Douglas:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈdʌɡləs",
+            "cmu": "D AH1 G L AH0 S",
+            "source": "wikimedia:wiktionary:Douglas:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D AH1 G L AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dún Laoghaire",
+    "country": "IE",
+    "cmu": "D AH0 N L IH1 R AH0",
+    "source": "wikimedia:wiktionary:Dún Laoghaire:GenAm + research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire + research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire",
+    "confidence": "verified",
+    "agreementCount": 3,
+    "sources": {
+      "wikimedia": {
+        "ipa": "dʌn ˈlɪɹə",
+        "cmu": "D AH0 N L IH1 R AH0",
+        "source": "wikimedia:wiktionary:Dún Laoghaire:GenAm",
+        "dialect": "GenAm",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "dʌn_ˈlɪəri",
+            "cmu": "D AH0 N L IH1 R IY0",
+            "source": "wikimedia:wikipedia:Dún Laoghaire"
+          },
+          "wiktionary": {
+            "ipa": "dʌn ˈlɪɹə",
+            "cmu": "D AH0 N L IH1 R AH0",
+            "source": "wikimedia:wiktionary:Dún Laoghaire:GenAm",
+            "dialect": "GenAm"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "D UW0 N L EH1 R AH0",
+          "ipa": "d̪ˠuːn̪ˠ ˈl̪ˠeːɾʲə",
+          "source": "research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire",
+          "note": "Munster dialect pronunciation",
+          "authoritative": false
+        },
+        {
+          "cmu": "D UW0 N L IY1 R AH0",
+          "ipa": "d̪ˠuːn̪ˠ ˈl̪ˠiːɾʲə",
+          "source": "research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire",
+          "note": "Connacht and Ulster dialect pronunciation",
+          "authoritative": false
+        },
+        {
+          "cmu": "D AH0 N L IH1 R AH0",
+          "ipa": "dʌn ˈlɪɹə",
+          "source": "research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire",
+          "note": "General American English pronunciation",
+          "authoritative": false
+        },
+        {
+          "cmu": "D AH0 N L IH1 R AH0",
+          "ipa": "dʌn ˈlɪəɹə",
+          "source": "research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire",
+          "note": "Received Pronunciation English",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire say D UW0 N L EH1 R AH0 (duːnlˈɛrə) vs winner D AH0 N L IH1 R AH0 (dənlˈɪrə)",
+      "Disagreement: research:https://en.wiktionary.org/wiki/D%C3%BAn_Laoghaire say D UW0 N L IY1 R AH0 (duːnlˈiːrə) vs winner D AH0 N L IH1 R AH0 (dənlˈɪrə)"
+    ]
+  },
+  {
+    "name": "Ennis",
+    "country": "IE",
+    "cmu": "EH1 N IH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 N IH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Navan",
+    "country": "IE",
+    "cmu": "N AE1 V AH0 N",
+    "source": "wikimedia:wiktionary:Navan:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈnævən",
+        "cmu": "N AE1 V AH0 N",
+        "source": "wikimedia:wiktionary:Navan:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈnævən",
+            "cmu": "N AE1 V AH0 N",
+            "source": "wikimedia:wikipedia:Navan"
+          },
+          "wiktionary": {
+            "ipa": "ˈnævən",
+            "cmu": "N AE1 V AH0 N",
+            "source": "wikimedia:wiktionary:Navan:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Carlow",
+    "country": "IE",
+    "cmu": "K AA1 R L AH0 UH0",
+    "source": "wikimedia:wiktionary:Carlow:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkɑː(ɹ)ləʊ",
+        "cmu": "K AA1 R L AH0 UH0",
+        "source": "wikimedia:wiktionary:Carlow:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈkɑrloː",
+            "cmu": "K AA1 R L OW0",
+            "source": "wikimedia:wikipedia:Carlow"
+          },
+          "wiktionary": {
+            "ipa": "ˈkɑː(ɹ)ləʊ",
+            "cmu": "K AA1 R L AH0 UH0",
+            "source": "wikimedia:wiktionary:Carlow:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K AA1 R L OW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say K AA1 R L OW2 (kˈɑːrlˌoʊ) vs winner K AA1 R L AH0 UH0 (kˈɑːrləʊ)"
+    ]
+  },
+  {
+    "name": "Tralee",
+    "country": "IE",
+    "cmu": "T R AH0 L IY1",
+    "source": "wikimedia:wikipedia:Tralee",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "trəˈliː",
+        "cmu": "T R AH0 L IY1",
+        "source": "wikimedia:wikipedia:Tralee",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "trəˈliː",
+            "cmu": "T R AH0 L IY1",
+            "source": "wikimedia:wikipedia:Tralee"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "T R AE0 Y L IY1",
+          "ipa": "t̪ˠɾˠaː(j) ˈl̠ʲiː",
+          "source": "research:https://en.wikipedia.org/wiki/Tralee",
+          "note": "Wikipedia entry showing Irish pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wikipedia.org/wiki/Tralee say T R AE0 Y L IY1 (træjlˈiː) vs winner T R AH0 L IY1 (trəlˈiː)"
+    ]
+  },
+  {
+    "name": "Droichead Nua",
+    "country": "IE",
+    "cmu": "D R EH1 HH AH0 D N UW1 AH0",
+    "source": "research:https://en.wikipedia.org/wiki/An_Droichead_Nua",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "D R EH1 HH AH0 D N UW1 AH0",
+          "ipa": "[ˈd̪ˠɾˠɛçəd̪ˠˈn̪ˠuə]",
+          "source": "research:https://en.wikipedia.org/wiki/An_Droichead_Nua",
+          "note": "Wikipedia article on Newbridge, County Kildare",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sandyford",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Balbriggan",
+    "country": "IE",
+    "cmu": "B AE0 L B R IH1 G AH0 N",
+    "source": "wikimedia:wikipedia:Balbriggan + cmu + research:https://en.wikipedia.org/wiki/Balbriggan_Town_Council",
+    "confidence": "verified",
+    "agreementCount": 3,
+    "sources": {
+      "wikimedia": {
+        "ipa": "bælˈbrɪɡən",
+        "cmu": "B AE0 L B R IH1 G AH0 N",
+        "source": "wikimedia:wikipedia:Balbriggan",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "bælˈbrɪɡən",
+            "cmu": "B AE0 L B R IH1 G AH0 N",
+            "source": "wikimedia:wikipedia:Balbriggan"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B AE0 L B R IH1 G AH0 N",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "B AE0 L B R IH1 G AH0 N",
+          "ipa": "bælˈbrɪɡən",
+          "source": "research:https://en.wikipedia.org/wiki/Balbriggan_Town_Council",
+          "note": "Wikipedia entry for Balbriggan",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kilkenny",
+    "country": "IE",
+    "cmu": "K IH0 L K EH1 N IY0",
+    "source": "wikimedia:wiktionary:Kilkenny:generic + cmu + research:https://en.wiktionary.org/wiki/Kilkenny",
+    "confidence": "verified",
+    "agreementCount": 3,
+    "sources": {
+      "wikimedia": {
+        "ipa": "kɪlˈkɛni",
+        "cmu": "K IH0 L K EH1 N IY0",
+        "source": "wikimedia:wiktionary:Kilkenny:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "kɪlˈkɛni",
+            "cmu": "K IH0 L K EH1 N IY0",
+            "source": "wikimedia:wiktionary:Kilkenny:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K IH0 L K EH1 N IY0",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "K IH0 L K EH1 N IY0",
+          "ipa": "kɪlˈkɛni",
+          "source": "research:https://en.wiktionary.org/wiki/Kilkenny",
+          "note": "Wiktionary dictionary entry",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Athlone",
+    "country": "IE",
+    "cmu": "AE0 TH L OW1 N",
+    "source": "wikimedia:wikipedia:Athlone + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "æθˈloʊn",
+        "cmu": "AE0 TH L OW1 N",
+        "source": "wikimedia:wikipedia:Athlone",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "æθˈloʊn",
+            "cmu": "AE0 TH L OW1 N",
+            "source": "wikimedia:wikipedia:Athlone"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE0 TH L OW1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Naas",
+    "country": "IE",
+    "cmu": "N EY0 S",
+    "source": "wikimedia:wiktionary:Naas:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "neɪs",
+        "cmu": "N EY0 S",
+        "source": "wikimedia:wiktionary:Naas:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "neɪs",
+            "cmu": "N EY0 S",
+            "source": "wikimedia:wikipedia:Naas"
+          },
+          "wiktionary": {
+            "ipa": "neɪs",
+            "cmu": "N EY0 S",
+            "source": "wikimedia:wiktionary:Naas:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "N AA1 Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say N AA1 Z (nˈɑːz) vs winner N EY0 S (neɪs)"
+    ]
+  },
+  {
+    "name": "Celbridge",
+    "country": "IE",
+    "cmu": "S EH1 L B R IH0 D ZH",
+    "source": "wikimedia:wiktionary:Celbridge:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈsɛlbɹɪd͡ʒ",
+        "cmu": "S EH1 L B R IH0 D ZH",
+        "source": "wikimedia:wiktionary:Celbridge:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈsɛlbɹɪdʒ",
+            "cmu": "S EH1 L B R IH0 JH",
+            "source": "wikimedia:wikipedia:Celbridge"
+          },
+          "wiktionary": {
+            "ipa": "ˈsɛlbɹɪd͡ʒ",
+            "cmu": "S EH1 L B R IH0 D ZH",
+            "source": "wikimedia:wiktionary:Celbridge:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "S EH1 L B R IH0 JH",
+          "ipa": "ˈsɛlbrɪdʒ",
+          "source": "research:https://en.wikipedia.org/wiki/Celbridge",
+          "note": "Wikipedia entry for Celbridge",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wikipedia.org/wiki/Celbridge say S EH1 L B R IH0 JH (sˈɛlbrɪdʒ) vs winner S EH1 L B R IH0 D ZH (sˈɛlbrɪdʒ)"
+    ]
+  },
+  {
+    "name": "Wexford",
+    "country": "IE",
+    "cmu": "W EH1 K S F AH0 R D",
+    "source": "wikimedia:wiktionary:Wexford:generic + research:https://www.merriam-webster.com/dictionary/Wexford",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈwɛksfə(ɹ)d",
+        "cmu": "W EH1 K S F AH0 R D",
+        "source": "wikimedia:wiktionary:Wexford:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈwɛksfə(ɹ)d",
+            "cmu": "W EH1 K S F AH0 R D",
+            "source": "wikimedia:wiktionary:Wexford:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "W EH1 K S F ER0 D",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "W EH1 K S F AH0 R D",
+          "ipa": "ˈwɛksfərd",
+          "source": "research:https://www.merriam-webster.com/dictionary/Wexford",
+          "note": "Dictionary pronunciation guide",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: cmu say W EH1 K S F ER0 D (wˈɛksfɜːd) vs winner W EH1 K S F AH0 R D (wˈɛksfərd)"
+    ]
+  },
+  {
+    "name": "Finglas",
+    "country": "IE",
+    "cmu": "F IH1 NG G L AH0 S",
+    "source": "wikimedia:wikipedia:Finglas",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈfɪŋgləs",
+        "cmu": "F IH1 NG G L AH0 S",
+        "source": "wikimedia:wikipedia:Finglas",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈfɪŋgləs",
+            "cmu": "F IH1 NG G L AH0 S",
+            "source": "wikimedia:wikipedia:Finglas"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Letterkenny",
+    "country": "IE",
+    "cmu": "L EH2 T K EH1 N IY0",
+    "source": "wikimedia:wiktionary:Letterkenny:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌlɛtɚˈkɛni",
+        "cmu": "L EH2 T K EH1 N IY0",
+        "source": "wikimedia:wiktionary:Letterkenny:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˌlɛtɚˈkɛni",
+            "cmu": "L EH2 T K EH1 N IY0",
+            "source": "wikimedia:wiktionary:Letterkenny:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L EH2 T ER0 K EH1 N IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say L EH2 T ER0 K EH1 N IY0 (lˌɛtɜːkˈɛniː) vs winner L EH2 T K EH1 N IY0 (lˌɛtkˈɛniː)"
+    ]
+  },
+  {
+    "name": "Sligo",
+    "country": "IE",
+    "cmu": "S L AY1 G AH0 UH0",
+    "source": "wikimedia:wiktionary:Sligo:generic + research:https://dictionary.cambridge.org/pronunciation/english/county-sligo",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈslaɪɡəʊ",
+        "cmu": "S L AY1 G AH0 UH0",
+        "source": "wikimedia:wiktionary:Sligo:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈslaɪɡoʊ",
+            "cmu": "S L AY1 G OW0",
+            "source": "wikimedia:wikipedia:Sligo"
+          },
+          "wiktionary": {
+            "ipa": "ˈslaɪɡəʊ",
+            "cmu": "S L AY1 G AH0 UH0",
+            "source": "wikimedia:wiktionary:Sligo:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "S L AY1 G AH0 UH0",
+          "ipa": "ˈslaɪ.ɡəʊ",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/county-sligo",
+          "note": "Cambridge Dictionary pronunciation for County Sligo",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ballincollig",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Greystones",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rathfarnham",
+    "country": "IE",
+    "cmu": "R AH2 DH F AA1 R N AH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AH2 DH F AA1 R N AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "An Muileann gCearr",
+    "country": "IE",
+    "cmu": "M AH2 L IH0 N G AA1 R",
+    "source": "wikimedia:wikipedia:Mullingar + research:https://en.wiktionary.org/wiki/Mullingar",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌmʌlɪnˈɡɑːr",
+        "cmu": "M AH2 L IH0 N G AA1 R",
+        "source": "wikimedia:wikipedia:Mullingar",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌmʌlɪnˈɡɑːr",
+            "cmu": "M AH2 L IH0 N G AA1 R",
+            "source": "wikimedia:wikipedia:Mullingar"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "M AH2 L IH0 N G AA1 R",
+          "ipa": "ˌmʌlɪnˈɡɑː(ɹ)",
+          "source": "research:https://en.wiktionary.org/wiki/Mullingar",
+          "note": "Wiktionary pronunciation for English name Mullingar",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cluain Meala",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Malahide",
+    "country": "IE",
+    "cmu": "M AE1 L AH0 HH AY0 D",
+    "source": "wikimedia:wikipedia:Malahide + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈmæləhaɪd",
+        "cmu": "M AE1 L AH0 HH AY0 D",
+        "source": "wikimedia:wikipedia:Malahide",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈmæləhaɪd",
+            "cmu": "M AE1 L AH0 HH AY0 D",
+            "source": "wikimedia:wikipedia:Malahide"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M AE2 L AH0 HH AY1 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Blanchardstown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carrigaline",
+    "country": "IE",
+    "cmu": "K AE0 R IH0 G AH0 L AY1 N",
+    "source": "wikimedia:wikipedia:Carrigaline + research:https://en.wikipedia.org/wiki/Carrigaline",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "kærɪɡəˈlaɪn",
+        "cmu": "K AE0 R IH0 G AH0 L AY1 N",
+        "source": "wikimedia:wikipedia:Carrigaline",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "kærɪɡəˈlaɪn",
+            "cmu": "K AE0 R IH0 G AH0 L AY1 N",
+            "source": "wikimedia:wikipedia:Carrigaline"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "K AE0 R IH0 G AH0 L AY1 N",
+          "ipa": "kærɪɡəˈlaɪn",
+          "source": "research:https://en.wikipedia.org/wiki/Carrigaline",
+          "note": "Wikipedia entry for Carrigaline town",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Leixlip",
+    "country": "IE",
+    "cmu": "L IY1 K S L IH0 P",
+    "source": "wikimedia:wikipedia:Leixlip",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈliːkslɪp",
+        "cmu": "L IY1 K S L IH0 P",
+        "source": "wikimedia:wikipedia:Leixlip",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈliːkslɪp",
+            "cmu": "L IY1 K S L IH0 P",
+            "source": "wikimedia:wikipedia:Leixlip"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Donaghmede",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lucan",
+    "country": "IE",
+    "cmu": "L UW0 K AH0 N",
+    "source": "wikimedia:wiktionary:Lucan:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "luːkən",
+        "cmu": "L UW0 K AH0 N",
+        "source": "wikimedia:wiktionary:Lucan:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈluːkən",
+            "cmu": "L UW1 K AH0 N",
+            "source": "wikimedia:wikipedia:Lucan"
+          },
+          "wiktionary": {
+            "ipa": "luːkən",
+            "cmu": "L UW0 K AH0 N",
+            "source": "wikimedia:wiktionary:Lucan:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kilquade",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Castletroy",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Knocklyon",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Maynooth",
+    "country": "IE",
+    "cmu": "M AH0 N UW1 TH",
+    "source": "research:https://en.wikipedia.org/wiki/Maynooth",
+    "confidence": "likely",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "M AH0 N UW1 TH",
+          "ipa": "məˈnuːθ",
+          "source": "research:https://en.wikipedia.org/wiki/Maynooth",
+          "note": "Wikipedia entry with IPA pronunciation",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Clondalkin",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Killarney",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shankill",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wicklow",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Portlaoise",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Arklow",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Castlebar",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Foxrock",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cobh",
+    "country": "IE",
+    "cmu": "K OW0 V",
+    "source": "research:https://en.wiktionary.org/wiki/C%C3%B3bh",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "K OW0 V",
+          "ipa": "koːvˠ",
+          "source": "research:https://en.wiktionary.org/wiki/C%C3%B3bh",
+          "note": "Wiktionary entry for Irish pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ashbourne",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Midleton",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mallow",
+    "country": "IE",
+    "cmu": "M AE1 L OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AE1 L OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dundrum",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tullamore",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Crumlin",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Palmerstown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rathmines",
+    "country": "IE",
+    "cmu": "R AE1 TH M AY2 N Z",
+    "source": "research:https://en.wiktionary.org/wiki/Rathmines",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "R AE1 TH M AY2 N Z",
+          "ipa": "ˈɹæθˌmaɪnz",
+          "source": "research:https://en.wiktionary.org/wiki/Rathmines",
+          "note": "Wiktionary dictionary entry",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Marino",
+    "country": "IE",
+    "cmu": "M ER0 IY1 N OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M ER0 IY1 N OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Laytown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Jobstown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Donnybrook",
+    "country": "IE",
+    "cmu": "D AA1 N IY0 B R UH2 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AA1 N IY0 B R UH2 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Trá Mhór",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ballina",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Skerries",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cabinteely",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Gorey",
+    "country": "IE",
+    "cmu": "G AO1 R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G AO1 R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Oldbawn",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shannon",
+    "country": "IE",
+    "cmu": "SH AE1 N AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH AE1 N AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Enniscorthy",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Athy",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tuam",
+    "country": "IE",
+    "cmu": "T Y UW1 AH0 M",
+    "source": "research:https://en.wikipedia.org/wiki/Tuam",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "T Y UW1 AH0 M",
+          "ipa": "ˈtjuːəm",
+          "source": "research:https://en.wikipedia.org/wiki/Tuam",
+          "note": "Wikipedia entry for Tuam",
+          "authoritative": false
+        },
+        {
+          "cmu": "T UW1 AH0 M",
+          "ipa": "[ˈt̪ˠuəmʲ]",
+          "source": "research:https://en.wikipedia.org/wiki/Tuam",
+          "note": "Irish pronunciation from Wikipedia",
+          "authoritative": false
+        },
+        {
+          "cmu": "T UW1 M",
+          "ipa": "ˈt̪uːʲm′",
+          "source": "research:http://www.logainm.ie/en/1411620/",
+          "note": "Irish place names database with local pronunciation evidence",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wikipedia.org/wiki/Tuam say T UW1 AH0 M (tˈuːəm) vs winner T Y UW1 AH0 M (tjˈuːəm)",
+      "Disagreement: research:http://www.logainm.ie/en/1411620/ say T UW1 M (tˈuːm) vs winner T Y UW1 AH0 M (tjˈuːəm)"
+    ]
+  },
+  {
+    "name": "Ballyboden",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Trim",
+    "country": "IE",
+    "cmu": "T R IH1 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T R IH1 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Portmarnock",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "An Ros",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Balally",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ratoath",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sandymount",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Glanmire",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blackrock",
+    "country": "IE",
+    "cmu": "B L AE1 K R AA2 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B L AE1 K R AA2 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kildare",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Beaumont",
+    "country": "IE",
+    "cmu": "B OW1 M AO0 N T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B OW1 M AO0 N T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ballyfermot",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ballinteer",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rathgar",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Castleknock",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Howth",
+    "country": "IE",
+    "cmu": "HH OW1 TH",
+    "source": "osm:52253160 + research:https://dictionary.cambridge.org/pronunciation/english/howth",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "osm": {
+        "ipa": "ˈhoʊθ",
+        "cmu": "HH OW1 TH",
+        "source": "osm:52253160"
+      },
+      "research": [
+        {
+          "cmu": "HH AH0 UH0 TH",
+          "ipa": "həʊθ",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/howth",
+          "note": "Cambridge Dictionary - UK pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "HH OW0 TH",
+          "ipa": "hoʊθ",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/howth",
+          "note": "Cambridge Dictionary - US pronunciation",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://dictionary.cambridge.org/pronunciation/english/howth say HH AH0 UH0 TH (həʊθ) vs winner HH OW1 TH (hˈoʊθ)"
+    ]
+  },
+  {
+    "name": "Ringsend",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Baldoyle",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Ross",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Little Bray",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Youghal",
+    "country": "IE",
+    "cmu": "Y OW1 AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "Y OW1 AH0 L",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "Y AO1 L",
+          "ipa": "ˈjɔːl",
+          "source": "research:https://en.wikipedia.org/wiki/Youghal",
+          "note": "Wikipedia entry with IPA pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wikipedia.org/wiki/Youghal say Y AO1 L (jˈɔːl) vs winner Y OW1 AH0 L (jˈoʊəl)"
+    ]
+  },
+  {
+    "name": "Thurles",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cherry Orchard",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Monaghan",
+    "country": "IE",
+    "cmu": "M AA1 N AH0 HH AH0 N",
+    "source": "research:https://dictionary.cambridge.org/pronunciation/english/county-monaghan + research:https://www.collinsdictionary.com/dictionary/english/monaghan",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "cmu": {
+        "cmu": "M AA1 N AH0 HH AE0 N",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "M AA1 N AH0 HH AH0 N",
+          "ipa": "ˈmɒn.ə.hən",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/county-monaghan",
+          "note": "Cambridge Dictionary UK pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "M AA1 N AH0 G AH0 N",
+          "ipa": "ˈmɑːnə.ɡən",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/county-monaghan",
+          "note": "Cambridge Dictionary US pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "M AA1 N AH0 HH AH0 N",
+          "ipa": "ˈmɒnəhən",
+          "source": "research:https://www.collinsdictionary.com/dictionary/english/monaghan",
+          "note": "Collins Dictionary British English",
+          "authoritative": true
+        },
+        {
+          "cmu": "M AA1 N AH0 G AH0 N",
+          "ipa": "ˈmɑnəgən",
+          "source": "research:https://www.collinsdictionary.com/dictionary/english/monaghan",
+          "note": "Collins Dictionary American English",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://dictionary.cambridge.org/pronunciation/english/county-monaghan+research:https://www.collinsdictionary.com/dictionary/english/monaghan say M AA1 N AH0 G AH0 N (mˈɑːnəɡən) vs winner M AA1 N AH0 HH AH0 N (mˈɑːnəhən)",
+      "Disagreement: cmu say M AA1 N AH0 HH AE0 N (mˈɑːnəhæn) vs winner M AA1 N AH0 HH AH0 N (mˈɑːnəhən)"
+    ]
+  },
+  {
+    "name": "Mount Merrion",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Portarlington",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Longford",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lusk",
+    "country": "IE",
+    "cmu": "L AH1 S K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AH1 S K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Terenure",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Donnycarney",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dungarvan",
+    "country": "IE",
+    "cmu": "D UW0 N G AA1 R V EH0 N",
+    "source": "research:https://focloir.ie/en/dictionary/ei/dungarvan",
+    "confidence": "likely",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "D UW0 N G AA1 R V EH0 N",
+          "ipa": "duːn ˈɡɑːrveːn",
+          "source": "research:https://focloir.ie/en/dictionary/ei/dungarvan",
+          "note": "Irish language dictionary showing Dún Garbhán pronunciation",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Donabate",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Edenderry",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Clane",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dunboyne",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Raheny",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Booterstown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Templeogue",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bandon",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sallynoggin",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Greenhills",
+    "country": "IE",
+    "cmu": "G R IY1 N HH IY0 L Z",
+    "source": "research:https://www.logainm.ie/en/25886",
+    "confidence": "likely",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "G R IY1 N HH IY0 L Z",
+          "ipa": "ˈgriːnhilz",
+          "source": "research:https://www.logainm.ie/en/25886",
+          "note": "Irish Placenames Database - Áit. pronunciation from local evidence",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Firhouse",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Walkinstown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Buncrana",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Newtown Trim",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Nenagh Bridge",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ballinasloe",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dalkey",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Newcastle West",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fermoy",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cavan",
+    "country": "IE",
+    "cmu": "K EY1 V AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K EY1 V AH0 N",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "K AE1 V AH0 N",
+          "ipa": "ˈkævən",
+          "source": "research:https://en.wikipedia.org/wiki/County_Cavan",
+          "note": "Wikipedia entry for County Cavan showing IPA pronunciation",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://en.wikipedia.org/wiki/County_Cavan say K AE1 V AH0 N (kˈævən) vs winner K EY1 V AH0 N (kˈeɪvən)"
+    ]
+  },
+  {
+    "name": "Cherryville",
+    "country": "IE",
+    "cmu": "CH EH1 R IY0 V IY0 L",
+    "source": "research:https://www.logainm.ie/en/25178",
+    "confidence": "likely",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "CH EH1 R IY0 V IY0 L",
+          "ipa": "ˈtʃeriˑvil",
+          "source": "research:https://www.logainm.ie/en/25178",
+          "note": "Official Irish place names database with local evidence pronunciation",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ballymun",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Westport",
+    "country": "IE",
+    "cmu": "W EH1 S T P AO2 R T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W EH1 S T P AO2 R T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hartstown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Passage West",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kinsealy-Drinan",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carrick-on-Suir",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Birr",
+    "country": "IE",
+    "cmu": "B ER1",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B ER1",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Roscommon",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sutton",
+    "country": "IE",
+    "cmu": "S AH1 T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Darndale",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Loughrea",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Monkstown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kilcock",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blessington",
+    "country": "IE",
+    "cmu": "B L EH1 S IH0 NG T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B L EH1 S IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Nenagh",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Roscrea",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Confey",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Eadestown",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Artane",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Chapelizod",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sallins",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kinsale",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Killester",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carrigtwohill",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dollymount",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carrickmacross",
+    "country": "IE",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  }
+]
