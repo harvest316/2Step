@@ -17428,5 +17428,3950 @@
     "agreementCount": 0,
     "sources": {},
     "conflicts": []
+  },
+  {
+    "name": "Tumut",
+    "country": "AU",
+    "cmu": "T Y UW1 M AH0 T",
+    "source": "wikimedia:wikipedia:Tumut",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtjuːmət",
+        "cmu": "T Y UW1 M AH0 T",
+        "source": "wikimedia:wikipedia:Tumut",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈtjuːmət",
+            "cmu": "T Y UW1 M AH0 T",
+            "source": "wikimedia:wikipedia:Tumut"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Narrabundah",
+    "country": "AU",
+    "cmu": "N AE1 R AH0 B AH0 N D AH0",
+    "source": "wikimedia:wiktionary:Narrabundah:generic + research:https://en.wiktionary.org/wiki/Narrabundah",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈnærəbʌndə",
+        "cmu": "N AE1 R AH0 B AH0 N D AH0",
+        "source": "wikimedia:wiktionary:Narrabundah:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "nærəbʌndə",
+            "cmu": "N AE0 R AH0 B AH0 N D AH0",
+            "source": "wikimedia:wikipedia:Narrabundah"
+          },
+          "wiktionary": {
+            "ipa": "ˈnærəbʌndə",
+            "cmu": "N AE1 R AH0 B AH0 N D AH0",
+            "source": "wikimedia:wiktionary:Narrabundah:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "N AE1 R AH0 B AH0 N D AH0",
+          "ipa": "ˈnærəbʌndə",
+          "source": "research:https://en.wiktionary.org/wiki/Narrabundah",
+          "note": "Wiktionary entry with IPA pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Glenelg North",
+    "country": "AU",
+    "cmu": "G L EH0 N EH1 L G",
+    "source": "research:https://youglish.com/pronounce/glenelg/english/aus",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "G L EH0 N EH1 L G",
+          "ipa": "gleˈnelg",
+          "source": "research:https://youglish.com/pronounce/glenelg/english/aus",
+          "note": "Australian English pronunciation examples",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Grafton",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Moama",
+    "country": "AU",
+    "cmu": "M OW0 AA0 M AH0",
+    "source": "wikimedia:wikipedia:Moama",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "moʊɑːmə",
+        "cmu": "M OW0 AA0 M AH0",
+        "source": "wikimedia:wikipedia:Moama",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "moʊɑːmə",
+            "cmu": "M OW0 AA0 M AH0",
+            "source": "wikimedia:wikipedia:Moama"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Wembley Downs",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Northgate",
+    "country": "AU",
+    "cmu": "N AO1 R TH G EY2 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AO1 R TH G EY2 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ropes Crossing",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cobram",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hamlyn Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Edgeworth",
+    "country": "AU",
+    "cmu": "EH1 JH W ER0 TH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 JH W ER0 TH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Blakehurst",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Nambucca",
+    "country": "AU",
+    "cmu": "N AE0 M B AH1 K AH0",
+    "source": "research:https://www.abc.net.au/education/learn-english/how-to-pronounce-new-south-wales-australia-place-names/13462098",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "N AE0 M B AH1 K AH0",
+          "ipa": "næmˈbʌkə",
+          "source": "research:https://www.abc.net.au/education/learn-english/how-to-pronounce-new-south-wales-australia-place-names/13462098",
+          "note": "ABC Education pronunciation guide for NSW place names",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Oak Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Alkimos",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "St Johns Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Norman Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Whittlesea",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Biloela",
+    "country": "AU",
+    "cmu": "B IH0 L OW0 IY1 L AH0",
+    "source": "wikimedia:wikipedia:Biloela",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "bɪloʊˈiːlə",
+        "cmu": "B IH0 L OW0 IY1 L AH0",
+        "source": "wikimedia:wikipedia:Biloela",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "bɪloʊˈiːlə",
+            "cmu": "B IH0 L OW0 IY1 L AH0",
+            "source": "wikimedia:wikipedia:Biloela"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cannonvale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Midland",
+    "country": "AU",
+    "cmu": "M IH1 D L AH0 N D",
+    "source": "wikimedia:wiktionary:Midland:proper noun",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈmɪdlənd",
+        "cmu": "M IH1 D L AH0 N D",
+        "source": "wikimedia:wiktionary:Midland:proper noun",
+        "dialect": "proper noun",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈmɪdlənd",
+            "cmu": "M IH1 D L AH0 N D",
+            "source": "wikimedia:wiktionary:Midland:proper noun",
+            "dialect": "proper noun"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M IH1 D L AE2 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say M IH1 D L AE2 N D (mˈɪdlˌænd) vs winner M IH1 D L AH0 N D (mˈɪdlənd)"
+    ]
+  },
+  {
+    "name": "Wetherill Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Nelson Bay",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bertram",
+    "country": "AU",
+    "cmu": "B ER1 T R AH0 M",
+    "source": "wikimedia:wiktionary:Bertram:UK + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbɜːtɹəm",
+        "cmu": "B ER1 T R AH0 M",
+        "source": "wikimedia:wiktionary:Bertram:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈbɜːtɹəm",
+            "cmu": "B ER1 T R AH0 M",
+            "source": "wikimedia:wiktionary:Bertram:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B ER1 T R AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Gungahlin",
+    "country": "AU",
+    "cmu": "G AH0 NG G AA1 L IH0 N",
+    "source": "wikimedia:wikipedia:Gungahlin",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ɡʌŋˈɡɑːlɪn",
+        "cmu": "G AH0 NG G AA1 L IH0 N",
+        "source": "wikimedia:wikipedia:Gungahlin",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ɡʌŋˈɡɑːlɪn",
+            "cmu": "G AH0 NG G AA1 L IH0 N",
+            "source": "wikimedia:wikipedia:Gungahlin"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Glen Innes",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Golden Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Blackwater",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Manoora",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Highgate Hill",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Jannali",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Picnic Point",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Villawood",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Scoresby",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Westminster",
+    "country": "AU",
+    "cmu": "W EH1 S T M IH2 N S T AH0",
+    "source": "wikimedia:wiktionary:Westminster:UK",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈwɛs(t)ˌmɪnstə",
+        "cmu": "W EH1 S T M IH2 N S T AH0",
+        "source": "wikimedia:wiktionary:Westminster:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈwɛs(t)ˌmɪnstə",
+            "cmu": "W EH1 S T M IH2 N S T AH0",
+            "source": "wikimedia:wiktionary:Westminster:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "W EH2 S T M IH1 N S T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say W EH2 S T M IH1 N S T ER0 (wˌɛstmˈɪnstɜː) vs winner W EH1 S T M IH2 N S T AH0 (wˈɛstmˌɪnstə)"
+    ]
+  },
+  {
+    "name": "Trinity Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Winmalee",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Manly Vale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fulham Gardens",
+    "country": "AU",
+    "cmu": "F UH1 L HH AE0 M G AA1 D AH0 N Z",
+    "source": "research:https://fulhmgdnps.sa.edu.au/",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "F UH1 L HH AE0 M G AA1 D AH0 N Z",
+          "ipa": "ˈfʊlhæm ˈɡɑːdənz",
+          "source": "research:https://fulhmgdnps.sa.edu.au/",
+          "note": "Local primary school website - represents local usage",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Kurri Kurri",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Albert Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bulli",
+    "country": "AU",
+    "cmu": "B UH1 L AY0",
+    "source": "wikimedia:wikipedia:Bulli, New South Wales",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbʊlaɪ",
+        "cmu": "B UH1 L AY0",
+        "source": "wikimedia:wikipedia:Bulli, New South Wales",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈbʊlaɪ",
+            "cmu": "B UH1 L AY0",
+            "source": "wikimedia:wikipedia:Bulli, New South Wales"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Klemzig",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Heidelberg Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Valley View",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Town",
+    "country": "AU",
+    "cmu": "N UW1 T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N UW1 T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dudley Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Burnside Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lindisfarne",
+    "country": "AU",
+    "cmu": "L IH1 N D IH0 S F AA0 N",
+    "source": "wikimedia:wiktionary:Lindisfarne:RP",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈlɪndɪsfɑːn",
+        "cmu": "L IH1 N D IH0 S F AA0 N",
+        "source": "wikimedia:wiktionary:Lindisfarne:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "dissemination",
+            "cmu": "D IY0 S S EH0 M IY0 N AE0 T IY0 OW0 N",
+            "source": "wikimedia:wikipedia:Lindisfarne"
+          },
+          "wiktionary": {
+            "ipa": "ˈlɪndɪsfɑːn",
+            "cmu": "L IH1 N D IH0 S F AA0 N",
+            "source": "wikimedia:wiktionary:Lindisfarne:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Seaford Rise",
+    "country": "AU",
+    "cmu": "AE0 S S EH0 T S",
+    "source": "wikimedia:wikipedia:Seaford Rise, South Australia",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "assets",
+        "cmu": "AE0 S S EH0 T S",
+        "source": "wikimedia:wikipedia:Seaford Rise, South Australia",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "assets",
+            "cmu": "AE0 S S EH0 T S",
+            "source": "wikimedia:wikipedia:Seaford Rise, South Australia"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bushland Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Katherine",
+    "country": "AU",
+    "cmu": "K AE1 TH AH0 R IH0 N",
+    "source": "wikimedia:wiktionary:Katherine:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkæθ(ə)ɹɪn",
+        "cmu": "K AE1 TH AH0 R IH0 N",
+        "source": "wikimedia:wiktionary:Katherine:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "kæθərɪn",
+            "cmu": "K AE0 TH AH0 R IH0 N",
+            "source": "wikimedia:wikipedia:Katherine"
+          },
+          "wiktionary": {
+            "ipa": "ˈkæθ(ə)ɹɪn",
+            "cmu": "K AE1 TH AH0 R IH0 N",
+            "source": "wikimedia:wiktionary:Katherine:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K AE1 TH ER0 IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say K AE1 TH ER0 IH0 N (kˈæθɜːɪn) vs winner K AE1 TH AH0 R IH0 N (kˈæθərɪn)"
+    ]
+  },
+  {
+    "name": "Centenary Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Toowoomba",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Black Rock",
+    "country": "AU",
+    "cmu": "B L AE1 K R AA2 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B L AE1 K R AA2 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Madeley",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Albury",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Heathcote",
+    "country": "AU",
+    "cmu": "HH EH1 TH K AH0 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH EH1 TH K AH0 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Salisbury Downs",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wentworth Falls",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Thirroul",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Alderley",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Banksia Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Whalan",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Albury",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lake Albert",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cannington",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Adamstown",
+    "country": "AU",
+    "cmu": "AE1 D AH0 M S T AW2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 D AH0 M S T AW2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Niddrie",
+    "country": "AU",
+    "cmu": "N IH1 D R IY0",
+    "source": "research:https://www.howtopronounce.com/niddrie",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "N IH1 D R IY0",
+          "ipa": "ˈnɪdri",
+          "source": "research:https://www.howtopronounce.com/niddrie",
+          "note": "Audio pronunciation guide with user ratings",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Wilsonton",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Logan Central",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Stawell",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Parmelia",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Raby",
+    "country": "AU",
+    "cmu": "R EY1 B IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R EY1 B IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Geelong city centre",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lenah Valley",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Naracoorte",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waitara",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Warwick Farm",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Greenwich",
+    "country": "AU",
+    "cmu": "G R EH1 N IH0 CH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G R EH1 N IH0 CH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Narrabeen",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Windsor",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wurtulla",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Watson",
+    "country": "AU",
+    "cmu": "W AA1 T S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W AA1 T S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Henley Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Barrack Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Everton Hills",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cranbrook",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Moorabbin",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Munno Para West",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bellmere",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Wynyard",
+    "country": "AU",
+    "cmu": "W IH1 N Y ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W IH1 N Y ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bendigo city centre",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West Hobart",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Winthrop",
+    "country": "AU",
+    "cmu": "W IH1 N TH R AH0 P",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W IH1 N TH R AH0 P",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Norwood",
+    "country": "AU",
+    "cmu": "N AO1 R W UH0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AO1 R W UH0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Burnside",
+    "country": "AU",
+    "cmu": "B ER1 N S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B ER1 N S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Mullaloo",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Clinton",
+    "country": "AU",
+    "cmu": "K L IH1 N T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K L IH1 N T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hocking",
+    "country": "AU",
+    "cmu": "HH AA1 K IH0 NG",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AA1 K IH0 NG",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Westmeadows",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Eagle Vale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Condon",
+    "country": "AU",
+    "cmu": "K AA1 N D AH0 N",
+    "source": "cmu + research:https://stories.townsville.qld.gov.au/nodes/view/127",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "cmu": {
+        "cmu": "K AA1 N D AH0 N",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "K AA1 N D AH0 N",
+          "ipa": "ˈkɒndən",
+          "source": "research:https://stories.townsville.qld.gov.au/nodes/view/127",
+          "note": "Townsville City Council official suburb profile - named for the Condon Family, early settlers",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Perth",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Lake",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ascot",
+    "country": "AU",
+    "cmu": "AE1 S K AA2 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 S K AA2 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Naremburn",
+    "country": "AU",
+    "cmu": "N EH1 B ER0 N",
+    "source": "override:manual:ipa:ˈnɛəbɜːn",
+    "confidence": "override",
+    "agreementCount": 0,
+    "sources": {
+      "override": {
+        "cmu": "N EH1 B ER0 N",
+        "source": "override:manual:ipa:ˈnɛəbɜːn",
+        "note": "Converted from IPA /ˈnɛəbɜːn/ documented in pronunciation-dict.js"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Holsworthy",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Grange",
+    "country": "AU",
+    "cmu": "G R EY1 N JH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G R EY1 N JH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sefton",
+    "country": "AU",
+    "cmu": "S EH1 F T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S EH1 F T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Frankston North",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bibra Lake",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Mackay",
+    "country": "AU",
+    "cmu": "M AH0 K AY1",
+    "source": "research:http://www.mackayhistory.org/research/maceye/maceye_or_macka.html + research:https://youglish.com/pronounce/mackay/english/aus",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "research": [
+        {
+          "cmu": "M AH0 K AY1",
+          "ipa": "məˈkaɪ",
+          "source": "research:http://www.mackayhistory.org/research/maceye/maceye_or_macka.html",
+          "note": "Local historical society confirms Mac-EYE pronunciation based on Gaelic origins",
+          "authoritative": false
+        },
+        {
+          "cmu": "M AH0 K AY1",
+          "ipa": "məˈkaɪ",
+          "source": "research:https://youglish.com/pronounce/mackay/english/aus",
+          "note": "Australian English pronunciation database showing Mac-EYE pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Newington",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Harris Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Brisbane",
+    "country": "AU",
+    "cmu": "IY0 S T B R IH1 Z B AH0 N",
+    "source": "research:https://toipa.org/item/Q19873069/East%20Brisbane%20State%20School",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "IY0 S T B R IH1 Z B AH0 N",
+          "ipa": "iːst ˈbrɪzbən",
+          "source": "research:https://toipa.org/item/Q19873069/East%20Brisbane%20State%20School",
+          "note": "Phonetic transcription for East Brisbane State School",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Caulfield",
+    "country": "AU",
+    "cmu": "K AO1 L F IY2 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AO1 L F IY2 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Keilor",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mittagong",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Flinders View",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Banyo",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Craigie",
+    "country": "AU",
+    "cmu": "K R EY1 G IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K R EY1 G IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Woodend",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Alphington",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fairlight",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Point Vernon",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kewarra Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mount Warren Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "St Andrews",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Edithvale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ferny Grove",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Toronto",
+    "country": "AU",
+    "cmu": "T ER0 AA1 N T OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T ER0 AA1 N T OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ormiston",
+    "country": "AU",
+    "cmu": "AO1 R M IH0 S T AA0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AO1 R M IH0 S T AA0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Casey",
+    "country": "AU",
+    "cmu": "K EY1 S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K EY1 S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Alstonville",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hebersham",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dromana",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kenwick",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Main Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Allawah",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Manunda",
+    "country": "AU",
+    "cmu": "M AE0 N AH1 N D AH0",
+    "source": "research:https://www.robpyne.com.au/manunda-queensland/",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "M AE0 N AH1 N D AH0",
+          "ipa": "mæˈnʌndə",
+          "source": "research:https://www.robpyne.com.au/manunda-queensland/",
+          "note": "Local guide states 'Pronounced as man-under'",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Narwee",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Amaroo",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Minchinbury",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Scone",
+    "country": "AU",
+    "cmu": "S K OW1 N",
+    "source": "cmu + research:https://www.smh.com.au/traveller/inspiration/scone-fast-facts-20081121-6dfp.html",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "cmu": {
+        "cmu": "S K OW1 N",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "S IH1 NG K R AH0 N AY0 Z",
+          "ipa": "ˈsɪŋkrənaɪz",
+          "source": "research:https://youglish.com/pronounce/synchronize/english/aus",
+          "note": "Australian English pronunciation resource but for 'synchronize', not 'Scone'",
+          "authoritative": false
+        },
+        {
+          "cmu": "S K OW0 N",
+          "ipa": "skoʊn",
+          "source": "research:https://www.smh.com.au/traveller/inspiration/scone-fast-facts-20081121-6dfp.html",
+          "note": "Sydney Morning Herald states Scone 'rhymes with bone'",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://youglish.com/pronounce/synchronize/english/aus say S IH1 NG K R AH0 N AY0 Z (sˈɪŋkrənaɪz) vs winner S K OW1 N (skˈoʊn)"
+    ]
+  },
+  {
+    "name": "West Lakes",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Nowra",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hillcrest",
+    "country": "AU",
+    "cmu": "HH IH1 L K R EH0 S T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH IH1 L K R EH0 S T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Calwell",
+    "country": "AU",
+    "cmu": "K AE1 L W AH0 L",
+    "source": "research:https://www.mycommunitydirectory.com.au/About/Suburb/Australian_Capital_Territory/Calwell",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "K AE1 L W AH0 L",
+          "ipa": "ˈkælwəl",
+          "source": "research:https://www.mycommunitydirectory.com.au/About/Suburb/Australian_Capital_Territory/Calwell",
+          "note": "Inferred from Arthur Calwell name origin - standard English pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Worongary",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Oatlands",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coopers Plains",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Southside",
+    "country": "AU",
+    "cmu": "S AW1 TH S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AW1 TH S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hadfield",
+    "country": "AU",
+    "cmu": "HH AE1 D F IY2 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AE1 D F IY2 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Melbourne",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Ballina",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Melville",
+    "country": "AU",
+    "cmu": "M EH1 L V IH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M EH1 L V IH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Palmwoods",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Langford",
+    "country": "AU",
+    "cmu": "L AE1 NG F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AE1 NG F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fitzgibbon",
+    "country": "AU",
+    "cmu": "F IH2 T S JH IH1 B AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F IH2 T S JH IH1 B AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "The Range",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lawnton",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Toowoomba",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Strathdale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Eleebana",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Riverton",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lockleys",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kennington",
+    "country": "AU",
+    "cmu": "K EH1 N IH0 NG T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K EH1 N IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Ward",
+    "country": "AU",
+    "cmu": "N AO1 R TH W ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AO1 R TH W ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ballarat Central",
+    "country": "AU",
+    "cmu": "B AE1 L AH0 R AE2 T S EH1 N T R AH0 L",
+    "source": "research:https://australia-streets.openalfa.com/ballarat-central",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "B AE1 L AH0 R AE2 T S EH1 N T R AH0 L",
+          "ipa": "ˈbæləˌræt ˈsɛntrəl",
+          "source": "research:https://australia-streets.openalfa.com/ballarat-central",
+          "note": "Ballarat pronounced /ˈbæləˌræt/ based on standard Australian English pronunciation patterns, Central follows standard pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Burdell",
+    "country": "AU",
+    "cmu": "B ER0 D EH1 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B ER0 D EH1 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Girraween",
+    "country": "AU",
+    "cmu": "G IH1 R AH0 W IY0 N",
+    "source": "research:https://www.howtopronounce.com/girraween",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "G IH1 R AH0 W IY0 N",
+          "ipa": "ˈɡɪrəwiːn",
+          "source": "research:https://www.howtopronounce.com/girraween",
+          "note": "Crowdsourced pronunciation with audio examples",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sarina",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Inglewood",
+    "country": "AU",
+    "cmu": "IH1 NG G AH0 L W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "IH1 NG G AH0 L W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lugarno",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ruse",
+    "country": "AU",
+    "cmu": "R UW1 Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R UW1 Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Eaglehawk",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shell Cove",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woolgoolga",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Heidelberg West",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Jamisontown",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Granville",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cannon Hill",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Brinsmead",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Modbury North",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dawesville",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bangor",
+    "country": "AU",
+    "cmu": "B AE1 NG G ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B AE1 NG G ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Ballarat East",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Maudsland",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Haven",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Albanvale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "O'Connor",
+    "country": "AU",
+    "cmu": "OW0 K AA1 N ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "OW0 K AA1 N ER0",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "OW0 K AA1 N AH0 R",
+          "ipa": "oʊˈkɒnər",
+          "source": "research:https://www.northcanberra.org.au/northcan/oconnor/",
+          "note": "North Canberra Community Council - standard English pronunciation for suburb named after Richard Edward O'Connor",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://www.northcanberra.org.au/northcan/oconnor/ say OW0 K AA1 N AH0 R (oʊkˈɑːnər) vs winner OW0 K AA1 N ER0 (oʊkˈɑːnɜː)"
+    ]
+  },
+  {
+    "name": "Bundaberg North",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Unanderra",
+    "country": "AU",
+    "cmu": "AH0 N AE0 N D EH1 R AH0",
+    "source": "research:https://www.wollongong.nsw.gov.au/library/explore-our-past/your-suburb/suburbs/unanderra",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "AH0 N AE0 N D EH1 R AH0",
+          "ipa": "ʌnænˈdɛrə",
+          "source": "research:https://www.wollongong.nsw.gov.au/library/explore-our-past/your-suburb/suburbs/unanderra",
+          "note": "Wollongong City Libraries indicates Aboriginal origin meaning 'meeting place of creeks' with original form Unundurra or Un-dirra",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Balgownie",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Coogee",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Canberra City",
+    "country": "AU",
+    "cmu": "K AE1 N B AH0 R AH0",
+    "source": "research:https://oxfordlearnersdictionaries.com/definition/english/canberra + research:https://dictionary.cambridge.org/pronunciation/english/canberra",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "research": [
+        {
+          "cmu": "K AE1 N B AH0 R AH0",
+          "ipa": "ˈkænbərə",
+          "source": "research:https://oxfordlearnersdictionaries.com/definition/english/canberra",
+          "note": "Oxford Advanced Learner's Dictionary",
+          "authoritative": true
+        },
+        {
+          "cmu": "K AE1 N B AH0 R AH0",
+          "ipa": "ˈkæn.bər.ə",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/canberra",
+          "note": "Cambridge Dictionary UK pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "K AE1 N B EH0 R AH0",
+          "ipa": "ˈkæn.ber.ə",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/canberra",
+          "note": "Cambridge Dictionary US pronunciation",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://dictionary.cambridge.org/pronunciation/english/canberra say K AE1 N B EH0 R AH0 (kˈænbɛrə) vs winner K AE1 N B AH0 R AH0 (kˈænbərə)"
+    ]
+  },
+  {
+    "name": "Kanahooka",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Valentine",
+    "country": "AU",
+    "cmu": "V AE1 L AH0 N T AY2 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "V AE1 L AH0 N T AY2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Elermore Vale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Telopea",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Hillsdale",
+    "country": "AU",
+    "cmu": "HH IH1 L Z D EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH IH1 L Z D EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Leongatha",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tinana",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mont Albert North",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Red Hill",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Booragoon",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Christies Beach",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Malabar",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Chelsea Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Balaclava",
+    "country": "AU",
+    "cmu": "B AE2 L AH0 K L AA1 V AH0",
+    "source": "research:https://touristaustralia.com.au/destinations/vic/melbourne/balaclava-tourist-guide + research:https://www.visitmelbourne.com/regions/melbourne/destinations/balaclava + research:https://www.portphillip.vic.gov.au/explore-the-city/shopping-and-retail/st-kilda-east-and-balaclava/",
+    "confidence": "verified",
+    "agreementCount": 3,
+    "sources": {
+      "cmu": {
+        "cmu": "B AA2 L AA0 K L AA1 V AA0",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "B AE2 L AH0 K L AA1 V AH0",
+          "ipa": "ˌbæləˈklɑːvə",
+          "source": "research:https://touristaustralia.com.au/destinations/vic/melbourne/balaclava-tourist-guide",
+          "note": "Tourist Australia official guide",
+          "authoritative": true
+        },
+        {
+          "cmu": "B AE2 L AH0 K L AA1 V AH0",
+          "ipa": "ˌbæləˈklɑːvə",
+          "source": "research:https://www.visitmelbourne.com/regions/melbourne/destinations/balaclava",
+          "note": "Visit Melbourne official tourism site",
+          "authoritative": true
+        },
+        {
+          "cmu": "B AE2 L AH0 K L AA1 V AH0",
+          "ipa": "ˌbæləˈklɑːvə",
+          "source": "research:https://www.portphillip.vic.gov.au/explore-the-city/shopping-and-retail/st-kilda-east-and-balaclava/",
+          "note": "City of Port Phillip official council website",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: cmu say B AA2 L AA0 K L AA1 V AA0 (bˌɑːlɑːklˈɑːvɑː) vs winner B AE2 L AH0 K L AA1 V AH0 (bˌæləklˈɑːvə)"
+    ]
+  },
+  {
+    "name": "Mitchell Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kilburn",
+    "country": "AU",
+    "cmu": "K IH1 L B ER0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K IH1 L B ER0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Oyster Bay",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Stanthorpe",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cooranbong",
+    "country": "AU",
+    "cmu": "K AO0 R AH0 N B AA0 NG",
+    "source": "research:https://en.wikipedia.org/wiki/Cooranbong",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "K AO0 R AH0 N B AA0 NG",
+          "ipa": "kɔːrənbɒŋ",
+          "source": "research:https://en.wikipedia.org/wiki/Cooranbong",
+          "note": "Wikipedia pronunciation guide showing KOR-ən-BONG",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Dundas Valley",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Warrandyte",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "New Norfolk",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bellbowrie",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Somerton Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Watsonia",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woree",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Cannington",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bedford",
+    "country": "AU",
+    "cmu": "B EH1 D F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EH1 D F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Wingham",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Albury",
+    "country": "AU",
+    "cmu": "AE1 L B EH0 R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 L B EH0 R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Corowa",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Merriwa",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Moonah",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Modbury",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Monash",
+    "country": "AU",
+    "cmu": "M AA1 N AE2 SH",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AA1 N AE2 SH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Aberglasslyn",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Red Cliffs",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Gawler East",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Enfield",
+    "country": "AU",
+    "cmu": "EH1 N F IY0 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH1 N F IY0 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Strathfieldsaye",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Caboolture South",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "North Tamworth",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Tamworth",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Elizabeth Bay",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Darling Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West Tamworth",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Inverloch",
+    "country": "AU",
+    "cmu": "IH1 N V AH0 R L AA0 K",
+    "source": "research:https://en.wikipedia.org/wiki/Inverloch,_Victoria",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "IH1 N V AH0 R L AA0 K",
+          "ipa": "ˈɪnvərlɒk",
+          "source": "research:https://en.wikipedia.org/wiki/Inverloch,_Victoria",
+          "note": "Wikipedia entry with IPA pronunciation",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Currans Hill",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bennett Springs",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Capel Sound",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fairfield East",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Redwood Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Christie Downs",
+    "country": "AU",
+    "cmu": "AE0 S S EH0 T S",
+    "source": "wikimedia:wikipedia:Christie Downs, South Australia",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "assets",
+        "cmu": "AE0 S S EH0 T S",
+        "source": "wikimedia:wikipedia:Christie Downs, South Australia",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "assets",
+            "cmu": "AE0 S S EH0 T S",
+            "source": "wikimedia:wikipedia:Christie Downs, South Australia"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "South Hobart",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Adamstown Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "West Pymble",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Normanhurst",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Coolbellup",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bannockburn",
+    "country": "AU",
+    "cmu": "B AE1 N AH0 K B ER2 R N",
+    "source": "wikimedia:wiktionary:Bannockburn:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbænəkˌbɜː(ɹ)n",
+        "cmu": "B AE1 N AH0 K B ER2 R N",
+        "source": "wikimedia:wiktionary:Bannockburn:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "tables",
+            "cmu": "T AE0 B L EH0 S",
+            "source": "wikimedia:wikipedia:Bannockburn, Victoria"
+          },
+          "wiktionary": {
+            "ipa": "ˈbænəkˌbɜː(ɹ)n",
+            "cmu": "B AE1 N AH0 K B ER2 R N",
+            "source": "wikimedia:wiktionary:Bannockburn:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Windsor Gardens",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Waurn Ponds",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Jindalee",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tannum Sands",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Evatt",
+    "country": "AU",
+    "cmu": "EH1 V AH0 T",
+    "source": "wikimedia:wikipedia:Evatt, Australian Capital Territory + cmu + research:https://en.wikipedia.org/wiki/Evatt,_Australian_Capital_Territory",
+    "confidence": "verified",
+    "agreementCount": 3,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɛvət",
+        "cmu": "EH1 V AH0 T",
+        "source": "wikimedia:wikipedia:Evatt, Australian Capital Territory",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈɛvət",
+            "cmu": "EH1 V AH0 T",
+            "source": "wikimedia:wikipedia:Evatt, Australian Capital Territory"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "EH1 V AH0 T",
+        "source": "cmu"
+      },
+      "research": [
+        {
+          "cmu": "EH1 V AH0 T",
+          "ipa": "ˈɛvət",
+          "source": "research:https://en.wikipedia.org/wiki/Evatt,_Australian_Capital_Territory",
+          "note": "Wikipedia article with phonetic notation showing /ˈɛvət/",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Glengowrie",
+    "country": "AU",
+    "cmu": "G L EH0 N G AW1 R IY0",
+    "source": "wikimedia:wikipedia:Glengowrie, South Australia",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ɡlɛnˈɡaʊri",
+        "cmu": "G L EH0 N G AW1 R IY0",
+        "source": "wikimedia:wikipedia:Glengowrie, South Australia",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ɡlɛnˈɡaʊri",
+            "cmu": "G L EH0 N G AW1 R IY0",
+            "source": "wikimedia:wikipedia:Glengowrie, South Australia"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Caversham",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Middleton Grange",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Iluka",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Berowra Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Curtin",
+    "country": "AU",
+    "cmu": "K ER1 R T IH0 N",
+    "source": "wikimedia:wiktionary:Curtin:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkɜː(ɹ)tɪn",
+        "cmu": "K ER1 R T IH0 N",
+        "source": "wikimedia:wiktionary:Curtin:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈkɜrtɪn",
+            "cmu": "K ER1 R T IH0 N",
+            "source": "wikimedia:wikipedia:Curtin, Australian Capital Territory"
+          },
+          "wiktionary": {
+            "ipa": "ˈkɜː(ɹ)tɪn",
+            "cmu": "K ER1 R T IH0 N",
+            "source": "wikimedia:wiktionary:Curtin:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K ER1 T IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say K ER1 T IH0 N (kˈɜːtɪn) vs winner K ER1 R T IH0 N (kˈɜːrtɪn)"
+    ]
+  },
+  {
+    "name": "Corlette",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Woongarrah",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ocean Shores",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Enoggera",
+    "country": "AU",
+    "cmu": "AH0 N AA1 G R AH0",
+    "source": "wikimedia:wikipedia:Enoggera, Queensland",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "əˈnɒgrə",
+        "cmu": "AH0 N AA1 G R AH0",
+        "source": "wikimedia:wikipedia:Enoggera, Queensland",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "əˈnɒgrə",
+            "cmu": "AH0 N AA1 G R AH0",
+            "source": "wikimedia:wikipedia:Enoggera, Queensland"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Glendenning",
+    "country": "AU",
+    "cmu": "G L EH1 N D IH0 N IH0 NG",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G L EH1 N D IH0 N IH0 NG",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lake Munmorah",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lithgow",
+    "country": "AU",
+    "cmu": "L IH0 TH G AH0 UH0",
+    "source": "wikimedia:wiktionary:Lithgow:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "lɪθɡəʊ",
+        "cmu": "L IH0 TH G AH0 UH0",
+        "source": "wikimedia:wiktionary:Lithgow:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "lɪθɡəʊ",
+            "cmu": "L IH0 TH G AH0 UH0",
+            "source": "wikimedia:wiktionary:Lithgow:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L IH1 TH G AW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say L IH1 TH G AW0 (lˈɪθɡaʊ) vs winner L IH0 TH G AH0 UH0 (lɪθɡəʊ)"
+    ]
+  },
+  {
+    "name": "Glenfield Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Salisbury Heights",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Jordan Springs",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Bullsbrook",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "South Hurstville",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Warradale",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lyneham",
+    "country": "AU",
+    "cmu": "L AY0 N AH0 M",
+    "source": "wikimedia:wikipedia:Lyneham, Australian Capital Territory + research:https://en.wikipedia.org/wiki/Lyneham,_ACT",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "laɪnəm",
+        "cmu": "L AY0 N AH0 M",
+        "source": "wikimedia:wikipedia:Lyneham, Australian Capital Territory",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "laɪnəm",
+            "cmu": "L AY0 N AH0 M",
+            "source": "wikimedia:wikipedia:Lyneham, Australian Capital Territory"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "L AY0 N AH0 M",
+          "ipa": "laɪnəm",
+          "source": "research:https://en.wikipedia.org/wiki/Lyneham,_ACT",
+          "note": "Wikipedia entry for Lyneham, ACT",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Greenfield Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Singleton",
+    "country": "AU",
+    "cmu": "S IH1 NG G AH0 L T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S IH1 NG G AH0 L T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hampton East",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Boambee East",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Teneriffe",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ainslie",
+    "country": "AU",
+    "cmu": "EY1 N Z L IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EY1 N Z L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Calliope",
+    "country": "AU",
+    "cmu": "K AH0 L AY1 AH0 P IY2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AH0 L AY1 AH0 P IY2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Maffra",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Campbell",
+    "country": "AU",
+    "cmu": "K AE1 M B AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AE1 M B AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fletcher",
+    "country": "AU",
+    "cmu": "F L EH1 CH ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F L EH1 CH ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Seddon",
+    "country": "AU",
+    "cmu": "S EH1 D AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S EH1 D AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Chisholm",
+    "country": "AU",
+    "cmu": "CH IH1 Z AH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH IH1 Z AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Edens Landing",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Kallaroo",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lisarow",
+    "country": "AU",
+    "cmu": "L IH1 Z AH0 R AH0 UH0",
+    "source": "research:https://lisarow-p.schools.nsw.gov.au/",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "research": [
+        {
+          "cmu": "L IH1 Z AH0 R AH0 UH0",
+          "ipa": "ˈlɪzərəʊ",
+          "source": "research:https://lisarow-p.schools.nsw.gov.au/",
+          "note": "NSW Department of Education school website - local pronunciation commonly used as 'LIZ-a-row'",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Elizabeth Downs",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East Lismore",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tahmoor",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Port Kembla",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Laverton",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Park Avenue",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Carey Park",
+    "country": "AU",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
   }
 ]
