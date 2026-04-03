@@ -36,8 +36,8 @@
 
 - [ ] Claude orchestrator integration (2Step batch types)
 - [ ] Full pipeline service (Outscraper → Creatomate → email → Sheet sync)
-- [ ] auditandfix.com/video-reviews sub-page
-- [ ] Cross-sell between Audit&Fix, 2Step, future projects
+- [ ] Video reviews sub-page on the production site
+- [ ] Cross-sell between projects (CRO audits, 2Step, future projects)
 - [ ] A/B test animated GIF teaser (3-5s, <500KB via FFmpeg) vs static poster — measure CTR difference at scale
 - [ ] Evaluate Loom / Vidyard / BombBomb for play-tracking on video emails
 

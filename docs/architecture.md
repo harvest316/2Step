@@ -38,7 +38,7 @@ All shared packages are scoped under `@mmo/` ("make money online"):
     services/
       overseer/                    # Unified AFK monitoring across ALL child projects
       dashboard/                   # Unified dashboard (later)
-    website/                       # auditandfix.com — shared website
+    website/                       # Brand website — shared website
       index.php, api.php, o.php    # Sales pages, order forms, API endpoints
       workers/                     # Cloudflare Workers
     CLAUDE.md

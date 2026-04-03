@@ -148,7 +148,7 @@ _Note: Previous table used Creatomate at $0.10/video ($87-$230/mo) — that figu
 
 **Video hosting plan:**
 - Day 1: Google Drive shareable links (free, zero setup)
-- At scale: R2 with `video.auditandfix.com` CNAME ($0.015/GB/mo)
+- At scale: R2 with a `video.` CNAME on `BRAND_DOMAIN` ($0.015/GB/mo)
 
 **For DMs (Instagram/Facebook):** Share Google Drive link directly. Some platforms allow video upload in DMs.
 
