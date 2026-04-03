@@ -17,8 +17,8 @@ import pg from 'pg';
 const { Pool } = pg;
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-const AUDITANDFIX_URL = (process.env.AUDITANDFIX_URL || 'https://auditandfix.com').replace(/\/$/, '');
-const WORKER_SECRET = process.env.AUDITANDFIX_WORKER_SECRET || '';
+const BRAND_URL = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const WORKER_SECRET = process.env.API_WORKER_SECRET || '';
 const dryRun = process.argv.includes('--dry-run');
 
 async function main() {
@@ -58,7 +58,7 @@ async function main() {
     }
 
     try {
-      const res = await fetch(`${AUDITANDFIX_URL}/api.php?action=store-video`, {
+      const res = await fetch(`${BRAND_URL}/api.php?action=store-video`, {
         method: 'POST',
         headers: {
           'Content-Type':   'application/json',

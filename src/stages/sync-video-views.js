@@ -23,8 +23,8 @@
  *   node src/stages/sync-video-views.js --dry-run  # Print changes, no DB writes
  *
  * Environment (loaded from 333Method/.env via load-env.js):
- *   AUDITANDFIX_URL            — e.g. https://auditandfix.com
- *   AUDITANDFIX_WORKER_SECRET  — shared secret for X-Auth-Secret header
+ *   BRAND_URL            — e.g. https://auditandfix.com
+ *   API_WORKER_SECRET    — shared secret for X-Auth-Secret header
  */
 
 import '../utils/load-env.js';
@@ -37,8 +37,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
-const AUDITANDFIX_URL    = (process.env.AUDITANDFIX_URL || 'https://auditandfix.com').replace(/\/$/, '');
-const WORKER_SECRET      = process.env.AUDITANDFIX_WORKER_SECRET || '';
+const BRAND_URL          = (process.env.BRAND_URL || 'https://auditandfix.com').replace(/\/$/, '');
+const WORKER_SECRET      = process.env.API_WORKER_SECRET || '';
 
 // Priority follow-up window: flag sites viewed within this many minutes
 const PRIORITY_WINDOW_MINUTES = 30;
@@ -54,11 +54,11 @@ const PRIORITY_WINDOW_MINUTES = 30;
 async function fetchVideoViews() {
   if (!WORKER_SECRET) {
     throw new Error(
-      'AUDITANDFIX_WORKER_SECRET is not set — cannot authenticate with get-video-views endpoint'
+      'API_WORKER_SECRET is not set — cannot authenticate with get-video-views endpoint'
     );
   }
 
-  const url = `${AUDITANDFIX_URL}/api.php?action=get-video-views`;
+  const url = `${BRAND_URL}/api.php?action=get-video-views`;
 
   const res = await fetch(url, {
     method: 'POST',
@@ -91,7 +91,7 @@ async function fetchVideoViews() {
 export async function runSyncVideoViewsStage(options = {}) {
   const { dryRun = false } = options;
 
-  console.log(`[sync-video-views] Fetching view data from ${AUDITANDFIX_URL}${dryRun ? ' (DRY RUN)' : ''}...`);
+  console.log(`[sync-video-views] Fetching view data from ${BRAND_URL}${dryRun ? ' (DRY RUN)' : ''}...`);
 
   let videos;
   try {

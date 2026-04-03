@@ -13,7 +13,7 @@
  *   - https://unsubscribe-worker.auditandfix.workers.dev (Cloudflare Worker)
  *   - PostgreSQL at DATABASE_URL
  *
- * These tests are skipped automatically if AUDITANDFIX_E2E=true is not set,
+ * These tests are skipped automatically if E2E_ENABLED=true is not set,
  * to avoid mutating the production opt-out list during normal test runs.
  */
 
@@ -21,7 +21,7 @@ import '../../../src/utils/load-env.js';
 import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 
-const E2E = process.env.AUDITANDFIX_E2E === 'true';
+const E2E = process.env.E2E_ENABLED === 'true';
 const WORKER_URL = (
   process.env.UNSUBSCRIBE_WORKER_URL || 'https://unsubscribe-worker.auditandfix.workers.dev'
 ).replace(/\/$/, '');

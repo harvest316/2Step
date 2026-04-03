@@ -32,8 +32,8 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
-const WORKER_URL    = process.env.AUDITANDFIX_WORKER_URL;
-const WORKER_SECRET = process.env.AUDITANDFIX_WORKER_SECRET;
+const WORKER_URL    = process.env.API_WORKER_URL;
+const WORKER_SECRET = process.env.API_WORKER_SECRET;
 
 // ─── Worker HTTP helpers ─────────────────────────────────────────────────────
 
@@ -233,7 +233,7 @@ export async function runVideoDemoRequestsStage(options = {}) {
 
   // Guard: skip silently if worker config is not set
   if (!WORKER_URL || !WORKER_SECRET) {
-    console.log('[video-demo-requests] AUDITANDFIX_WORKER_URL or AUDITANDFIX_WORKER_SECRET not set — skipping');
+    console.log('[video-demo-requests] API_WORKER_URL or API_WORKER_SECRET not set — skipping');
     return { polled: 0, inserted: 0, skipped: 0, completed: 0, errors: 0 };
   }
 
