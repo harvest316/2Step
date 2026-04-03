@@ -57,10 +57,14 @@ For each source you find, return:
 - The source URL
 - Whether this is an authoritative source (government, council, university) or informal (forum, blog)
 
-IMPORTANT: Return your findings as a JSON array and nothing else:
-[{"ipa": "/wʊˈlɑːrə/", "source": "https://example.com/...", "authoritative": true, "note": "City council pronunciation guide"}]
+IMPORTANT: You MUST return ONLY a valid JSON array — no prose, no markdown, no code fences. Example format:
+[{"ipa": "/wʊˈlɑːrə/", "source": "https://example.com/page", "authoritative": true, "note": "City council pronunciation guide"}]
 
-If you cannot find any pronunciation data, return exactly: []`;
+Rules:
+- "source" must be a full URL string, not a domain name
+- "ipa" must be the IPA transcription in slashes
+- Do NOT include URLs without pronunciation data
+- If you cannot find any pronunciation data, return exactly: []`;
 
   try {
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -88,11 +92,23 @@ If you cannot find any pronunciation data, return exactly: []`;
     const data = await res.json();
     const response = data.choices?.[0]?.message?.content || '';
 
-    // Parse JSON from response
-    const jsonMatch = response.match(/\[[\s\S]*?\]/);
+    // Parse JSON from response — handle markdown fences and extra text
+    let jsonStr = response;
+    // Strip markdown code fences
+    jsonStr = jsonStr.replace(/```json\s*/g, '').replace(/```\s*/g, '');
+    // Find the JSON array
+    const jsonMatch = jsonStr.match(/\[[\s\S]*\]/);
     if (!jsonMatch) return [];
 
-    const findings = JSON.parse(jsonMatch[0]);
+    let findings;
+    try {
+      findings = JSON.parse(jsonMatch[0]);
+    } catch {
+      // Try to extract individual objects if the array parse fails
+      const objMatches = jsonStr.match(/\{[^{}]*"ipa"\s*:\s*"[^"]+?"[^{}]*\}/g);
+      if (!objMatches) return [];
+      findings = objMatches.map(m => { try { return JSON.parse(m); } catch { return null; } }).filter(Boolean);
+    }
     return findings
       .filter(f => f.ipa)
       .map(f => {
