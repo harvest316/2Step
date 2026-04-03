@@ -1,0 +1,3556 @@
+[
+  {
+    "name": "New York City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Los Angeles",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Brooklyn",
+    "country": "US",
+    "cmu": "B R UH1 K L AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R UH1 K L AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Chicago",
+    "country": "US",
+    "cmu": "SH AH0 K AA1 G OW2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH AH0 K AA1 G OW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Queens",
+    "country": "US",
+    "cmu": "K W IY1 N Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K W IY1 N Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Houston",
+    "country": "US",
+    "cmu": "HH Y UW1 S T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH Y UW1 S T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Phoenix",
+    "country": "US",
+    "cmu": "F IY1 N IH0 K S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F IY1 N IH0 K S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Philadelphia",
+    "country": "US",
+    "cmu": "F IH2 L AH0 D EH1 L F IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F IH2 L AH0 D EH1 L F IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Antonio",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Manhattan",
+    "country": "US",
+    "cmu": "M AE0 N HH AE1 T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AE0 N HH AE1 T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Diego",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "The Bronx",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Dallas",
+    "country": "US",
+    "cmu": "D AE1 L AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D AE1 L AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Jacksonville",
+    "country": "US",
+    "cmu": "JH AE1 K S AH0 N V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH AE1 K S AH0 N V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fort Worth",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "San Jose",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Austin",
+    "country": "US",
+    "cmu": "AO1 S T AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AO1 S T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Columbus",
+    "country": "US",
+    "cmu": "K AH0 L AH1 M B AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K AH0 L AH1 M B AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Charlotte",
+    "country": "US",
+    "cmu": "SH AA1 R L AH0 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH AA1 R L AH0 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Indianapolis",
+    "country": "US",
+    "cmu": "IH0 N D IY0 AH0 N AE1 P AH0 L IH0 S",
+    "source": "wikimedia:wiktionary:Indianapolis:GA + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ɪndiəˈnæpəlɪs",
+        "cmu": "IH0 N D IY0 AH0 N AE1 P AH0 L IH0 S",
+        "source": "wikimedia:wiktionary:Indianapolis:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌɪndiəˈnæpəlᵻs",
+            "cmu": "IH2 N D IY0 AH0 N AE1 P AH0 L AH0 S",
+            "source": "wikimedia:wikipedia:Indianapolis"
+          },
+          "wiktionary": {
+            "ipa": "ɪndiəˈnæpəlɪs",
+            "cmu": "IH0 N D IY0 AH0 N AE1 P AH0 L IH0 S",
+            "source": "wikimedia:wiktionary:Indianapolis:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "IH2 N D IY0 AH0 N AE1 P AH0 L IH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Francisco",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Seattle",
+    "country": "US",
+    "cmu": "S IY0 AE1 T L",
+    "source": "wikimedia:wiktionary:Seattle:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "siˈætl̩",
+        "cmu": "S IY0 AE1 T L",
+        "source": "wikimedia:wiktionary:Seattle:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "siˈætəl",
+            "cmu": "S IY0 AE1 T AH0 L",
+            "source": "wikimedia:wikipedia:Seattle"
+          },
+          "wiktionary": {
+            "ipa": "siˈætl̩",
+            "cmu": "S IY0 AE1 T L",
+            "source": "wikimedia:wiktionary:Seattle:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "S IY0 AE1 T AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say S IY0 AE1 T AH0 L (siːˈætəl) vs winner S IY0 AE1 T L (siːˈætl)"
+    ]
+  },
+  {
+    "name": "Denver",
+    "country": "US",
+    "cmu": "D EH1 N V",
+    "source": "wikimedia:wiktionary:Denver:GenAm",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdɛnvɚ",
+        "cmu": "D EH1 N V",
+        "source": "wikimedia:wiktionary:Denver:GenAm",
+        "dialect": "GenAm",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈdɛnvər",
+            "cmu": "D EH1 N V AH0 R",
+            "source": "wikimedia:wikipedia:Denver"
+          },
+          "wiktionary": {
+            "ipa": "ˈdɛnvɚ",
+            "cmu": "D EH1 N V",
+            "source": "wikimedia:wiktionary:Denver:GenAm",
+            "dialect": "GenAm"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D EH1 N V ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say D EH1 N V ER0 (dˈɛnvɜː) vs winner D EH1 N V (dˈɛnv)"
+    ]
+  },
+  {
+    "name": "Washington",
+    "country": "US",
+    "cmu": "W AO0 R SH IH0 NG T AH0 N",
+    "source": "wikimedia:wiktionary:Washington:US,r-insertion",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "wɔɹʃɪŋtən",
+        "cmu": "W AO0 R SH IH0 NG T AH0 N",
+        "source": "wikimedia:wiktionary:Washington:US,r-insertion",
+        "dialect": "US,r-insertion",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "web",
+            "cmu": "W EH0 B",
+            "source": "wikimedia:wikipedia:Washington, D.C."
+          },
+          "wiktionary": {
+            "ipa": "wɔɹʃɪŋtən",
+            "cmu": "W AO0 R SH IH0 NG T AH0 N",
+            "source": "wikimedia:wiktionary:Washington:US,r-insertion",
+            "dialect": "US,r-insertion"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "W AA1 SH IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say W AA1 SH IH0 NG T AH0 N (wˈɑːʃɪŋtən) vs winner W AO0 R SH IH0 NG T AH0 N (wɔːrʃɪŋtən)"
+    ]
+  },
+  {
+    "name": "Nashville",
+    "country": "US",
+    "cmu": "N AE1 SH V IH2 L",
+    "source": "wikimedia:wiktionary:Nashville:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈnæʃˌvɪl",
+        "cmu": "N AE1 SH V IH2 L",
+        "source": "wikimedia:wiktionary:Nashville:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈnæʃvɪl",
+            "cmu": "N AE1 SH V IH0 L",
+            "source": "wikimedia:wikipedia:Nashville, Tennessee"
+          },
+          "wiktionary": {
+            "ipa": "ˈnæʃˌvɪl",
+            "cmu": "N AE1 SH V IH2 L",
+            "source": "wikimedia:wiktionary:Nashville:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "N AE1 SH V IH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Oklahoma City",
+    "country": "US",
+    "cmu": "OW2 K L AH0 HH OW1 M AH0",
+    "source": "wikimedia:wikipedia:Oklahoma City",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌoʊkləˈhoʊmə_-",
+        "cmu": "OW2 K L AH0 HH OW1 M AH0",
+        "source": "wikimedia:wikipedia:Oklahoma City",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌoʊkləˈhoʊmə_-",
+            "cmu": "OW2 K L AH0 HH OW1 M AH0",
+            "source": "wikimedia:wikipedia:Oklahoma City"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "El Paso",
+    "country": "US",
+    "cmu": "L AE0 N G EH0 L P AE1 S OW0",
+    "source": "wikimedia:wikipedia:El Paso, Texas",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "langɛl_ˈpæsoʊ",
+        "cmu": "L AE0 N G EH0 L P AE1 S OW0",
+        "source": "wikimedia:wikipedia:El Paso, Texas",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "langɛl_ˈpæsoʊ",
+            "cmu": "L AE0 N G EH0 L P AE1 S OW0",
+            "source": "wikimedia:wikipedia:El Paso, Texas"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Boston",
+    "country": "US",
+    "cmu": "B AO1 S T AH0 N",
+    "source": "wikimedia:wiktionary:Boston:GenAm",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbɔstən",
+        "cmu": "B AO1 S T AH0 N",
+        "source": "wikimedia:wiktionary:Boston:GenAm",
+        "dialect": "GenAm",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "bɒstən",
+            "cmu": "B AA0 S T AH0 N",
+            "source": "wikimedia:wikipedia:Boston"
+          },
+          "wiktionary": {
+            "ipa": "ˈbɔstən",
+            "cmu": "B AO1 S T AH0 N",
+            "source": "wikimedia:wiktionary:Boston:GenAm",
+            "dialect": "GenAm"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B AA1 S T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say B AA1 S T AH0 N (bˈɑːstən) vs winner B AO1 S T AH0 N (bˈɔːstən)"
+    ]
+  },
+  {
+    "name": "Portland",
+    "country": "US",
+    "cmu": "P AO1 T L AH0 N D",
+    "source": "wikimedia:wiktionary:Portland:UK,Ireland",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈpɔːtlənd",
+        "cmu": "P AO1 T L AH0 N D",
+        "source": "wikimedia:wiktionary:Portland:UK,Ireland",
+        "dialect": "UK,Ireland",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈpɔɹtlənd",
+            "cmu": "P AO1 R T L AH0 N D",
+            "source": "wikimedia:wikipedia:Portland, Oregon"
+          },
+          "wiktionary": {
+            "ipa": "ˈpɔːtlənd",
+            "cmu": "P AO1 T L AH0 N D",
+            "source": "wikimedia:wiktionary:Portland:UK,Ireland",
+            "dialect": "UK,Ireland"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "P AO1 R T L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say P AO1 R T L AH0 N D (pˈɔːrtlənd) vs winner P AO1 T L AH0 N D (pˈɔːtlənd)"
+    ]
+  },
+  {
+    "name": "Detroit",
+    "country": "US",
+    "cmu": "D IY1 T R OY0 T",
+    "source": "wikimedia:wiktionary:Detroit:Michigan",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdiːtɹɔɪt",
+        "cmu": "D IY1 T R OY0 T",
+        "source": "wikimedia:wiktionary:Detroit:Michigan",
+        "dialect": "Michigan",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "dɪˈtrɔɪt",
+            "cmu": "D IH0 T R OY1 T",
+            "source": "wikimedia:wikipedia:Detroit"
+          },
+          "wiktionary": {
+            "ipa": "ˈdiːtɹɔɪt",
+            "cmu": "D IY1 T R OY0 T",
+            "source": "wikimedia:wiktionary:Detroit:Michigan",
+            "dialect": "Michigan"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D IH0 T R OY1 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say D IH0 T R OY1 T (dɪtrˈɔɪt) vs winner D IY1 T R OY0 T (dˈiːtrɔɪt)"
+    ]
+  },
+  {
+    "name": "Las Vegas",
+    "country": "US",
+    "cmu": "L AA0 S V EY1 G AH0 S",
+    "source": "wikimedia:wiktionary:Las Vegas:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "lɑs ˈveɪɡəs",
+        "cmu": "L AA0 S V EY1 G AH0 S",
+        "source": "wikimedia:wiktionary:Las Vegas:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "uslanglɑ:s_ˈveɪɡəs",
+            "cmu": "UW0 S L AE0 N G L AA0 S V EY1 G AH0 S",
+            "source": "wikimedia:wikipedia:Las Vegas"
+          },
+          "wiktionary": {
+            "ipa": "lɑs ˈveɪɡəs",
+            "cmu": "L AA0 S V EY1 G AH0 S",
+            "source": "wikimedia:wiktionary:Las Vegas:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "New South Memphis",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Memphis",
+    "country": "US",
+    "cmu": "M EH1 M F IH0 S",
+    "source": "wikimedia:wiktionary:Memphis:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈmɛmfɪs",
+        "cmu": "M EH1 M F IH0 S",
+        "source": "wikimedia:wiktionary:Memphis:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈmɛmfɪs",
+            "cmu": "M EH1 M F IH0 S",
+            "source": "wikimedia:wikipedia:Memphis, Tennessee"
+          },
+          "wiktionary": {
+            "ipa": "ˈmɛmfɪs",
+            "cmu": "M EH1 M F IH0 S",
+            "source": "wikimedia:wiktionary:Memphis:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M EH1 M F AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say M EH1 M F AH0 S (mˈɛmfəs) vs winner M EH1 M F IH0 S (mˈɛmfɪs)"
+    ]
+  },
+  {
+    "name": "Louisville",
+    "country": "US",
+    "cmu": "L UW1 AH0 V AH0 L",
+    "source": "wikimedia:wikipedia:Louisville, Kentucky",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "USˈluːəvəl",
+        "cmu": "L UW1 AH0 V AH0 L",
+        "source": "wikimedia:wikipedia:Louisville, Kentucky",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "USˈluːəvəl",
+            "cmu": "L UW1 AH0 V AH0 L",
+            "source": "wikimedia:wikipedia:Louisville, Kentucky"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L UW1 IY0 V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say L UW1 IY0 V IH2 L (lˈuːiːvˌɪl) vs winner L UW1 AH0 V AH0 L (lˈuːəvəl)"
+    ]
+  },
+  {
+    "name": "Baltimore",
+    "country": "US",
+    "cmu": "B AO1 L T IH0 M OW2 R",
+    "source": "wikimedia:wiktionary:Baltimore:GA",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbɔl.tɪˌmoɹ",
+        "cmu": "B AO1 L T IH0 M OW2 R",
+        "source": "wikimedia:wiktionary:Baltimore:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈbɔːltᵻmɔːr",
+            "cmu": "B AO1 L T AH0 M AO0 R",
+            "source": "wikimedia:wikipedia:Baltimore"
+          },
+          "wiktionary": {
+            "ipa": "ˈbɔl.tɪˌmoɹ",
+            "cmu": "B AO1 L T IH0 M OW2 R",
+            "source": "wikimedia:wiktionary:Baltimore:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "B AO1 L T AH0 M AO2 R",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say B AO1 L T AH0 M AO2 R (bˈɔːltəmˌɔːr) vs winner B AO1 L T IH0 M OW2 R (bˈɔːltɪmˌoʊr)"
+    ]
+  },
+  {
+    "name": "South Boston",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Albuquerque",
+    "country": "US",
+    "cmu": "AE1 L B AH0 K K IY0",
+    "source": "wikimedia:wiktionary:Albuquerque:GA",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈæl.bə.kɚ.ki",
+        "cmu": "AE1 L B AH0 K K IY0",
+        "source": "wikimedia:wiktionary:Albuquerque:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈælbəˌkɜɹki",
+            "cmu": "AE1 L B AH0 K ER2 R K IY0",
+            "source": "wikimedia:wikipedia:Albuquerque, New Mexico"
+          },
+          "wiktionary": {
+            "ipa": "ˈæl.bə.kɚ.ki",
+            "cmu": "AE1 L B AH0 K K IY0",
+            "source": "wikimedia:wiktionary:Albuquerque:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE1 L B AH0 K ER0 K IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say AE1 L B AH0 K ER0 K IY0 (ˈælbəkɜːkiː) vs winner AE1 L B AH0 K K IY0 (ˈælbəkkiː)"
+    ]
+  },
+  {
+    "name": "Milwaukee",
+    "country": "US",
+    "cmu": "M IH0 L W AO1 K IY0",
+    "source": "wikimedia:wiktionary:Milwaukee:RP + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "mɪlˈwɔːkiː",
+        "cmu": "M IH0 L W AO1 K IY0",
+        "source": "wikimedia:wiktionary:Milwaukee:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "mɪlˈwɔːki",
+            "cmu": "M IH0 L W AO1 K IY0",
+            "source": "wikimedia:wikipedia:Milwaukee"
+          },
+          "wiktionary": {
+            "ipa": "mɪlˈwɔːkiː",
+            "cmu": "M IH0 L W AO1 K IY0",
+            "source": "wikimedia:wiktionary:Milwaukee:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M IH0 L W AO1 K IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tucson",
+    "country": "US",
+    "cmu": "T UW1 S AA0 N",
+    "source": "wikimedia:wiktionary:Tucson:RP + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtuːsɒn",
+        "cmu": "T UW1 S AA0 N",
+        "source": "wikimedia:wiktionary:Tucson:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈtuːsɒn",
+            "cmu": "T UW1 S AA0 N",
+            "source": "wikimedia:wikipedia:Tucson, Arizona"
+          },
+          "wiktionary": {
+            "ipa": "ˈtuːsɒn",
+            "cmu": "T UW1 S AA0 N",
+            "source": "wikimedia:wiktionary:Tucson:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "T UW1 S AA2 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fresno",
+    "country": "US",
+    "cmu": "F R EH1 Z N OW0",
+    "source": "wikimedia:wiktionary:Fresno:GA + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈfɹɛznoʊ",
+        "cmu": "F R EH1 Z N OW0",
+        "source": "wikimedia:wiktionary:Fresno:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈfrɛz.noʊ",
+            "cmu": "F R EH1 Z N OW0",
+            "source": "wikimedia:wikipedia:Fresno, California"
+          },
+          "wiktionary": {
+            "ipa": "ˈfɹɛznoʊ",
+            "cmu": "F R EH1 Z N OW0",
+            "source": "wikimedia:wiktionary:Fresno:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "F R EH1 Z N OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sacramento",
+    "country": "US",
+    "cmu": "S AE2 K R AH0 M EH1 N T AH0 UH0",
+    "source": "wikimedia:wiktionary:Sacramento:UK",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌsækɹəˈmɛntəʊ",
+        "cmu": "S AE2 K R AH0 M EH1 N T AH0 UH0",
+        "source": "wikimedia:wiktionary:Sacramento:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "uslangˌsækrəˈmɛntoʊ",
+            "cmu": "UW0 S L AE0 N G S AE2 K R AH0 M EH1 N T OW0",
+            "source": "wikimedia:wikipedia:Sacramento, California"
+          },
+          "wiktionary": {
+            "ipa": "ˌsækɹəˈmɛntəʊ",
+            "cmu": "S AE2 K R AH0 M EH1 N T AH0 UH0",
+            "source": "wikimedia:wiktionary:Sacramento:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "S AE2 K R AH0 M EH1 N T OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say S AE2 K R AH0 M EH1 N T OW0 (sˌækrəmˈɛntoʊ) vs winner S AE2 K R AH0 M EH1 N T AH0 UH0 (sˌækrəmˈɛntəʊ)"
+    ]
+  },
+  {
+    "name": "Atlanta",
+    "country": "US",
+    "cmu": "AE0 T L AE1 N T AH0",
+    "source": "wikimedia:wiktionary:Atlanta:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ætˈlæntə",
+        "cmu": "AE0 T L AE1 N T AH0",
+        "source": "wikimedia:wiktionary:Atlanta:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ætˈlæntə",
+            "cmu": "AE0 T L AE1 N T AH0",
+            "source": "wikimedia:wikipedia:Atlanta"
+          },
+          "wiktionary": {
+            "ipa": "ætˈlæntə",
+            "cmu": "AE0 T L AE1 N T AH0",
+            "source": "wikimedia:wiktionary:Atlanta:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE0 T L AE1 N T AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Miami",
+    "country": "US",
+    "cmu": "M AY0 AE1 M IY0",
+    "source": "wikimedia:wiktionary:Miami:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "maɪˈæmi",
+        "cmu": "M AY0 AE1 M IY0",
+        "source": "wikimedia:wiktionary:Miami:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "maɪˈæmi",
+            "cmu": "M AY0 AE1 M IY0",
+            "source": "wikimedia:wikipedia:Miami"
+          },
+          "wiktionary": {
+            "ipa": "maɪˈæmi",
+            "cmu": "M AY0 AE1 M IY0",
+            "source": "wikimedia:wiktionary:Miami:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M AY0 AE1 M IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Omaha",
+    "country": "US",
+    "cmu": "AH1 UH0 M AH0 HH AA0",
+    "source": "wikimedia:wiktionary:Omaha:UK",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈəʊməhɑː",
+        "cmu": "AH1 UH0 M AH0 HH AA0",
+        "source": "wikimedia:wiktionary:Omaha:UK",
+        "dialect": "UK",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈoʊməhɔː",
+            "cmu": "OW1 M AH0 HH AO0",
+            "source": "wikimedia:wikipedia:Omaha, Nebraska"
+          },
+          "wiktionary": {
+            "ipa": "ˈəʊməhɑː",
+            "cmu": "AH1 UH0 M AH0 HH AA0",
+            "source": "wikimedia:wiktionary:Omaha:UK",
+            "dialect": "UK"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "OW1 M AH0 HH AA2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say OW1 M AH0 HH AA2 (ˈoʊməhˌɑː) vs winner AH1 UH0 M AH0 HH AA0 (ˈəʊməhɑː)"
+    ]
+  },
+  {
+    "name": "Raleigh",
+    "country": "US",
+    "cmu": "R AA1 L IY0",
+    "source": "wikimedia:wikipedia:Raleigh, North Carolina",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈrɑːli",
+        "cmu": "R AA1 L IY0",
+        "source": "wikimedia:wikipedia:Raleigh, North Carolina",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈrɑːli",
+            "cmu": "R AA1 L IY0",
+            "source": "wikimedia:wikipedia:Raleigh, North Carolina"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "R AO1 L IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say R AO1 L IY0 (rˈɔːliː) vs winner R AA1 L IY0 (rˈɑːliː)"
+    ]
+  },
+  {
+    "name": "Kansas City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Long Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mesa",
+    "country": "US",
+    "cmu": "M EY1 S AH0",
+    "source": "wikimedia:wikipedia:Mesa, Arizona + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈmeɪsə",
+        "cmu": "M EY1 S AH0",
+        "source": "wikimedia:wikipedia:Mesa, Arizona",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈmeɪsə",
+            "cmu": "M EY1 S AH0",
+            "source": "wikimedia:wikipedia:Mesa, Arizona"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M EY1 S AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Staten Island",
+    "country": "US",
+    "cmu": "S T AE1 T AH0 N",
+    "source": "wikimedia:wikipedia:Staten Island",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈstætən",
+        "cmu": "S T AE1 T AH0 N",
+        "source": "wikimedia:wikipedia:Staten Island",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈstætən",
+            "cmu": "S T AE1 T AH0 N",
+            "source": "wikimedia:wikipedia:Staten Island"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Colorado Springs",
+    "country": "US",
+    "cmu": "W EH0 B",
+    "source": "wikimedia:wikipedia:Colorado Springs, Colorado",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "web",
+        "cmu": "W EH0 B",
+        "source": "wikimedia:wikipedia:Colorado Springs, Colorado",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "web",
+            "cmu": "W EH0 B",
+            "source": "wikimedia:wikipedia:Colorado Springs, Colorado"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Virginia Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Oakland",
+    "country": "US",
+    "cmu": "OW1 K L AH0 N D",
+    "source": "wikimedia:wiktionary:Oakland:GA + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈoʊklənd",
+        "cmu": "OW1 K L AH0 N D",
+        "source": "wikimedia:wiktionary:Oakland:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈoʊklənd",
+            "cmu": "OW1 K L AH0 N D",
+            "source": "wikimedia:wiktionary:Oakland:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "OW1 K L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tampa",
+    "country": "US",
+    "cmu": "T AE1 M P AH0",
+    "source": "wikimedia:wiktionary:Tampa:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtæm.pə",
+        "cmu": "T AE1 M P AH0",
+        "source": "wikimedia:wiktionary:Tampa:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈtæmpə",
+            "cmu": "T AE1 M P AH0",
+            "source": "wikimedia:wikipedia:Tampa, Florida"
+          },
+          "wiktionary": {
+            "ipa": "ˈtæm.pə",
+            "cmu": "T AE1 M P AH0",
+            "source": "wikimedia:wiktionary:Tampa:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "T AE1 M P AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tulsa",
+    "country": "US",
+    "cmu": "T AH1 L S AH0",
+    "source": "wikimedia:wiktionary:Tulsa:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈtʌlsə",
+        "cmu": "T AH1 L S AH0",
+        "source": "wikimedia:wiktionary:Tulsa:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈtʌlsə",
+            "cmu": "T AH1 L S AH0",
+            "source": "wikimedia:wikipedia:Tulsa, Oklahoma"
+          },
+          "wiktionary": {
+            "ipa": "ˈtʌlsə",
+            "cmu": "T AH1 L S AH0",
+            "source": "wikimedia:wiktionary:Tulsa:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "T AH1 L S AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Minneapolis",
+    "country": "US",
+    "cmu": "M IH2 N IY0 AE1 P AH0 L AH0 S",
+    "source": "wikimedia:wikipedia:Minneapolis",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌmɪniˈæpəlᵻs",
+        "cmu": "M IH2 N IY0 AE1 P AH0 L AH0 S",
+        "source": "wikimedia:wikipedia:Minneapolis",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌmɪniˈæpəlᵻs",
+            "cmu": "M IH2 N IY0 AE1 P AH0 L AH0 S",
+            "source": "wikimedia:wikipedia:Minneapolis"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "M IH2 N IY0 AE1 P AH0 L IH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say M IH2 N IY0 AE1 P AH0 L IH0 S (mˌɪniːˈæpəlɪs) vs winner M IH2 N IY0 AE1 P AH0 L AH0 S (mˌɪniːˈæpələs)"
+    ]
+  },
+  {
+    "name": "Wichita",
+    "country": "US",
+    "cmu": "W IH1 T SH IH0 T AO0",
+    "source": "wikimedia:wiktionary:Wichita:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈwɪt͡ʃɪtɔː",
+        "cmu": "W IH1 T SH IH0 T AO0",
+        "source": "wikimedia:wiktionary:Wichita:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈwItSItO:,_-ta:",
+            "cmu": "W T T T AE1",
+            "source": "wikimedia:wikipedia:Wichita"
+          },
+          "wiktionary": {
+            "ipa": "ˈwɪt͡ʃɪtɔː",
+            "cmu": "W IH1 T SH IH0 T AO0",
+            "source": "wikimedia:wiktionary:Wichita:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "W IH1 CH AH0 T AO2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say W IH1 CH AH0 T AO2 (wˈɪtʃətˌɔː) vs winner W IH1 T SH IH0 T AO0 (wˈɪtʃɪtɔː)"
+    ]
+  },
+  {
+    "name": "Arlington",
+    "country": "US",
+    "cmu": "AA1 L IH0 NG T AH0 N",
+    "source": "wikimedia:wiktionary:Arlington:RP",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈɑː.lɪŋ.tən",
+        "cmu": "AA1 L IH0 NG T AH0 N",
+        "source": "wikimedia:wiktionary:Arlington:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈɑː.lɪŋ.tən",
+            "cmu": "AA1 L IH0 NG T AH0 N",
+            "source": "wikimedia:wiktionary:Arlington:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AA1 R L IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say AA1 R L IH0 NG T AH0 N (ˈɑːrlɪŋtən) vs winner AA1 L IH0 NG T AH0 N (ˈɑːlɪŋtən)"
+    ]
+  },
+  {
+    "name": "Bakersfield",
+    "country": "US",
+    "cmu": "B EY1 K ER0 Z F IY2 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B EY1 K ER0 Z F IY2 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cleveland",
+    "country": "US",
+    "cmu": "K L IY1 V L AH0 N D",
+    "source": "wikimedia:wiktionary:Cleveland:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈkliːv.lənd",
+        "cmu": "K L IY1 V L AH0 N D",
+        "source": "wikimedia:wiktionary:Cleveland:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈkliːvlənd",
+            "cmu": "K L IY1 V L AH0 N D",
+            "source": "wikimedia:wikipedia:Cleveland"
+          },
+          "wiktionary": {
+            "ipa": "ˈkliːv.lənd",
+            "cmu": "K L IY1 V L AH0 N D",
+            "source": "wikimedia:wiktionary:Cleveland:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "K L IY1 V L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "New Orleans",
+    "country": "US",
+    "cmu": "N UW0 AO1 R L IY0 AH0 N Z",
+    "source": "wikimedia:wikipedia:New Orleans",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "nu ˈɔːrliənz",
+        "cmu": "N UW0 AO1 R L IY0 AH0 N Z",
+        "source": "wikimedia:wikipedia:New Orleans",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "nu ˈɔːrliənz",
+            "cmu": "N UW0 AO1 R L IY0 AH0 N Z",
+            "source": "wikimedia:wikipedia:New Orleans"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Aurora",
+    "country": "US",
+    "cmu": "AH0 R AO1 R AH0",
+    "source": "wikimedia:wiktionary:Aurora:GA",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "əˈɹɔɹ.ə",
+        "cmu": "AH0 R AO1 R AH0",
+        "source": "wikimedia:wiktionary:Aurora:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "əˈroʊrə",
+            "cmu": "AH0 R OW1 R AH0",
+            "source": "wikimedia:wikipedia:Aurora, Colorado"
+          },
+          "wiktionary": {
+            "ipa": "əˈɹɔɹ.ə",
+            "cmu": "AH0 R AO1 R AH0",
+            "source": "wikimedia:wiktionary:Aurora:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "ER0 AO1 R AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say ER0 AO1 R AH0 (ɜːˈɔːrə) vs winner AH0 R AO1 R AH0 (ərˈɔːrə)"
+    ]
+  },
+  {
+    "name": "Honolulu",
+    "country": "US",
+    "cmu": "HH AA2 N AH0 L UW1 L UW0",
+    "source": "wikimedia:wikipedia:Honolulu + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌhɒnəˈluːluː",
+        "cmu": "HH AA2 N AH0 L UW1 L UW0",
+        "source": "wikimedia:wikipedia:Honolulu",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌhɒnəˈluːluː",
+            "cmu": "HH AA2 N AH0 L UW1 L UW0",
+            "source": "wikimedia:wikipedia:Honolulu"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "HH AA2 N AH0 L UW1 L UW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Anaheim",
+    "country": "US",
+    "cmu": "AE1 N AH0 HH AY0 M",
+    "source": "wikimedia:wiktionary:Anaheim:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈænəhaɪm",
+        "cmu": "AE1 N AH0 HH AY0 M",
+        "source": "wikimedia:wiktionary:Anaheim:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈænəhaɪm",
+            "cmu": "AE1 N AH0 HH AY0 M",
+            "source": "wikimedia:wikipedia:Anaheim, California"
+          },
+          "wiktionary": {
+            "ipa": "ˈænəhaɪm",
+            "cmu": "AE1 N AH0 HH AY0 M",
+            "source": "wikimedia:wiktionary:Anaheim:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE1 N AH0 HH AY2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "West Raleigh",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Orlando",
+    "country": "US",
+    "cmu": "AO0 R L AE1 N D OW0",
+    "source": "wikimedia:wiktionary:Orlando:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ɔɹˈlæn.doʊ",
+        "cmu": "AO0 R L AE1 N D OW0",
+        "source": "wikimedia:wiktionary:Orlando:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ɔrˈlændoʊ",
+            "cmu": "AO0 R L AE1 N D OW0",
+            "source": "wikimedia:wikipedia:Orlando, Florida"
+          },
+          "wiktionary": {
+            "ipa": "ɔɹˈlæn.doʊ",
+            "cmu": "AO0 R L AE1 N D OW0",
+            "source": "wikimedia:wiktionary:Orlando:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AO0 R L AE1 N D OW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lexington",
+    "country": "US",
+    "cmu": "L EH1 K S IH0 NG T AH0 N",
+    "source": "wikimedia:wiktionary:Lexington:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈlɛk.sɪŋ.tən",
+        "cmu": "L EH1 K S IH0 NG T AH0 N",
+        "source": "wikimedia:wiktionary:Lexington:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈlɛk.sɪŋ.tən",
+            "cmu": "L EH1 K S IH0 NG T AH0 N",
+            "source": "wikimedia:wiktionary:Lexington:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L EH1 K S IH0 NG T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Riverside",
+    "country": "US",
+    "cmu": "R IH1 V ER0 S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IH1 V ER0 S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Corpus Christi",
+    "country": "US",
+    "cmu": "K AO2 R P AH0 S K R IH1 S T IY0",
+    "source": "wikimedia:wikipedia:Corpus Christi, Texas",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌkɔːrpəs_ˈkrɪsti",
+        "cmu": "K AO2 R P AH0 S K R IH1 S T IY0",
+        "source": "wikimedia:wikipedia:Corpus Christi, Texas",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌkɔːrpəs_ˈkrɪsti",
+            "cmu": "K AO2 R P AH0 S K R IH1 S T IY0",
+            "source": "wikimedia:wikipedia:Corpus Christi, Texas"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lexington-Fayette",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cincinnati",
+    "country": "US",
+    "cmu": "S IH2 N S IH0 N AE1 T IY0",
+    "source": "wikimedia:wikipedia:Cincinnati",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˌsɪnsɪˈnæti",
+        "cmu": "S IH2 N S IH0 N AE1 T IY0",
+        "source": "wikimedia:wikipedia:Cincinnati",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌsɪnsɪˈnæti",
+            "cmu": "S IH2 N S IH0 N AE1 T IY0",
+            "source": "wikimedia:wikipedia:Cincinnati"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "S IH2 N S AH0 N AE1 T IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say S IH2 N S AH0 N AE1 T IY0 (sˌɪnsənˈætiː) vs winner S IH2 N S IH0 N AE1 T IY0 (sˌɪnsɪnˈætiː)"
+    ]
+  },
+  {
+    "name": "Santa Ana",
+    "country": "US",
+    "cmu": "S AE0 N T AE1 N AE0",
+    "source": "wikimedia:wiktionary:Santa Ana:Spanish speakers, mispronunciation",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "sanˈta.na",
+        "cmu": "S AE0 N T AE1 N AE0",
+        "source": "wikimedia:wiktionary:Santa Ana:Spanish speakers, mispronunciation",
+        "dialect": "Spanish speakers, mispronunciation",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "sanˈta.na",
+            "cmu": "S AE0 N T AE1 N AE0",
+            "source": "wikimedia:wiktionary:Santa Ana:Spanish speakers, mispronunciation",
+            "dialect": "Spanish speakers, mispronunciation"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Stockton",
+    "country": "US",
+    "cmu": "S T AA1 K T AH0 N",
+    "source": "wikimedia:wiktionary:Stockton:RP + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈstɒktən",
+        "cmu": "S T AA1 K T AH0 N",
+        "source": "wikimedia:wiktionary:Stockton:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "web",
+            "cmu": "W EH0 B",
+            "source": "wikimedia:wikipedia:Stockton, California"
+          },
+          "wiktionary": {
+            "ipa": "ˈstɒktən",
+            "cmu": "S T AA1 K T AH0 N",
+            "source": "wikimedia:wiktionary:Stockton:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "S T AA1 K T AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pittsburgh",
+    "country": "US",
+    "cmu": "P IH1 T S B G",
+    "source": "wikimedia:wiktionary:Pittsburgh:GA",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈpɪtsbɝɡ",
+        "cmu": "P IH1 T S B G",
+        "source": "wikimedia:wiktionary:Pittsburgh:GA",
+        "dialect": "GA",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈpɪtsbɜːrɡ",
+            "cmu": "P IH1 T S B ER0 R G",
+            "source": "wikimedia:wikipedia:Pittsburgh"
+          },
+          "wiktionary": {
+            "ipa": "ˈpɪtsbɝɡ",
+            "cmu": "P IH1 T S B G",
+            "source": "wikimedia:wiktionary:Pittsburgh:GA",
+            "dialect": "GA"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "P IH1 T S B ER0 G",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say P IH1 T S B ER0 G (pˈɪtsbɜːɡ) vs winner P IH1 T S B G (pˈɪtsbɡ)"
+    ]
+  },
+  {
+    "name": "Saint Paul",
+    "country": "US",
+    "cmu": "S EY1 N T P AO1 L",
+    "source": "wikimedia:wiktionary:Saint Paul:generic",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈseɪnt ˈpɔːl",
+        "cmu": "S EY1 N T P AO1 L",
+        "source": "wikimedia:wiktionary:Saint Paul:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈseɪnt ˈpɔːl",
+            "cmu": "S EY1 N T P AO1 L",
+            "source": "wikimedia:wiktionary:Saint Paul:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lincoln",
+    "country": "US",
+    "cmu": "L IH1 NG K AH0 N",
+    "source": "wikimedia:wiktionary:Lincoln:generic + cmu",
+    "confidence": "likely",
+    "agreementCount": 2,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈlɪŋ.kən",
+        "cmu": "L IH1 NG K AH0 N",
+        "source": "wikimedia:wiktionary:Lincoln:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈlɪŋ.kən",
+            "cmu": "L IH1 NG K AH0 N",
+            "source": "wikimedia:wiktionary:Lincoln:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "L IH1 NG K AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Anchorage",
+    "country": "US",
+    "cmu": "EY1 NG K AH0 R IH0 D ZH",
+    "source": "wikimedia:wiktionary:Anchorage:/æ/-tensing",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈeɪŋk(ə)ɹɪd͡ʒ",
+        "cmu": "EY1 NG K AH0 R IH0 D ZH",
+        "source": "wikimedia:wiktionary:Anchorage:/æ/-tensing",
+        "dialect": "/æ/-tensing",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈeɪŋk(ə)ɹɪd͡ʒ",
+            "cmu": "EY1 NG K AH0 R IH0 D ZH",
+            "source": "wikimedia:wiktionary:Anchorage:/æ/-tensing",
+            "dialect": "/æ/-tensing"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "AE1 NG K ER0 AH0 JH",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say AE1 NG K ER0 AH0 JH (ˈæŋkɜːədʒ) vs winner EY1 NG K AH0 R IH0 D ZH (ˈeɪŋkərɪdʒ)"
+    ]
+  },
+  {
+    "name": "Meads",
+    "country": "US",
+    "cmu": "M IY1 D Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M IY1 D Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Henderson",
+    "country": "US",
+    "cmu": "HH EH1 N D ER0 S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH EH1 N D ER0 S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Greensboro",
+    "country": "US",
+    "cmu": "G R IY1 N Z B ER0 R OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G R IY1 N Z B ER0 R OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Plano",
+    "country": "US",
+    "cmu": "P L EY1 N OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P L EY1 N OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Newark",
+    "country": "US",
+    "cmu": "N UW1 ER0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N UW1 ER0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Madison",
+    "country": "US",
+    "cmu": "M AE1 D AH0 S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AE1 D AH0 S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "St. Louis",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Chula Vista",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Toledo",
+    "country": "US",
+    "cmu": "T AH0 L IY1 D OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T AH0 L IY1 D OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Jersey City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Reno",
+    "country": "US",
+    "cmu": "R IY1 N OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IY1 N OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Chandler",
+    "country": "US",
+    "cmu": "CH AE1 N D L ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH AE1 N D L ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fort Wayne",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Buffalo",
+    "country": "US",
+    "cmu": "B AH1 F AH0 L OW2",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B AH1 F AH0 L OW2",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Durham",
+    "country": "US",
+    "cmu": "D ER1 AH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "D ER1 AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "St. Petersburg",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Irvine",
+    "country": "US",
+    "cmu": "ER1 V AY0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "ER1 V AY0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Laredo",
+    "country": "US",
+    "cmu": "L ER0 EY1 D OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L ER0 EY1 D OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lubbock",
+    "country": "US",
+    "cmu": "L AH1 B AH0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AH1 B AH0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Gilbert",
+    "country": "US",
+    "cmu": "G IH1 L B ER0 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G IH1 L B ER0 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tri-Cities",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Winston-Salem",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Glendale",
+    "country": "US",
+    "cmu": "G L EH1 N D EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G L EH1 N D EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Norfolk",
+    "country": "US",
+    "cmu": "N AO1 R F AH0 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AO1 R F AH0 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hialeah",
+    "country": "US",
+    "cmu": "HH AY2 AH0 L IY1 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AY2 AH0 L IY1 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Garland",
+    "country": "US",
+    "cmu": "G AA1 R L AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "G AA1 R L AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Scottsdale",
+    "country": "US",
+    "cmu": "S K AA1 T S D EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S K AA1 T S D EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Irving",
+    "country": "US",
+    "cmu": "ER1 V IH0 NG",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "ER1 V IH0 NG",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Boise",
+    "country": "US",
+    "cmu": "B OY1 Z IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B OY1 Z IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Chesapeake",
+    "country": "US",
+    "cmu": "CH EH1 S AH0 P IY2 K",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH EH1 S AH0 P IY2 K",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "North Las Vegas",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fremont",
+    "country": "US",
+    "cmu": "F R IY1 M AA0 N T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F R IY1 M AA0 N T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Spokane",
+    "country": "US",
+    "cmu": "S P OW0 K AE1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S P OW0 K AE1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Baton Rouge",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Upper West Side",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Richmond",
+    "country": "US",
+    "cmu": "R IH1 CH M AH0 N D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R IH1 CH M AH0 N D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Paradise",
+    "country": "US",
+    "cmu": "P EH1 R AH0 D AY2 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P EH1 R AH0 D AY2 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tacoma",
+    "country": "US",
+    "cmu": "T AH0 K OW1 M AA0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T AH0 K OW1 M AA0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Jamaica",
+    "country": "US",
+    "cmu": "JH AH0 M EY1 K AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH AH0 M EY1 K AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "San Bernardino",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Salt Lake City",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Huntsville",
+    "country": "US",
+    "cmu": "HH AH1 N T S V IH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AH1 N T S V IH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Des Moines",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fontana",
+    "country": "US",
+    "cmu": "F AO0 N T AE1 N AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F AO0 N T AE1 N AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Modesto",
+    "country": "US",
+    "cmu": "M OW0 D EH1 S T OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M OW0 D EH1 S T OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rochester",
+    "country": "US",
+    "cmu": "R AA1 CH EH2 S T ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AA1 CH EH2 S T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Maryvale",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Oxnard",
+    "country": "US",
+    "cmu": "AA1 K S N ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AA1 K S N ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Worcester",
+    "country": "US",
+    "cmu": "W UH1 S T ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "W UH1 S T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Moreno Valley",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Little Rock",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Fayetteville",
+    "country": "US",
+    "cmu": "F EY1 EH2 T V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F EY1 EH2 T V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Huntington Beach",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Tallahassee",
+    "country": "US",
+    "cmu": "T AE2 L AH0 HH AE1 S IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T AE2 L AH0 HH AE1 S IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Yonkers",
+    "country": "US",
+    "cmu": "Y AA1 NG K ER0 Z",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "Y AA1 NG K ER0 Z",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cypress",
+    "country": "US",
+    "cmu": "S AY1 P R AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AY1 P R AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Amarillo",
+    "country": "US",
+    "cmu": "AE2 M ER0 IH1 L OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE2 M ER0 IH1 L OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Akron",
+    "country": "US",
+    "cmu": "AE1 K R AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE1 K R AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Vancouver",
+    "country": "US",
+    "cmu": "V AE0 N K UW1 V ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "V AE0 N K UW1 V ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Birmingham",
+    "country": "US",
+    "cmu": "B ER1 M IH0 NG HH AE2 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B ER1 M IH0 NG HH AE2 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Montgomery",
+    "country": "US",
+    "cmu": "M AA0 N T G AH1 M R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AA0 N T G AH1 M R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Grand Rapids",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Peoria",
+    "country": "US",
+    "cmu": "P IY0 AO1 R IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P IY0 AO1 R IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Providence",
+    "country": "US",
+    "cmu": "P R AA1 V AH0 D AH0 N S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P R AA1 V AH0 D AH0 N S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Knoxville",
+    "country": "US",
+    "cmu": "N AA1 K S V IH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "N AA1 K S V IH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sunrise Manor",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Grand Prairie",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Shreveport",
+    "country": "US",
+    "cmu": "SH R IY1 V P AO2 R T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "SH R IY1 V P AO2 R T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Brownsville",
+    "country": "US",
+    "cmu": "B R AW1 N Z V IH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R AW1 N Z V IH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Overland Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Newport News",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Mobile",
+    "country": "US",
+    "cmu": "M OW1 B AH0 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M OW1 B AH0 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fort Lauderdale",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Santa Clarita",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Chattanooga",
+    "country": "US",
+    "cmu": "CH AE2 T AH0 N UW1 G AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "CH AE2 T AH0 N UW1 G AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "East Flatbush",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Spring Valley",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Santa Rosa",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Eugene",
+    "country": "US",
+    "cmu": "Y UW0 JH IY1 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "Y UW0 JH IY1 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tempe",
+    "country": "US",
+    "cmu": "T EH1 M P IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "T EH1 M P IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Oceanside",
+    "country": "US",
+    "cmu": "OW1 SH AH0 N S AY2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "OW1 SH AH0 N S AY2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Salem",
+    "country": "US",
+    "cmu": "S EY1 L AH0 M",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S EY1 L AH0 M",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Garden Grove",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Rancho Cucamonga",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Cape Coral",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "East New York",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Sioux Falls",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Ontario",
+    "country": "US",
+    "cmu": "AA0 N T EH1 R IY0 OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AA0 N T EH1 R IY0 OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Fort Collins",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Springfield",
+    "country": "US",
+    "cmu": "S P R IH1 NG F IY2 L D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S P R IH1 NG F IY2 L D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hollywood",
+    "country": "US",
+    "cmu": "HH AA1 L IY0 W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH AA1 L IY0 W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Elk Grove",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Clarksville",
+    "country": "US",
+    "cmu": "K L AA1 R K S V IH2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K L AA1 R K S V IH2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pembroke Pines",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Deer Valley",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Murfreesboro",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Port Saint Lucie",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Corona",
+    "country": "US",
+    "cmu": "K ER0 OW1 N AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K ER0 OW1 N AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "McKinney",
+    "country": "US",
+    "cmu": "M AH0 K IH1 N IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "M AH0 K IH1 N IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Lancaster",
+    "country": "US",
+    "cmu": "L AE1 N K AE2 S T ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L AE1 N K AE2 S T ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Cary",
+    "country": "US",
+    "cmu": "K EH1 R IY0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "K EH1 R IY0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Alexandria",
+    "country": "US",
+    "cmu": "AE2 L AH0 G Z AE1 N D R IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE2 L AH0 G Z AE1 N D R IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Tempe Junction",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Palmdale",
+    "country": "US",
+    "cmu": "P AA1 M D EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AA1 M D EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Hayward",
+    "country": "US",
+    "cmu": "HH EY1 W ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "HH EY1 W ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Salinas",
+    "country": "US",
+    "cmu": "S AH0 L IY1 N AH0 S",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH0 L IY1 N AH0 S",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Sunnyvale",
+    "country": "US",
+    "cmu": "S AH1 N IY0 V EY2 L",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH1 N IY0 V EY2 L",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Frisco",
+    "country": "US",
+    "cmu": "F R IY1 S K OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "F R IY1 S K OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "East Chattanooga",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Pasadena",
+    "country": "US",
+    "cmu": "P AE2 S AH0 D IY1 N ER0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AE2 S AH0 D IY1 N ER0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Jackson",
+    "country": "US",
+    "cmu": "JH AE1 K S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH AE1 K S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Pomona",
+    "country": "US",
+    "cmu": "P OW0 M OW1 N AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P OW0 M OW1 N AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Washington Heights",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Lakewood",
+    "country": "US",
+    "cmu": "L EY1 K W UH2 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "L EY1 K W UH2 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Escondido",
+    "country": "US",
+    "cmu": "EH2 S K AA0 N D IY1 D OW0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "EH2 S K AA0 N D IY1 D OW0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Astoria",
+    "country": "US",
+    "cmu": "AE2 S T AO1 R IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "AE2 S T AO1 R IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Borough Park",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Valencia",
+    "country": "US",
+    "cmu": "V AH0 L EH1 N S IY0 AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "V AH0 L EH1 N S IY0 AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Rockford",
+    "country": "US",
+    "cmu": "R AA1 K F ER0 D",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "R AA1 K F ER0 D",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "East Hampton",
+    "country": "US",
+    "cmu": null,
+    "source": null,
+    "confidence": "unverified",
+    "agreementCount": 0,
+    "sources": {},
+    "conflicts": []
+  },
+  {
+    "name": "Joliet",
+    "country": "US",
+    "cmu": "JH OW1 L IY0 EH2 T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "JH OW1 L IY0 EH2 T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Savannah",
+    "country": "US",
+    "cmu": "S AH0 V AE1 N AH0",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "S AH0 V AE1 N AH0",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Paterson",
+    "country": "US",
+    "cmu": "P AE1 T ER0 S AH0 N",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "P AE1 T ER0 S AH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Bridgeport",
+    "country": "US",
+    "cmu": "B R IH1 JH P AO2 R T",
+    "source": "cmu",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "cmu": {
+        "cmu": "B R IH1 JH P AO2 R T",
+        "source": "cmu"
+      }
+    },
+    "conflicts": []
+  }
+]
