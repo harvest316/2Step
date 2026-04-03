@@ -1,10 +1,10 @@
 /**
  * Unit tests for buildEmailHtml() from email-template.js.
  *
- * Tests the Mailchimp-compatible HTML email template builder covering:
+ * Tests the clean minimal table-based HTML email template covering:
  *   - Required parameter interpolation (preview text, hook, poster, video URL, etc.)
  *   - Optional parameters (finePrintHtml, subject)
- *   - HTML structure integrity (DOCTYPE, head, body, MSO conditionals)
+ *   - HTML structure integrity (DOCTYPE, head, body)
  *   - XSS prevention in subject line
  *   - Footer content (unsubscribe, copyright, physical address)
  *   - Edge cases (empty strings, special characters, long content)
@@ -69,21 +69,15 @@ describe('buildEmailHtml — basic structure', () => {
     assert.ok(html.includes('</body>'));
   });
 
-  it('contains <style> block with email client resets', () => {
+  it('contains <style> block with font and layout resets', () => {
     const html = buildEmailHtml(makeParams());
     assert.ok(html.includes('<style>'));
-    assert.ok(html.includes('mso-table-lspace'));
-  });
-
-  it('contains MSO conditional comments for Outlook', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('<!--[if gte mso 15]>'));
-    assert.ok(html.includes('<o:OfficeDocumentSettings>'));
+    assert.ok(html.includes("font-family: 'Helvetica Neue'"));
   });
 
   it('contains responsive media queries', () => {
     const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('@media only screen and (max-width: 480px)'));
+    assert.ok(html.includes('@media only screen and (max-width: 600px)'));
   });
 
   it('contains meta charset UTF-8', () => {
@@ -100,10 +94,10 @@ describe('buildEmailHtml — basic structure', () => {
 // ─── Parameter interpolation ──────────────────────────────────────────────
 
 describe('buildEmailHtml — parameter interpolation', () => {
-  it('includes previewText in hidden preview span', () => {
+  it('includes previewText in hidden preview div', () => {
     const html = buildEmailHtml(makeParams({ previewText: 'My preview text here' }));
     assert.ok(html.includes('My preview text here'));
-    assert.ok(html.includes('mcnPreviewText'));
+    assert.ok(html.includes('display:none'));
   });
 
   it('includes hookHtml in the body', () => {
@@ -237,9 +231,9 @@ describe('buildEmailHtml — XSS prevention', () => {
 // ─── Footer structure ───────────────────────────────────────────────────
 
 describe('buildEmailHtml — footer', () => {
-  it('contains footer section with mceFooterSection class', () => {
+  it('contains footer section with unsubscribe link', () => {
     const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('mceFooterSection'));
+    assert.ok(html.includes('unsubscribe'));
   });
 
   it('contains unsubscribe link text', () => {
@@ -292,15 +286,9 @@ describe('buildEmailHtml — poster image', () => {
     assert.ok(html.includes('alt="Best Roofers video preview"'));
   });
 
-  it('poster image has max-width 561px', () => {
+  it('poster image spans full container width', () => {
     const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('max-width:561px'));
-  });
-
-  it('MSO fallback includes poster image with fixed width', () => {
-    const html = buildEmailHtml(makeParams({ posterUrl: 'https://r2.example.com/poster.jpg' }));
-    // MSO conditional has <img with width="561"
-    assert.ok(html.includes('width:561px'));
+    assert.ok(html.includes('width:100%') || html.includes('width="600"'));
   });
 });
 
@@ -350,9 +338,9 @@ describe('buildEmailHtml — edge cases', () => {
     assert.ok(html.includes(videoUrl));
   });
 
-  it('output is reasonably sized (between 5KB and 50KB)', () => {
+  it('output is reasonably sized (between 1KB and 50KB)', () => {
     const html = buildEmailHtml(makeParams());
-    assert.ok(html.length > 5000, `HTML too short: ${html.length} chars`);
+    assert.ok(html.length > 1000, `HTML too short: ${html.length} chars`);
     assert.ok(html.length < 50000, `HTML too long: ${html.length} chars`);
   });
 });
@@ -360,51 +348,15 @@ describe('buildEmailHtml — edge cases', () => {
 // ─── Email client compatibility markers ─────────────────────────────────
 
 describe('buildEmailHtml — email client compatibility', () => {
-  it('contains VML namespace for Outlook', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('xmlns:v="urn:schemas-microsoft-com:vml"'));
-  });
-
-  it('contains Office namespace for Outlook', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('xmlns:o="urn:schemas-microsoft-com:office:office"'));
-  });
-
-  it('contains ExternalClass styles for Outlook.com', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('.ExternalClass'));
-  });
-
-  it('contains ReadMsgBody styles for Hotmail/Outlook.com', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('.ReadMsgBody'));
-  });
-
-  it('contains apple-data-detectors override for iOS', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('x-apple-data-detectors'));
-  });
-
   it('uses Helvetica Neue font stack', () => {
     const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('"Helvetica Neue", Helvetica, Arial, Verdana, sans-serif'));
+    assert.ok(html.includes("'Helvetica Neue', Helvetica, Arial, sans-serif"));
   });
 
-  it('contains zero-width space characters for preview text padding', () => {
+  it('contains table-based layout', () => {
     const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('&#847;'));
-  });
-
-  it('contains VML roundrect button for Outlook', () => {
-    const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('v:roundrect'));
-  });
-
-  it('contains table-based layout (not div-based)', () => {
-    const html = buildEmailHtml(makeParams());
-    // Count tables — email templates rely on tables heavily
     const tableCount = (html.match(/<table/g) || []).length;
-    assert.ok(tableCount >= 10, `Expected many tables, found ${tableCount}`);
+    assert.ok(tableCount >= 2, `Expected at least 2 tables, found ${tableCount}`);
   });
 
   it('has role="presentation" on layout tables', () => {
@@ -421,10 +373,9 @@ describe('buildEmailHtml — header logo', () => {
     assert.ok(html.includes('alt="Audit&amp;Fix"'));
   });
 
-  it('header logo has width="130"', () => {
+  it('header logo has width="120"', () => {
     const html = buildEmailHtml(makeParams());
-    // Should appear in header section
-    assert.ok(html.includes('width="130"'));
+    assert.ok(html.includes('width="120"'));
   });
 
   it('header logo uses logoUrl parameter', () => {
@@ -437,10 +388,8 @@ describe('buildEmailHtml — header logo', () => {
 // ─── Divider ─────────────────────────────────────────────────────────────
 
 describe('buildEmailHtml — divider', () => {
-  it('contains a 2px black horizontal divider', () => {
+  it('contains a horizontal divider', () => {
     const html = buildEmailHtml(makeParams());
-    assert.ok(html.includes('border-top-width:2px'));
-    assert.ok(html.includes('border-top-style:solid'));
-    assert.ok(html.includes('border-top-color:#000000'));
+    assert.ok(html.includes('border-top:1px solid #e0e0e0'));
   });
 });
