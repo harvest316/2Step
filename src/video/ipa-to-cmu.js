@@ -155,6 +155,45 @@ export function ipaToCmu(ipa) {
  * @param {string} template - pipe-separated IPA components
  * @returns {string} combined IPA string
  */
+// ─── Reverse mapping: CMU → IPA ─────────────────────────────────────────────
+
+const CMU_TO_IPA = {
+  // Vowels
+  'AA': 'ɑː', 'AE': 'æ', 'AH': 'ə', 'AO': 'ɔː', 'AW': 'aʊ', 'AY': 'aɪ',
+  'EH': 'ɛ', 'ER': 'ɜː', 'EY': 'eɪ', 'IH': 'ɪ', 'IY': 'iː',
+  'OW': 'oʊ', 'OY': 'ɔɪ', 'UH': 'ʊ', 'UW': 'uː',
+  // Consonants
+  'B': 'b', 'CH': 'tʃ', 'D': 'd', 'DH': 'ð', 'F': 'f', 'G': 'ɡ',
+  'HH': 'h', 'JH': 'dʒ', 'K': 'k', 'L': 'l', 'M': 'm', 'N': 'n',
+  'NG': 'ŋ', 'P': 'p', 'R': 'r', 'S': 's', 'SH': 'ʃ', 'T': 't',
+  'TH': 'θ', 'V': 'v', 'W': 'w', 'Y': 'j', 'Z': 'z', 'ZH': 'ʒ',
+};
+
+/**
+ * Convert CMU ARPAbet to IPA (approximate — for display/researcher prompts).
+ *
+ * @param {string} cmu - e.g. "W UH1 L AA1 R AH0"
+ * @returns {string} IPA, e.g. "wˈʊlˈɑːrə"
+ */
+export function cmuToIpa(cmu) {
+  if (!cmu) return '';
+  const tokens = cmu.trim().split(/\s+/);
+  let ipa = '';
+  for (const token of tokens) {
+    const stressMatch = token.match(/^([A-Z]+)([012])$/);
+    if (stressMatch) {
+      const [, phone, stress] = stressMatch;
+      const ipaPhone = CMU_TO_IPA[phone] || phone.toLowerCase();
+      if (stress === '1') ipa += 'ˈ' + ipaPhone;
+      else if (stress === '2') ipa += 'ˌ' + ipaPhone;
+      else ipa += ipaPhone;
+    } else {
+      ipa += CMU_TO_IPA[token] || token.toLowerCase();
+    }
+  }
+  return ipa;
+}
+
 export function parseWikipediaIPA(template) {
   return template
     .split('|')

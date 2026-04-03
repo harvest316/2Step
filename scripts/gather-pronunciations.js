@@ -211,16 +211,22 @@ async function main() {
     if (checkpoint.has(place.name)) continue;
 
     process.stdout.write(`  ${place.country} ${place.name}... `);
-    const result = await gatherPronunciation(place.name, place.country, place.disambiguation);
+    const result = await gatherPronunciation(place.name, place.country, place.disambiguation, {
+      // Opus researcher is available for CLI runs (not for quick on-the-fly lookups)
+      skipResearch: false,
+      // spawnAgent would be injected here if running inside Claude Code
+      // For now, the researcher is only available when called from the video pipeline
+    });
     results.push(result);
     newCount++;
 
     if (args['conflicts-only'] && result.conflicts.length === 0) {
       process.stdout.write('ok\n');
     } else {
+      const srcCount = result.agreementCount || 0;
       const sources = Object.keys(result.sources).join('+') || 'none';
       if (result.cmu) {
-        console.log(`${result.cmu}  [${result.confidence}, ${sources}]`);
+        console.log(`${result.cmu}  [${result.confidence}, ${srcCount} agree, ${sources}]`);
       } else {
         console.log(`NOT FOUND  [${sources}]`);
       }
@@ -247,10 +253,15 @@ async function main() {
   const notFound = results.filter(r => !r.cmu);
   const conflicted = results.filter(r => r.conflicts.length > 0);
 
+  // Confidence breakdown
+  const byConfidence = {};
+  results.forEach(r => { byConfidence[r.confidence] = (byConfidence[r.confidence] || 0) + 1; });
+
   console.log(`\n─── Summary ───`);
   console.log(`  Found: ${found.length}/${results.length}`);
   console.log(`  Not found: ${notFound.length}`);
   console.log(`  Conflicts: ${conflicted.length}`);
+  console.log(`  Confidence: ${Object.entries(byConfidence).map(([k, v]) => `${k}=${v}`).join(', ')}`);
   if (notFound.length) {
     console.log(`  Missing: ${notFound.map(r => r.name).join(', ')}`);
   }
