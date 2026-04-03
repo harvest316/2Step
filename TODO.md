@@ -54,6 +54,25 @@ Revisit when sustained volume hits 5k emails/month or production bounce/complain
 SES advantages: cleaner shared IP pool, dedicated IPs at $24.95/mo (vs Resend $40/mo), ~4x cheaper per email.
 Migration work: AWS sandbox approval, SNS bounce/complaint webhooks, SDK swap.
 
+### Global expansion: populate state_abbreviations for active markets
+When expanding outreach beyond AU, update the `countries` table
+(`db/migrations/016-create-countries-table.sql`) with state/province
+abbreviations for each target market so the voiceover name-cleaner can
+strip them correctly.
+
+Countries already populated: AU (8 states/territories), US (51 incl. DC),
+CA (13 provinces/territories), IN (37 states/UTs), MX (32 states).
+
+Countries intentionally empty (no state in Google Maps business names):
+GB, IE, NZ, ZA, SG, and all European/Asian markets in the table.
+
+Before going live in a new country:
+1. Check whether Google Maps business listings in that country append
+   state/region abbreviations to business names (common in AU, US, CA).
+2. If yes, add the list to `state_abbreviations` in `016-create-countries-table.sql`
+   and re-run the migration on the target DB.
+3. Run `scene-builder.test.js` (115 tests) to confirm no regressions.
+
 ### Video quality fixes
 - Quote selection: sentences starting with subordinate clauses still pass occasionally
 - CTA slide subtitle: remove business name when logo is present on that scene
