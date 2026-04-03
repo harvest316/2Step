@@ -212,10 +212,7 @@ async function main() {
 
     process.stdout.write(`  ${place.country} ${place.name}... `);
     const result = await gatherPronunciation(place.name, place.country, place.disambiguation, {
-      // Opus researcher is available for CLI runs (not for quick on-the-fly lookups)
-      skipResearch: false,
-      // spawnAgent would be injected here if running inside Claude Code
-      // For now, the researcher is only available when called from the video pipeline
+      skipResearch: false, // triggers Opus researcher via OpenRouter for < 3 agreement
     });
     results.push(result);
     newCount++;

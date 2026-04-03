@@ -316,75 +316,11 @@ out tags 1;`;
 }
 
 // ─── Source 5: Opus web researcher ──────────────────────────────────────────
+//
+// Uses Claude via OpenRouter with web search to find pronunciations on
+// council, government, tourism, and news sites. See pronunciation-researcher.js.
 
-// Country names for search queries
-const COUNTRY_NAMES = {
-  AU: 'Australia', UK: 'United Kingdom', US: 'United States',
-  CA: 'Canada', NZ: 'New Zealand', IE: 'Ireland', ZA: 'South Africa',
-};
-
-/**
- * Research pronunciation via Opus web search agent.
- * Called when automated sources give < 3 agreeing results.
- *
- * @param {string} name - Place name
- * @param {string} country - Country code
- * @param {string} state - State/region for disambiguation
- * @param {Array<{cmu: string, source: string}>} existingSources - Already gathered
- * @param {Function} spawnAgent - Agent spawner function (injected to avoid circular dep)
- * @returns {Promise<Array<{cmu: string, ipa?: string, source: string, note?: string}>>}
- */
-export async function researchPronunciation(name, country, state, existingSources, spawnAgent) {
-  if (!spawnAgent) return [];
-
-  const countryName = COUNTRY_NAMES[country] || country;
-  const existingIPA = existingSources
-    .filter(s => s?.cmu)
-    .map(s => `${s.source}: ${cmuToIpa(s.cmu) || s.cmu}`)
-    .join('\n  ');
-
-  const prompt = `Research the correct local pronunciation of the place name "${name}" in ${state || ''}, ${countryName}.
-
-I already have these pronunciations from automated sources:
-  ${existingIPA || '(none found)'}
-
-Search for the pronunciation using country-restricted searches (${countryName} only):
-- "${name} pronunciation"
-- "${name} pronunciation ${state || ''}"
-- "${name}" on local council, government, or tourism websites
-
-For each source you find, return:
-- The IPA pronunciation (e.g. /wʊˈlɑːrə/)
-- The source URL
-- Whether this is an authoritative source (government, council, university) or informal (forum, blog)
-
-IMPORTANT: Return your findings as a JSON array:
-[{"ipa": "/wʊˈlɑːrə/", "source": "https://example.com/...", "authoritative": true, "note": "City council pronunciation guide"}]
-
-If you cannot find any pronunciation data, return: []`;
-
-  try {
-    const response = await spawnAgent(prompt);
-    // Parse JSON from agent response
-    const jsonMatch = response.match(/\[[\s\S]*?\]/);
-    if (!jsonMatch) return [];
-
-    const findings = JSON.parse(jsonMatch[0]);
-    return findings
-      .filter(f => f.ipa)
-      .map(f => {
-        const ipa = f.ipa.replace(/^\/|\/$/g, ''); // strip slashes
-        return {
-          cmu: ipaToCmu(ipa),
-          ipa,
-          source: `research:${f.source || 'web'}`,
-          note: f.note,
-          authoritative: f.authoritative,
-        };
-      })
-      .filter(f => f.cmu); // only keep if conversion succeeded
-  } catch { return []; }
-}
+import { researchPronunciation } from './pronunciation-researcher.js';
 
 // ─── Agreement counting ─────────────────────────────────────────────────────
 
@@ -436,12 +372,11 @@ function countryToDisambiguation(country) {
  * @param {string} country
  * @param {string} [disambiguation]
  * @param {Object} [options]
- * @param {Function} [options.spawnAgent] - Agent spawner for Opus researcher
  * @param {boolean} [options.skipResearch=false] - Skip Opus researcher (for quick lookups)
  * @returns {Promise<PronunciationResult>}
  */
 export async function gatherPronunciation(name, country, disambiguation, options = {}) {
-  const { spawnAgent, skipResearch = false } = options;
+  const { skipResearch = false } = options;
 
   const result = {
     name, country,
@@ -474,10 +409,10 @@ export async function gatherPronunciation(name, country, disambiguation, options
   const independentSources = [wikimedia, cmuEntry, osm].filter(Boolean);
   let groups = groupByAgreement(independentSources);
 
-  // 4. If < 3 agreement, trigger Opus researcher
-  if (groups[0]?.sources.length < 3 && !skipResearch && spawnAgent) {
+  // 4. If < 3 agreement, trigger Opus researcher (via OpenRouter)
+  if ((!groups.length || groups[0].sources.length < 3) && !skipResearch) {
     const researched = await researchPronunciation(
-      name, country, disambiguation, independentSources, spawnAgent
+      name, country, disambiguation, independentSources
     );
     if (researched.length) {
       result.sources.research = researched;
