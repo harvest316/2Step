@@ -434,7 +434,9 @@ export async function gatherPronunciation(name, country, disambiguation, options
   } else if (best.sources.length >= 2) {
     result.confidence = 'likely';
   } else {
-    result.confidence = 'single-source';
+    // Single source — check if it's authoritative (govt/council)
+    const isAuthoritative = best.sources.some(s => s.authoritative === true);
+    result.confidence = isAuthoritative ? 'likely' : 'single-source';
   }
 
   // Log conflicts between groups

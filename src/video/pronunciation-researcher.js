@@ -53,18 +53,23 @@ Search for the pronunciation using country-restricted searches (${countryName} o
 - "${name}" on local council, government, or tourism websites
 
 For each source you find, return:
-- The IPA pronunciation (e.g. /wʊˈlɑːrə/)
+- The pronunciation in IPA (e.g. /wʊˈlɑːrə/) or CMU ARPAbet (e.g. W UH1 L AA1 R AH0)
 - The source URL
 - Whether this is an authoritative source (government, council, university) or informal (forum, blog)
+- The format: "ipa" or "cmu"
+
+ONLY accept pronunciations in IPA or CMU ARPAbet format. Ignore informal respellings like "wul-AH-ra", "KAIRNS", "mel-BURN" — these are NOT valid phonetic data.
 
 IMPORTANT: You MUST return ONLY a valid JSON array — no prose, no markdown, no code fences. Example format:
-[{"ipa": "/wʊˈlɑːrə/", "source": "https://example.com/page", "authoritative": true, "note": "City council pronunciation guide"}]
+[{"pronunciation": "/wʊˈlɑːrə/", "format": "ipa", "source": "https://example.com/page", "authoritative": true, "note": "City council pronunciation guide"}]
 
 Rules:
 - "source" must be a full URL string, not a domain name
-- "ipa" must be the IPA transcription in slashes
+- "pronunciation" must be IPA (in slashes) or CMU ARPAbet (space-separated uppercase with stress numbers)
+- "format" must be "ipa" or "cmu"
+- Do NOT include informal respellings, only IPA or CMU
 - Do NOT include URLs without pronunciation data
-- If you cannot find any pronunciation data, return exactly: []`;
+- If you cannot find any IPA or CMU data, return exactly: []`;
 
   try {
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -110,18 +115,33 @@ Rules:
       findings = objMatches.map(m => { try { return JSON.parse(m); } catch { return null; } }).filter(Boolean);
     }
     return findings
-      .filter(f => f.ipa)
+      .filter(f => f.pronunciation || f.ipa) // accept both old and new field names
       .map(f => {
-        const ipa = f.ipa.replace(/^\/|\/$/g, '');
+        const raw = f.pronunciation || f.ipa || '';
+        const format = f.format || (raw.match(/^[A-Z]{2}/) ? 'cmu' : 'ipa');
+        let cmu;
+
+        if (format === 'cmu') {
+          // Validate: CMU should be space-separated uppercase phonemes with stress digits
+          if (!/^[A-Z]{1,3}[012]?(\s+[A-Z]{1,3}[012]?)*$/.test(raw.trim())) return null;
+          cmu = raw.trim();
+        } else {
+          const ipa = raw.replace(/^\/|\/$/g, '');
+          // Reject informal respellings: must contain at least one IPA-specific character
+          if (!/[ˈˌːɑæɒʌəɛɜɪʊɔŋʃʒθðɡɹɾ]/.test(ipa)) return null;
+          cmu = ipaToCmu(ipa);
+        }
+
+        if (!cmu) return null;
         return {
-          cmu: ipaToCmu(ipa),
-          ipa,
+          cmu,
+          ipa: format === 'ipa' ? raw.replace(/^\/|\/$/g, '') : undefined,
           source: `research:${f.source || 'web'}`,
           note: f.note,
           authoritative: f.authoritative,
         };
       })
-      .filter(f => f.cmu);
+      .filter(Boolean);
   } catch (e) {
     console.warn(`  Researcher error: ${e.message}`);
     return [];
