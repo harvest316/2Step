@@ -1,0 +1,178 @@
+[
+  {
+    "name": "Darwin",
+    "country": "AU",
+    "cmu": "D AA1 W IH0 N",
+    "source": "wikimedia:wiktionary:Darwin:RP",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈdɑːwɪn",
+        "cmu": "D AA1 W IH0 N",
+        "source": "wikimedia:wiktionary:Darwin:RP",
+        "dialect": "RP",
+        "_wikiSources": {
+          "wikipedia": null,
+          "wiktionary": {
+            "ipa": "ˈdɑːwɪn",
+            "cmu": "D AA1 W IH0 N",
+            "source": "wikimedia:wiktionary:Darwin:RP",
+            "dialect": "RP"
+          },
+          "wikidata": null
+        }
+      },
+      "cmu": {
+        "cmu": "D AA1 R W IH0 N",
+        "source": "cmu"
+      }
+    },
+    "conflicts": [
+      "Disagreement: cmu say D AA1 R W IH0 N (dˈɑːrwɪn) vs winner D AA1 W IH0 N (dˈɑːwɪn)"
+    ]
+  },
+  {
+    "name": "Ballarat",
+    "country": "AU",
+    "cmu": "B AE1 L AH0 R AE0 T",
+    "source": "wikimedia:wiktionary:Ballarat:generic + research:https://www.ballarat.com.au/about/ + research:https://www.ballarat.vic.gov.au/ + research:https://vic.gov.au/know-your-council-ballarat-city-council",
+    "confidence": "verified",
+    "agreementCount": 4,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbæləɹæt",
+        "cmu": "B AE1 L AH0 R AE0 T",
+        "source": "wikimedia:wiktionary:Ballarat:generic",
+        "dialect": "generic",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˌbæləˈræt",
+            "cmu": "B AE2 L AH0 R AE1 T",
+            "source": "wikimedia:wikipedia:Ballarat"
+          },
+          "wiktionary": {
+            "ipa": "ˈbæləɹæt",
+            "cmu": "B AE1 L AH0 R AE0 T",
+            "source": "wikimedia:wiktionary:Ballarat:generic",
+            "dialect": "generic"
+          },
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "B AE1 L AH0 R AE0 T",
+          "ipa": "ˈbæləræt",
+          "source": "research:https://www.ballarat.com.au/about/",
+          "note": "Official city tourism website shows original Wadawurrung pronunciation meaning 'resting place' but no IPA given",
+          "authoritative": true
+        },
+        {
+          "cmu": "B AE1 L AH0 R AE0 T",
+          "ipa": "ˈbæləræt",
+          "source": "research:https://www.ballarat.vic.gov.au/",
+          "note": "Official Ballarat City Council website but no specific pronunciation guide found",
+          "authoritative": true
+        },
+        {
+          "cmu": "B AE1 L AH0 R AE0 T",
+          "ipa": "ˈbæləræt",
+          "source": "research:https://vic.gov.au/know-your-council-ballarat-city-council",
+          "note": "Victorian Government council profile but no pronunciation data provided",
+          "authoritative": true
+        }
+      ]
+    },
+    "conflicts": []
+  },
+  {
+    "name": "Wollongong",
+    "country": "AU",
+    "cmu": "W UH1 L AH0 N G AA0 NG",
+    "source": "wikimedia:wikipedia:Wollongong + research:https://www.oxfordlearnersdictionaries.com/definition/english/wollongong + research:https://dictionary.cambridge.org/pronunciation/english/wollongong + research:https://dictionary.cambridge.org/pronunciation/english/wollongong + research:https://youglish.com/pronounce/wollongong/english/aus",
+    "confidence": "verified",
+    "agreementCount": 5,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈwʊlənɡɒŋ",
+        "cmu": "W UH1 L AH0 N G AA0 NG",
+        "source": "wikimedia:wikipedia:Wollongong",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈwʊlənɡɒŋ",
+            "cmu": "W UH1 L AH0 N G AA0 NG",
+            "source": "wikimedia:wikipedia:Wollongong"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      },
+      "research": [
+        {
+          "cmu": "W UH1 L AH0 N G AA0 NG",
+          "ipa": "ˈwʊləngɒŋ",
+          "source": "research:https://www.oxfordlearnersdictionaries.com/definition/english/wollongong",
+          "note": "Oxford Advanced Learner's Dictionary - UK pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "W UH1 L AH0 N G AO0 NG",
+          "ipa": "ˈwʊləngɔːŋ",
+          "source": "research:https://www.oxfordlearnersdictionaries.com/definition/english/wollongong",
+          "note": "Oxford Advanced Learner's Dictionary - US pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "W UH1 L AH0 N G AA0 NG",
+          "ipa": "ˈwʊl.ən.ɡɒŋ",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/wollongong",
+          "note": "Cambridge Dictionary - UK pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "W UH1 L AH0 N G AA0 NG",
+          "ipa": "ˈwʊl.ən.ɡɑːŋ",
+          "source": "research:https://dictionary.cambridge.org/pronunciation/english/wollongong",
+          "note": "Cambridge Dictionary - US pronunciation",
+          "authoritative": true
+        },
+        {
+          "cmu": "W UH1 L AH0 N G AA0 NG",
+          "ipa": "ˈwʊləngɒŋ",
+          "source": "research:https://youglish.com/pronounce/wollongong/english/aus",
+          "note": "YouGlish Australian English pronunciation - Traditional IPA",
+          "authoritative": false
+        }
+      ]
+    },
+    "conflicts": [
+      "Disagreement: research:https://www.oxfordlearnersdictionaries.com/definition/english/wollongong say W UH1 L AH0 N G AO0 NG (wˈʊlənɡɔːŋ) vs winner W UH1 L AH0 N G AA0 NG (wˈʊlənɡɑːŋ)"
+    ]
+  },
+  {
+    "name": "Bendigo",
+    "country": "AU",
+    "cmu": "B EH1 N D AH0 G OW0",
+    "source": "wikimedia:wikipedia:Bendigo",
+    "confidence": "single-source",
+    "agreementCount": 1,
+    "sources": {
+      "wikimedia": {
+        "ipa": "ˈbɛndᵻɡoʊ",
+        "cmu": "B EH1 N D AH0 G OW0",
+        "source": "wikimedia:wikipedia:Bendigo",
+        "_wikiSources": {
+          "wikipedia": {
+            "ipa": "ˈbɛndᵻɡoʊ",
+            "cmu": "B EH1 N D AH0 G OW0",
+            "source": "wikimedia:wikipedia:Bendigo"
+          },
+          "wiktionary": null,
+          "wikidata": null
+        }
+      }
+    },
+    "conflicts": []
+  }
+]

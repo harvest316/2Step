@@ -32,6 +32,7 @@ import {
   timingsToSceneDurations,
   extractQuotes,
   smoothGrammar,
+  businessName,
 } from '../video/scene-builder.js';
 import { gatherPronunciation, generatePLS } from '../video/pronunciation-sources.js';
 import { pickMusicTrack } from '../video/music-tracks.js';
@@ -473,6 +474,58 @@ async function fetchLogoBuf(url) {
 
 /* c8 ignore stop */
 
+// ─── Landing page publishing ──────────────────────────────────────────────────
+
+const WEBSITE_API = `${process.env.BRAND_URL}/api.php?action=store-video`;
+const WEBSITE_SECRET = process.env.API_WORKER_SECRET;
+
+/**
+ * Publish video metadata to the auditandfix.com landing page (/v/{hash}).
+ * Calls the store-video API to create data/videos/{hash}.json on Hostinger.
+ * Non-fatal — logs a warning if it fails (video still works, page just won't load).
+ */
+async function publishVideoData({ hash, video_url, poster_url, business_name, city, country_code, niche, google_rating, review_count }) {
+  if (!WEBSITE_SECRET) {
+    console.warn('  API_WORKER_SECRET not set — skipping landing page publish');
+    return;
+  }
+
+  // Clean the business name the same way the voiceover does
+  const countriesMap = await loadCountriesMap();
+  const stateAbbrs = countriesMap[country_code] ?? [];
+  const cleanName = businessName(business_name, stateAbbrs);
+
+  const nicheDisplay = (niche || '')
+    .split(/\s+/)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+
+  try {
+    const res = await fetch(WEBSITE_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Auth-Secret': WEBSITE_SECRET,
+      },
+      body: JSON.stringify({
+        hash, video_url, poster_url,
+        business_name: cleanName,
+        city, country_code, niche,
+        niche_display: nicheDisplay,
+        google_rating, review_count,
+      }),
+    });
+    if (res.ok) {
+      console.log(`  Published landing page: /v/${hash}`);
+    } else {
+      const body = await res.text();
+      console.warn(`  Landing page publish failed ${res.status}: ${body.substring(0, 200)}`);
+    }
+  } catch (err) {
+    console.warn(`  Landing page publish error: ${err.message}`);
+  }
+}
+
 // ─── Countries helpers ────────────────────────────────────────────────────────
 
 /**
@@ -666,6 +719,19 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
     return newVideoId;
   });
 
+  // 12. Publish video data to landing page (/v/{hash})
+  await publishVideoData({
+    hash: videoHash,
+    video_url: videoUrl,
+    poster_url: posterUrl,
+    business_name: site.business_name,
+    city: site.city,
+    country_code: site.country_code,
+    niche: site.niche,
+    google_rating: site.google_rating,
+    review_count: site.review_count,
+  });
+
   // Clean up local render file
   await rm(outputPath, { force: true }).catch(() => {});
 
@@ -701,7 +767,7 @@ export async function runVideoStage(options = {}) {
   const sites = siteId
     ? await getAll(
         `SELECT id, business_name, city, niche, phone, country_code,
-                best_review_text, best_review_author, google_rating,
+                best_review_text, best_review_author, google_rating, review_count,
                 logo_url, selected_review_json, problem_category,
                 status, video_url
          FROM sites WHERE id = $1`,
@@ -709,7 +775,7 @@ export async function runVideoStage(options = {}) {
       )
     : await getAll(
         `SELECT id, business_name, city, niche, phone, country_code,
-                best_review_text, best_review_author, google_rating,
+                best_review_text, best_review_author, google_rating, review_count,
                 logo_url, selected_review_json, problem_category,
                 status, video_url
          FROM sites
