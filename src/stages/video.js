@@ -44,6 +44,10 @@ import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { parseArgs } from 'util';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+
+const execFileAsync = promisify(execFile);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -264,16 +268,12 @@ async function generateSceneAudio(scenes, suburb = null, countryCode) {
 
 // ─── Script proofreading via LLM ─────────────────────────────────────────────
 
-const OPENROUTER_KEY   = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_BASE  = 'https://openrouter.ai/api/v1';
-const PROOFREAD_MODEL  = 'anthropic/claude-opus-4';
-
 const PROOFREAD_PROMPT = readFileSync(
   resolve(ROOT, 'prompts/PROOFREAD-SCRIPT.md'), 'utf8',
 );
 
 /**
- * Run an LLM proofreading pass over a 7-scene script.
+ * Run an LLM proofreading pass over a 7-scene script via `claude -p`.
  * Returns the scenes with voiceover fixes applied. If the LLM flags
  * quotes for replacement, logs a warning but continues (manual review needed).
  *
@@ -282,11 +282,6 @@ const PROOFREAD_PROMPT = readFileSync(
  * @returns {Promise<Array<{ text: string, voiceover: string }>>} — scenes with VO fixes applied
  */
 async function proofreadScript(scenes, fullReview) {
-  if (!OPENROUTER_KEY) {
-    console.warn('  OPENROUTER_API_KEY not set — skipping LLM proofreading');
-    return scenes;
-  }
-
   const scriptData = scenes.map((s, i) => ({
     scene: i + 1,
     label: ['HOOK', 'Q1', 'Q2', 'Q3', 'Q4', 'STARS', 'CTA'][i],
@@ -294,7 +289,9 @@ async function proofreadScript(scenes, fullReview) {
     voiceover: s.voiceover,
   }));
 
-  const userMessage = `Proofread this 7-scene video script.
+  const fullPrompt = `${PROOFREAD_PROMPT}
+
+Proofread this 7-scene video script.
 
 <untrusted_content>
 ${JSON.stringify(scriptData, null, 2)}
@@ -302,31 +299,18 @@ ${JSON.stringify(scriptData, null, 2)}
 
   process.stdout.write('  Proofreading script...');
 
-  const res = await fetch(`${OPENROUTER_BASE}/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${OPENROUTER_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: PROOFREAD_MODEL,
-      messages: [
-        { role: 'system', content: PROOFREAD_PROMPT },
-        { role: 'user', content: userMessage },
-      ],
-      temperature: 0,
-      max_tokens: 1024,
-    }),
-  });
-
-  if (!res.ok) {
-    const body = await res.text();
-    console.warn(` LLM proofread failed ${res.status}: ${body.substring(0, 200)} — using unproofed script`);
+  let content;
+  try {
+    const { stdout, stderr } = await execFileAsync('claude', ['-p', fullPrompt], {
+      timeout: 90000,
+      maxBuffer: 1024 * 1024,
+    });
+    if (stderr) console.warn(`  Proofreader stderr: ${stderr.slice(0, 200)}`);
+    content = stdout.trim();
+  } catch (e) {
+    console.warn(` LLM proofread failed: ${e.message} — using unproofed script`);
     return scenes;
   }
-
-  const json = await res.json();
-  const content = json.choices?.[0]?.message?.content || '';
 
   let result;
   try {
@@ -569,7 +553,9 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
   let review = null;
   if (site.selected_review_json) {
     try {
-      review = JSON.parse(site.selected_review_json);
+      review = typeof site.selected_review_json === 'string'
+        ? JSON.parse(site.selected_review_json)
+        : site.selected_review_json;
     } catch {
       throw new Error('selected_review_json is not valid JSON');
     }
