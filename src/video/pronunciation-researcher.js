@@ -10,18 +10,18 @@
  */
 
 import { ipaToCmu, cmuToIpa } from './ipa-to-cmu.js';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+
+const execFileAsync = promisify(execFile);
 
 const COUNTRY_NAMES = {
   AU: 'Australia', UK: 'United Kingdom', US: 'United States',
   CA: 'Canada', NZ: 'New Zealand', IE: 'Ireland', ZA: 'South Africa',
 };
 
-const COUNTRY_DOMAINS = {
-  AU: '.au', UK: '.uk', US: '.gov,.edu', CA: '.ca', NZ: '.nz', IE: '.ie', ZA: '.za',
-};
-
 /**
- * Research pronunciation via Claude web search (OpenRouter).
+ * Research pronunciation via `claude -p` (Claude Max subscription).
  *
  * @param {string} name - Place name
  * @param {string} country - Country code
@@ -30,12 +30,6 @@ const COUNTRY_DOMAINS = {
  * @returns {Promise<Array<{cmu: string, ipa: string, source: string, note?: string}>>}
  */
 export async function researchPronunciation(name, country, state, existingSources) {
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  if (!apiKey) {
-    console.warn('  OPENROUTER_API_KEY not set — skipping researcher');
-    return [];
-  }
-
   const countryName = COUNTRY_NAMES[country] || country;
   const existingIPA = existingSources
     .filter(s => s?.cmu)
@@ -72,30 +66,13 @@ Rules:
 - If you cannot find any IPA or CMU data, return exactly: []`;
 
   try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': process.env.BRAND_URL || '',
-      },
-      body: JSON.stringify({
-        model: 'anthropic/claude-sonnet-4',
-        messages: [{ role: 'user', content: prompt }],
-        max_tokens: 1024,
-        // OpenRouter supports web search via plugins
-        plugins: [{ id: 'web' }],
-      }),
+    const { stdout, stderr } = await execFileAsync('claude', ['-p', prompt], {
+      timeout: 60000,
+      maxBuffer: 1024 * 1024,
     });
 
-    if (!res.ok) {
-      const err = await res.text();
-      console.warn(`  Researcher API error ${res.status}: ${err.slice(0, 200)}`);
-      return [];
-    }
-
-    const data = await res.json();
-    const response = data.choices?.[0]?.message?.content || '';
+    if (stderr) console.warn(`  Researcher stderr: ${stderr.slice(0, 200)}`);
+    const response = stdout.trim();
 
     // Parse JSON from response — handle markdown fences and extra text
     let jsonStr = response;
@@ -147,3 +124,4 @@ Rules:
     return [];
   }
 }
+
