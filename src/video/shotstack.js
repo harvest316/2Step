@@ -37,6 +37,7 @@ import {
   timingsToSceneDurations,
   applyPhonetics,
 } from './scene-builder.js';
+import { logLLMUsage } from '../utils/log-llm-usage.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -327,6 +328,7 @@ Example output format:
       throw new Error(`API ${res.status}: ${text.substring(0, 200)}`);
     }
     const data = await res.json();
+    logLLMUsage({ stage: 'video', provider: 'openrouter', model: OPENROUTER_MODEL, promptTokens: data.usage?.prompt_tokens, completionTokens: data.usage?.completion_tokens }).catch(() => {});
     const raw = data.choices?.[0]?.message?.content ?? data.content?.[0]?.text ?? '';
     if (!raw) throw new Error('Empty response from API');
 
