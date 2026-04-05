@@ -2,6 +2,20 @@
 
 ## Pending
 
+### Re-research US unverified pronunciations (needs Claude Max tokens)
+3,657 US place names are `unverified` because the researcher (previously on
+OpenRouter) ran out of credits mid-gather. Researcher is now fixed to use
+`claude -p` (Claude Max).
+
+Add `--retry-unverified` flag to `scripts/gather-pronunciations.js` that:
+1. Loads checkpoint, finds all entries where `confidence === 'unverified'`
+2. Re-runs `researchPronunciation()` on each
+3. Re-evaluates confidence and saves back to checkpoint
+4. Re-uploads PLS after
+
+Then run: `node scripts/gather-pronunciations.js --from-gazetteer US --retry-unverified`
+and re-upload: `node scripts/upload-pls.js --country US --force`
+
 ### Split test: proofreading model (Opus vs Haiku vs Sonnet)
 Currently using Opus for script proofreading. Run a split test comparing
 Opus, Sonnet, and Haiku on ~50 scripts to measure: (a) catch rate for
@@ -44,10 +58,11 @@ After round 9 clips are generated:
 5. Update `buildScenes()` hook text for new problems
 
 ### Plumber + house cleaning verticals (prospects 17–37)
-Still at `found` status — no logos, no videos queued. When ready to expand:
-1. Run logo scraper / prompt-generator for these prospects
-2. Generate Kling clips for any missing plumber/cleaning sub-niches
-3. Queue video renders
+Sites 16–37 are at `video_created`. `problem_category` and `selected_review_json` are
+now populated. Remaining before outreach:
+1. Generate Kling clips for missing plumber/cleaning sub-niches (see "Wire new clip pools" above)
+2. Re-render videos with updated pipeline (per-country voice, PLS dicts, proofreader)
+   — reset status to `enriched` when clips are ready
 
 ### Email infrastructure: migrate to SES at scale (DR-126)
 Revisit when sustained volume hits 5k emails/month or production bounce/complaint rate >2%.
@@ -74,7 +89,9 @@ Before going live in a new country:
 3. Run `scene-builder.test.js` (115 tests) to confirm no regressions.
 
 ### Video quality fixes
-- Quote selection: sentences starting with subordinate clauses still pass occasionally
-- CTA slide subtitle: remove business name when logo is present on that scene
-- Voiceover rising intonation on exclamation sentences — consider SSML break
+- ~~Quote selection: sentences starting with subordinate clauses still pass occasionally~~ — fixed (extended DANGLING_OPENERS)
+- ~~CTA slide subtitle: remove business name when logo is present~~ — already handled in code
+- ~~Voiceover rising intonation on exclamation sentences~~ — fixed (! → . in smoothGrammar)
 - Short reviews (sites 1, 3, 6, 8): re-fetch longer reviews from Outscraper
+  **BLOCKED**: no `google_place_id` on any site, `refetch-reviews.js` uses old SQLite DB.
+  Fix: (1) populate `google_place_id` from original Outscraper import, (2) migrate script to PG
