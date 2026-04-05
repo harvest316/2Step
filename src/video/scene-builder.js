@@ -1162,6 +1162,11 @@ export function smoothGrammar(text) {
   t = t.replace(/\blol\b/gi, '');
   t = t.replace(/\bomg\b/gi, '');
 
+  // ── Exclamation → period for TTS (avoids rising intonation on testimonial quotes) ──
+  // Review quotes are statements of fact, not exclamations. TTS reads "!" with unnatural
+  // rising pitch — converting to "." produces neutral, credible delivery.
+  t = t.replace(/!+/g, '.');
+
   return t;
 }
 
@@ -1280,7 +1285,7 @@ const NEGATIVE_PATTERNS = /\b(three times the|overcharged|too expensive|rip off|
 // Sentence openers that produce weak or confusing standalone subtitles:
 // - mid-thought continuations ("As a...", "From the moment...", "Not only...")
 // - meta-praise openers that don't describe anything specific ("I cannot speak highly enough...")
-const DANGLING_OPENERS = /^(as a |as an |as someone|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |however |however,|having |being |after |before |when |once |within |by the end|at the end|despite |although |even though |while |during |throughout |because |because of |thanks to |due to |given that |since then|following |since (the|their|my)|if (the|they|we|you|it|he|she|i )|this (means|is|gave)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|we (also|later|then)|living in |\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
+const DANGLING_OPENERS = /^(as a |as an |as someone|as (the|they|it|we|you|he|she|i |one |many |much |soon |expected|mentioned|stated|noted|promised|agreed|required|needed)|with a |with an |from the |from their |not only |moreover,|furthermore,|in addition,|additionally,|on top of that,|what's more,|to top it off,|besides,|overall,|overall i|in summary|in short,|in conclusion|to summarise|to summarize|needless to say|suffice to say|i cannot speak|i can('t| not) speak|i can not say enough|i would (highly )?recommend|i am (very |so |absolutely |extremely |truly |beyond )?happy|i am (very |so |absolutely |extremely |truly |beyond )?pleased|i am (very |so |absolutely |extremely |truly |beyond )?satisfied|i am (very |so |absolutely |extremely |truly )?(impressed|grateful|thankful)|i('m| am) very |however |however,|having |being |after |before |when |once |within |by the end|at the end|despite |although |even though |while |during |throughout |because |because of |thanks to |due to |given (that|the|their|his|her)|since then|following |since (the|their|my)|if (the|they|we|you|it|he|she|i )|this (means|is|gave|was)|they (also|even|really)|the (team|service|work|results|process)|and (the|they|it|their)|but (the|they|it)|which (was|is|made)|what (really|i|made)|i also |i added |i didn't know|we (also|later|then)|living in |upon |whether |whereas |\d+ \w+ \d{4}|\d{1,2}\/\d{1,2}\/\d{2,4})/i;
 
 export function extractQuotes(review, n = 2) {
   let cleaned = review
