@@ -17,8 +17,8 @@
  */
 
 import '../utils/load-env.js';
-import { Resend } from 'resend';
 import twilio from 'twilio';
+import { sendEmail as transportSendEmail } from '../../../mmo-platform/src/email.js';
 import { readFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -34,7 +34,6 @@ const ROOT = resolve(__dirname, '../..');
 
 // ── Config ──────────────────────────────────────────────────────────────────
 
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME;
 
 // Sending subdomains — rotated by site_id to spread domain reputation risk.
@@ -230,17 +229,16 @@ function assembleEmail(msg) {
 
 // ── Email send ───────────────────────────────────────────────────────────────
 
-/* c8 ignore start — Resend/Twilio API + DB writes I/O */
+/* c8 ignore start — email/Twilio API + DB writes I/O */
 /**
  * Send a single email message.
  *
  * @param {Object} msg - Row from pending email query
- * @param {Resend} resend - Resend client instance
  * @param {boolean} dryRun
  * @param {Object} [testOpts] - { email, cc } — overrides recipient; skips DB update
- * @returns {Promise<{ success: boolean, resendId?: string, dryRun?: boolean }>}
+ * @returns {Promise<{ success: boolean, emailId?: string, dryRun?: boolean }>}
  */
-async function sendEmail(msg, resend, dryRun, testOpts) {
+async function sendEmail(msg, dryRun, testOpts) {
   const isTest = Boolean(testOpts?.email);
   const toAddress = isTest ? testOpts.email : msg.contact_uri;
 
@@ -297,17 +295,12 @@ async function sendEmail(msg, resend, dryRun, testOpts) {
     // Open tracking also disabled to avoid third-party pixel domains in headers
   };
 
+  // cc not supported by the shared transport module — log only
   if (isTest && testOpts.cc) {
-    sendPayload.cc = testOpts.cc;
+    console.log(`  [TEST] cc: ${testOpts.cc} (not forwarded to transport)`);
   }
 
-  const { data, error } = await resend.emails.send(sendPayload);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  const emailId = data?.id || null;
+  const { id: emailId } = await transportSendEmail(sendPayload);
 
   if (!isTest) {
     await run(
@@ -328,7 +321,7 @@ async function sendEmail(msg, resend, dryRun, testOpts) {
     console.log(`  [TEST] Sent to ${toAddress} (real address ${msg.contact_uri} not updated)`);
   }
 
-  return { success: true, resendId: emailId };
+  return { success: true, emailId };
 }
 
 // ── SMS send ─────────────────────────────────────────────────────────────────
@@ -454,11 +447,7 @@ export async function runOutreachStage(options = {}) {
   // ── Email ──────────────────────────────────────────────────────────────────
 
   if (methods.includes('email')) {
-    if (!RESEND_API_KEY) {
-      console.warn('[outreach] RESEND_API_KEY not set — skipping email');
-    } else {
-      const resend = new Resend(RESEND_API_KEY);
-
+    {
       const limitClause = limit ? `LIMIT ${parseInt(limit, 10)}` : '';
       const messageIdClause = messageId ? `AND m.id = ${parseInt(messageId, 10)}` : '';
       const emails = await getAll(
@@ -497,12 +486,12 @@ export async function runOutreachStage(options = {}) {
           const testLabel = testEmail ? ` [TEST -> ${testEmail}]` : '';
           console.log(`[outreach] Email [${msg.id}] ${msg.business_name} -> ${msg.contact_uri}${testLabel}`);
           const testOpts = testEmail ? { email: testEmail, cc: testCc } : undefined;
-          const result = await sendEmail(msg, resend, dryRun, testOpts);
+          const result = await sendEmail(msg, dryRun, testOpts);
           if (result.skipped) {
             stats.skipped++;
           } else {
             stats.sent++;
-            if (result.resendId) console.log(`  sent (${result.resendId})`);
+            if (result.emailId) console.log(`  sent (${result.emailId})`);
             if (result.dryRun) console.log(`  (dry run)`);
           }
         } catch (err) {
