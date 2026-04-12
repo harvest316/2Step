@@ -25,6 +25,7 @@
 
 import '../utils/load-env.js';
 import { getAll, run, withTransaction } from '../utils/db.js';
+import { provisionVideoReview } from './provision-portal.js';
 import { renderVideo, extractPosterFrame } from '../video/ffmpeg-render.js';
 import {
   buildScenes,
@@ -720,6 +721,11 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
     review_count: site.review_count,
   });
 
+  // 13. Provision video on the customer portal (non-fatal)
+  await provisionVideoReview(site, { videoHash, videoUrl, posterUrl }).catch(err =>
+    console.warn('[provision-portal] failed (non-fatal):', err.message)
+  );
+
   // Clean up local render file
   await rm(outputPath, { force: true }).catch(() => {});
 
@@ -754,7 +760,7 @@ export async function runVideoStage(options = {}) {
 
   const sites = siteId
     ? await getAll(
-        `SELECT id, business_name, city, niche, phone, country_code,
+        `SELECT id, business_name, city, niche, phone, email, domain, country_code,
                 best_review_text, best_review_author, google_rating, review_count,
                 logo_url, selected_review_json, problem_category,
                 status, video_url
@@ -762,7 +768,7 @@ export async function runVideoStage(options = {}) {
         [siteId]
       )
     : await getAll(
-        `SELECT id, business_name, city, niche, phone, country_code,
+        `SELECT id, business_name, city, niche, phone, email, domain, country_code,
                 best_review_text, best_review_author, google_rating, review_count,
                 logo_url, selected_review_json, problem_category,
                 status, video_url
