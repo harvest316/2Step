@@ -35,7 +35,9 @@ export function getVoiceId(countryCode) {
   if (!countryCode) throw new Error('country_code is required for voice selection');
   const cc = countryCode.toUpperCase();
   const envKey = `ELEVENLABS_VOICE_${cc}`;
-  return process.env[envKey] || DEFAULT_VOICES[cc] || DEFAULT_VOICES['AU'];
+  const voiceId = process.env[envKey] || DEFAULT_VOICES[cc];
+  if (!voiceId) throw new Error(`No ElevenLabs voice configured for country: ${cc} (set ${envKey} or add to DEFAULT_VOICES)`);
+  return voiceId;
 }
 
 /**
