@@ -28,6 +28,7 @@ import { buildEmailHtml } from '../outreach/email-template.js';
 import { spin } from '../../../333Method/src/utils/spintax.js';
 import { parseEnvSet } from '../../../333Method/src/utils/load-env.js';
 import { checkBeforeSend } from '../../../mmo-platform/src/suppression.js';
+import { captureOutboundSms } from '../../../mmo-platform/src/archive.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
@@ -407,13 +408,31 @@ async function sendSms(msg, twilioClient, dryRun) {
     to: toNumber,
   });
 
+  // Archive capture — call AFTER Twilio returns the SID (DR-223).
+  // Fail-open: archive error must not block outreach delivery; log and continue.
+  let smsArchiveKey = null;
+  try {
+    smsArchiveKey = await captureOutboundSms({
+      project: '2step',
+      body: msg.message_body,
+      from: fromNumber,
+      to: toNumber,
+      twilioSid: message.sid,
+      metadata: { messageId: msg.id, siteId: msg.site_id },
+    });
+  } catch (archiveErr) {
+    console.warn(`[DR-223] SMS archive capture failed for message #${msg.id}: ${archiveErr.message} — continuing`);
+  }
+
   await run(
     `UPDATE msgs.messages
      SET delivery_status = 'sent',
          sent_at = NOW(),
+         twilio_sid = $1,
+         s3_archive_key = $2,
          updated_at = NOW()
-     WHERE id = $1`,
-    [msg.id]
+     WHERE id = $3`,
+    [message.sid, smsArchiveKey, msg.id]
   );
 
   await run(
