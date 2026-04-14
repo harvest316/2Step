@@ -1,7 +1,7 @@
 /**
  * Mock API response factories for E2E tests.
  *
- * These replace the real Outscraper, Resend, Twilio, and ElevenLabs calls so
+ * These replace the real Outscraper, SES, Twilio, and ElevenLabs calls so
  * tests run entirely in-process without network access.
  *
  * Each function returns data that exactly matches the shape of the real API's
@@ -91,28 +91,25 @@ export function mockOutscraperReviewResponse(reviewsData) {
   };
 }
 
-// ─── Resend mocks ─────────────────────────────────────────────────────────────
+// ─── SES mocks ────────────────────────────────────────────────────────────────
 
 /**
- * Return a successful Resend send response.
+ * Return a successful SES send response (matches sendEmail() return shape).
  *
- * @returns {{ data: { id: string }, error: null }}
+ * @returns {{ id: string }}
  */
-export function mockResendSend() {
-  return {
-    data:  { id: `mock_resend_${Date.now()}_${Math.random().toString(36).slice(2)}` },
-    error: null,
-  };
+export function mockSesSend() {
+  return { id: `mock_ses_${Date.now()}_${Math.random().toString(36).slice(2)}` };
 }
 
 /**
- * Return a failed Resend send response.
+ * Return a failed SES send error.
  *
  * @param {string} [message]
- * @returns {{ data: null, error: { message: string } }}
+ * @returns {Error}
  */
-export function mockResendError(message = 'Resend API error') {
-  return { data: null, error: { message } };
+export function mockSesError(message = 'SES send failed') {
+  return new Error(message);
 }
 
 // ─── Twilio mocks ─────────────────────────────────────────────────────────────
@@ -140,22 +137,6 @@ export function mockTwilioClient(result) {
   return {
     messages: {
       create: async () => result ?? mockTwilioSend(),
-    },
-  };
-}
-
-// ─── Resend client mock ───────────────────────────────────────────────────────
-
-/**
- * Return a fake Resend client whose emails.send() resolves with mockResendSend().
- *
- * @param {Object} [result]  - Override the resolved value.
- * @returns {{ emails: { send: Function } }}
- */
-export function mockResendClient(result) {
-  return {
-    emails: {
-      send: async () => result ?? mockResendSend(),
     },
   };
 }

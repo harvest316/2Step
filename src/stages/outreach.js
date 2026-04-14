@@ -4,7 +4,7 @@
  * Outreach pipeline stage for 2Step.
  *
  * Sends approved messages from msgs.messages where project='2step' via
- * email (Resend) or SMS (Twilio). Checks opt-outs before sending.
+ * email (SES) or SMS (Twilio). Checks opt-outs before sending.
  *
  * Sequence-aware: respects scheduled_send_at cadence and stops sending
  * further touches once a reply has been received for a site.
@@ -37,7 +37,7 @@ const ROOT = resolve(__dirname, '../..');
 const SENDER_NAME = process.env.TWOSTEP_SENDER_NAME;
 
 // Sending subdomains — rotated by site_id to spread domain reputation risk.
-// Add new subdomains here as they're verified in Resend.
+// Add new subdomains here as they're verified in SES.
 // test.{BRAND_DOMAIN} is excluded — reserved for test sends only.
 const SENDER_SUBDOMAINS = (process.env.TWOSTEP_SENDER_SUBDOMAINS || 'send,mail,email,outreach,outbound,eu,sa')
   .split(',').map(s => s.trim()).filter(Boolean);
@@ -291,7 +291,7 @@ async function sendEmail(msg, dryRun, testOpts) {
       'List-Unsubscribe': `<${UNSUBSCRIBE_URL}?email=${encodeURIComponent(msg.contact_uri)}>`,
       'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
     },
-    // Click tracking disabled — Resend's resend-clicks-a.com domain triggers URIBL_INVALUEMENT
+    // Click tracking disabled — third-party tracking domains trigger URIBL_INVALUEMENT
     // Open tracking also disabled to avoid third-party pixel domains in headers
   };
 

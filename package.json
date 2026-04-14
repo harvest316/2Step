@@ -38,7 +38,6 @@
     "googleapis": "^171.4.0",
     "music-metadata": "^11.12.3",
     "pg": "^8.13.3",
-    "resend": "^6.8.0",
     "sharp": "^0.34.5",
     "twilio": "^5.13.0"
   },
