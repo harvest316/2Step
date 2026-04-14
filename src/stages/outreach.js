@@ -293,6 +293,7 @@ async function sendEmail(msg, dryRun, testOpts) {
     },
     // Click tracking disabled — third-party tracking domains trigger URIBL_INVALUEMENT
     // Open tracking also disabled to avoid third-party pixel domains in headers
+    project: '2step',
   };
 
   // cc not supported by the shared transport module — log only
@@ -300,7 +301,7 @@ async function sendEmail(msg, dryRun, testOpts) {
     console.log(`  [TEST] cc: ${testOpts.cc} (not forwarded to transport)`);
   }
 
-  const { id: emailId } = await transportSendEmail(sendPayload);
+  const { id: emailId, s3ArchiveKey } = await transportSendEmail(sendPayload);
 
   if (!isTest) {
     await run(
@@ -308,9 +309,12 @@ async function sendEmail(msg, dryRun, testOpts) {
        SET delivery_status = 'sent',
            sent_at = NOW(),
            email_id = $1,
+           rendered_body = $2,
+           rendered_subject = $3,
+           s3_archive_key = $4,
            updated_at = NOW()
-       WHERE id = $2`,
-      [emailId, msg.id]
+       WHERE id = $5`,
+      [emailId, html, subject, s3ArchiveKey ?? null, msg.id]
     );
 
     await run(
