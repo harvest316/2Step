@@ -35,20 +35,20 @@ const DEMOS = [
   {
     slug: 'pest-control',
     id: 900001, // fake site IDs in a high range
-    business_name: 'ACME Pest Control',
+    business_name: 'BugFree Pest Control',
     city: 'Sydney',
     niche: 'pest control',
     country_code: 'AU',
-    best_review_author: 'Sarah Mitchell',
-    best_review_text: 'Absolutely fantastic service — professional, thorough, and genuinely friendly. They explained everything clearly and the problem was sorted same day. Highly recommend to anyone in Sydney.',
+    best_review_author: 'Reece Patterson',
+    best_review_text: 'Reece and the team at BugFree were brilliant from start to finish — professional, friendly, and arrived right on time. Despite tricky attic access, they safely trapped and relocated two possums on the first visit and sealed every entry point so they cannot get back in. They explained every step clearly and left the place spotless, which we really appreciated. Highly recommend BugFree Pest Control to anyone dealing with a possum problem in Sydney.',
     google_rating: 4.9,
     review_count: 492,
     phone: '0412 345 678',
-    problem_category: 'cockroaches',
+    problem_category: 'possums',
     logo_url: 'https://pub-9e277996d5a74eee9508a861cccead66.r2.dev/demo-logo-pest-control.png',
     selected_review_json: JSON.stringify({
-      author_name: 'Sarah Mitchell',
-      text: 'Absolutely fantastic service — professional, thorough, and genuinely friendly. They explained everything clearly and the problem was sorted same day. Highly recommend to anyone in Sydney.',
+      author_name: 'Reece Patterson',
+      text: 'Reece and the team at BugFree were brilliant from start to finish — professional, friendly, and arrived right on time. Despite tricky attic access, they safely trapped and relocated two possums on the first visit and sealed every entry point so they cannot get back in. They explained every step clearly and left the place spotless, which we really appreciated. Highly recommend BugFree Pest Control to anyone dealing with a possum problem in Sydney.',
       rating: 5,
     }),
   },
@@ -111,19 +111,23 @@ if (sites.length === 0) {
 
 // Insert temporary demo site rows if not present (FK constraint on videos table)
 if (!dryRun) {
-  const db = (await import('../src/utils/db.js')).default;
-  const insertSite = db.prepare(`
-    INSERT OR IGNORE INTO sites (id, business_name, city, niche, country_code,
-      best_review_author, best_review_text, google_rating, review_count, phone,
-      problem_category, logo_url, selected_review_json, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'demo')
-  `);
+  const { run } = await import('../src/utils/db.js');
   for (const site of sites) {
-    insertSite.run(
-      site.id, site.business_name, site.city, site.niche, site.country_code,
-      site.best_review_author, site.best_review_text, site.google_rating,
-      site.review_count, site.phone, site.problem_category, site.logo_url,
-      site.selected_review_json,
+    await run(
+      `INSERT INTO sites (id, business_name, city, niche, country_code,
+        best_review_author, best_review_text, google_rating, review_count, phone,
+        problem_category, logo_url, selected_review_json, status)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,'demo')
+       ON CONFLICT (id) DO UPDATE SET
+         business_name = EXCLUDED.business_name,
+         best_review_text = EXCLUDED.best_review_text,
+         problem_category = EXCLUDED.problem_category`,
+      [
+        site.id, site.business_name, site.city, site.niche, site.country_code,
+        site.best_review_author, site.best_review_text, site.google_rating,
+        site.review_count, site.phone, site.problem_category, site.logo_url,
+        site.selected_review_json,
+      ],
     );
   }
 }

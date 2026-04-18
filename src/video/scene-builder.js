@@ -134,8 +134,8 @@ export function buildScenes(prospect, { stateAbbreviations = [] } = {}) {
     ? (phone ? `Call ${phone}` : `Free Inspection`)
     : (phone ? `${name}\nCall ${phone}` : `${name}\nFree Inspection`);
   const ctaVoiceover = phone
-    ? `${name}. Call ${phoneTTS}, or reply yes to schedule your free inspection.`
-    : `Reply yes, or visit ${name} to schedule your free inspection.`;
+    ? `${name}. Call ${phoneTTS} to schedule your free inspection.`
+    : `Visit ${name} to schedule your free inspection.`;
 
   return [
     {
