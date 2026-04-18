@@ -5,31 +5,40 @@
     "focus": "center"
   },
   "blocked-drain-hook-b.mp4": {
-    "focus": "center"
+    "focus": "center",
+    "gender": "neutral"
   },
   "blocked-drain-hook-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "blocked-drain-hook-d.mp4": {
-    "focus": "center"
+    "focus": "center",
+    "gender": "neutral"
   },
   "blocked-drain-hook-e.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "blocked-drain-treatment-a.mp4": {
-    "focus": "center"
+    "focus": "center",
+    "gender": "male"
   },
   "blocked-drain-treatment-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "blocked-drain-treatment-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "blocked-drain-treatment-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "blocked-drain-treatment-e.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "male"
   },
   "burst-pipe-hook-a.mp4": {
     "focus": "bottom"
@@ -62,34 +71,43 @@
     "focus": "bottom"
   },
   "cockroaches-hook-a.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "cockroaches-hook-b.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "cockroaches-hook-c.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "cockroaches-hook-d.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "cockroaches-hook-e.mp4": {
     "focus": "top"
   },
   "cockroaches-treatment-a.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "male"
   },
   "cockroaches-treatment-b.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "cockroaches-treatment-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "cockroaches-treatment-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "cockroaches-treatment-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "deep-clean-hook-a.mp4": {
     "focus": "top"
@@ -98,7 +116,8 @@
     "focus": "bottom"
   },
   "deep-clean-hook-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "deep-clean-hook-d.mp4": {
     "focus": "center"
@@ -116,10 +135,12 @@
     "focus": "top"
   },
   "deep-clean-treatment-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "deep-clean-treatment-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "dirty-bathroom-hook-a.mp4": {
     "focus": "bottom"
@@ -181,35 +202,77 @@
   "end-of-lease-treatment-e.mp4": {
     "focus": "bottom"
   },
-  "greasy-rangehood-hook-a.mp4": {
+  "general-pest-hook-a.mp4": {
+    "gender": "neutral",
+    "focus": "bottom"
+  },
+  "general-pest-hook-b.mp4": {
+    "gender": "neutral",
     "focus": "top"
+  },
+  "general-pest-hook-c.mp4": {
+    "gender": "neutral",
+    "focus": "top"
+  },
+  "general-pest-hook-d.mp4": {
+    "gender": "neutral",
+    "focus": "top"
+  },
+  "general-pest-treatment-a.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "general-pest-treatment-b.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "general-pest-treatment-c.mp4": {
+    "gender": "male",
+    "focus": "top"
+  },
+  "general-pest-treatment-d.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "greasy-rangehood-hook-a.mp4": {
+    "focus": "top",
+    "gender": "neutral"
   },
   "greasy-rangehood-hook-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "greasy-rangehood-hook-c.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "greasy-rangehood-hook-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "greasy-rangehood-hook-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "greasy-rangehood-treatment-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "greasy-rangehood-treatment-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "greasy-rangehood-treatment-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "greasy-rangehood-treatment-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "greasy-rangehood-treatment-e.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "female"
   },
   "hot-water-hook-a.mp4": {
     "focus": "bottom"
@@ -242,49 +305,64 @@
     "focus": "top"
   },
   "house-cleaning-cta-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "female"
   },
   "house-cleaning-cta-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "female"
   },
   "house-cleaning-cta-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "house-cleaning-cta-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "house-cleaning-cta-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "house-cleaning-resolution-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "house-cleaning-resolution-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "house-cleaning-resolution-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "house-cleaning-resolution-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "house-cleaning-resolution-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "house-cleaning-technician-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "female"
   },
   "house-cleaning-technician-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "house-cleaning-technician-c.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "female"
   },
   "house-cleaning-technician-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "female"
   },
   "house-cleaning-technician-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "leaking-tap-hook-a.mp4": {
     "focus": "bottom"
@@ -317,48 +395,125 @@
     "focus": "top"
   },
   "plumbing-cta-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "plumbing-cta-b.mp4": {
     "focus": "bottom"
   },
   "plumbing-cta-c.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "male"
   },
   "plumbing-cta-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "plumbing-cta-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "plumbing-resolution-a.mp4": {
     "focus": "bottom"
   },
   "plumbing-resolution-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "plumbing-resolution-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "plumbing-resolution-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "plumbing-resolution-e.mp4": {
-    "focus": "center"
+    "focus": "center",
+    "gender": "male"
   },
   "plumbing-technician-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "plumbing-technician-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "plumbing-technician-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "plumbing-technician-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "plumbing-technician-e.mp4": {
+    "focus": "bottom",
+    "gender": "male"
+  },
+  "possum-hook-a.mp4": {
+    "gender": "neutral",
+    "focus": "bottom"
+  },
+  "possum-hook-b.mp4": {
+    "gender": "neutral",
+    "focus": "bottom"
+  },
+  "possum-hook-c.mp4": {
+    "gender": "neutral",
+    "focus": "bottom"
+  },
+  "possum-hook-d.mp4": {
+    "gender": "neutral",
+    "focus": "bottom"
+  },
+  "possum-treatment-a.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "possum-treatment-b.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "possum-treatment-c.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "possum-treatment-d.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "regular-clean-hook-a.mp4": {
+    "gender": "neutral",
+    "focus": "top"
+  },
+  "regular-clean-hook-b.mp4": {
+    "gender": "neutral",
+    "focus": "bottom"
+  },
+  "regular-clean-hook-c.mp4": {
+    "gender": "neutral",
+    "focus": "bottom"
+  },
+  "regular-clean-hook-d.mp4": {
+    "gender": "neutral",
+    "focus": "top"
+  },
+  "regular-clean-treatment-a.mp4": {
+    "gender": "female",
+    "focus": "bottom"
+  },
+  "regular-clean-treatment-b.mp4": {
+    "gender": "female",
+    "focus": "bottom"
+  },
+  "regular-clean-treatment-c.mp4": {
+    "gender": "female",
+    "focus": "bottom"
+  },
+  "regular-clean-treatment-d.mp4": {
+    "gender": "male",
     "focus": "bottom"
   },
   "rodents-hook-a.mp4": {
@@ -392,82 +547,106 @@
     "focus": "top"
   },
   "shared-cta-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-cta-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-cta-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-cta-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-cta-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-cta-f.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-cta-g.mp4": {
     "focus": "bottom"
   },
   "shared-cta-h.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-resolution-a.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "shared-resolution-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "shared-resolution-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "shared-resolution-d.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "shared-resolution-e.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "shared-resolution-f.mp4": {
     "focus": "top"
   },
   "shared-resolution-g.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "shared-resolution-h.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "shared-technician-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-technician-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-technician-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-technician-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-technician-e.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "male"
   },
   "shared-technician-f.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-technician-g.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "shared-technician-h.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "spiders-hook-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "spiders-hook-b.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "spiders-hook-c.mp4": {
     "focus": "bottom"
@@ -476,51 +655,89 @@
     "focus": "center"
   },
   "spiders-hook-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "spiders-treatment-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "spiders-treatment-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "spiders-treatment-c.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "male"
   },
   "spiders-treatment-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "spiders-treatment-e.mp4": {
     "focus": "bottom"
   },
   "termites-hook-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "termites-hook-b.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "termites-hook-c.mp4": {
-    "focus": "top"
+    "focus": "top",
+    "gender": "neutral"
   },
   "termites-hook-d.mp4": {
     "focus": "bottom"
   },
   "termites-hook-e.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "neutral"
   },
   "termites-treatment-a.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "termites-treatment-b.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "termites-treatment-c.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "termites-treatment-d.mp4": {
-    "focus": "bottom"
+    "focus": "bottom",
+    "gender": "male"
   },
   "termites-treatment-e.mp4": {
+    "focus": "bottom",
+    "gender": "male"
+  },
+  "toilet-hook-b.mp4": {
+    "gender": "neutral",
+    "focus": "top"
+  },
+  "toilet-hook-c.mp4": {
+    "gender": "neutral",
     "focus": "bottom"
+  },
+  "toilet-treatment-a.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "toilet-treatment-b.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "toilet-treatment-c.mp4": {
+    "gender": "male",
+    "focus": "bottom"
+  },
+  "toilet-treatment-d.mp4": {
+    "gender": "male",
+    "focus": "top"
   }
 }

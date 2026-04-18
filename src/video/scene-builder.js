@@ -684,10 +684,8 @@ export const CLIP_POOLS = {
 
   'toilet': {
     hook: [
-      { url: `${R2}/toilet-hook-a.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/toilet-hook-b.mp4`, source: 'kling', focus: 'center' },
       { url: `${R2}/toilet-hook-c.mp4`, source: 'kling', focus: 'center' },
-      { url: `${R2}/toilet-hook-d.mp4`, source: 'kling', focus: 'center' },
     ],
     treatment: [
       { url: `${R2}/toilet-treatment-a.mp4`, source: 'kling', focus: 'center' },

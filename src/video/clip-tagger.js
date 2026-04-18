@@ -155,7 +155,7 @@ function buildHtml(clips, tags) {
   </div>
   <div style="margin-left:auto; display:flex; gap:14px; align-items:center;">
     <label style="cursor:pointer;user-select:none">
-      <input type="checkbox" id="chk-untagged" onchange="toggleFilter()"> Untagged only
+      <input type="checkbox" id="chk-untagged" onchange="toggleFilter()"> Focus untagged only
     </label>
     <label style="cursor:pointer;user-select:none">
       <input type="checkbox" id="chk-gender-untagged" onchange="toggleFilter()"> Gender untagged only
