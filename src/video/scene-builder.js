@@ -8,20 +8,23 @@ import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const FOCUS_OVERRIDES_PATH = resolve(__dirname, '../../clips/focus-overrides.json');
+const CLIP_TAGS_PATH = resolve(__dirname, '../../clips/clip-tags.json');
 
 /**
- * Per-clip focus overrides loaded from clips/focus-overrides.json.
- * Keys are filenames (e.g. "blocked-drain-hook-a.mp4"), values are focus strings.
- * Edit that file after watching clips — no code change needed.
+ * Per-clip metadata loaded from clips/clip-tags.json.
+ * Keys are filenames (e.g. "blocked-drain-hook-a.mp4"), values are objects
+ * with { focus, gender } properties.
+ * Backward compat: if a value is a plain string, treat it as { focus: value }.
  */
-const FOCUS_OVERRIDES = (() => {
-  if (!existsSync(FOCUS_OVERRIDES_PATH)) return {};
+const CLIP_TAGS = (() => {
+  if (!existsSync(CLIP_TAGS_PATH)) return {};
   try {
-    const raw = JSON.parse(readFileSync(FOCUS_OVERRIDES_PATH, 'utf8'));
-    // Strip comment keys
+    const raw = JSON.parse(readFileSync(CLIP_TAGS_PATH, 'utf8'));
+    // Strip comment keys, normalise plain string values to { focus }
     return Object.fromEntries(
-      Object.entries(raw).filter(([k]) => !k.startsWith('_'))
+      Object.entries(raw)
+        .filter(([k]) => !k.startsWith('_'))
+        .map(([k, v]) => [k, typeof v === 'string' ? { focus: v } : v])
     );
   } catch { return {}; }
 })();
@@ -944,14 +947,148 @@ const PROBLEM_SHARED_POOL = {
   'regular-clean':   'house-cleaning-shared',
 };
 
+// --- Gender-aware clip selection ---
+
+const MALE_NAMES = new Set([
+  // Anglo/Western
+  'james','john','robert','michael','william','david','richard','joseph','thomas','charles',
+  'christopher','daniel','matthew','anthony','mark','donald','steven','paul','andrew','joshua',
+  'kenneth','kevin','brian','george','timothy','ronald','edward','jason','jeffrey','ryan',
+  'jacob','gary','nicholas','eric','jonathan','stephen','larry','justin','scott','brandon',
+  'benjamin','samuel','raymond','gregory','frank','patrick','jack','dennis','peter','henry',
+  'carl','arthur','roger','keith','jeremy','terry','sean','austin','noah','ethan','liam',
+  'mason','logan','lucas','oliver','aiden','connor','dylan','nathan','caleb','owen','luke',
+  'hunter','tyler','aaron','adam','ian','colin','bruce','wayne','craig','dale','darren',
+  'dean','glen','glenn','grant','neil','shane','stuart','trevor','barry','clive','nigel',
+  'simon','graham','ross','angus','hamish','lachlan','callum','declan','cody','beau','cooper',
+  'jim','dan','ben','tom','rob','mike','chris','matt','nick','dave','steve','joe','tony',
+  'phil','bob','ted','bill','ed','ray','don','lee','reece','rhys','bryce','blake','trent',
+  'brett','chad','derek','gavin','lloyd','malcolm','murray','noel','rex','rodney','russell',
+  'warwick','mitch','cam','jared','toby','zach','riley','kai','finn',
+  // South Asian
+  'raj','ravi','amit','anil','arjun','vikram','suresh','deepak','sanjay','rahul',
+  'rohit','ashish','nikhil','pranav','karthik','vishal','sachin','harsh','gaurav','vivek',
+  // East Asian
+  'wei','jun','ming','chen','hong','jian','lei','feng','tao','hai',
+  'kenji','takeshi','hiroshi','yuki','ryu','jin','soo','hyun','min','sung',
+  // Middle Eastern
+  'mohammed','ahmed','ali','omar','hassan','hussein','khalid','tariq','mustafa','youssef',
+  'ibrahim','karim','nasser','samir','faisal','jamal','bilal',
+  // European
+  'marco','luca','matteo','diego','carlos','miguel','rafael','antonio','giuseppe','pierre',
+  'andre','dmitri','ivan','sergei','aleksander','jan','lars','erik','hans','stefan',
+  // African
+  'kwame','kofi','emeka','chidi','oluwa','jabari','tendai','thabo','sipho','bongani',
+]);
+
+const FEMALE_NAMES = new Set([
+  // Anglo/Western
+  'mary','patricia','jennifer','linda','barbara','elizabeth','susan','jessica','sarah','karen',
+  'lisa','nancy','betty','margaret','sandra','ashley','dorothy','kimberly','emily','donna',
+  'michelle','carol','amanda','melissa','deborah','stephanie','rebecca','sharon','laura','cynthia',
+  'kathleen','amy','angela','shirley','anna','brenda','pamela','emma','nicole','helen',
+  'samantha','katherine','christine','debra','rachel','carolyn','janet','catherine','maria','heather',
+  'diane','ruth','julie','olivia','joyce','virginia','victoria','kelly','lauren','christina',
+  'joan','evelyn','judith','megan','andrea','cheryl','hannah','jacqueline','martha','gloria',
+  'teresa','ann','sara','madison','frances','kathryn','janice','jean','abigail','alice',
+  'judy','sophia','grace','denise','amber','doris','marilyn','danielle','beverly','isabella',
+  'theresa','diana','natalie','brittany','charlotte','marie','kayla','alexis','lori','chloe',
+  'brooke','jade','holly','claire','fiona','gemma','lucy','sophie','zoe','ella',
+  'mia','isla','freya','poppy','daisy','phoebe','willow','sienna','matilda','harper',
+  'kate','jane','sue','kim','bec','mel','tash','nat','jen','jess','em','lyn','deb',
+  'beth','meg','jo','gail','tina','leah','jill','faye','gwen','liz','val','wendy',
+  'rowena','colleen','bronwyn','kylie','tanya','sharyn','kerrie','narelle','janelle',
+  // South Asian
+  'priya','anita','sunita','deepa','kavita','neha','pooja','shreya','divya','meera',
+  'lakshmi','rani','nisha','swati','geeta','rekha','anjali','ritu','sita','padma',
+  // East Asian
+  'mei','ling','xia','yan','hui','yun','fang','jing','na','li',
+  'yoko','akiko','sakura','hana','miki','seo','eun','hye','ji','yuna',
+  // Middle Eastern
+  'fatima','aisha','leila','noor','yasmin','hana','zahra','maryam','sara','dina',
+  'rania','amira','layla','samira','farida','nadya',
+  // European
+  'sofia','elena','chiara','giulia','lucia','carmen','rosa','isabelle','claire','marie',
+  'natasha','olga','katya','svetlana','anna','eva','ingrid','astrid','elsa','petra',
+  // African
+  'amara','nia','zara','imani','asha','fatou','adama','nana','abena','akua',
+]);
+
+/**
+ * Detect the gender of the staff member mentioned in a Google review.
+ * Looks at pronouns first (strongest signal), then staff names.
+ * Returns 'male', 'female', or null if indeterminate.
+ *
+ * @param {string} reviewText  The review body text
+ * @param {string} reviewerName  The reviewer's name (excluded from staff name detection)
+ * @returns {'male'|'female'|null}
+ */
+export function detectStaffGender(reviewText, reviewerName = '') {
+  if (!reviewText) return null;
+  const text = reviewText.toLowerCase();
+
+  // --- Pronoun detection (primary signal) ---
+  // \b word boundaries already prevent "this"→"his" and "here"→"her" false positives
+  const maleCount = (text.match(/\bhe\b/g) || []).length
+    + (text.match(/\bhim\b/g) || []).length
+    + (text.match(/\bhis\b/g) || []).length;
+  const femaleCount = (text.match(/\bshe\b/g) || []).length
+    + (text.match(/\bhers?\b/g) || []).length;
+
+  if (maleCount > 0 || femaleCount > 0) {
+    if (maleCount > femaleCount) return 'male';
+    if (femaleCount > maleCount) return 'female';
+    // Tie — fall through to name detection
+  }
+
+  // --- Name detection (secondary signal) ---
+  // Look for staff-member name patterns: "X from [business]", "X was very/so/incredibly",
+  // "X came/arrived", "X did an amazing"
+  const reviewerFirst = reviewerName.trim().split(/\s+/)[0]?.toLowerCase() || '';
+  const staffPatterns = [
+    /\b([a-z]{2,})\s+(?:from|at)\s+/gi,
+    /\b([a-z]{2,})\s+(?:was|is|did|came|arrived|helped|fixed|cleaned|handled|showed|explained|went)\b/gi,
+    /\b([a-z]{2,})\s+(?:and his|and her)\b/gi,
+  ];
+
+  for (const pattern of staffPatterns) {
+    let match;
+    while ((match = pattern.exec(reviewText)) !== null) {
+      const name = match[1].toLowerCase();
+      if (name === reviewerFirst) continue;
+      // Skip common non-name words that match the patterns
+      if (['the', 'they', 'this', 'that', 'what', 'when', 'will', 'with', 'would',
+           'very', 'really', 'just', 'also', 'even', 'then', 'than', 'them', 'been',
+           'have', 'has', 'had', 'but', 'not', 'our', 'who', 'how', 'all', 'any',
+           'can', 'could', 'should', 'which', 'their', 'there', 'these', 'those',
+           'some', 'such', 'only', 'over', 'after', 'before', 'about', 'into',
+           'through', 'during', 'each', 'both', 'few', 'more', 'most', 'other',
+           'service', 'team', 'staff', 'company', 'business', 'work', 'job',
+           'price', 'quote', 'everything', 'everyone', 'someone', 'something',
+           'nothing', 'anything', 'always', 'never', 'great', 'good', 'best',
+           'well', 'much', 'still', 'back', 'here', 'where', 'home', 'time',
+           'place', 'house', 'water', 'drain', 'pipe', 'roof', 'pest',
+      ].includes(name)) continue;
+      if (MALE_NAMES.has(name)) return 'male';
+      if (FEMALE_NAMES.has(name)) return 'female';
+    }
+  }
+
+  return null;
+}
+
+// Slots where a person is visible and gender matching matters
+const PEOPLE_SLOTS = new Set(['technician', 'resolution', 'cta']);
+
 /**
  * Pick 5 clips (hook, technician, treatment, resolution, cta) for a given problem.
  *
  * @param {string} niche    Prospect niche (e.g. 'plumber', 'pest control', 'blocked-drain')
  * @param {number} seed     Rotates clip selection per prospect
- * @returns {Array<{url,focus}>|null}  5 clips, or null if any slot is empty
+ * @param {string} reviewerName  Reviewer's name (excluded from gender detection)
+ * @returns {Array<{url,focus,gender}>|null}  7 clips, or null if any slot is empty
  */
-export function pickClipsFromPool(niche, seed = 0, reviewText = '') {
+export function pickClipsFromPool(niche, seed = 0, reviewText = '', reviewerName = '') {
   // For pest control, try to detect specific pest from review; fall back to general-pest
   const isPestControl = niche === 'pest control' || NICHE_ALIASES[niche] === 'general-pest';
   const detected = isPestControl ? detectPestFromReview(reviewText) : null;
@@ -985,15 +1122,31 @@ export function pickClipsFromPool(niche, seed = 0, reviewText = '') {
   const baseSlot = s => s.replace(/\d+$/, ''); // 'technician2' → 'technician'
   if (['hook', 'technician', 'treatment', 'resolution', 'cta'].some(s => !resolveSlot(s).length)) return null;
 
+  const detectedGender = detectStaffGender(reviewText, reviewerName);
+
   return slots.map((slot, i) => {
     const arr   = resolveSlot(baseSlot(slot));
     // Shift seed by ~half the pool size for *2 slots to get a different clip
     // Use a prime (7) so it doesn't alias with common pool sizes (5, 8)
     const offset = slot.endsWith('2') ? 7 : 0;
-    const entry = arr[(seed + i + offset) % arr.length];
+
+    // Gender-aware filtering for people slots (technician, resolution, cta)
+    let pool = arr;
+    if (detectedGender && PEOPLE_SLOTS.has(baseSlot(slot))) {
+      const genderMatched = arr.filter(e => {
+        const fn = e.url.split('/').pop();
+        const tags = CLIP_TAGS[fn];
+        return tags?.gender === detectedGender;
+      });
+      if (genderMatched.length) pool = genderMatched;
+      // No matches → fall back to full unfiltered pool
+    }
+
+    const entry = pool[(seed + i + offset) % pool.length];
     const filename = entry.url.split('/').pop();
-    const focus = FOCUS_OVERRIDES[filename] ?? entry.focus ?? 'center';
-    return { url: entry.url, focus };
+    const tags = CLIP_TAGS[filename] ?? {};
+    const focus = tags.focus ?? entry.focus ?? 'center';
+    return { url: entry.url, focus, gender: tags.gender ?? null };
   });
 }
 

@@ -590,7 +590,8 @@ export async function processSite(site, { dryRun, localOnly = false, stateAbbrev
   const poolKey = site.problem_category || prospect.niche;
   const reviewText = prospect.best_review_text;
   // Seed = site_id * 0 per spec (review_index=0, pre-payment), meaning seed = site_id mod pool
-  const clips = pickClipsFromPool(poolKey, siteId, reviewText);
+  const reviewerName = prospect.best_review_author || '';
+  const clips = pickClipsFromPool(poolKey, siteId, reviewText, reviewerName);
 
   if (!clips) {
     throw new Error(

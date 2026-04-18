@@ -48,6 +48,8 @@ out/
 
 # Downloaded video clips (large binaries, not tracked in git)
 clips/
+!clips/focus-overrides.json
+!clips/clip-tags.json
 
 # Temporary files
 tmp/
@@ -65,7 +67,6 @@ temp/
 # Backup files
 *.backup
 *.bak
-!clips/focus-overrides.json
 .pronunciation-dict.json
 .wrangler/
 db/backup

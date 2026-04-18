@@ -149,7 +149,7 @@ for (const site of sites) {
       logo_url: site.logo_url,
     };
     const scenes = buildScenes(prospect);
-    const clips = pickClipsFromPool(site.problem_category || site.niche, site.id, site.best_review_text);
+    const clips = pickClipsFromPool(site.problem_category || site.niche, site.id, site.best_review_text, site.best_review_author);
     console.log(`  Scenes: ${scenes.length}`);
     console.log(`  Clips: ${clips ? clips.length : 'NONE (missing pool)'}`);
     console.log(`  Review: "${site.best_review_text.slice(0, 60)}..."\n`);
