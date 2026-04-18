@@ -147,13 +147,12 @@ function buildDrawtext(scene, startTime, endTime, clipFocus, variant, sceneIdx) 
 function buildVideoFilterChain({ clips, scenes, clipInputStart, variant, starts }) {
   const filterParts = [];
 
-  // Scale/crop each clip; freeze last frame if clip is shorter than scene duration
+  // Scale/crop each clip; clips loop via -stream_loop on input, then trim to scene duration
   for (let i = 0; i < clips.length; i++) {
     filterParts.push(
       `[${clipInputStart + i}:v]` +
       `scale=${W}:${H}:force_original_aspect_ratio=increase,` +
       `crop=${W}:${H},setsar=1,fps=30,` +
-      `tpad=stop_mode=clone:stop_duration=${scenes[i].duration},` +
       `trim=duration=${scenes[i].duration},setpts=PTS-STARTPTS` +
       `[v${i}]`
     );
@@ -264,10 +263,10 @@ export async function renderVideo({
     const inputArgs = [];
     let inputIdx = 0;
 
-    // Inputs: video clips
+    // Inputs: video clips (loop so they fill the scene duration instead of freezing)
     const clipInputStart = inputIdx;
     for (let i = 0; i < clipPaths.length; i++) {
-      inputArgs.push('-i', clipPaths[i]);
+      inputArgs.push('-stream_loop', '-1', '-i', clipPaths[i]);
       inputIdx++;
     }
 
